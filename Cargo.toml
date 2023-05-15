@@ -1,0 +1,17 @@
+[package]
+name = "parse-sap-odata"
+version = "0.1.0"
+authors = ["Chris Whealy <chris@lighthouse.no>"]
+edition = "2018"
+description = "SAP OData V2 parser"
+keywords = ["odata", "sap", "parser", "opendata"]
+repository = "https://github.com/lighthouse-no/parse-sap-odata"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# Versions of quick-xml from 0.27.0 upwards break with error Custom("missing field `Name`")
+quick-xml = { version = "0.26.0", features = ["serialize"] }
+serde = { version = "1.0.126", features = ["derive"] }
+chrono = { version = "0.4.19", features = ["serde"] }
