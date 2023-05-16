@@ -6,8 +6,10 @@ use crate::schema::{AssociationSet, EntitySet};
 #[serde(rename_all = "PascalCase")]
 pub struct EntityContainer {
     pub name: String,
+
     #[serde(rename = "EntitySet", default)]
     pub entity_sets: Vec<EntitySet>,
+
     #[serde(rename = "AssociationSet", default)]
     pub association_sets: Vec<AssociationSet>,
 }

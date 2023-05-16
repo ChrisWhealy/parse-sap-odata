@@ -4,7 +4,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Key {
-    pub property_ref: PropertyRef,
+    #[serde(rename = "PropertyRef")]
+    pub property_refs: Vec<PropertyRef>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,8 +23,11 @@ pub struct EntityType {
 
 impl EntityType {
     pub fn key_property(&self) -> Option<&Property> {
-        self.properties
-            .iter()
-            .find(|property| property.name == self.key.property_ref.name)
+        self.properties.iter().find(|property| {
+            self.key
+                .property_refs
+                .iter()
+                .any(|prop_ref| prop_ref.name == property.name)
+        })
     }
 }

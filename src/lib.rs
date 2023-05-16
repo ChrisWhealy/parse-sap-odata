@@ -25,6 +25,10 @@ impl Edmx {
     pub fn default_schema(&self) -> Option<&Schema> {
         self.data_services.default_schema()
     }
+
+    pub fn fetch_schema(&self, schema_name: &str) -> Option<&Schema> {
+        self.data_services.fetch_schema(schema_name)
+    }
 }
 
 impl FromStr for Edmx {
@@ -50,6 +54,12 @@ impl DataServices {
         self.schemas
             .iter()
             .find(|schema| schema.namespace == "Default")
+    }
+
+    pub fn fetch_schema(&self, schema_name: &str) -> Option<&Schema> {
+        self.schemas
+            .iter()
+            .find(|schema| schema.namespace == schema_name)
     }
 }
 
