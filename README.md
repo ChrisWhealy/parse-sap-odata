@@ -1,35 +1,43 @@
 # Parse the Metadata from an SAP OData Service
 
-This is an absolute bare-minimum rough implementation of the EDMX 1.0 format for parsing using serde/quick-xml into a Rust structure.
+First attempt at consuming an the metadata from an SAP Odata service.
 
 ## Testing
 
-`git clone `
+`git clone https://github.com/lighthouse-no/parse-sap-odata`
+
+To run the tests with the `println!()` output suppressed
 
 `cargo test`
+
+To run the tests with `println!()` output
+
+`cargo test -- --nocapture`
 
 ## Example
 
 Parse an example `metadata.xml` file, and print all the `EntitySets` within the default schema.
+
 ```rust
-let edmx = Edmx::from_str(include_str!("my-metadata.xml")).unwrap();
-let schema = edmx.default_schema().unwrap();
+let edmx = Edmx::from_str(include_str!("some-odata-metadata.xml")).unwrap();
+let schema = edmx.fetch_schema("GWSAMPLE_BASIC").unwrap();
 
-for entity_set in schema.entity_sets().unwrap() {
-  println!("{:#?}", entity_set);
+for set in schema.entity_sets().unwrap() {
+  println!("{:#?}", set);
 }
 ```
 
-Using the [test file](tests/folketinget.xml) from the Danish Parliament, you should see output similar to this:
+Running the tests will generate output similar this:
+
 ```
 EntitySet {
-    name: "Afstemning",
-    entity_type: "FT.Domain.Models.Afstemning",
+    name: "ProductSet",
+    entity_type: "GWSAMPLE_BASIC.Product",
 }
 EntitySet {
-    name: "Afstemningstype",
-    entity_type: "FT.Domain.Models.Afstemningstype",
+    name: "VH_UnitQuantitySet",
+    entity_type: "GWSAMPLE_BASIC.VH_UnitQuantity",
 }
 
-(... and so on)
+SNIP...
 ```

@@ -11,22 +11,6 @@ mod tests {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Danish government OData file
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // #[test]
-    // pub fn test_parse_folketinget_metadata() {
-    //     let edmx = Edmx::from_str(include_str!("../tests/folketinget.xml")).unwrap();
-    //     let schema = edmx.default_schema().unwrap();
-
-    //     show_metadata(schema.entity_sets().unwrap());
-
-    //     assert_eq!(
-    //         50,
-    //         edmx.default_schema().unwrap().entity_sets().unwrap().len()
-    //     );
-    // }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Two entity types and an association
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
