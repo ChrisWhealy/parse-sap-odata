@@ -2,6 +2,12 @@
 
 First attempt at consuming an the metadata from an SAP Odata service.
 
+This is a work in progress
+
+## TODOs
+
+Complex Types cannot be parsed at the moment
+
 ## Testing
 
 `git clone https://github.com/lighthouse-no/parse-sap-odata`
