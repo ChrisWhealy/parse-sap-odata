@@ -23,7 +23,7 @@ pub struct Edmx {
 
 impl Edmx {
     pub fn default_schema(&self) -> Option<&Schema> {
-        self.data_services.default_schema()
+        self.data_services.fetch_schema("Default")
     }
 
     pub fn fetch_schema(&self, schema_name: &str) -> Option<&Schema> {
@@ -50,10 +50,6 @@ pub struct DataServices {
 }
 
 impl DataServices {
-    pub fn default_schema(&self) -> Option<&Schema> {
-        self.fetch_schema("Default")
-    }
-
     pub fn fetch_schema(&self, schema_name: &str) -> Option<&Schema> {
         self.schemas
             .iter()

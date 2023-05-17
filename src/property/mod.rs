@@ -1,19 +1,21 @@
-mod property_type;
+// mod property_type;
 
-use property_type::PropertyType;
+// use property_type::PropertyType;
 use serde::{Deserialize, Serialize};
 
 fn default_true() -> bool {
     true
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "PascalCase")]
 pub struct Property {
     pub name: String,
 
-    #[serde(flatten)]
-    pub inner: PropertyType,
+    // #[serde(flatten)]
+    // pub inner: PropertyType,
+    #[serde(rename = "Type")]
+    pub property_type: String,
 
     #[serde(default = "default_true")]
     pub nullable: bool,

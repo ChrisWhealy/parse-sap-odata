@@ -17,7 +17,7 @@ pub struct Schema {
     pub namespace: String,
 
     #[serde(rename = "EntityType", default)]
-    pub entities: Vec<EntityType>,
+    pub entity_types: Vec<EntityType>,
 
     #[serde(rename = "ComplexType", default)]
     pub complex_types: Option<Vec<ComplexType>>,
