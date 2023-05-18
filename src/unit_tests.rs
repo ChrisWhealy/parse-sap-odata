@@ -25,6 +25,7 @@ mod tests {
 
     fn show_entity<T: Debug>(entity: &Vec<T>, entity_name: &str) {
         print_banner(entity_name);
+        println!("Showing {} entries", entity.len());
 
         for e in entity {
             println!("{:#?}", e);
@@ -72,5 +73,6 @@ mod tests {
         show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
         show_entity(&schema.associations, "ASSOCIATIONS");
         show_entity_container(&schema.entity_container);
+        // show_entity(&schema.atom_links, "ATOM LINKS");
     }
 }
