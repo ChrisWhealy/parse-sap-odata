@@ -1,4 +1,4 @@
-use crate::schema::association::End;
+use crate::edmx::data_services::schema::association::End;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]

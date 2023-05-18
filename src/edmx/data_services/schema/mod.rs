@@ -1,11 +1,13 @@
-// pub mod atom_link;
 pub mod association;
+pub mod atom_link;
 pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
+use crate::default_xml_language;
+use crate::sap_annotations::default_sap_schema_version;
 use association::Association;
-// use atom_link::AtomLink;
+use atom_link::AtomLink;
 use complex_type::ComplexType;
 use entity_container::EntityContainer;
 use entity_type::EntityType;
@@ -15,6 +17,12 @@ use serde::{Deserialize, Serialize};
 pub struct Schema {
     #[serde(rename = "Namespace", default)]
     pub namespace: String,
+
+    #[serde(rename = "xml:lang", default = "default_xml_language")]
+    pub lang: String,
+
+    #[serde(rename = "sap:schema_version", default = "default_sap_schema_version")]
+    pub sap_schema_version: String,
 
     #[serde(rename = "EntityType", default)]
     pub entity_types: Vec<EntityType>,
@@ -27,7 +35,8 @@ pub struct Schema {
 
     #[serde(rename = "EntityContainer", default)]
     pub entity_container: Option<EntityContainer>,
-    // quick-xml is not able to handle tagnames containing a colon character :-(
-    // #[serde(rename = "atom:link")]
-    // pub atom_links: Vec<AtomLink>,
+
+    // Appears in the XML as "atom:link"
+    #[serde(rename = "link")]
+    pub atom_links: Vec<AtomLink>,
 }

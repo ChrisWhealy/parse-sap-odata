@@ -1,9 +1,8 @@
-use super::*;
-
 mod tests {
-    use super::*;
-    use crate::schema::entity_container::EntityContainer;
+    use crate::edmx::data_services::schema::entity_container::EntityContainer;
+    use crate::edmx::Edmx;
     use std::fmt::Debug;
+    use std::str::FromStr;
 
     const SEPARATOR: &str =
         "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *";
@@ -25,7 +24,6 @@ mod tests {
 
     fn show_entity<T: Debug>(entity: &Vec<T>, entity_name: &str) {
         print_banner(entity_name);
-        println!("Showing {} entries", entity.len());
 
         for e in entity {
             println!("{:#?}", e);
@@ -66,13 +64,14 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn test_sap_full() {
-        let edmx = Edmx::from_str(include_str!("../tests/sap_gwsample_basic_full.xml")).unwrap();
-        let schema = edmx.fetch_schema("GWSAMPLE_BASIC").unwrap();
+        let xml = include_str!("../tests/sap_gwsample_basic_full.xml");
+        let edmx = Edmx::from_str(xml).unwrap();
+        let schema = edmx.data_services.fetch_schema("GWSAMPLE_BASIC").unwrap();
 
         show_entity(&schema.entity_types, "ENTITY TYPES");
         show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
         show_entity(&schema.associations, "ASSOCIATIONS");
         show_entity_container(&schema.entity_container);
-        // show_entity(&schema.atom_links, "ATOM LINKS");
+        show_entity(&schema.atom_links, "ATOM LINKS");
     }
 }
