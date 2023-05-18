@@ -2,9 +2,8 @@ use super::*;
 
 mod tests {
     use super::*;
-    use crate::schema::association::Association;
-    use crate::schema::complex_type::ComplexType;
-    use crate::schema::entity_type::EntityType;
+    use crate::schema::entity_container::EntityContainer;
+    use std::fmt::Debug;
 
     const SEPARATOR: &str =
         "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *";
@@ -24,57 +23,37 @@ mod tests {
         println!("{}", SEPARATOR);
     }
 
-    fn show_entity_types(entity_types: &Vec<EntityType>) {
-        print_banner("ENTITY TYPES");
+    fn show_entity<T: Debug>(entity: &Vec<T>, entity_name: &str) {
+        print_banner(entity_name);
 
-        for et in entity_types {
-            println!("{:#?}", et);
-            // show_properties(&et.properties)
+        for e in entity {
+            println!("{:#?}", e);
         }
     }
 
-    fn show_complex_types(complex_types: &Option<Vec<ComplexType>>) {
-        print_banner("COMPLEX TYPES");
+    fn show_optional_entity<T: Debug>(maybe_entity: &Option<Vec<T>>, entity_name: &str) {
+        match maybe_entity {
+            Some(entity) => show_entity(entity, entity_name),
+            None => println!("No {} defined", entity_name.to_lowercase()),
+        }
+    }
 
-        match complex_types {
-            Some(cts) => {
-                for ct in cts {
-                    println!("{:#?}", ct);
-                }
+    fn show_entity_container(maybe_entity_container: &Option<EntityContainer>) {
+        match maybe_entity_container {
+            Some(entity_container) => {
+                show_entity(
+                    &entity_container.entity_sets,
+                    "ENTITY CONTAINER: ENTITY SETS",
+                );
+
+                show_entity(
+                    &entity_container.association_sets,
+                    "ENTITY CONTAINER: ASSOCIATION SETS",
+                );
             }
-            None => println!("No complex types defined"),
+            None => println!("This schema does not have an EntityContainer"),
         }
     }
-
-    fn show_associations(associations: &Vec<Association>) {
-        print_banner("ASSOCIATIONS");
-
-        for assoc in associations {
-            println!("{:#?}", assoc);
-        }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Two entity types and an association
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // #[test]
-    // pub fn test_sap_basic() {
-    //     let edmx = Edmx::from_str(include_str!("../tests/two_entity_types.xml")).unwrap();
-    //     let schema = edmx.fetch_schema("GWSAMPLE_BASIC").unwrap();
-
-    //     show_metadata(schema.entity_sets().unwrap())
-    // }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Full metadata doc minus complex types
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // #[test]
-    // pub fn test_sap_no_complex_types() {
-    //     let edmx = Edmx::from_str(include_str!("../tests/no_complex_types.xml")).unwrap();
-    //     let schema = edmx.fetch_schema("GWSAMPLE_BASIC").unwrap();
-
-    //     show_metadata(schema.entity_sets().unwrap())
-    // }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Full metadata doc
@@ -84,8 +63,9 @@ mod tests {
         let edmx = Edmx::from_str(include_str!("../tests/sap_gwsample_basic_full.xml")).unwrap();
         let schema = edmx.fetch_schema("GWSAMPLE_BASIC").unwrap();
 
-        show_entity_types(&schema.entity_types);
-        show_complex_types(&schema.complex_types);
-        show_associations(&schema.associations);
+        show_entity(&schema.entity_types, "ENTITY TYPES");
+        show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
+        show_entity(&schema.associations, "ASSOCIATIONS");
+        show_entity_container(&schema.entity_container);
     }
 }
