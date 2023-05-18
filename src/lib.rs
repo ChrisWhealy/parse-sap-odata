@@ -4,7 +4,7 @@ pub mod sap_annotations;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // XML Defaults
-// TODO: Consider moving these into a separate module?
+// TODO: Consider moving these into an XML-specific module?
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn default_true() -> bool {
     true
