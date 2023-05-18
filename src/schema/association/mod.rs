@@ -8,8 +8,10 @@ use serde::{Deserialize, Serialize};
 pub struct End {
     pub role: Option<String>,
     pub entity_set: Option<String>,
+
     #[serde(rename = "Type")]
     pub entity_type: Option<String>,
+
     pub multiplicity: Option<String>,
 }
 

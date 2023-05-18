@@ -1,4 +1,7 @@
-use crate::property::{NavigationProperty, Property, PropertyRef};
+mod navigation_property;
+
+use crate::property::{Property, PropertyRef};
+use navigation_property::NavigationProperty;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
