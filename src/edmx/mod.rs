@@ -1,5 +1,6 @@
 pub mod data_services;
 
+use crate::{default_xml_namespace_edmx, default_xml_namespace_m, default_xml_namespace_sap};
 use data_services::DataServices;
 use serde::{Deserialize, Serialize};
 
@@ -21,6 +22,16 @@ pub enum EdmxVersion {
 #[serde(rename_all = "PascalCase")]
 pub struct Edmx {
     pub version: EdmxVersion,
+
+    #[serde(rename = "xmlns:edmx", default = "default_xml_namespace_edmx")]
+    pub namespace_edmx: String,
+
+    #[serde(rename = "xmlns:m", default = "default_xml_namespace_m")]
+    pub namespace_m: String,
+
+    #[serde(rename = "xmlns:sap", default = "default_xml_namespace_sap")]
+    pub namespace_sap: String,
+
     pub data_services: DataServices,
 }
 

@@ -4,8 +4,8 @@ pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
-use crate::default_xml_language;
 use crate::sap_annotations::default_sap_schema_version;
+use crate::{default_xml_language, default_xml_namespace};
 use association::Association;
 use atom_link::AtomLink;
 use complex_type::ComplexType;
@@ -15,11 +15,14 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Schema {
+    #[serde(rename = "xmlns", default = "default_xml_namespace")]
+    pub xml_namespace: String,
+
     #[serde(rename = "Namespace", default)]
     pub namespace: String,
 
     #[serde(rename = "xml:lang", default = "default_xml_language")]
-    pub lang: String,
+    pub xml_lang: String,
 
     #[serde(rename = "sap:schema_version", default = "default_sap_schema_version")]
     pub sap_schema_version: String,
