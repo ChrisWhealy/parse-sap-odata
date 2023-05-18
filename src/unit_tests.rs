@@ -33,8 +33,8 @@ mod tests {
         }
     }
 
-    fn show_complex_types(complex_types: Option<Vec<ComplexType>>) {
-        print_banner("COMPEX TYPES");
+    fn show_complex_types(complex_types: &Option<Vec<ComplexType>>) {
+        print_banner("COMPLEX TYPES");
 
         match complex_types {
             Some(cts) => {
@@ -85,7 +85,7 @@ mod tests {
         let schema = edmx.fetch_schema("GWSAMPLE_BASIC").unwrap();
 
         show_entity_types(&schema.entity_types);
-        show_complex_types(schema.complex_types.clone());
+        show_complex_types(&schema.complex_types);
         show_associations(&schema.associations);
     }
 }
