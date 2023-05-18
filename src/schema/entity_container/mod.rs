@@ -1,9 +1,10 @@
+pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
 use serde::{Deserialize, Serialize};
 
-use crate::schema::AssociationSet;
+use association_set::AssociationSet;
 
 use entity_set::EntitySet;
 use function_import::FunctionImport;

@@ -3,7 +3,7 @@ pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
-use association::{Association, AssociationSet};
+use association::Association;
 use complex_type::ComplexType;
 use entity_container::EntityContainer;
 use entity_type::EntityType;
