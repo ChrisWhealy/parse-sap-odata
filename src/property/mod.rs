@@ -1,6 +1,3 @@
-// mod property_type;
-
-// use property_type::PropertyType;
 use serde::{Deserialize, Serialize};
 
 fn default_true() -> bool {

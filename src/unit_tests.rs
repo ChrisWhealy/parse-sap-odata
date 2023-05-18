@@ -50,6 +50,11 @@ mod tests {
                     &entity_container.association_sets,
                     "ENTITY CONTAINER: ASSOCIATION SETS",
                 );
+
+                show_optional_entity(
+                    &entity_container.function_imports,
+                    "ENTITY CONTAINER: FUNCTION IMPORTS",
+                );
             }
             None => println!("This schema does not have an EntityContainer"),
         }

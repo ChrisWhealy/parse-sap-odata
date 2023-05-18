@@ -1,6 +1,12 @@
+pub mod entity_set;
+pub mod function_import;
+
 use serde::{Deserialize, Serialize};
 
-use crate::schema::{AssociationSet, EntitySet};
+use crate::schema::AssociationSet;
+
+use entity_set::EntitySet;
+use function_import::FunctionImport;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
@@ -12,4 +18,7 @@ pub struct EntityContainer {
 
     #[serde(rename = "AssociationSet", default)]
     pub association_sets: Vec<AssociationSet>,
+
+    #[serde(rename = "FunctionImport", default)]
+    pub function_imports: Option<Vec<FunctionImport>>,
 }

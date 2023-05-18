@@ -1,3 +1,6 @@
+mod referential_constraint;
+
+use referential_constraint::ReferentialConstraint;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -17,6 +20,8 @@ pub struct Association {
 
     #[serde(rename = "End")]
     pub ends: [End; 2],
+
+    pub referential_constraint: Option<ReferentialConstraint>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
