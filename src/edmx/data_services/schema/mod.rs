@@ -5,7 +5,7 @@ pub mod entity_container;
 pub mod entity_type;
 
 use crate::sap_annotations::default_sap_schema_version;
-use crate::{default_xml_language, default_xml_namespace};
+use crate::xml::{default_xml_language, default_xml_namespace};
 use association::Association;
 use atom_link::AtomLink;
 use complex_type::ComplexType;

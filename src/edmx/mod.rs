@@ -1,6 +1,6 @@
 pub mod data_services;
 
-use crate::{default_xml_namespace_edmx, default_xml_namespace_m, default_xml_namespace_sap};
+use crate::xml::{default_xml_namespace_edmx, default_xml_namespace_m, default_xml_namespace_sap};
 use data_services::DataServices;
 use serde::{Deserialize, Serialize};
 

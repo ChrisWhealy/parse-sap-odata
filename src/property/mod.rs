@@ -1,8 +1,8 @@
-use crate::default_true;
 use crate::sap_annotations::{
     default_sap_creatable, default_sap_filterable, default_sap_sortable, default_sap_unicode,
     default_sap_updatable,
 };
+use crate::xml::default_true;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]

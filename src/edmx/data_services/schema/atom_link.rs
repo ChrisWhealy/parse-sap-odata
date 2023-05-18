@@ -1,4 +1,4 @@
-use crate::default_xml_namespace_atom;
+use crate::xml::default_xml_namespace_atom;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
