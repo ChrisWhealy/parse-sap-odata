@@ -1,0 +1,91 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ERROR_LOG_SRV" xml:lang="en" sap:schema-version="1">
+      <EntityType Name="LogErrorContext" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="EntryNumber"/>
+          <PropertyRef Name="OperationId"/>
+          <PropertyRef Name="LineNo"/>
+        </Key>
+        <Property Name="EntryNumber" Type="Edm.Int32" Nullable="false" sap:label="Entry number within an operation"/>
+        <Property Name="OperationId" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Operation ID"/>
+        <Property Name="LineNo" Type="Edm.Int32" Nullable="false" sap:label="Line Number"/>
+        <Property Name="TagName" Type="Edm.String" Nullable="false" sap:label="Tag Name"/>
+        <Property Name="TagValue" Type="Edm.String" Nullable="false" sap:label="Tag Value"/>
+        <Property Name="TagLevel" Type="Edm.Int32" Nullable="false" sap:label="Level"/>
+        <Property Name="TagType" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Type"/>
+        <Property Name="LastLine" Type="Edm.Int32" sap:label="Last Line Number of a node (Type = NODE_ONLY)"/>
+      </EntityType>
+      <EntityType Name="LogHeader" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="OperationId"/>
+          <PropertyRef Name="EntryNumber"/>
+        </Key>
+        <Property Name="RemoteAddress" Type="Edm.String" MaxLength="45" sap:label="Remote Address"/>
+        <Property Name="TransactionID" Type="Edm.String" MaxLength="32" sap:label="Transaction ID"/>
+        <Property Name="ServiceName" Type="Edm.String" MaxLength="40" sap:label="Service Name"/>
+        <Property Name="Namespace" Type="Edm.String" MaxLength="10" sap:label="Service Namespace"/>
+        <Property Name="SourceLine" Type="Edm.Int32" sap:label="Source Line"/>
+        <Property Name="SourceInclude" Type="Edm.String" MaxLength="40" sap:label="Source Include"/>
+        <Property Name="SourceProgram" Type="Edm.String" MaxLength="40" sap:label="Source Program"/>
+        <Property Name="ErrorPackage" Type="Edm.String" MaxLength="30" sap:label="ABAP Package"/>
+        <Property Name="ErrorComponent" Type="Edm.String" MaxLength="24" sap:label="ABAP Component"/>
+        <Property Name="ErrorText" Type="Edm.String" MaxLength="128" sap:label="Error Text"/>
+        <Property Name="Location" Type="Edm.String" MaxLength="1" sap:label="Error Location"/>
+        <Property Name="T100Msgv4" Type="Edm.String" MaxLength="50" sap:label="Message Variable"/>
+        <Property Name="T100Msgv3" Type="Edm.String" MaxLength="50" sap:label="Message Variable"/>
+        <Property Name="T100Msgv2" Type="Edm.String" MaxLength="50" sap:label="Message Variable"/>
+        <Property Name="RequestUri" Type="Edm.String" MaxLength="255" sap:label="Request URI"/>
+        <Property Name="Balogno" Type="Edm.String" MaxLength="20" sap:label="Log number"/>
+        <Property Name="LocalDate" Type="Edm.DateTime" Precision="0" sap:label="Local Date"/>
+        <Property Name="T100MessageVariable1" Type="Edm.String" MaxLength="50" sap:label="Message Variable"/>
+        <Property Name="LocalTime" Type="Edm.Time" Precision="8" sap:label="Local Time"/>
+        <Property Name="FirstDate" Type="Edm.DateTime" Precision="0" sap:label="Local Date of First Error"/>
+        <Property Name="FirstTime" Type="Edm.Time" Precision="8" sap:label="Local Time of First Error"/>
+        <Property Name="T100MessageNumber" Type="Edm.String" MaxLength="3" sap:label="Message number"/>
+        <Property Name="IcfNode" Type="Edm.String" MaxLength="8" sap:label="ICF Node"/>
+        <Property Name="RequestID" Type="Edm.String" MaxLength="100" sap:label="Request ID"/>
+        <Property Name="LogLevel" Type="Edm.String" MaxLength="1" sap:label="Error Log Level"/>
+        <Property Name="T100ErrorId" Type="Edm.String" MaxLength="20" sap:label="Message Class"/>
+        <Property Name="OperationId" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Operation ID"/>
+        <Property Name="EntryNumber" Type="Edm.Int32" Nullable="false" sap:label="Entry number within an operation"/>
+        <Property Name="Username" Type="Edm.String" MaxLength="12" sap:label="User Name"/>
+        <Property Name="ExpiryDate" Type="Edm.DateTime" Precision="0" sap:label="Expiry Date"/>
+        <Property Name="Timestamp" Type="Edm.DateTime" Precision="7" sap:label="Time Stamp"/>
+        <Property Name="ErrorCount" Type="Edm.Int32" sap:label="Error Count"/>
+        <Property Name="FirstTimestamp" Type="Edm.DateTime" Precision="7" sap:label="Time Stamp"/>
+        <Property Name="GwHubServer" Type="Edm.String" MaxLength="32" sap:label="SAP Gateway Hub Server"/>
+        <NavigationProperty Name="ToErrorContext" Relationship="ERROR_LOG_SRV.LogHeaderToErrorContext" FromRole="FromRole_LogHeaderToErrorContext" ToRole="ToRole_LogHeaderToErrorContext"/>
+      </EntityType>
+      <Association Name="LogHeaderToErrorContext" sap:content-version="1">
+        <End Type="ERROR_LOG_SRV.LogHeader" Multiplicity="1" Role="FromRole_LogHeaderToErrorContext"/>
+        <End Type="ERROR_LOG_SRV.LogErrorContext" Multiplicity="*" Role="ToRole_LogHeaderToErrorContext"/>
+        <ReferentialConstraint>
+          <Principal Role="FromRole_LogHeaderToErrorContext">
+            <PropertyRef Name="EntryNumber"/>
+            <PropertyRef Name="OperationId"/>
+          </Principal>
+          <Dependent Role="ToRole_LogHeaderToErrorContext">
+            <PropertyRef Name="EntryNumber"/>
+            <PropertyRef Name="OperationId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <EntityContainer Name="ERROR_LOG_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+        <EntitySet Name="LogErrorContextSet" EntityType="ERROR_LOG_SRV.LogErrorContext" sap:content-version="1"/>
+        <EntitySet Name="LogHeaderSet" EntityType="ERROR_LOG_SRV.LogHeader" sap:requires-filter="true" sap:content-version="1"/>
+        <AssociationSet Name="LogHeaderToErrorContextSet" Association="ERROR_LOG_SRV.LogHeaderToErrorContext" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+          <End EntitySet="LogHeaderSet" Role="FromRole_LogHeaderToErrorContext"/>
+          <End EntitySet="LogErrorContextSet" Role="ToRole_LogHeaderToErrorContext"/>
+        </AssociationSet>
+        <FunctionImport Name="GetLogsForTransactionID" ReturnType="Collection(ERROR_LOG_SRV.LogHeader)" EntitySet="LogHeaderSet" m:HttpMethod="GET" sap:action-for="ERROR_LOG_SRV.LogHeader">
+          <Parameter Name="TransactionID" Type="Edm.String" Mode="In" MaxLength="32"/>
+        </FunctionImport>
+      </EntityContainer>
+      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/ERROR_LOG_SRV/$metadata"/>
+      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/ERROR_LOG_SRV/$metadata"/>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

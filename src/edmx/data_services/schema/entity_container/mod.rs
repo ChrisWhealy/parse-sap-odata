@@ -2,9 +2,9 @@ pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
-use serde::{Deserialize, Serialize};
-
+use crate::xml::default_false;
 use association_set::AssociationSet;
+use serde::{Deserialize, Serialize};
 
 use entity_set::EntitySet;
 use function_import::FunctionImport;
@@ -21,6 +21,12 @@ use function_import::FunctionImport;
 #[serde(rename_all = "PascalCase")]
 pub struct EntityContainer {
     pub name: String,
+
+    #[serde(rename = "m:IsDefaultEntityContainer", default = "default_false")]
+    pub m_is_default_entity_container: bool,
+
+    #[serde(rename = "sap:supported-formats")]
+    pub sap_supported_formats: Option<String>,
 
     #[serde(rename = "EntitySet", default)]
     pub entity_sets: Vec<EntitySet>,
