@@ -1,9 +1,16 @@
 mod navigation_property;
 
 use crate::property::{Property, PropertyRef};
+use crate::sap_annotations::default_sap_content_version;
 use navigation_property::NavigationProperty;
 use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Key
+//
+// Child Nodes:
+//   1:n PropertyRef
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Key {
@@ -11,11 +18,28 @@ pub struct Key {
     pub property_refs: Vec<PropertyRef>,
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EntityType
+//
+// Child Nodes:
+//   1:1 Key
+//   1:n Property
+//   0:n NavigationProperty
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntityType {
     pub name: String,
     pub key: Key,
+
+    #[serde(rename = "sap:label")]
+    pub sap_label: Option<String>,
+
+    #[serde(
+        rename = "sap:content-version",
+        default = "default_sap_content_version"
+    )]
+    pub sap_content_version: String,
 
     #[serde(rename = "Property", default)]
     pub properties: Vec<Property>,

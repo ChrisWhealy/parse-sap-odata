@@ -2,6 +2,8 @@ mod tests {
     use crate::edmx::data_services::schema::entity_container::EntityContainer;
     use crate::edmx::Edmx;
     use std::fmt::Debug;
+    use std::fs::File;
+    use std::io::{BufReader, Read};
     use std::str::FromStr;
 
     const SEPARATOR: &str =
@@ -60,18 +62,34 @@ mod tests {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Full metadata doc
+    // Parse a given metadata document
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    fn parse_sap_metadata(metadata_file_name: &str, service_name: &str) {
+        let mut xml_buffer: Vec<u8> = Vec::new();
+        let xml_path = format!("./tests/{}", metadata_file_name);
+        let f_xml = File::open(&xml_path).expect(&format!("File {} not found", xml_path));
+        let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
+
+        if let Ok(xml) = String::from_utf8(xml_buffer) {
+            let edmx = Edmx::from_str(&xml).unwrap();
+            let schema = edmx.data_services.fetch_schema(service_name).unwrap();
+
+            show_entity(&schema.entity_types, "ENTITY TYPES");
+            show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
+            show_entity(&schema.associations, "ASSOCIATIONS");
+            show_entity_container(&schema.entity_container);
+            show_entity(&schema.atom_links, "ATOM LINKS");
+        } else {
+            println!("ERROR: XML file is not in UTF8 format!")
+        }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Parse a variety of OData metadata documents
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
-    pub fn test_sap_full() {
-        let xml = include_str!("../tests/sap_gwsample_basic.xml");
-        let edmx = Edmx::from_str(xml).unwrap();
-        let schema = edmx.data_services.fetch_schema("GWSAMPLE_BASIC").unwrap();
-
-        show_entity(&schema.entity_types, "ENTITY TYPES");
-        show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
-        show_entity(&schema.associations, "ASSOCIATIONS");
-        show_entity_container(&schema.entity_container);
-        show_entity(&schema.atom_links, "ATOM LINKS");
+    pub fn test_parser() {
+        parse_sap_metadata("gwsample_basic.xml", "GWSAMPLE_BASIC");
+        // parse_sap_metadata("sepmra_gr_post.xml", "SEPMRA_GR_POST");
     }
 }

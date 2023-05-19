@@ -4,20 +4,26 @@ use crate::xml::{default_xml_namespace_edmx, default_xml_namespace_m, default_xm
 use data_services::DataServices;
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Serialize, Deserialize)]
+pub enum EdmxVersion {
+    #[serde(rename = "1.0")]
+    V1_0,
+
+    #[serde(rename = "2.0")]
+    V2_0,
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Entity Data Model
+//
+// Child Nodes:
+//   1:1 edmx:DataServices
 //
 // WARNING: quick-xml strips the namespace from XML tag names, but not attribute names!
 //
 // Consequently, tag names such as "edmx:DataServices" and "atom:link" will appear simply as "DataServices" and "link"
 // etc, but attribute names such as "sap:schema-version" will appear without modification
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#[derive(Debug, Serialize, Deserialize)]
-pub enum EdmxVersion {
-    #[serde(rename = "1.0")]
-    V1_0,
-}
-
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Edmx {

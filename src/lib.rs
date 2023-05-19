@@ -1,3 +1,4 @@
+pub mod atom;
 pub mod edmx;
 pub mod property;
 pub mod sap_annotations;

@@ -23,6 +23,9 @@ pub fn default_sap_filterable() -> bool {
 pub fn default_sap_pageable() -> bool {
     true
 }
+pub fn default_sap_searchable() -> bool {
+    true
+}
 pub fn default_sap_sortable() -> bool {
     true
 }

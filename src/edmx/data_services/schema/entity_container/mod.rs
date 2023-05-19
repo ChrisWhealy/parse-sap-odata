@@ -9,6 +9,14 @@ use association_set::AssociationSet;
 use entity_set::EntitySet;
 use function_import::FunctionImport;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EntityContainer
+//
+// Child Nodes:
+//   1:n EntitySet
+//   1:n AssociationSet
+//   0:n FunctionImport
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntityContainer {

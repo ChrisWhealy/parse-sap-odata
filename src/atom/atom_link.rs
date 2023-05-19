@@ -8,4 +8,9 @@ pub struct AtomLink {
 
     pub rel: String,
     pub href: String,
+
+    #[serde(rename = "type")]
+    pub mime_type: Option<String>,
+
+    pub title: Option<String>,
 }

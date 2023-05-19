@@ -15,6 +15,13 @@ pub struct End {
     pub multiplicity: Option<String>,
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Association
+//
+// Child Nodes:
+//   2:2 End
+//   0:n ReferentialConstraint
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Association {

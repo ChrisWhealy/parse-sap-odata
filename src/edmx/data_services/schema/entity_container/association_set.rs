@@ -2,6 +2,12 @@ use crate::edmx::data_services::schema::association::End;
 use crate::sap_annotations::{default_sap_creatable, default_sap_deletable, default_sap_updatable};
 use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// AssociationSet
+//
+// Child Nodes:
+//   2:2 End
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct AssociationSet {

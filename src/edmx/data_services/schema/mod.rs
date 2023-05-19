@@ -1,18 +1,26 @@
 pub mod association;
-pub mod atom_link;
 pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
+use crate::atom::atom_link::AtomLink;
 use crate::sap_annotations::default_sap_schema_version;
 use crate::xml::{default_xml_language, default_xml_namespace};
 use association::Association;
-use atom_link::AtomLink;
 use complex_type::ComplexType;
 use entity_container::EntityContainer;
 use entity_type::EntityType;
 use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Schema
+//
+// Child Nodes:
+//   1:n EntityType
+//   0:n Association
+//   0:n ComplexType
+//   1:1 EntityContainer
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Schema {
     #[serde(rename = "xmlns", default = "default_xml_namespace")]
