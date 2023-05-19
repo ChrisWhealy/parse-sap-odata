@@ -1,0 +1,200 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+  <edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="https://sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value">
+    <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="SGBT_NTE_CDS_API_D_SRV" xml:lang="en" sap:schema-version="1">
+      <EntityType Name="C_Sgbt_Nte_Cds_ApitpType" sap:label="Notes for Application Object - Draft" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="NoteID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="Activation_ac" Type="Edm.Boolean" sap:label="Dyn. Action Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="Edit_ac" Type="Edm.Boolean" sap:label="Dyn. Action Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="Preparation_ac" Type="Edm.Boolean" sap:label="Dyn. Action Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="Validation_ac" Type="Edm.Boolean" sap:label="Dyn. Action Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="NoteID" Type="Edm.Guid" Nullable="false" sap:label="Note ID"/>
+        <Property Name="ObjectNodeType" Type="Edm.String" MaxLength="30" sap:label="SAP Obj Node Type" sap:quickinfo="SAP Object Node Type"/>
+        <Property Name="ObjectID" Type="Edm.String" MaxLength="90" sap:display-format="UpperCase" sap:label="Object ID" sap:quickinfo="Application Object ID"/>
+        <Property Name="NoteType" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Name" sap:quickinfo="Name of Note Type"/>
+        <Property Name="Language" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Lang." sap:quickinfo="Language"/>
+        <Property Name="Title" Type="Edm.String" MaxLength="255" sap:label="Title"/>
+        <Property Name="MimeType" Type="Edm.String" MaxLength="50" sap:label="MIME Type"/>
+        <Property Name="Length" Type="Edm.Int32" sap:label="Length" sap:quickinfo="Length of Note"/>
+        <Property Name="Creator" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By"/>
+        <Property Name="Created" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created At"/>
+        <Property Name="LastChanger" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Last Changed By"/>
+        <Property Name="LastChanged" Type="Edm.DateTimeOffset" Precision="7" sap:label="Last Changed at" sap:quickinfo="Last Changed At"/>
+        <Property Name="Content" Type="Edm.String" sap:label="Content of note"/>
+        <Property Name="ActiveUUID" Type="Edm.Guid" sap:label="Key"/>
+        <Property Name="DraftEntityCreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Created On"/>
+        <Property Name="DraftEntityLastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Last Changed On"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Has active" sap:sortable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Has Draft" sap:sortable="false"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" sap:display-format="UpperCase" sap:label="Is active" sap:sortable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="SGBT_NTE_CDS_API_D_SRV.assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0" FromRole="FromRole_assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0" ToRole="ToRole_assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0"/>
+        <NavigationProperty Name="SiblingEntity" Relationship="SGBT_NTE_CDS_API_D_SRV.assoc_E3DD32D718554FDE7C428ED9F59B69E7" FromRole="FromRole_assoc_E3DD32D718554FDE7C428ED9F59B69E7" ToRole="ToRole_assoc_E3DD32D718554FDE7C428ED9F59B69E7"/>
+        <NavigationProperty Name="toLanguageDef" Relationship="SGBT_NTE_CDS_API_D_SRV.assoc_89DF625132AFD289BE04F600249B80FB" FromRole="FromRole_assoc_89DF625132AFD289BE04F600249B80FB" ToRole="ToRole_assoc_89DF625132AFD289BE04F600249B80FB"/>
+        <NavigationProperty Name="toNoteTypeDef" Relationship="SGBT_NTE_CDS_API_D_SRV.assoc_E99AC562D70A92F8E230DEEB9DB85B08" FromRole="FromRole_assoc_E99AC562D70A92F8E230DEEB9DB85B08" ToRole="ToRole_assoc_E99AC562D70A92F8E230DEEB9DB85B08"/>
+      </EntityType>
+      <EntityType Name="I_DraftAdministrativeDataType" sap:label="Draft Administrative Data" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false" sap:label="Draft (Technical ID)"/>
+        <Property Name="DraftEntityType" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Draft Entity ID"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Created On"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:text="CreatedByUserDescription" sap:label="Draft Created By"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Last Changed On"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:text="LastChangedByUserDescription" sap:label="Draft Last Changed By"/>
+        <Property Name="DraftAccessType" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Draft Access Type"/>
+        <Property Name="ProcessingStartDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft In Process Since"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:text="InProcessByUserDescription" sap:label="Draft In Process By"/>
+        <Property Name="DraftIsKeptByUser" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Draft Is Kept By User"/>
+        <Property Name="EnqueueStartDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Locked Since"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Draft Created By Me"/>
+        <Property Name="DraftIsLastChangedByMe" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Draft Last Changed By Me"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Draft In Process By Me"/>
+        <Property Name="CreatedByUserDescription" Type="Edm.String" MaxLength="80" sap:label="Draft Created By (Description)"/>
+        <Property Name="LastChangedByUserDescription" Type="Edm.String" MaxLength="80" sap:label="Draft Last Changed By (Description)"/>
+        <Property Name="InProcessByUserDescription" Type="Edm.String" MaxLength="80" sap:label="Draft In Process By (Description)"/>
+      </EntityType>
+      <EntityType Name="Sgbt_Nte_Cds_LanguType" sap:label="CDS View for Available Languages in System" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="LanguageISOCode"/>
+        </Key>
+        <Property Name="LanguageISOCode" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:label="Lang. (ISO 639)" sap:quickinfo="2-Character SAP Language Code"/>
+        <Property Name="LanguageCode" Type="Edm.String" MaxLength="2" sap:label="Language Key"/>
+        <Property Name="LanguageName" Type="Edm.String" MaxLength="16" sap:label="Name" sap:quickinfo="Name of Language"/>
+      </EntityType>
+      <EntityType Name="Sgbt_Nte_Cds_NtypeType" sap:label="CDS View for Note Type for Notes on Application Object" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="Name"/>
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="20" sap:display-format="UpperCase" sap:label="Name" sap:quickinfo="Name of Note Type"/>
+        <Property Name="LanguageDependent" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Language-Dependent" sap:quickinfo="Language-Dependence"/>
+        <Property Name="MaximalLength" Type="Edm.Int32" sap:label="Maximum Length"/>
+        <Property Name="Multiple" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Multiple Notes" sap:quickinfo="Support Multiple Notes"/>
+        <Property Name="NoSubject" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="No subject" sap:quickinfo="Hide Subject Field"/>
+        <Property Name="LastChanger" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Last Changed By"/>
+        <Property Name="LastChanged" Type="Edm.DateTimeOffset" Precision="7" sap:label="Last Changed at" sap:quickinfo="Last Changed At"/>
+        <Property Name="Authority" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Auth." sap:quickinfo="Authorization for Note Type"/>
+        <Property Name="Description" Type="Edm.String" MaxLength="255" sap:label="Description" sap:quickinfo="Description of Note Type"/>
+        <NavigationProperty Name="toNoteTypeText" Relationship="SGBT_NTE_CDS_API_D_SRV.assoc_B78982240922FCDA2F51C5E93829954E" FromRole="FromRole_assoc_B78982240922FCDA2F51C5E93829954E" ToRole="ToRole_assoc_B78982240922FCDA2F51C5E93829954E"/>
+      </EntityType>
+      <EntityType Name="Sgbt_Nte_Cds_NtypetType" sap:label="CDS View for Text Table for Note Types" sap:content-version="1">
+        <Key>
+          <PropertyRef Name="Name"/>
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="20" sap:display-format="UpperCase" sap:label="Name" sap:quickinfo="Name of Note Type"/>
+        <Property Name="Language" Type="Edm.String" MaxLength="2" sap:label="Language Key"/>
+        <Property Name="Description" Type="Edm.String" MaxLength="255" sap:label="Description" sap:quickinfo="Description of Note Type"/>
+      </EntityType>
+      <ComplexType Name="ValidationFunctionResult">
+        <Property Name="IsValid" Type="Edm.Boolean" sap:label="Is valid"/>
+      </ComplexType>
+      <Association Name="assoc_B78982240922FCDA2F51C5E93829954E" sap:content-version="1">
+        <End Type="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_NtypeType" Multiplicity="1" Role="FromRole_assoc_B78982240922FCDA2F51C5E93829954E"/>
+        <End Type="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_NtypetType" Multiplicity="1" Role="ToRole_assoc_B78982240922FCDA2F51C5E93829954E"/>
+      </Association>
+      <Association Name="assoc_E3DD32D718554FDE7C428ED9F59B69E7" sap:content-version="1">
+        <End Type="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" Multiplicity="1" Role="FromRole_assoc_E3DD32D718554FDE7C428ED9F59B69E7"/>
+        <End Type="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" Multiplicity="0..1" Role="ToRole_assoc_E3DD32D718554FDE7C428ED9F59B69E7"/>
+      </Association>
+      <Association Name="assoc_89DF625132AFD289BE04F600249B80FB" sap:content-version="1">
+        <End Type="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" Multiplicity="1" Role="FromRole_assoc_89DF625132AFD289BE04F600249B80FB"/>
+        <End Type="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_LanguType" Multiplicity="0..1" Role="ToRole_assoc_89DF625132AFD289BE04F600249B80FB"/>
+      </Association>
+      <Association Name="assoc_E99AC562D70A92F8E230DEEB9DB85B08" sap:content-version="1">
+        <End Type="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" Multiplicity="1" Role="FromRole_assoc_E99AC562D70A92F8E230DEEB9DB85B08"/>
+        <End Type="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_NtypeType" Multiplicity="0..1" Role="ToRole_assoc_E99AC562D70A92F8E230DEEB9DB85B08"/>
+      </Association>
+      <Association Name="assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0" sap:content-version="1">
+        <End Type="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" Multiplicity="1" Role="FromRole_assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0"/>
+        <End Type="SGBT_NTE_CDS_API_D_SRV.I_DraftAdministrativeDataType" Multiplicity="0..1" Role="ToRole_assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0"/>
+      </Association>
+      <EntityContainer Name="SGBT_NTE_CDS_API_D_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+        <EntitySet Name="C_Sgbt_Nte_Cds_Apitp" EntityType="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" sap:content-version="1"/>
+        <EntitySet Name="I_DraftAdministrativeData" EntityType="SGBT_NTE_CDS_API_D_SRV.I_DraftAdministrativeDataType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+        <EntitySet Name="Sgbt_Nte_Cds_Langu" EntityType="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_LanguType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+        <EntitySet Name="Sgbt_Nte_Cds_Ntype" EntityType="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_NtypeType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+        <EntitySet Name="Sgbt_Nte_Cds_Ntypet" EntityType="SGBT_NTE_CDS_API_D_SRV.Sgbt_Nte_Cds_NtypetType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+        <AssociationSet Name="assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0" Association="SGBT_NTE_CDS_API_D_SRV.assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+          <End EntitySet="C_Sgbt_Nte_Cds_Apitp" Role="FromRole_assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0"/>
+          <End EntitySet="I_DraftAdministrativeData" Role="ToRole_assoc_D2548FA5CF7F8A7DB1257B5A6D522FC0"/>
+        </AssociationSet>
+        <AssociationSet Name="assoc_89DF625132AFD289BE04F600249B80FB" Association="SGBT_NTE_CDS_API_D_SRV.assoc_89DF625132AFD289BE04F600249B80FB" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+          <End EntitySet="C_Sgbt_Nte_Cds_Apitp" Role="FromRole_assoc_89DF625132AFD289BE04F600249B80FB"/>
+          <End EntitySet="Sgbt_Nte_Cds_Langu" Role="ToRole_assoc_89DF625132AFD289BE04F600249B80FB"/>
+        </AssociationSet>
+        <AssociationSet Name="assoc_E99AC562D70A92F8E230DEEB9DB85B08" Association="SGBT_NTE_CDS_API_D_SRV.assoc_E99AC562D70A92F8E230DEEB9DB85B08" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+          <End EntitySet="C_Sgbt_Nte_Cds_Apitp" Role="FromRole_assoc_E99AC562D70A92F8E230DEEB9DB85B08"/>
+          <End EntitySet="Sgbt_Nte_Cds_Ntype" Role="ToRole_assoc_E99AC562D70A92F8E230DEEB9DB85B08"/>
+        </AssociationSet>
+        <AssociationSet Name="assoc_B78982240922FCDA2F51C5E93829954E" Association="SGBT_NTE_CDS_API_D_SRV.assoc_B78982240922FCDA2F51C5E93829954E" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+          <End EntitySet="Sgbt_Nte_Cds_Ntype" Role="FromRole_assoc_B78982240922FCDA2F51C5E93829954E"/>
+          <End EntitySet="Sgbt_Nte_Cds_Ntypet" Role="ToRole_assoc_B78982240922FCDA2F51C5E93829954E"/>
+        </AssociationSet>
+        <AssociationSet Name="assoc_E3DD32D718554FDE7C428ED9F59B69E7" Association="SGBT_NTE_CDS_API_D_SRV.assoc_E3DD32D718554FDE7C428ED9F59B69E7" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+          <End EntitySet="C_Sgbt_Nte_Cds_Apitp" Role="FromRole_assoc_E3DD32D718554FDE7C428ED9F59B69E7"/>
+          <End EntitySet="C_Sgbt_Nte_Cds_Apitp" Role="ToRole_assoc_E3DD32D718554FDE7C428ED9F59B69E7"/>
+        </AssociationSet>
+        <FunctionImport Name="C_Sgbt_Nte_Cds_ApitpActivation" ReturnType="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" EntitySet="C_Sgbt_Nte_Cds_Apitp" m:HttpMethod="POST" sap:action-for="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" sap:applicable-path="Activation_ac">
+          <Parameter Name="NoteID" Type="Edm.Guid" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="C_Sgbt_Nte_Cds_ApitpCreatedraft" ReturnType="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" EntitySet="C_Sgbt_Nte_Cds_Apitp" m:HttpMethod="POST" sap:action-for="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType">
+          <Parameter Name="ObjectNodeType" Type="Edm.String" Mode="In" MaxLength="30"/>
+          <Parameter Name="ObjectID" Type="Edm.String" Mode="In" MaxLength="90"/>
+          <Parameter Name="NoteType" Type="Edm.String" Mode="In" MaxLength="20"/>
+          <Parameter Name="Language" Type="Edm.String" Mode="In" MaxLength="2"/>
+        </FunctionImport>
+        <FunctionImport Name="C_Sgbt_Nte_Cds_ApitpEdit" ReturnType="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" EntitySet="C_Sgbt_Nte_Cds_Apitp" m:HttpMethod="POST" sap:action-for="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" sap:applicable-path="Edit_ac">
+          <Parameter Name="NoteID" Type="Edm.Guid" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In"/>
+          <Parameter Name="PreserveChanges" Type="Edm.Boolean" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="C_Sgbt_Nte_Cds_ApitpPreparation" ReturnType="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" EntitySet="C_Sgbt_Nte_Cds_Apitp" m:HttpMethod="POST" sap:action-for="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" sap:applicable-path="Preparation_ac">
+          <Parameter Name="NoteID" Type="Edm.Guid" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In"/>
+          <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="C_Sgbt_Nte_Cds_ApitpValidation" ReturnType="SGBT_NTE_CDS_API_D_SRV.ValidationFunctionResult" m:HttpMethod="GET" sap:action-for="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType" sap:applicable-path="Validation_ac">
+          <Parameter Name="NoteID" Type="Edm.Guid" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In"/>
+          <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+      </EntityContainer>
+      <Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType/ObjectNodeType">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType/ObjectID">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType/NoteType">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="SGBT_NTE_CDS_API_D_SRV.SGBT_NTE_CDS_API_D_SRV_Entities/C_Sgbt_Nte_Cds_Apitp">
+        <Annotation Term="Common.DraftRoot">
+          <Record>
+            <PropertyValue Property="ActivationAction" String="SGBT_NTE_CDS_API_D_SRV.SGBT_NTE_CDS_API_D_SRV_Entities/C_Sgbt_Nte_Cds_ApitpActivation"/>
+            <PropertyValue Property="EditAction" String="SGBT_NTE_CDS_API_D_SRV.SGBT_NTE_CDS_API_D_SRV_Entities/C_Sgbt_Nte_Cds_ApitpEdit"/>
+            <PropertyValue Property="PreparationAction" String="SGBT_NTE_CDS_API_D_SRV.SGBT_NTE_CDS_API_D_SRV_Entities/C_Sgbt_Nte_Cds_ApitpPreparation"/>
+            <PropertyValue Property="ValidationFunction" String="SGBT_NTE_CDS_API_D_SRV.SGBT_NTE_CDS_API_D_SRV_Entities/C_Sgbt_Nte_Cds_ApitpValidation"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="SGBT_NTE_CDS_API_D_SRV.C_Sgbt_Nte_Cds_ApitpType">
+        <Annotation Term="Common.SemanticKey">
+          <Collection>
+            <PropertyPath>NoteID</PropertyPath>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="https://sapes5.sapdevcenter.com/sap/opu/odata/sap/SGBT_NTE_CDS_API_D_SRV/$metadata"/>
+      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="https://sapes5.sapdevcenter.com/sap/opu/odata/sap/SGBT_NTE_CDS_API_D_SRV/$metadata"/>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

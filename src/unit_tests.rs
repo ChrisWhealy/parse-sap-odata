@@ -35,7 +35,10 @@ mod tests {
     fn show_optional_entity<T: Debug>(maybe_entity: &Option<Vec<T>>, entity_name: &str) {
         match maybe_entity {
             Some(entity) => show_entity(entity, entity_name),
-            None => println!("No {} defined", entity_name.to_lowercase()),
+            None => {
+                print_banner(entity_name);
+                println!("No {} defined", entity_name.to_lowercase())
+            }
         }
     }
 
@@ -70,6 +73,8 @@ mod tests {
         let f_xml = File::open(&xml_path).expect(&format!("File {} not found", xml_path));
         let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
 
+        print_banner(&format!("Parsing file {}", xml_path));
+
         if let Ok(xml) = String::from_utf8(xml_buffer) {
             let edmx = Edmx::from_str(&xml).unwrap();
             let schema = edmx.data_services.fetch_schema(namespace).unwrap();
@@ -90,10 +95,25 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn test_parser() {
+        // parse_sap_metadata("epm_ref_apps_shop_srv.xml", "EPM_REF_APPS_SHOP");
+        // parse_sap_metadata("epm_ref_apps_prod_man_srv.xml", "EPM_REF_APPS_PROD_MAN_SRV");
         // parse_sap_metadata("gwsample_basic.xml", "GWSAMPLE_BASIC");
         // parse_sap_metadata("sepmra_gr_post.xml", "SEPMRA_GR_POST");
+        // parse_sap_metadata("sepmra_ovw.xml", "SEPMRA_OVW");
+        // parse_sap_metadata("sepmra_po_man.xml", "SEPMRA_PO_MAN");
         // parse_sap_metadata("sepmra_prod_man.xml", "SEPMRA_PROD_MAN");
-        // parse_sap_metadata("epm_ref_apps_shop_srv.xml", "EPM_REF_APPS_SHOP");
-        parse_sap_metadata("zdevelopercenter.xml", "ZDEVELOPERCENTER");
+        // parse_sap_metadata("sepmra_shop.xml", "SEPMRA_SHOP");
+        // parse_sap_metadata("sgbt_nte_cds_api_d_srv.xml", "SGBT_NTE_CDS_API_D_SRV");
+        // parse_sap_metadata("sgbt_nte_cds_api_srv.xml", "SGBT_NTE_CDS_API_SRV");
+        // parse_sap_metadata("z_test_cds_with_param_srv.xml", "Z_TEST_CDS_WITH_PARAM_SRV");
+        // parse_sap_metadata("zagencycds_srv.xml", "ZAGENCYCDS_SRV");
+        // parse_sap_metadata("zdevelopercenter.xml", "ZDEVELOPERCENTER");
+        // parse_sap_metadata(
+        //     "zepm_ref_apps_po_apv_srv_srv.xml",
+        //     "EPM_REF_APPS_PO_APV_SRV",
+        // );
+        // parse_sap_metadata("ze2e100_sol_2_srv.xml", "ZE2E100_SOL_2_SRV");
+        // parse_sap_metadata("zepm_ref_apps_po_apv_srv.xml", "EPM_REF_APPS_PO_APV_SRV");
+        parse_sap_metadata("zrfc1_srv.xml", "ZRFC1_SRV");
     }
 }
