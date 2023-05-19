@@ -33,5 +33,5 @@ pub struct FunctionImport {
     pub sap_action_for: Option<String>,
 
     #[serde(rename = "Parameter")]
-    pub parameters: Vec<Parameter>,
+    pub parameters: Option<Vec<Parameter>>,
 }
