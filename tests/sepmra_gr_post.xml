@@ -41,7 +41,7 @@ This XML file does not appear to have any style information associated with it. 
         <Property Name="DeliveryDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Delivery Date" sap:quickinfo="EPM: Schedule Line Delivery Date"/>
         <Property Name="Quantity" Type="Edm.Int32" sap:unit="QuantityUnit" sap:label="Quantity" sap:quickinfo="Quantity, rounded to the next whole number"/>
         <Property Name="QuantityUnit" Type="Edm.String" MaxLength="3" sap:text="QuantityUnitName" sap:label="Quantity Unit" sap:creatable="false" sap:updatable="false" sap:semantics="unit-of-measure"/>
-        <Property Name="QuantityUnitName" Type="Edm.String" MaxLength="10" sap:label="Quantity Unit" sap:quickinfo="EPM Ref App "Post GR": Quantity Unit Name" sap:creatable="false" sap:updatable="false"/>
+        <Property Name="QuantityUnitName" Type="Edm.String" MaxLength="10" sap:label="Quantity Unit" sap:quickinfo="EPM Ref App 'Post GR': Quantity Unit Name" sap:creatable="false" sap:updatable="false"/>
         <Property Name="GrossAmountInTransacCurrency" Type="Edm.Decimal" Precision="16" Scale="3" sap:unit="TransactionCurrency" sap:label="Gross Amount" sap:quickinfo="EPM: Total Gross Amount" sap:creatable="false" sap:updatable="false"/>
         <Property Name="TransactionCurrency" Type="Edm.String" MaxLength="5" sap:label="Currency" sap:creatable="false" sap:updatable="false" sap:semantics="currency-code"/>
       </EntityType>

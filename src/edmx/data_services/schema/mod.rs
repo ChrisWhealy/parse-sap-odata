@@ -4,6 +4,7 @@ pub mod entity_container;
 pub mod entity_type;
 
 use crate::atom::atom_link::AtomLink;
+use crate::oasis::annotations::Annotations;
 use crate::sap_annotations::default_sap_schema_version;
 use crate::xml::{default_xml_language, default_xml_namespace};
 use association::Association;
@@ -46,6 +47,9 @@ pub struct Schema {
 
     #[serde(rename = "EntityContainer", default)]
     pub entity_container: Option<EntityContainer>,
+
+    #[serde(rename = "Annotations", default)]
+    pub annotation_list: Option<Vec<Annotations>>,
 
     // Appears in the XML as "atom:link"
     #[serde(rename = "link")]

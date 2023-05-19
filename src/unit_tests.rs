@@ -78,6 +78,7 @@ mod tests {
             show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
             show_entity(&schema.associations, "ASSOCIATIONS");
             show_entity_container(&schema.entity_container);
+            show_optional_entity(&schema.annotation_list, "ANNOTATIONS");
             show_entity(&schema.atom_links, "ATOM LINKS");
         } else {
             println!("ERROR: XML file is not in UTF8 format!")
@@ -89,7 +90,7 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn test_parser() {
-        parse_sap_metadata("gwsample_basic.xml", "GWSAMPLE_BASIC");
-        // parse_sap_metadata("sepmra_gr_post.xml", "SEPMRA_GR_POST");
+        // parse_sap_metadata("gwsample_basic.xml", "GWSAMPLE_BASIC");
+        parse_sap_metadata("sepmra_gr_post.xml", "SEPMRA_GR_POST");
     }
 }

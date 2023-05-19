@@ -22,6 +22,9 @@ pub fn default_xml_namespace_edmx() -> String {
 pub fn default_xml_namespace_m() -> String {
     "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata".to_string()
 }
+pub fn default_xml_namespace_oasis() -> String {
+    "http://docs.oasis-open.org/odata/ns/edm".to_string()
+}
 pub fn default_xml_namespace_sap() -> String {
     "http://www.sap.com/Protocols/SAPData".to_string()
 }
