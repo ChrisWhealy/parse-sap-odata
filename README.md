@@ -1,6 +1,6 @@
 # Parse the Metadata from an SAP OData Service
 
-First attempt at consuming an the metadata from an SAP Odata service.
+First attempt at consuming the metadata from an SAP Odata service.
 
 This is a work in progress
 
@@ -12,4 +12,4 @@ The tests don't actually test anything; instead, I've used a test simply as a fr
 
 `cargo test -- --nocapture > ./tests/parsed_output.txt`.
 
-`parsed_output.txt` will be several thousand lines long...
+When parsing the OData service `GWSAMPLE_BASIC`, the file `parsed_output.txt` will be several thousand lines long...

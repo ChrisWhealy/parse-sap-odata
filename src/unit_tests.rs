@@ -64,7 +64,7 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn test_sap_full() {
-        let xml = include_str!("../tests/sap_gwsample_basic_full.xml");
+        let xml = include_str!("../tests/sap_gwsample_basic.xml");
         let edmx = Edmx::from_str(xml).unwrap();
         let schema = edmx.data_services.fetch_schema("GWSAMPLE_BASIC").unwrap();
 
