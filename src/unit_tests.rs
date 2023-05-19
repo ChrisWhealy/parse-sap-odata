@@ -92,6 +92,7 @@ mod tests {
     pub fn test_parser() {
         // parse_sap_metadata("gwsample_basic.xml", "GWSAMPLE_BASIC");
         // parse_sap_metadata("sepmra_gr_post.xml", "SEPMRA_GR_POST");
-        parse_sap_metadata("epm_ref_apps_shop_srv.xml", "EPM_REF_APPS_SHOP");
+        parse_sap_metadata("sepmra_prod_man.xml", "SEPMRA_PROD_MAN");
+        // parse_sap_metadata("epm_ref_apps_shop_srv.xml", "EPM_REF_APPS_SHOP");
     }
 }
