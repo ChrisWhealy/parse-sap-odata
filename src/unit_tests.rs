@@ -74,26 +74,30 @@ mod tests {
     fn parse_sap_metadata(metadata_file_name: &str, namespace: &str) {
         let mut xml_buffer: Vec<u8> = Vec::new();
         let xml_path = format!("./tests/{}", metadata_file_name);
-        let f_xml = File::open(&xml_path).expect(&format!("File {} not found", xml_path));
-        let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
 
-        print_banner(&format!("Parsing file {}", xml_path));
+        if let Ok(f_xml) = File::open(&xml_path) {
+            let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
 
-        if let Ok(xml) = String::from_utf8(xml_buffer) {
-            let edmx = Edmx::from_str(&xml).unwrap();
+            print_banner(&format!("Parsing file {}", xml_path));
 
-            if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                show_entity(&schema.entity_types, "ENTITY TYPES");
-                show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
-                show_entity(&schema.associations, "ASSOCIATIONS");
-                show_entity_container(&schema.entity_container);
-                show_optional_entity(&schema.annotation_list, "ANNOTATIONS");
-                show_entity(&schema.atom_links, "ATOM LINKS");
+            if let Ok(xml) = String::from_utf8(xml_buffer) {
+                let edmx = Edmx::from_str(&xml).unwrap();
+
+                if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
+                    show_entity(&schema.entity_types, "ENTITY TYPES");
+                    show_optional_entity(&schema.complex_types, "COMPLEX TYPES");
+                    show_entity(&schema.associations, "ASSOCIATIONS");
+                    show_entity_container(&schema.entity_container);
+                    show_optional_entity(&schema.annotation_list, "ANNOTATIONS");
+                    show_entity(&schema.atom_links, "ATOM LINKS");
+                } else {
+                    println!("ERROR: No schema for namespace {} found", namespace)
+                }
             } else {
-                println!("ERROR: No schema for namespace {} found", namespace)
+                println!("ERROR: XML file is not in UTF8 format!")
             }
         } else {
-            println!("ERROR: XML file is not in UTF8 format!")
+            println!("ERROR: File {} not found", xml_path)
         }
     }
 
@@ -113,7 +117,7 @@ mod tests {
         // parse_sap_metadata("interop.xml", "INTEROP");
         // parse_sap_metadata("page_builder_conf.xml", "PAGE_BUILDER_CONF");
         // parse_sap_metadata("page_builder_cust.xml", "PAGE_BUILDER_CUST");
-        parse_sap_metadata("page_builder_pers.xml", "PAGE_BUILDER_PERS");
+        parse_sap_metadata("page_builder_pers.xml1", "PAGE_BUILDER_PERS");
         // parse_sap_metadata("rmtsampleflight.xml", "RMTSAMPLEFLIGHT");
         // parse_sap_metadata("sepmra_gr_post.xml", "SEPMRA_GR_POST");
         // parse_sap_metadata("sepmra_ovw.xml", "SEPMRA_OVW");
