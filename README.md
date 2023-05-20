@@ -10,6 +10,6 @@ This is a work in progress
 
 The tests don't actually test anything; instead, I've used a test simply as a framework for parsing the metadata and writing the output to a text file.
 
-`cargo test -- --nocapture > ./tests/parsed_output.txt`.
+`cargo test -- --nocapture`.
 
-When parsing the OData service `GWSAMPLE_BASIC`, the file `parsed_output.txt` will be several thousand lines long...
+The parsed output will appear in the `./parsed` directory as one `.txt` file per XML file.
