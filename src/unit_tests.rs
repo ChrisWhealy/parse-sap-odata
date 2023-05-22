@@ -29,6 +29,7 @@ mod tests {
         let mut out_buffer: Vec<u8> = Vec::new();
 
         let xml_input_path = format!("./tests/{}.xml", metadata_file_name);
+
         let mut out_file = OpenOptions::new()
             .create(true)
             .write(true)
@@ -60,6 +61,11 @@ mod tests {
 
         if out_buffer.len() > 0 {
             out_file.write_all(&out_buffer).unwrap();
+            println!(
+                "Parsing {}.  {} bytes written",
+                xml_input_path,
+                out_buffer.len()
+            );
         }
 
         return Ok(out_buffer.len());
