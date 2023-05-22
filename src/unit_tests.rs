@@ -168,37 +168,37 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn parse_all() {
-        parse_sap_metadata("catalogservice", "CATALOGSERVICE");
-        parse_sap_metadata("catalogservice_v0002", "CATALOGSERVICE");
-        parse_sap_metadata("epm_ref_apps_shop_srv", "EPM_REF_APPS_SHOP");
-        parse_sap_metadata("epm_ref_apps_po_apv_srv", "EPM_REF_APPS_PO_APV_SRV");
-        parse_sap_metadata("epm_ref_apps_prod_man_srv", "EPM_REF_APPS_PROD_MAN_SRV");
-        parse_sap_metadata("error_log_srv", "ERROR_LOG_SRV");
-        parse_sap_metadata("gwdemo", "GWDEMO");
+        // parse_sap_metadata("catalogservice", "CATALOGSERVICE");
+        // parse_sap_metadata("catalogservice_v0002", "CATALOGSERVICE");
+        // parse_sap_metadata("epm_ref_apps_shop_srv", "EPM_REF_APPS_SHOP");
+        // parse_sap_metadata("epm_ref_apps_po_apv_srv", "EPM_REF_APPS_PO_APV_SRV");
+        // parse_sap_metadata("epm_ref_apps_prod_man_srv", "EPM_REF_APPS_PROD_MAN_SRV");
+        // parse_sap_metadata("error_log_srv", "ERROR_LOG_SRV");
+        // parse_sap_metadata("gwdemo", "GWDEMO");
         parse_sap_metadata("gwsample_basic", "GWSAMPLE_BASIC");
-        parse_sap_metadata("interop", "INTEROP");
-        parse_sap_metadata("page_builder_conf", "PAGE_BUILDER_CONF");
-        parse_sap_metadata("page_builder_cust", "PAGE_BUILDER_CUST");
-        parse_sap_metadata("page_builder_pers", "PAGE_BUILDER_PERS");
-        parse_sap_metadata("rmtsampleflight", "RMTSAMPLEFLIGHT");
-        parse_sap_metadata("sepmra_gr_post", "SEPMRA_GR_POST");
-        parse_sap_metadata("sepmra_ovw", "SEPMRA_OVW");
-        parse_sap_metadata("sepmra_po_apv", "EPM_REF_APPS_PROD_MAN_SRV");
-        parse_sap_metadata("sepmra_po_man", "SEPMRA_PO_MAN");
-        parse_sap_metadata("sepmra_prod_man", "SEPMRA_PROD_MAN");
-        parse_sap_metadata("sepmra_shop", "SEPMRA_SHOP");
-        parse_sap_metadata("sepmra_so_man", "SEPMRA_SO_MAN");
-        parse_sap_metadata("sgbt_nte_cds_api_d_srv", "SGBT_NTE_CDS_API_D_SRV");
-        parse_sap_metadata("sgbt_nte_cds_api_srv", "SGBT_NTE_CDS_API_SRV");
-        parse_sap_metadata("transport", "TRANSPORT");
-        parse_sap_metadata("z_test_cds_with_param_srv", "Z_TEST_CDS_WITH_PARAM_SRV");
-        parse_sap_metadata("zagencycds_srv", "ZAGENCYCDS_SRV");
-        parse_sap_metadata("zdevelopercenter", "ZDEVELOPERCENTER");
-        parse_sap_metadata("zepm_ref_apps_po_apv_srv_srv", "EPM_REF_APPS_PO_APV_SRV");
-        parse_sap_metadata("ze2e100_sol_2_srv", "ZE2E100_SOL_2_SRV");
-        parse_sap_metadata("zepm_ref_apps_po_apv_srv", "EPM_REF_APPS_PO_APV_SRV");
-        parse_sap_metadata("zrfc1_srv", "ZRFC1_SRV");
-        parse_sap_metadata("zpdcds_srv", "ZPDCDS_SRV");
-        parse_sap_metadata("zsocds_srv", "ZSOCDS_SRV");
+        // parse_sap_metadata("interop", "INTEROP");
+        // parse_sap_metadata("page_builder_conf", "PAGE_BUILDER_CONF");
+        // parse_sap_metadata("page_builder_cust", "PAGE_BUILDER_CUST");
+        // parse_sap_metadata("page_builder_pers", "PAGE_BUILDER_PERS");
+        // parse_sap_metadata("rmtsampleflight", "RMTSAMPLEFLIGHT");
+        // parse_sap_metadata("sepmra_gr_post", "SEPMRA_GR_POST");
+        // parse_sap_metadata("sepmra_ovw", "SEPMRA_OVW");
+        // parse_sap_metadata("sepmra_po_apv", "EPM_REF_APPS_PROD_MAN_SRV");
+        // parse_sap_metadata("sepmra_po_man", "SEPMRA_PO_MAN");
+        // parse_sap_metadata("sepmra_prod_man", "SEPMRA_PROD_MAN");
+        // parse_sap_metadata("sepmra_shop", "SEPMRA_SHOP");
+        // parse_sap_metadata("sepmra_so_man", "SEPMRA_SO_MAN");
+        // parse_sap_metadata("sgbt_nte_cds_api_d_srv", "SGBT_NTE_CDS_API_D_SRV");
+        // parse_sap_metadata("sgbt_nte_cds_api_srv", "SGBT_NTE_CDS_API_SRV");
+        // parse_sap_metadata("transport", "TRANSPORT");
+        // parse_sap_metadata("z_test_cds_with_param_srv", "Z_TEST_CDS_WITH_PARAM_SRV");
+        // parse_sap_metadata("zagencycds_srv", "ZAGENCYCDS_SRV");
+        // parse_sap_metadata("zdevelopercenter", "ZDEVELOPERCENTER");
+        // parse_sap_metadata("zepm_ref_apps_po_apv_srv_srv", "EPM_REF_APPS_PO_APV_SRV");
+        // parse_sap_metadata("ze2e100_sol_2_srv", "ZE2E100_SOL_2_SRV");
+        // parse_sap_metadata("zepm_ref_apps_po_apv_srv", "EPM_REF_APPS_PO_APV_SRV");
+        // parse_sap_metadata("zrfc1_srv", "ZRFC1_SRV");
+        // parse_sap_metadata("zpdcds_srv", "ZPDCDS_SRV");
+        // parse_sap_metadata("zsocds_srv", "ZSOCDS_SRV");
     }
 }

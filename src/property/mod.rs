@@ -18,6 +18,11 @@ pub struct Property {
 
     pub max_length: Option<String>,
 
+    pub precision: Option<String>,
+    pub scale: Option<String>,
+    pub concurrency_mode: Option<String>,
+
+    // SAP Annotations
     #[serde(rename = "sap:unicode", default = "default_sap_unicode")]
     pub sap_unicode: bool,
 
@@ -45,11 +50,11 @@ pub struct Property {
     #[serde(rename = "sap:text")]
     pub sap_text: Option<String>,
 
+    #[serde(rename = "sap:unit")]
+    pub sap_unit: Option<String>,
+
     #[serde(rename = "sap:updatable", default = "default_sap_updatable")]
     pub sap_updatable: bool,
-
-    pub precision: Option<String>,
-    pub concurrency_mode: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
