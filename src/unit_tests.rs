@@ -163,7 +163,7 @@ mod tests {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Parse a variety of OData metadata documents
-    // All the OData service name listed below are taken from the SAP Dev Center OData server
+    // All the OData services listed below are taken from the ES5 SAP Dev Center OData server
     // https://sapes5.sapdevcenter.com/sap/opu/odata/iwfnd/CATALOGSERVICE/CatalogCollection('ES5')/Services
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
