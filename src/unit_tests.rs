@@ -1,4 +1,5 @@
 mod tests {
+    use std::cmp::max;
     use std::collections::HashMap;
     use std::fmt::Debug;
     use std::fs::{File, OpenOptions};
@@ -9,13 +10,7 @@ mod tests {
     use crate::utils::parse_error::ParseError;
 
     fn longest(m: &HashMap<&str, &str>) -> usize {
-        m.iter().fold(0, |max_len, e| {
-            if e.0.len() > max_len {
-                e.0.len()
-            } else {
-                max_len
-            }
-        })
+        m.iter().fold(0, |max_len, e| max(max_len, e.0.len()))
     }
 
     fn gen_service_list() -> (HashMap<&'static str, &'static str>, usize) {
