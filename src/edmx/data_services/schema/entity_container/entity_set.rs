@@ -1,7 +1,5 @@
-use crate::sap_annotations::{
-    default_sap_content_version, default_sap_createable, default_sap_deletable,
-    default_sap_pageable, default_sap_updatable,
-};
+use crate::default_true;
+use crate::sap_annotations::default_sap_content_version;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19,15 +17,15 @@ pub struct EntitySet {
     )]
     pub sap_content_version: String,
 
-    #[serde(rename = "sap:createable", default = "default_sap_createable")]
+    #[serde(rename = "sap:createable", default = "default_true")]
     pub sap_creatable: bool,
 
-    #[serde(rename = "sap:deletable", default = "default_sap_deletable")]
+    #[serde(rename = "sap:deletable", default = "default_true")]
     pub sap_deletable: bool,
 
-    #[serde(rename = "sap:updatable", default = "default_sap_updatable")]
+    #[serde(rename = "sap:updatable", default = "default_true")]
     pub sap_updatable: bool,
 
-    #[serde(rename = "sap:pageable", default = "default_sap_pageable")]
+    #[serde(rename = "sap:pageable", default = "default_true")]
     pub sap_pageable: bool,
 }

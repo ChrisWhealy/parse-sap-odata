@@ -49,9 +49,9 @@ mod tests {
         service_list.insert("zpdcds_srv", "ZPDCDS_SRV");
         service_list.insert("zsocds_srv", "ZSOCDS_SRV");
 
-        let max_length = longest(&service_list);
+        let max_name_len = longest(&service_list);
 
-        (service_list, max_length)
+        (service_list, max_name_len)
     }
 
     fn write_entity<T: Debug>(out_buf: &mut Vec<u8>, maybe_entity: Option<&Vec<T>>) {
@@ -71,43 +71,16 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Parse a given metadata document
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    fn parse_sap_metadata(metadata_file_name: &str, namespace: &str) -> Result<usize, ParseError> {
+    fn parse_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
         let mut xml_buffer: Vec<u8> = Vec::new();
-        let mut out_buffer: Vec<u8> = Vec::new();
-
         let xml_input_path = format!("./tests/{}.xml", metadata_file_name);
-
-        let mut out_file = OpenOptions::new()
-            .create(true)
-            .write(true)
-            .open(format!("./parsed/{}.txt", metadata_file_name))?;
 
         let f_xml = File::open(&xml_input_path)?;
         let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
         let xml = String::from_utf8(xml_buffer)?;
         let edmx = Edmx::from_str(&xml)?;
-        let Some(_schema) = edmx.data_services.fetch_schema(namespace) else {
-            return Err(ParseError { msg : format!("Namespace {} not found in schema", namespace)});
-        };
 
-        write_entity(&mut out_buffer, Some(&vec![edmx]));
-
-        // write_entity(&mut out_buffer, Some(&schema.entity_types));
-        // write_entity(&mut out_buffer, schema.complex_types.as_ref());
-        // write_entity(&mut out_buffer, Some(&schema.associations));
-
-        // if let Some(entity_container) = &schema.entity_container {
-        //     write_entity(&mut out_buffer, Some(&entity_container.entity_sets));
-        //     write_entity(&mut out_buffer, Some(&entity_container.association_sets));
-        //     write_entity(&mut out_buffer, entity_container.function_imports.as_ref());
-        // }
-
-        // write_entity(&mut out_buffer, schema.annotation_list.as_ref());
-        // write_entity(&mut out_buffer, Some(&schema.atom_links));
-
-        out_file.write_all(&out_buffer).unwrap();
-
-        return Ok(out_buffer.len());
+        return Ok(edmx);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,20 +89,53 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn parse_all() {
-        let (srv_list, max_length) = gen_service_list();
+        let mut out_buffer: Vec<u8> = Vec::new();
+        let (srv_list, max_name_len) = gen_service_list();
 
         for srv in srv_list {
             print!(
                 "Parsing {}.xml{:>width$}=> ",
                 srv.0,
                 " ",
-                width = max_length - srv.0.len() + 1
+                width = max_name_len - srv.0.len() + 1,
             );
 
-            match parse_sap_metadata(srv.0, srv.1) {
+            match parse_sap_metadata(srv.0) {
                 Err(err) => println!("Error: {}", err.msg),
-                Ok(bytes) => println!("{} bytes written", bytes),
+                Ok(edmx) => {
+                    out_buffer.clear();
+                    let mut out_file = OpenOptions::new()
+                        .create(true)
+                        .write(true)
+                        .open(format!("./parsed/{}.txt", srv.0))
+                        .unwrap();
+
+                    // let Some(_schema) = edmx.data_services.fetch_schema(namespace) else {
+                    //     return Err(ParseError { msg : format!("Namespace {} not found in schema", namespace)});
+                    // };
+
+                    write_entity(&mut out_buffer, Some(&vec![edmx]));
+
+                    // write_entity(&mut out_buffer, Some(&schema.entity_types));
+                    // write_entity(&mut out_buffer, schema.complex_types.as_ref());
+                    // write_entity(&mut out_buffer, Some(&schema.associations));
+
+                    // if let Some(entity_container) = &schema.entity_container {
+                    //     write_entity(&mut out_buffer, Some(&entity_container.entity_sets));
+                    //     write_entity(&mut out_buffer, Some(&entity_container.association_sets));
+                    //     write_entity(&mut out_buffer, entity_container.function_imports.as_ref());
+                    // }
+
+                    // write_entity(&mut out_buffer, schema.annotation_list.as_ref());
+                    // write_entity(&mut out_buffer, Some(&schema.atom_links));
+
+                    out_file.write_all(&out_buffer).unwrap();
+                    println!("{:>7} bytes written", out_buffer.len());
+                }
             };
         }
     }
+
+    #[test]
+    pub fn gen_src() {}
 }

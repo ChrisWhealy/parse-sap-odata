@@ -2,7 +2,7 @@ pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
-use crate::xml::default_false;
+use crate::ms_annotations::MSAnnotationsEntityType;
 use association_set::AssociationSet;
 use serde::{Deserialize, Serialize};
 
@@ -22,8 +22,8 @@ use function_import::FunctionImport;
 pub struct EntityContainer {
     pub name: String,
 
-    #[serde(rename = "m:IsDefaultEntityContainer", default = "default_false")]
-    pub m_is_default_entity_container: bool,
+    #[serde(flatten)]
+    pub ms_annotations: MSAnnotationsEntityType,
 
     #[serde(rename = "sap:supported-formats")]
     pub sap_supported_formats: Option<String>,
