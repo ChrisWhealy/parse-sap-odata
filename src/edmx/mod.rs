@@ -1,7 +1,9 @@
 pub mod data_services;
+pub mod reference;
 
 use crate::xml::{default_xml_namespace_edmx, default_xml_namespace_m, default_xml_namespace_sap};
 use data_services::DataServices;
+use reference::Reference;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,6 +39,9 @@ pub struct Edmx {
 
     #[serde(rename = "xmlns:sap", default = "default_xml_namespace_sap")]
     pub namespace_sap: String,
+
+    #[serde(rename = "Reference")]
+    pub references: Option<Vec<Reference>>,
 
     pub data_services: DataServices,
 }
