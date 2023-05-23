@@ -1,5 +1,5 @@
 use crate::sap_annotations::{
-    default_sap_content_version, default_sap_creatable, default_sap_deletable,
+    default_sap_content_version, default_sap_createable, default_sap_deletable,
     default_sap_pageable, default_sap_updatable,
 };
 use serde::{Deserialize, Serialize};
@@ -19,7 +19,7 @@ pub struct EntitySet {
     )]
     pub sap_content_version: String,
 
-    #[serde(rename = "sap:createable", default = "default_sap_creatable")]
+    #[serde(rename = "sap:createable", default = "default_sap_createable")]
     pub sap_creatable: bool,
 
     #[serde(rename = "sap:deletable", default = "default_sap_deletable")]

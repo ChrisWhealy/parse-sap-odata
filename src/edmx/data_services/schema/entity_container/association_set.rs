@@ -1,5 +1,7 @@
 use crate::edmx::data_services::schema::association::End;
-use crate::sap_annotations::{default_sap_creatable, default_sap_deletable, default_sap_updatable};
+use crate::sap_annotations::{
+    default_sap_createable, default_sap_deletable, default_sap_updatable,
+};
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14,7 +16,7 @@ pub struct AssociationSet {
     pub name: String,
     pub association: String,
 
-    #[serde(rename = "sap:createable", default = "default_sap_creatable")]
+    #[serde(rename = "sap:createable", default = "default_sap_createable")]
     pub sap_creatable: bool,
 
     #[serde(rename = "sap:deletable", default = "default_sap_deletable")]
