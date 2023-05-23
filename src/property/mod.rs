@@ -1,9 +1,12 @@
 pub mod property_type;
 
+use convert_case::Case;
+use serde::{Deserialize, Serialize};
+
 use crate::ms_annotations::MSAnnotationsProperty;
 use crate::sap_annotations::SAPAnnotations;
+use crate::utils::strip_namespace;
 use crate::xml::default_true;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
@@ -45,111 +48,47 @@ pub struct Property {
 /// Edm.Guid    --> uuid::Uuid
 /// ********************************************************************************************************************
 impl Property {
-    pub fn to_rust(prop: Property) -> String {
-        match prop.edm_type.as_ref() {
-            "Edm.Binary" => {
-                if prop.nullable {
-                    format!("{}: Option<Vec<u8>>,", prop.name)
-                } else {
-                    format!("{}: Vec<u8>,", prop.name)
-                }
-            }
-
-            "Edm.Boolean" => {
-                if prop.nullable {
-                    format!("{}: Option<bool>,", prop.name)
-                } else {
-                    format!("{}: bool,", prop.name)
-                }
-            }
-
-            "Edm.Byte" => {
-                format!("{}: u8,", prop.name)
-            }
-
-            "Edm.DateTime" => {
-                if prop.nullable {
-                    format!("{}: Option<NaiveDateTime>,", prop.name)
-                } else {
-                    format!("{}: NaiveDateTime,", prop.name)
-                }
-            }
-
-            "Edm.DateTimeOffset" => {
-                todo!("Find correct Rust data type for Edm.DateTimeOffset")
-            }
-
-            // This declaration cannot account for the decimal precision
-            // This must be provided at the time the decimal instance is created
-            "Edm.Decimal" => {
-                format!("{}: Decimal,", prop.name)
-            }
-
-            "Edm.Double" => {
-                format!("{}: f64,", prop.name)
-            }
-
-            "Edm.Single" => {
-                format!("{}: f32,", prop.name)
-            }
-
-            "Edm.Guid" => {
-                format!("{}: uuid,", prop.name)
-            }
-
-            "Edm.SByte" => {
-                if prop.nullable {
-                    format!("{}: Option<i8>,", prop.name)
-                } else {
-                    format!("{}: i8,", prop.name)
-                }
-            }
-
-            "Edm.Int16" => {
-                if prop.nullable {
-                    format!("{}: Option<i16>,", prop.name)
-                } else {
-                    format!("{}: i16,", prop.name)
-                }
-            }
-
-            "Edm.Int32" => {
-                if prop.nullable {
-                    format!("{}: Option<i32>,", prop.name)
-                } else {
-                    format!("{}: i32,", prop.name)
-                }
-            }
-
-            "Edm.Int64" => {
-                if prop.nullable {
-                    format!("{}: Option<i64>,", prop.name)
-                } else {
-                    format!("{}: i64,", prop.name)
-                }
-            }
-
-            "Edm.String" => {
-                if prop.nullable {
-                    format!("{}: Option<String>,", prop.name)
-                } else {
-                    format!("{}: String,", prop.name)
-                }
-            }
-
-            "Edm.Time" => {
-                if prop.nullable {
-                    format!("{}: Option<std::time::SystemTime>,", prop.name)
-                } else {
-                    format!("{}: std::time::SystemTime,", prop.name)
-                }
-            }
-
-            _ => panic!(
-                "Property {} has unknown property type {}",
-                prop.name, prop.edm_type
-            ),
+    fn maybe_optional(rust_type: &str, is_optional: bool) -> String {
+        if is_optional {
+            format!("Option<{}>", rust_type)
+        } else {
+            rust_type.to_string()
         }
+    }
+
+    fn as_rust_type(&self, namespace: &str) -> String {
+        match self.edm_type.as_ref() {
+            "Edm.Binary" => Property::maybe_optional("Vec<u8>", self.nullable),
+            "Edm.Boolean" => Property::maybe_optional("bool", self.nullable),
+            "Edm.Byte" => "u8".to_string(),
+            "Edm.DateTime" => Property::maybe_optional("NaiveDateTime", self.nullable),
+            // TODO I suspect that this may not be the correct Rust datatype for Edm.DateTimeOffset...
+            "Edm.DateTimeOffset" => Property::maybe_optional("NaiveDateTime", self.nullable),
+            "Edm.Decimal" => "Decimal".to_string(),
+            "Edm.Double" => "f64".to_string(),
+            "Edm.Single" => "f32".to_string(),
+            "Edm.Guid" => "uuid".to_string(),
+            "Edm.SByte" => Property::maybe_optional("i8", self.nullable),
+            "Edm.Int16" => Property::maybe_optional("i16", self.nullable),
+            "Edm.Int32" => Property::maybe_optional("i32", self.nullable),
+            "Edm.Int64" => Property::maybe_optional("i64", self.nullable),
+            "Edm.String" => Property::maybe_optional("String", self.nullable),
+            "Edm.Time" => Property::maybe_optional("std::time::SystemTime", self.nullable),
+
+            // This may well cause an error when the generated code is compiled...
+            _ => strip_namespace(self.edm_type.as_ref(), namespace),
+        }
+    }
+
+    pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
+        format!(
+            "\npub {}: {},",
+            // TODO escape field names that clash with Rust reserved words
+            convert_case::Casing::to_case(&self.name, Case::Camel),
+            self.as_rust_type(namespace)
+        )
+        .as_bytes()
+        .to_vec()
     }
 }
 

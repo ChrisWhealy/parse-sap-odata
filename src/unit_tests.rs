@@ -8,6 +8,7 @@ mod tests {
 
     use crate::edmx::Edmx;
     use crate::utils::parse_error::ParseError;
+    use crate::utils::run_rustfmt;
 
     fn longest(m: &HashMap<&str, &str>) -> usize {
         m.iter().fold(0, |max_len, e| max(max_len, e.0.len()))
@@ -110,24 +111,7 @@ mod tests {
                         .open(format!("./parsed/{}.txt", srv.0))
                         .unwrap();
 
-                    // let Some(_schema) = edmx.data_services.fetch_schema(namespace) else {
-                    //     return Err(ParseError { msg : format!("Namespace {} not found in schema", namespace)});
-                    // };
-
                     write_entity(&mut out_buffer, Some(&vec![edmx]));
-
-                    // write_entity(&mut out_buffer, Some(&schema.entity_types));
-                    // write_entity(&mut out_buffer, schema.complex_types.as_ref());
-                    // write_entity(&mut out_buffer, Some(&schema.associations));
-
-                    // if let Some(entity_container) = &schema.entity_container {
-                    //     write_entity(&mut out_buffer, Some(&entity_container.entity_sets));
-                    //     write_entity(&mut out_buffer, Some(&entity_container.association_sets));
-                    //     write_entity(&mut out_buffer, entity_container.function_imports.as_ref());
-                    // }
-
-                    // write_entity(&mut out_buffer, schema.annotation_list.as_ref());
-                    // write_entity(&mut out_buffer, Some(&schema.atom_links));
 
                     out_file.write_all(&out_buffer).unwrap();
                     println!("{:>7} bytes written", out_buffer.len());
@@ -136,6 +120,56 @@ mod tests {
         }
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Generate Rust structs from the OData metadata
+    //
+    // TODO: Escape field names that clash with Rust reserved words.  E.G. "type" --> "r#type"
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
-    pub fn gen_src() {}
+    pub fn gen_src() {
+        let mut out_buffer: Vec<u8> = Vec::new();
+        let (srv_list, _max_name_len) = gen_service_list();
+
+        for srv in srv_list {
+            println!("Generating source code from {}.xml", srv.0);
+
+            match parse_sap_metadata(srv.0) {
+                Err(err) => println!("Error: {}", err.msg),
+                Ok(edmx) => {
+                    let mut out_file = OpenOptions::new()
+                        .create(true)
+                        .write(true)
+                        .open(format!("./gen/{}.rs", srv.0))
+                        .unwrap();
+
+                    // I can haz namespace?
+                    if let Some(schema) = edmx.data_services.fetch_schema(srv.1) {
+                        // Generate EntityType structs
+                        for entity in &schema.entity_types {
+                            out_buffer.append(
+                                &mut format!("pub struct {} {{", entity.name).as_bytes().to_vec(),
+                            );
+
+                            for prop in &entity.properties {
+                                out_buffer.append(&mut prop.to_rust(srv.1));
+                            }
+
+                            // Add terminating line feed, close curly brace, then two more line feeds
+                            out_buffer.append(&mut vec![10, 125, 10, 10]);
+                        }
+
+                        // TODO Generate function imports before writing output
+                        match run_rustfmt(&out_buffer) {
+                            Ok(formatted_bytes) => out_file.write_all(&formatted_bytes).unwrap(),
+                            Err(err) => println!("Error: rustfmt ended with {}", err.to_string()),
+                        }
+                    } else {
+                        println!("Namespace {} not found in schema", srv.1);
+                    };
+                }
+            };
+
+            out_buffer.clear();
+        }
+    }
 }
