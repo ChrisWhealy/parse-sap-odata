@@ -8,7 +8,17 @@ mod tests {
     use crate::edmx::Edmx;
     use crate::utils::parse_error::ParseError;
 
-    fn gen_service_list() -> HashMap<&'static str, &'static str> {
+    fn longest(m: &HashMap<&str, &str>) -> usize {
+        m.iter().fold(0, |max_len, e| {
+            if e.0.len() > max_len {
+                e.0.len()
+            } else {
+                max_len
+            }
+        })
+    }
+
+    fn gen_service_list() -> (HashMap<&'static str, &'static str>, usize) {
         let mut service_list: HashMap<&str, &str> = HashMap::new();
 
         service_list.insert("catalogservice", "CATALOGSERVICE");
@@ -44,7 +54,9 @@ mod tests {
         service_list.insert("zpdcds_srv", "ZPDCDS_SRV");
         service_list.insert("zsocds_srv", "ZSOCDS_SRV");
 
-        service_list
+        let max_length = longest(&service_list);
+
+        (service_list, max_length)
     }
 
     fn write_entity<T: Debug>(out_buf: &mut Vec<u8>, maybe_entity: Option<&Vec<T>>) {
@@ -109,10 +121,17 @@ mod tests {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn parse_all() {
-        for service in gen_service_list() {
-            print!("Parsing {}.xml => ", service.0);
+        let (srv_list, max_length) = gen_service_list();
 
-            match parse_sap_metadata(service.0, service.1) {
+        for srv in srv_list {
+            print!(
+                "Parsing {}.xml{:>width$}=> ",
+                srv.0,
+                " ",
+                width = max_length - srv.0.len() + 1
+            );
+
+            match parse_sap_metadata(srv.0, srv.1) {
                 Err(err) => println!("Error: {}", err.msg),
                 Ok(bytes) => println!("{} bytes written", bytes),
             };
