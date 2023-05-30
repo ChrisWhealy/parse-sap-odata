@@ -26,7 +26,7 @@ $ git clone https://github.com/lighthouse-no/parse-sap-odata
 
 ### Test Parser
 
-To test only the parsing process, run the `parse_all` test:
+To test only the intermediate parsing process, run the `parse_all` test:
 
 ```bash
 $ cargo test parse_all -- --nocapture
@@ -117,3 +117,5 @@ test unit_tests::tests::gen_src_all ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 2.26s
 ```
+
+For each input XML file, a corresponding `.rs` file will appear in the `./gen` directory.
