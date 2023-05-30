@@ -12,6 +12,7 @@ license = "MIT"
 
 [dependencies]
 anyhow = "1.0"
+check_keyword = "0.2.0"
 chrono = { version = "0.4.19", features = ["serde"] }
 convert_case = "0.6"
 # Versions of quick-xml from 0.27.0 upwards break with error Custom("missing field `Name`")

@@ -1,11 +1,11 @@
 pub mod property_type;
 
+use check_keyword::CheckKeyword;
 use convert_case::Case;
 use serde::{Deserialize, Serialize};
 
 use crate::ms_annotations::MSAnnotationsProperty;
 use crate::sap_annotations::SAPAnnotations;
-use crate::utils::strip_namespace;
 use crate::xml::default_true;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -56,6 +56,10 @@ impl Property {
         }
     }
 
+    fn as_rust_safe_name(&self) -> String {
+        CheckKeyword::into_safe(convert_case::Casing::to_case(&self.name, Case::Camel))
+    }
+
     fn as_rust_type(&self, namespace: &str) -> String {
         match self.edm_type.as_ref() {
             "Edm.Binary" => Property::maybe_optional("Vec<u8>", self.nullable),
@@ -75,16 +79,20 @@ impl Property {
             "Edm.String" => Property::maybe_optional("String", self.nullable),
             "Edm.Time" => Property::maybe_optional("std::time::SystemTime", self.nullable),
 
-            // This may well cause an error when the generated code is compiled...
-            _ => strip_namespace(self.edm_type.as_ref(), namespace),
+            // Assume that if the type is not a known EDM type, then it must be a service-specific complex type, in
+            // which case, remove the namespace prefix
+            type_name => (match type_name.strip_prefix(&format!("{}.", namespace)) {
+                Some(suffix) => suffix,
+                None => type_name,
+            })
+            .to_string(),
         }
     }
 
     pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
         format!(
             "\npub {}: {},",
-            // TODO escape field names that clash with Rust reserved words
-            convert_case::Casing::to_case(&self.name, Case::Camel),
+            self.as_rust_safe_name(),
             self.as_rust_type(namespace)
         )
         .as_bytes()
@@ -96,4 +104,24 @@ impl Property {
 #[serde(rename_all = "PascalCase")]
 pub struct PropertyRef {
     pub name: String,
+}
+
+mod tests {
+    use check_keyword::CheckKeyword;
+
+    #[test]
+    fn should_convert_unsafe_property_name() {
+        let kw = "type";
+
+        assert!(kw.is_keyword());
+        assert_eq!(kw.into_safe(), "r#type");
+    }
+
+    #[test]
+    fn should_not_convert_safe_property_name() {
+        let kw = "wibble";
+
+        assert!(!kw.is_keyword());
+        assert_eq!(kw.into_safe(), "wibble");
+    }
 }
