@@ -1,6 +1,6 @@
 # Parse the Metadata from an SAP OData Service
 
-Parse the metadata XML describing an SAP Odata service and generate `struct`s for each EDM:
+Parse the metadata XML describing an SAP OData service and generate `struct`s for each EDM:
 
 * `ComplexType`
 * `EntityType`
@@ -10,7 +10,7 @@ This is a work in progress
 
 ## TODOs
 
-Create `Build.rs` process
+Create the `Build.rs` process
 
 ## Prerequisites
 
