@@ -48,6 +48,13 @@ pub struct Property {
 /// Edm.Guid    --> uuid::Uuid
 /// ********************************************************************************************************************
 impl Property {
+    fn trim_prefix<'a>(some_str: &'a str, some_prefix: &str) -> &'a str {
+        match some_str.strip_prefix(some_prefix) {
+            Some(suffix) => suffix,
+            None => some_str,
+        }
+    }
+
     fn maybe_optional(rust_type: &str, is_optional: bool) -> String {
         if is_optional {
             format!("Option<{}>", rust_type)
@@ -58,6 +65,18 @@ impl Property {
 
     fn to_rust_safe_name(&self) -> String {
         CheckKeyword::into_safe(convert_case::Casing::to_case(&self.name, Case::Snake))
+    }
+
+    // For complex types, the type struct will already have been generated using the <ct_name> part extracted
+    // from the OData type name conforming to one of these patterns:
+    //   <namespace>.CT_<ct_name>
+    //   <namespace>.<ct_name>
+    //   <ct_name>
+    pub fn trim_complex_type_name(type_name: &str, namespace: &str) -> String {
+        let trim1 = Property::trim_prefix(type_name, &format!("{}.", namespace));
+        let trim2 = Property::trim_prefix(trim1, "CT_");
+
+        convert_case::Casing::to_case(&trim2, convert_case::Case::Pascal)
     }
 
     fn to_rust_type(&self, namespace: &str) -> String {
@@ -79,16 +98,7 @@ impl Property {
             "Edm.String" => Property::maybe_optional("String", self.nullable),
             "Edm.Time" => Property::maybe_optional("std::time::SystemTime", self.nullable),
 
-            // For complex types, the type struct will already have been generated using the <ct_name> part extracted
-            // from the OData type name <namespace>.CT_<ct_name>
-            //
-            // If this extraction attempt fails, simply return the type_name - this may cause an "unknown type" error
-            // when the generated code is compiled
-            type_name => (match type_name.strip_prefix(&format!("{}.CT_", namespace)) {
-                Some(suffix) => suffix,
-                None => type_name,
-            })
-            .to_string(),
+            type_name => Property::trim_complex_type_name(type_name, namespace),
         }
     }
 

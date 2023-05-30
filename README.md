@@ -10,7 +10,8 @@ This is a work in progress
 
 ## TODOs
 
-Create the `Build.rs` process
+* Support function Imports
+* Implement the `Build.rs` process
 
 ## Prerequisites
 

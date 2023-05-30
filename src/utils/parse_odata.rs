@@ -5,6 +5,7 @@ use std::str::FromStr;
 use check_keyword::CheckKeyword;
 
 use crate::edmx::Edmx;
+use crate::property::Property;
 use crate::utils::parse_error::ParseError;
 use crate::utils::run_rustfmt;
 
@@ -44,18 +45,22 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
             // I can haz namespace?
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // If present, transform ComplexType definitions to Rust structs
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 if let Some(cts) = &schema.complex_types {
                     for ct in cts {
-                        let ct_name = match ct.name.strip_prefix("CT_") {
-                            Some(suffix) => suffix,
-                            None => ct.name.as_ref(),
-                        };
+                        let ct_name = convert_case::Casing::to_case(
+                            &Property::trim_complex_type_name(ct.name.as_ref(), namespace),
+                            convert_case::Case::Pascal,
+                        );
 
                         // If the complex type contains only one property and the name suffix is a Rust type, then a
                         // struct does not need to be generated
-                        // This happens with the `CT_String` type which contains a single property called `String`
+                        // This happens with complex types such as `CT_String` which only contain a single property
+                        // called `String`
                         if ct.properties.len() > 1 && !ct_name.is_keyword() {
+                            out_buffer.append(&mut "#[derive(Debug)]".as_bytes().to_vec());
                             out_buffer.append(
                                 &mut format!("pub struct {} {{", ct_name).as_bytes().to_vec(),
                             );
@@ -70,8 +75,11 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     }
                 }
 
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Transform each EntityType definition to a Rust struct
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 for entity in &schema.entity_types {
+                    out_buffer.append(&mut "#[derive(Debug)]".as_bytes().to_vec());
                     out_buffer
                         .append(&mut format!("pub struct {} {{", entity.name).as_bytes().to_vec());
 
@@ -83,7 +91,9 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     out_buffer.append(&mut vec![10, 125, 10, 10]);
                 }
 
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // TODO Generate function imports before writing output
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 match run_rustfmt(&out_buffer) {
                     Ok(formatted_bytes) => out_file.write_all(&formatted_bytes).unwrap(),
                     Err(err) => println!("Error: rustfmt ended with {}", err.to_string()),
