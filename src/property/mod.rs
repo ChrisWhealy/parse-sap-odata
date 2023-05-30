@@ -56,11 +56,11 @@ impl Property {
         }
     }
 
-    fn as_rust_safe_name(&self) -> String {
-        CheckKeyword::into_safe(convert_case::Casing::to_case(&self.name, Case::Camel))
+    fn to_rust_safe_name(&self) -> String {
+        CheckKeyword::into_safe(convert_case::Casing::to_case(&self.name, Case::Snake))
     }
 
-    fn as_rust_type(&self, namespace: &str) -> String {
+    fn to_rust_type(&self, namespace: &str) -> String {
         match self.edm_type.as_ref() {
             "Edm.Binary" => Property::maybe_optional("Vec<u8>", self.nullable),
             "Edm.Boolean" => Property::maybe_optional("bool", self.nullable),
@@ -92,8 +92,8 @@ impl Property {
     pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
         format!(
             "\npub {}: {},",
-            self.as_rust_safe_name(),
-            self.as_rust_type(namespace)
+            self.to_rust_safe_name(),
+            self.to_rust_type(namespace)
         )
         .as_bytes()
         .to_vec()
