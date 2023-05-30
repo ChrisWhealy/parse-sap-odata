@@ -2,6 +2,8 @@ use std::fs::{File, OpenOptions};
 use std::io::{BufReader, Read, Write};
 use std::str::FromStr;
 
+use check_keyword::CheckKeyword;
+
 use crate::edmx::Edmx;
 use crate::utils::parse_error::ParseError;
 use crate::utils::run_rustfmt;
@@ -36,11 +38,38 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
             let mut out_file = OpenOptions::new()
                 .create(true)
                 .write(true)
+                .truncate(true)
                 .open(&output_file_name)
                 .unwrap();
 
             // I can haz namespace?
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
+                // If present, transform ComplexType definitions to Rust structs
+                if let Some(cts) = &schema.complex_types {
+                    for ct in cts {
+                        let ct_name = match ct.name.strip_prefix("CT_") {
+                            Some(suffix) => suffix,
+                            None => ct.name.as_ref(),
+                        };
+
+                        // If the complex type contains only one property and the name suffix is a Rust type, then a
+                        // struct does not need to be generated
+                        // This happens with the `CT_String` type which contains a single property called `String`
+                        if ct.properties.len() > 1 && !ct_name.is_keyword() {
+                            out_buffer.append(
+                                &mut format!("pub struct {} {{", ct_name).as_bytes().to_vec(),
+                            );
+
+                            for prop in &ct.properties {
+                                out_buffer.append(&mut prop.to_rust(namespace));
+                            }
+
+                            // Add terminating line feed, close curly brace, then two more line feeds
+                            out_buffer.append(&mut vec![10, 125, 10, 10]);
+                        }
+                    }
+                }
+
                 // Transform each EntityType definition to a Rust struct
                 for entity in &schema.entity_types {
                     out_buffer

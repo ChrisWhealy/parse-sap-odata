@@ -1,4 +1,4 @@
-pub mod property_type;
+// pub mod property_type;
 
 use check_keyword::CheckKeyword;
 use convert_case::Case;
@@ -79,9 +79,12 @@ impl Property {
             "Edm.String" => Property::maybe_optional("String", self.nullable),
             "Edm.Time" => Property::maybe_optional("std::time::SystemTime", self.nullable),
 
-            // Assume that if the type is not a known EDM type, then it must be a service-specific complex type, in
-            // which case, remove the namespace prefix
-            type_name => (match type_name.strip_prefix(&format!("{}.", namespace)) {
+            // For complex types, the type struct will already have been generated using the <ct_name> part extracted
+            // from the OData type name <namespace>.CT_<ct_name>
+            //
+            // If this extraction attempt fails, simply return the type_name - this may cause an "unknown type" error
+            // when the generated code is compiled
+            type_name => (match type_name.strip_prefix(&format!("{}.CT_", namespace)) {
                 Some(suffix) => suffix,
                 None => type_name,
             })
@@ -107,10 +110,10 @@ pub struct PropertyRef {
 }
 
 mod tests {
-    use check_keyword::CheckKeyword;
 
     #[test]
     fn should_convert_unsafe_property_name() {
+        use check_keyword::CheckKeyword;
         let kw = "type";
 
         assert!(kw.is_keyword());
@@ -119,6 +122,7 @@ mod tests {
 
     #[test]
     fn should_not_convert_safe_property_name() {
+        use check_keyword::CheckKeyword;
         let kw = "wibble";
 
         assert!(!kw.is_keyword());
