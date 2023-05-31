@@ -92,7 +92,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 }
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // TODO Generate function imports before writing output
+                // TODO Generate function imports
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 match run_rustfmt(&out_buffer) {
                     Ok(formatted_bytes) => out_file.write_all(&formatted_bytes).unwrap(),

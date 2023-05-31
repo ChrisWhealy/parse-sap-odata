@@ -1,5 +1,5 @@
-use crate::default_true;
 use crate::utils::de_str_to_bool;
+use crate::utils::default_true;
 use serde::{Deserialize, Serialize};
 
 pub fn default_sap_schema_version() -> String {

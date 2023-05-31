@@ -10,7 +10,8 @@ mod tests {
     };
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // All test service names plus the namespace names they are expected to contain
+    // A list of all the working OData services available from the ES5 SAP Dev Center OData server
+    // https://sapes5.sapdevcenter.com/sap/opu/odata/iwfnd/CATALOGSERVICE/CatalogCollection('ES5')/Services
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     fn gen_service_list() -> (HashMap<&'static str, &'static str>, usize) {
         let mut service_list: HashMap<&str, &str> = HashMap::new();
@@ -54,9 +55,7 @@ mod tests {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Parse all the working OData services listed on the ES5 SAP Dev Center OData server
-    // This simply generates an intermediate text output
-    // https://sapes5.sapdevcenter.com/sap/opu/odata/iwfnd/CATALOGSERVICE/CatalogCollection('ES5')/Services
+    // Parse all listed OData services
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn parse_all() {
@@ -78,6 +77,7 @@ mod tests {
                     let mut out_file = OpenOptions::new()
                         .create(true)
                         .write(true)
+                        .truncate(true)
                         .open(format!("./parsed/{}.txt", srv.0))
                         .unwrap();
 
@@ -91,8 +91,7 @@ mod tests {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Generate Rust type declarations for all the working OData services listed on the ES5 SAP Dev Center OData server
-    // https://sapes5.sapdevcenter.com/sap/opu/odata/iwfnd/CATALOGSERVICE/CatalogCollection('ES5')/Services
+    // Generate Rust type declarations for all listed OData services
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[test]
     pub fn gen_src_all() {

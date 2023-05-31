@@ -7,12 +7,6 @@ pub mod sap_annotations;
 pub mod utils;
 pub mod xml;
 
-pub fn default_true() -> bool {
-    true
-}
-pub fn default_false() -> bool {
-    false
-}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Tests
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

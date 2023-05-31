@@ -1,5 +1,5 @@
-use crate::default_true;
 use crate::sap_annotations::default_sap_content_version;
+use crate::utils::default_true;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
