@@ -8,6 +8,32 @@ use crate::ms_annotations::MSAnnotationsProperty;
 use crate::sap_annotations::SAPAnnotations;
 use crate::xml::default_true;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// All known strings are hard-coded as u8 arrays
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+static LINE_FEED: &[u8] = &[0x0a];
+static SPACE: &[u8] = &[0x20];
+
+static BOOLEAN: &[u8] = "bool".as_bytes();
+static COMMA: &[u8] = ",".as_bytes();
+static COLON: &[u8] = ":".as_bytes();
+static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
+static F32: &[u8] = "f32".as_bytes();
+static F64: &[u8] = "f64".as_bytes();
+static I8: &[u8] = "i8".as_bytes();
+static I16: &[u8] = "i16".as_bytes();
+static I32: &[u8] = "i32".as_bytes();
+static I64: &[u8] = "i64".as_bytes();
+static NAIVE_DATE_TIME: &[u8] = "NaiveDateTime".as_bytes();
+static OPTION_DECLARATION: &[u8] = "Option<".as_bytes();
+static PUBLIC: &[u8] = "pub".as_bytes();
+static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
+static STRING: &[u8] = "String".as_bytes();
+static TYPE_TERMINATOR: &[u8] = ">".as_bytes();
+static UUID: &[u8] = "uuid::Uuid".as_bytes();
+static U8: &[u8] = "u8".as_bytes();
+static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Property {
@@ -49,22 +75,25 @@ pub struct Property {
 /// ********************************************************************************************************************
 impl Property {
     fn trim_prefix<'a>(some_str: &'a str, some_prefix: &str) -> &'a str {
-        match some_str.strip_prefix(some_prefix) {
-            Some(suffix) => suffix,
-            None => some_str,
-        }
-    }
-
-    fn maybe_optional(rust_type: &str, is_optional: bool) -> String {
-        if is_optional {
-            format!("Option<{}>", rust_type)
+        if let Some(suffix) = some_str.strip_prefix(some_prefix) {
+            suffix
         } else {
-            rust_type.to_string()
+            some_str
         }
     }
 
-    fn to_rust_safe_name(&self) -> String {
+    fn maybe_optional(rust_type: &[u8], is_optional: bool) -> Vec<u8> {
+        if is_optional {
+            [OPTION_DECLARATION, rust_type, TYPE_TERMINATOR].concat()
+        } else {
+            [rust_type].concat()
+        }
+    }
+
+    fn to_rust_safe_name(&self) -> Vec<u8> {
         CheckKeyword::into_safe(convert_case::Casing::to_case(&self.name, Case::Snake))
+            .as_bytes()
+            .to_vec()
     }
 
     // For complex types, the type struct will already have been generated using the <ct_name> part extracted
@@ -72,44 +101,49 @@ impl Property {
     //   <namespace>.CT_<ct_name>
     //   <namespace>.<ct_name>
     //   <ct_name>
-    pub fn trim_complex_type_name(type_name: &str, namespace: &str) -> String {
-        let trim1 = Property::trim_prefix(type_name, &format!("{}.", namespace));
+    pub fn trim_complex_type_name(type_name: &str, namespace: &str) -> Vec<u8> {
+        let trim1 = Property::trim_prefix(type_name, namespace);
         let trim2 = Property::trim_prefix(trim1, "CT_");
 
         convert_case::Casing::to_case(&trim2, convert_case::Case::Pascal)
+            .as_bytes()
+            .to_vec()
     }
 
-    fn to_rust_type(&self, namespace: &str) -> String {
+    fn to_rust_type(&self, namespace: &str) -> Vec<u8> {
         match self.edm_type.as_ref() {
-            "Edm.Binary" => Property::maybe_optional("Vec<u8>", self.nullable),
-            "Edm.Boolean" => Property::maybe_optional("bool", self.nullable),
-            "Edm.Byte" => "u8".to_string(),
-            "Edm.DateTime" => Property::maybe_optional("NaiveDateTime", self.nullable),
+            "Edm.Binary" => Property::maybe_optional(VECTOR_U8, self.nullable),
+            "Edm.Boolean" => Property::maybe_optional(BOOLEAN, self.nullable),
+            "Edm.Byte" => U8.to_vec(),
+            "Edm.DateTime" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
             // TODO I suspect that this may not be the correct Rust datatype for Edm.DateTimeOffset...
-            "Edm.DateTimeOffset" => Property::maybe_optional("NaiveDateTime", self.nullable),
-            "Edm.Decimal" => "Decimal".to_string(),
-            "Edm.Double" => "f64".to_string(),
-            "Edm.Single" => "f32".to_string(),
-            "Edm.Guid" => "uuid".to_string(),
-            "Edm.SByte" => Property::maybe_optional("i8", self.nullable),
-            "Edm.Int16" => Property::maybe_optional("i16", self.nullable),
-            "Edm.Int32" => Property::maybe_optional("i32", self.nullable),
-            "Edm.Int64" => Property::maybe_optional("i64", self.nullable),
-            "Edm.String" => Property::maybe_optional("String", self.nullable),
-            "Edm.Time" => Property::maybe_optional("std::time::SystemTime", self.nullable),
+            "Edm.DateTimeOffset" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
+            "Edm.Decimal" => DECIMAL.to_vec(),
+            "Edm.Double" => F64.to_vec(),
+            "Edm.Single" => F32.to_vec(),
+            "Edm.Guid" => UUID.to_vec(),
+            "Edm.SByte" => Property::maybe_optional(I8, self.nullable),
+            "Edm.Int16" => Property::maybe_optional(I16, self.nullable),
+            "Edm.Int32" => Property::maybe_optional(I32, self.nullable),
+            "Edm.Int64" => Property::maybe_optional(I64, self.nullable),
+            "Edm.String" => Property::maybe_optional(STRING, self.nullable),
+            "Edm.Time" => Property::maybe_optional(STD_TIME_SYSTEMTIME, self.nullable),
 
             type_name => Property::trim_complex_type_name(type_name, namespace),
         }
     }
 
     pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
-        format!(
-            "\npub {}: {},",
+        [
+            LINE_FEED.to_vec(),
+            PUBLIC.to_vec(),
+            SPACE.to_vec(),
             self.to_rust_safe_name(),
-            self.to_rust_type(namespace)
-        )
-        .as_bytes()
-        .to_vec()
+            COLON.to_vec(),
+            self.to_rust_type(namespace),
+            COMMA.to_vec(),
+        ]
+        .concat()
     }
 }
 
@@ -124,10 +158,13 @@ mod tests {
     #[test]
     fn should_convert_unsafe_property_name() {
         use check_keyword::CheckKeyword;
-        let kw = "type";
+        let kw1 = "type";
+        let kw2 = "match";
 
-        assert!(kw.is_keyword());
-        assert_eq!(kw.into_safe(), "r#type");
+        assert!(kw1.is_keyword());
+        assert!(kw2.is_keyword());
+        assert_eq!(kw1.into_safe(), "r#type");
+        assert_eq!(kw2.into_safe(), "r#match");
     }
 
     #[test]
