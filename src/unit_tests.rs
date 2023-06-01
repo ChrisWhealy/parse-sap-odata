@@ -1,13 +1,6 @@
 mod tests {
+    use crate::utils::{longest, parse_odata::gen_src};
     use std::collections::HashMap;
-    use std::fs::OpenOptions;
-    use std::io::Write;
-
-    use crate::utils::{
-        longest,
-        parse_odata::{deserialize_sap_metadata, gen_src},
-        write_entity,
-    };
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // A list of all the working OData services available from the ES5 SAP Dev Center OData server
@@ -52,42 +45,6 @@ mod tests {
         let max_name_len = longest(&service_list);
 
         (service_list, max_name_len)
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Parse all listed OData services
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #[test]
-    pub fn parse_all() {
-        let mut out_buffer: Vec<u8> = Vec::new();
-        let (srv_list, max_name_len) = gen_service_list();
-
-        for srv in srv_list {
-            print!(
-                "Parsing {}.xml{:>width$}=> ",
-                srv.0,
-                " ",
-                width = max_name_len - srv.0.len() + 1,
-            );
-
-            match deserialize_sap_metadata(srv.0) {
-                Err(err) => println!("Error: {}", err.msg),
-                Ok(edmx) => {
-                    out_buffer.clear();
-                    let mut out_file = OpenOptions::new()
-                        .create(true)
-                        .write(true)
-                        .truncate(true)
-                        .open(format!("./parsed/{}.txt", srv.0))
-                        .unwrap();
-
-                    write_entity(&mut out_buffer, Some(&vec![edmx]));
-
-                    out_file.write_all(&out_buffer).unwrap();
-                    println!("{:>7} bytes written", out_buffer.len());
-                }
-            };
-        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

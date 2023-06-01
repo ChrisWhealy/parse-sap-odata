@@ -1,7 +1,7 @@
+use serde::{Deserialize, Serialize};
+
 use crate::utils::de_str_to_bool;
 use crate::utils::default_false;
-
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum DataServiceVersion {
@@ -26,7 +26,7 @@ pub struct MSAnnotationsEntityType {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Annotations specific to a Property
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct MSAnnotationsProperty {
     #[serde(

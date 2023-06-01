@@ -1,5 +1,7 @@
 // pub mod property_type;
 
+use std::cmp;
+
 use check_keyword::CheckKeyword;
 use convert_case::Case;
 use serde::{Deserialize, Serialize};
@@ -34,7 +36,7 @@ static UUID: &[u8] = "uuid::Uuid".as_bytes();
 static U8: &[u8] = "u8".as_bytes();
 static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Property {
     pub name: String,
@@ -102,10 +104,11 @@ impl Property {
     //   <namespace>.<ct_name>
     //   <ct_name>
     pub fn trim_complex_type_name(type_name: &str, namespace: &str) -> Vec<u8> {
-        let trim1 = Property::trim_prefix(type_name, namespace);
-        let trim2 = Property::trim_prefix(trim1, "CT_");
+        let trimmed = Property::trim_prefix(type_name, namespace);
+        let trimmed = Property::trim_prefix(trimmed, ".");
+        let trimmed = Property::trim_prefix(trimmed, "CT_");
 
-        convert_case::Casing::to_case(&trim2, convert_case::Case::Pascal)
+        convert_case::Casing::to_case(&trimmed, convert_case::Case::Pascal)
             .as_bytes()
             .to_vec()
     }

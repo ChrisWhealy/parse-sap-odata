@@ -76,8 +76,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 if let Some(cts) = &schema.complex_types {
                     for ct in cts {
-                        let trimmed_name =
-                            Property::trim_complex_type_name(ct.name.as_ref(), namespace);
+                        let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
                         let ct_name = convert_case::Casing::to_case(
                             &String::from_utf8(trimmed_name).unwrap(),
                             convert_case::Case::Pascal,
@@ -88,9 +87,11 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         // `CT_String` which only contain a single property called `String`.  Such "complex" types are
                         // collapsed down to a single native Rust type
                         if ct.properties.len() > 1 && !ct_name.is_keyword() {
+                            let mut props = ct.properties.clone();
+
                             out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_COPY_DEBUG));
 
-                            for prop in &ct.properties {
+                            for prop in props {
                                 out_buffer.append(&mut prop.to_rust(namespace));
                             }
 
@@ -104,10 +105,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // Transform each EntityType definition to a Rust struct
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 for entity in &schema.entity_types {
-                    out_buffer.append(&mut start_struct(
-                        entity.name.clone(),
-                        DERIVE_CLONE_COPY_DEBUG,
-                    ));
+                    out_buffer.append(&mut start_struct(entity.name.clone(), DERIVE_CLONE_COPY_DEBUG));
 
                     for prop in &entity.properties {
                         out_buffer.append(&mut prop.to_rust(namespace));
@@ -133,7 +131,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
             } else {
                 println!("Namespace {} not found in schema", namespace);
             };
-        }
+        },
     };
 
     out_buffer.clear();
