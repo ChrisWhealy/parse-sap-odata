@@ -1,9 +1,9 @@
 [package]
 name = "parse-sap-odata"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Chris Whealy <chris@lighthouse.no>"]
-edition = "2018"
-description = "SAP OData V2 parser"
+edition = "2021"
+description = "Generate Rust structs from SAP OData V2 metadata"
 keywords = ["odata", "sap", "parser", "opendata"]
 repository = "https://github.com/lighthouse-no/parse-sap-odata"
 license = "MIT"
