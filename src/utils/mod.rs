@@ -40,8 +40,8 @@ pub fn write_entity<T: Debug>(out_buf: &mut Vec<u8>, maybe_entity: Option<&Vec<T
                 }
                 out_buf.append(&mut vec![10]); // Add line feed
             }
-        }
-        None => {}
+        },
+        None => {},
     }
 }
 
@@ -60,8 +60,7 @@ where
 // Pass the generated source code through rustfmt
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn run_rustfmt(buffer: &Vec<u8>) -> Result<Vec<u8>, anyhow::Error> {
-    let rustfmt_path =
-        which("rustfmt").with_context(|| "Cannot find `rustfmt` in the path.  Is it installed?")?;
+    let rustfmt_path = which("rustfmt").with_context(|| "Cannot find `rustfmt` in the path.  Is it installed?")?;
 
     let mut fmt_proc = Command::new(rustfmt_path)
         .stdin(Stdio::piped())
@@ -82,9 +81,6 @@ pub fn run_rustfmt(buffer: &Vec<u8>) -> Result<Vec<u8>, anyhow::Error> {
     } else {
         let rustfmt_err_out = std::str::from_utf8(&rustfmt_output.stderr).unwrap();
 
-        Err(anyhow!(
-            "Syntax error in generated source code:\n{}",
-            rustfmt_err_out
-        ))
+        Err(anyhow!("Syntax error in generated source code:\n{}", rustfmt_err_out))
     }
 }

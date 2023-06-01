@@ -23,9 +23,7 @@ pub struct DataServices {
 
 impl DataServices {
     pub fn fetch_schema(&self, namespace: &str) -> Option<&Schema> {
-        self.schemas
-            .iter()
-            .find(|schema| schema.namespace == namespace)
+        self.schemas.iter().find(|schema| schema.namespace == namespace)
     }
 
     pub fn default_schema(&self) -> Option<&Schema> {

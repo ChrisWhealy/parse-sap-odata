@@ -35,10 +35,7 @@ pub struct EntityType {
     #[serde(rename = "sap:label")]
     pub sap_label: Option<String>,
 
-    #[serde(
-        rename = "sap:content-version",
-        default = "default_sap_content_version"
-    )]
+    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
     pub sap_content_version: String,
 
     #[serde(rename = "Property", default)]
@@ -50,11 +47,8 @@ pub struct EntityType {
 
 impl EntityType {
     pub fn key_property(&self) -> Option<&Property> {
-        self.properties.iter().find(|property| {
-            self.key
-                .property_refs
-                .iter()
-                .any(|prop_ref| prop_ref.name == property.name)
-        })
+        self.properties
+            .iter()
+            .find(|property| self.key.property_refs.iter().any(|prop_ref| prop_ref.name == property.name))
     }
 }

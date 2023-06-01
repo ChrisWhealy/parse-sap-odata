@@ -88,6 +88,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         // collapsed down to a single native Rust type
                         if ct.properties.len() > 1 && !ct_name.is_keyword() {
                             let mut props = ct.properties.clone();
+                            props.sort();
 
                             out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_COPY_DEBUG));
 
@@ -107,7 +108,10 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 for entity in &schema.entity_types {
                     out_buffer.append(&mut start_struct(entity.name.clone(), DERIVE_CLONE_COPY_DEBUG));
 
-                    for prop in &entity.properties {
+                    let mut props = entity.properties.clone();
+                    props.sort();
+
+                    for prop in props {
                         out_buffer.append(&mut prop.to_rust(namespace));
                     }
 

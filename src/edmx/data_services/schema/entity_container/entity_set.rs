@@ -11,10 +11,7 @@ pub struct EntitySet {
     pub name: String,
     pub entity_type: String,
 
-    #[serde(
-        rename = "sap:content-version",
-        default = "default_sap_content_version"
-    )]
+    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
     pub sap_content_version: String,
 
     #[serde(rename = "sap:createable", default = "default_true")]

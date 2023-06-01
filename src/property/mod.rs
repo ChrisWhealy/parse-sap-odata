@@ -1,7 +1,5 @@
 // pub mod property_type;
 
-use std::cmp;
-
 use check_keyword::CheckKeyword;
 use convert_case::Case;
 use serde::{Deserialize, Serialize};
