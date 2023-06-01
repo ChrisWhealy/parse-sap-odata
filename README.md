@@ -149,7 +149,7 @@ $ git clone https://github.com/lighthouse-no/parse-sap-odata
 
 ## Testing
 
-If you wish to see the console output created during a test, `cargo` nust be passed the flags `-- --nocapture`.
+If you wish to see the console output created during a test, `cargo` must be passed the flags `-- --nocapture`.
 
 ```bash
 13:49 $ cargo test -- --nocapture
