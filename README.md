@@ -141,7 +141,7 @@ In such cases, fields declared to be of these "simple" complex types (such as `C
 
 The Rust tool chain can be installed by following [these instructions](https://www.rust-lang.org/tools/install)
 
-## Clone Reposotory
+## Clone Repository
 
 ```bash
 $ git clone https://github.com/lighthouse-no/parse-sap-odata
@@ -149,7 +149,7 @@ $ git clone https://github.com/lighthouse-no/parse-sap-odata
 
 ## Testing
 
-All generated code is written to the directory stored in the compile time venvironment variable `OUT_DIR`
+If you wish to see the console output created during a test, `cargo` nust be passed the flags `-- --nocapture`.
 
 ```bash
 13:49 $ cargo test -- --nocapture
