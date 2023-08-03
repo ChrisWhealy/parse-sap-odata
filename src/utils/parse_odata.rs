@@ -1,18 +1,21 @@
-use std::fs::{File, OpenOptions};
-use std::io::{BufReader, Read, Write};
-use std::str::FromStr;
+use std::{
+    env,
+    fs::{File, OpenOptions},
+    io::{BufReader, Read, Write},
+    path::Path,
+    str::FromStr,
+};
 
 use check_keyword::CheckKeyword;
 
-use crate::edmx::Edmx;
-use crate::property::Property;
-use crate::utils::parse_error::ParseError;
-use crate::utils::run_rustfmt;
+use crate::{edmx::Edmx, property::Property, utils::parse_error::ParseError, utils::run_rustfmt};
+
+static DEFAULT_OUTPUT_DIR: &str = &"./gen";
 
 static LINE_FEED: &[u8] = &[0x0a];
 static SPACE: &[u8] = &[0x20];
 
-static DERIVE_CLONE_COPY_DEBUG: &[u8] = &"#[derive(Clone, Copy, Debug)]".as_bytes();
+static DERIVE_CLONE_DEBUG: &[u8] = &"#[derive(Clone, Debug)]".as_bytes();
 static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 static OPEN_CURLY: &[u8] = &"{".as_bytes();
 static CLOSE_CURLY: &[u8] = &"}".as_bytes();
@@ -33,14 +36,17 @@ fn end_struct() -> Vec<u8> {
     [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Deserialize a given metadata document
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
     let mut xml_buffer: Vec<u8> = Vec::new();
-    let xml_input_path = format!("./tests/{}.xml", metadata_file_name);
+    let xml_input_pathname = format!("./odata/{}.xml", metadata_file_name);
 
-    let f_xml = File::open(&xml_input_path)?;
+    // Tell cargo to watch the input file
+    println!("cargo:rerun-if-changed={}", &xml_input_pathname);
+
+    let f_xml = File::open(Path::new(&xml_input_pathname))?;
     let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
     let xml = String::from_utf8(xml_buffer)?;
     let edmx = Edmx::from_str(&xml)?;
@@ -48,25 +54,27 @@ pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseE
     return Ok(edmx);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Generate Rust structs from the OData metadata
 //
 // Any field whose name clashes with a Rust reserved word is written in raw format: E.G. "type" --> "r#type"
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_src(metadata_file_name: &str, namespace: &str) {
     let mut out_buffer: Vec<u8> = Vec::new();
 
     match deserialize_sap_metadata(metadata_file_name) {
         // Deserialization can fail sometimes.
-        // This happens when a quoted XML attribute value contains unescaped double quote characters
+        // This can happen for example, when a quoted XML attribute value contains unescaped double quote characters
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
-            let output_file_name = format!("./gen/{}.rs", metadata_file_name);
+            let out_dir = env::var_os("OUT_DIR").unwrap_or(DEFAULT_OUTPUT_DIR.into());
+            let output_path = Path::new(&out_dir).join(format!("{}.rs", metadata_file_name));
+
             let mut out_file = OpenOptions::new()
                 .create(true)
                 .write(true)
                 .truncate(true)
-                .open(&output_file_name)
+                .open(&output_path)
                 .unwrap();
 
             // I can haz namespace?
@@ -79,7 +87,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
                         let ct_name = convert_case::Casing::to_case(
                             &String::from_utf8(trimmed_name).unwrap(),
-                            convert_case::Case::Pascal,
+                            convert_case::Case::UpperCamel,
                         );
 
                         // If the complex type contains only one property and the name suffix is a Rust type, then a
@@ -90,7 +98,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                             let mut props = ct.properties.clone();
                             props.sort();
 
-                            out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_COPY_DEBUG));
+                            out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_DEBUG));
 
                             for prop in props {
                                 out_buffer.append(&mut prop.to_rust(namespace));
@@ -106,7 +114,11 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // Transform each EntityType definition to a Rust struct
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 for entity in &schema.entity_types {
-                    out_buffer.append(&mut start_struct(entity.name.clone(), DERIVE_CLONE_COPY_DEBUG));
+                    let struct_name = convert_case::Casing::to_case(
+                        &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
+                        convert_case::Case::UpperCamel,
+                    );
+                    out_buffer.append(&mut start_struct(struct_name, DERIVE_CLONE_DEBUG));
 
                     let mut props = entity.properties.clone();
                     props.sort();

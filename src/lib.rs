@@ -6,9 +6,3 @@ pub mod property;
 pub mod sap_annotations;
 pub mod utils;
 pub mod xml;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Tests
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#[cfg(test)]
-mod unit_tests;

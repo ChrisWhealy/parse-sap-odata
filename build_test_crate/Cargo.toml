@@ -1,0 +1,12 @@
+[package]
+name = "build-test-crate"
+version = "1.0.0"
+edition = "2021"
+
+[build-dependencies]
+parse-sap-odata = { path = "../" }
+
+[dependencies]
+rust_decimal = "1.30.0"
+uuid = "1.4.1"
+chrono = "0.4.26"

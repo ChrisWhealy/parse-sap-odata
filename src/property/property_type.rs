@@ -20,16 +20,10 @@ pub enum PropertyType {
     Boolean { default: Option<bool> },
 
     #[serde(rename = "Edm.Byte")]
-    Byte {
-        precision: Option<u8>,
-        default: Option<Vec<u8>>,
-    },
+    Byte { precision: Option<u8>, default: Option<Vec<u8>> },
 
     #[serde(rename = "Edm.SByte")]
-    SByte {
-        precision: Option<u8>,
-        default: Option<i8>,
-    },
+    SByte { precision: Option<u8>, default: Option<i8> },
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Temporal types
@@ -41,49 +35,28 @@ pub enum PropertyType {
     },
 
     #[serde(rename = "Edm.DateTimeOffset")]
-    DateTimeOffset {
-        precision: Option<u8>,
-        default: Option<Duration>,
-    },
+    DateTimeOffset { precision: Option<u8>, default: Option<Duration> },
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Numeric types
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(rename = "Edm.Decimal")]
-    Decimal {
-        precision: Option<u8>,
-        default: Option<f64>,
-    },
+    Decimal { precision: Option<u8>, default: Option<f64> },
 
     #[serde(rename = "Edm.Double")]
-    Double {
-        precision: Option<u8>,
-        default: Option<f64>,
-    },
+    Double { precision: Option<u8>, default: Option<f64> },
 
     #[serde(rename = "Edm.Single")]
-    Single {
-        precision: Option<u8>,
-        default: Option<f64>,
-    },
+    Single { precision: Option<u8>, default: Option<f64> },
 
     #[serde(rename = "Edm.Int16")]
-    Int16 {
-        precision: Option<u8>,
-        default: Option<i16>,
-    },
+    Int16 { precision: Option<u8>, default: Option<i16> },
 
     #[serde(rename = "Edm.Int32")]
-    Int32 {
-        precision: Option<u8>,
-        default: Option<Vec<u8>>,
-    },
+    Int32 { precision: Option<u8>, default: Option<Vec<u8>> },
 
     #[serde(rename = "Edm.Int64")]
-    Int64 {
-        max_length: Option<u32>,
-        fixed_length: Option<u32>,
-    },
+    Int64 { max_length: Option<u32>, fixed_length: Option<u32> },
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // String types
@@ -96,8 +69,5 @@ pub enum PropertyType {
     },
 
     #[serde(rename = "Edm.Guid")]
-    Guid {
-        max_length: Option<u32>,
-        fixed_length: Option<u32>,
-    },
+    Guid { max_length: Option<u32>, fixed_length: Option<u32> },
 }

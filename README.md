@@ -8,68 +8,104 @@ Parse the metadata XML describing an SAP OData service and generate Rust entitie
 * [x] `EntityType`
 * [ ] `FunctionImport`
 
-
 > ***TODO***
 >
-> Currently when generating a Rust `struct`, only the `Name` and `Type` properties are used.
+> Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.<br>
 > Consider how the other XML attribute values and SAP annotations could be made available within the Rust `struct`.
 
-## XML Input
+---
+## Usage
 
-Currently, the metadata XML for an OData service must be written to a local file that this code generator then reads.
+### Declare Build Dependency
 
-> ***TODO***
->
-> Consider fetching the metadata at build time &mdash; but this raises questions about whether allowing a build script to look outside its sandbox is an anti-pattern.
->
-> Yeah, it might well be...
+In the `Cargo.toml` of your application, define an entry in `[build-dependencies]` that points to the `parse-sap-odata` crate:
 
-Within the metadata for the `GWSAMPLE_BASIC` OData service, there is the following entity type declaration for `SalesOrderLineItem`:
-
-```xml
-<EntityType Name="SalesOrderLineItem" sap:content-version="1">
-  <Key>
-    <PropertyRef Name="SalesOrderID"/>
-    <PropertyRef Name="ItemPosition"/>
-  </Key>
-  <Property Name="SalesOrderID" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Sa. Ord. ID" sap:updatable="false"/>
-  <Property Name="ItemPosition" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="PO Item Pos" sap:creatable="false" sap:updatable="false"/>
-  <Property Name="ProductID" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Product ID"/>
-  <Property Name="Note" Type="Edm.String" MaxLength="255" sap:unicode="false" sap:label="Description" sap:sortable="false" sap:filterable="false"/>
-  <Property Name="NoteLanguage" Type="Edm.String" MaxLength="2" sap:unicode="false" sap:label="Language" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-  <Property Name="CurrencyCode" Type="Edm.String" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:creatable="false" sap:updatable="false" sap:semantics="currency-code"/>
-  <Property Name="GrossAmount" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Gross Amt." sap:creatable="false" sap:updatable="false"/>
-  <Property Name="NetAmount" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Net Amt." sap:creatable="false" sap:updatable="false"/>
-  <Property Name="TaxAmount" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Tax Amt." sap:creatable="false" sap:updatable="false"/>
-  <Property Name="DeliveryDate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Time Stamp" sap:sortable="false" sap:filterable="false"/>
-  <Property Name="Quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:unit="QuantityUnit" sap:label="Quantity" sap:sortable="false" sap:filterable="false"/>
-  <Property Name="QuantityUnit" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Qty. Unit" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
-  <NavigationProperty Name="ToHeader" Relationship="GWSAMPLE_BASIC.Assoc_SalesOrder_SalesOrderLineItems" FromRole="ToRole_Assoc_SalesOrder_SalesOrderLineItems" ToRole="FromRole_Assoc_SalesOrder_SalesOrderLineItems"/>
-  <NavigationProperty Name="ToProduct" Relationship="GWSAMPLE_BASIC.Assoc_Product_SalesOrderLineItems" FromRole="ToRole_Assoc_Product_SalesOrderLineItems" ToRole="FromRole_Assoc_Product_SalesOrderLineItems"/>
-</EntityType>
+```toml
+[build-dependencies]
+parse-sap-odata = "^1.1.0"
 ```
 
-## Rust Output
+Your app will also require these dependencies
 
-From the above definition, the `Name` and `Type` attributes are used to generate the following basic Rust `struct`:
+```toml
+[dependencies]
+rust_decimal = "^1.30"
+uuid = "^1.4"
+chrono = "^0.4"
+```
+
+### Create a Build Script
+
+In your app's `build.rs`, run the generator for your desired OData service:
 
 ```rust
-#[derive(Clone, Copy, Debug)]
-pub struct SalesOrderLineItem {
-    pub currency_code: Option<String>,
-    pub delivery_date: NaiveDateTime,
-    pub gross_amount: rust_decimal::Decimal,
-    pub item_position: String,
-    pub net_amount: rust_decimal::Decimal,
-    pub note: Option<String>,
-    pub note_language: Option<String>,
-    pub product_id: String,
-    pub quantity: rust_decimal::Decimal,
-    pub quantity_unit: Option<String>,
-    pub sales_order_id: String,
-    pub tax_amount: rust_decimal::Decimal,
+use parse_sap_odata::utils::parse_odata::gen_src;
+
+fn main() {
+    // gen_src() requires two arguments
+    // 1) metadata_file_name: String  The name of the XML file in the ./odata directory
+    //                                Do not include the '.xml' suffix in the file name!
+    // 2) namespace:          String  The namespace defined in the <Schema> attribute of the OData XML
+    gen_src("gwsample_basic", "GWSAMPLE_BASIC");
 }
 ```
+
+See the Rust documentation page for [build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html) for more information.
+
+### XML Input Files
+
+All metadata XML for the OData services your app consumes must be located in the `./odata` directory immediately under your app's top level directory.
+
+### Generated Output
+
+If `cargo` detects a `build.rs` file in your project/crate, then it automatically populates the environment variable `OUT_DIR`.
+This variable then points to the directory into which all build script output is written.
+
+The default directory name will be `target/debug/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
+
+You can specify your own value for `OUT_DIR` either by calling `cargo` with the `--out_dir` flag, or by creating your own `config.toml` file in the `./cargo` directory.
+See [Cargo Configuration](https://doc.rust-lang.org/cargo/reference/config.html) for more details.
+
+---
+
+## Referencing Generated Output
+
+In the source code of your application, the generated OData `structs` can be referenced like this:
+
+```rust
+use chrono::Utc;
+
+include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
+
+fn main() {
+    let now = Utc::now().naive_utc();
+    let bp = BusinessPartner {
+        address: Address {
+            address_type: Some(String::from("Dummay addres type")),
+            building: Some(String::from("Dummy building")),
+            city: Some(String::from("Dummy city")),
+            country: Some(String::from("Dummy country")),
+            postal_code: Some(String::from("Dummy postal code")),
+            street: Some(String::from("Dummy street")),
+        },
+        business_partner_id: String::from("Dummy business partner id"),
+        business_partner_role: String::from("Dummy business partner role"),
+        changed_at: Some(now),
+        company_name: String::from("Dummy company name"),
+        created_at: Some(now),
+        currency_code: String::from("GBP"),
+        email_address: String::from("Dummy email address"),
+        fax_number: Some(String::from("Dummy fax number")),
+        legal_form: Some(String::from("Dummy legal form")),
+        phone_number: Some(String::from("0123456789")),
+        web_address: Some(String::from("Dummy website address")),
+    };
+
+    println!("{:#?}", bp);
+}
+```
+
+---
 
 ## OData Complex Types
 
@@ -117,6 +153,8 @@ pub struct Address {
 }
 ```
 
+---
+
 ## OData "Simple" Complex Types
 
 The metadata for the `GWSAMPLE_BASIC` OData service contains the following complex type:
@@ -130,67 +168,66 @@ The metadata for the `GWSAMPLE_BASIC` OData service contains the following compl
 Allowing for the current situation in which additional attribute values and SAP Annotations are not preserved, this particular type turns out not to be complex at all &mdash; its just a `String`.
 In such cases, fields declared to be of these "simple" complex types (such as `CT_String`), are collapsed down to the Rust native type of the single inner property &mdash; which in this example is simply a `String`.
 
-## Other TODOs
+---
 
-* Support Function Imports
-* Check whether the Rust `chrono::naive::NaiveDateTime` type is the best fit for `Edm.DateTimeOffset`
-* Implement `build.rs` script to allow another app to consume the generated code
-  * Write generated code to the directory held in the compile time environment variable `OUT_DIR`
+## TODOs
 
-## Prerequisites
+1. Consider fetching the metadata at build time &mdash; but this raises the question of whether allowing a build script to look outside its sandbox is an anti-pattern...
+1. Support Function Imports
 
-The Rust tool chain can be installed by following [these instructions](https://www.rust-lang.org/tools/install)
+---
 
-## Clone Repository
+## Testing this Crate Locally
 
-```bash
-$ git clone https://github.com/lighthouse-no/parse-sap-odata
+1. Clone this repo
+2. Change into the repo's `build_test_crate` subdirectory.
+3. Run `cargo build`
+4. Run `./target/debug/build-test-crate` and you will see output similar to this:
+
+```rust
+BusinessPartner {
+    address: Address {
+        address_type: Some(
+            "Dummy address type",
+        ),
+        building: Some(
+            "Dummy building",
+        ),
+        city: Some(
+            "Dummy city",
+        ),
+        country: Some(
+            "Dummy country",
+        ),
+        postal_code: Some(
+            "Dummy postal code",
+        ),
+        street: Some(
+            "Dummy street",
+        ),
+    },
+    business_partner_id: "Dummy business partner id",
+    business_partner_role: "Dummy business partner role",
+    changed_at: Some(
+        2023-08-03T10:42:57.532857,
+    ),
+    company_name: "Dummy company name",
+    created_at: Some(
+        2023-08-03T10:42:57.532857,
+    ),
+    currency_code: "GBP",
+    email_address: "Dummy email address",
+    fax_number: Some(
+        "Dummy fax number",
+    ),
+    legal_form: Some(
+        "Dummy legal form",
+    ),
+    phone_number: Some(
+        "0123456789",
+    ),
+    web_address: Some(
+        "Dummy website address",
+    ),
+}
 ```
-
-## Testing
-
-If you wish to see the console output created during a test, `cargo` must be passed the flags `-- --nocapture`.
-
-```bash
-13:49 $ cargo test -- --nocapture
-    Finished test [unoptimized + debuginfo] target(s) in 0.05s
-     Running unittests src/lib.rs (target/debug/deps/parse_sap_odata-37f19949c8ea98f2)
-
-running 1 test
-Generating source code from page_builder_pers.xml
-Generating source code from sepmra_gr_post.xml
-Generating source code from ze2e100_sol_2_srv.xml
-Generating source code from sgbt_nte_cds_api_d_srv.xml
-Generating source code from interop.xml
-Generating source code from zsocds_srv.xml
-Generating source code from epm_ref_apps_po_apv_srv.xml
-Generating source code from zdevelopercenter.xml
-Generating source code from sepmra_prod_man.xml
-Generating source code from sepmra_so_man.xml
-Generating source code from z_test_cds_with_param_srv.xml
-Generating source code from page_builder_cust.xml
-Generating source code from epm_ref_apps_shop_srv.xml
-Generating source code from zepm_ref_apps_po_apv_srv.xml
-Generating source code from transport.xml
-Generating source code from sepmra_po_apv.xml
-Generating source code from page_builder_conf.xml
-Generating source code from rmtsampleflight.xml
-Generating source code from gwsample_basic.xml
-Generating source code from zagencycds_srv.xml
-Generating source code from zpdcds_srv.xml
-Generating source code from epm_ref_apps_prod_man_srv.xml
-Generating source code from sepmra_po_man.xml
-Generating source code from catalogservice_v0002.xml
-Generating source code from catalogservice.xml
-Generating source code from gwdemo.xml
-Generating source code from sepmra_ovw.xml
-Generating source code from error_log_srv.xml
-Generating source code from sgbt_nte_cds_api_srv.xml
-Generating source code from zrfc1_srv.xml
-Generating source code from sepmra_shop.xml
-test unit_tests::tests::gen_src_all ... ok
-
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 2.26s
-```
-
-For each input XML file, a corresponding `.rs` file will appear in the `./gen` directory.
