@@ -10,6 +10,7 @@ use check_keyword::CheckKeyword;
 
 use crate::{edmx::Edmx, property::Property, utils::parse_error::ParseError, utils::run_rustfmt};
 
+static DEFAULT_INPUT_DIR: &str = &"./odata";
 static DEFAULT_OUTPUT_DIR: &str = &"./gen";
 
 static LINE_FEED: &[u8] = &[0x0a];
@@ -41,10 +42,7 @@ fn end_struct() -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
     let mut xml_buffer: Vec<u8> = Vec::new();
-    let xml_input_pathname = format!("./odata/{}.xml", metadata_file_name);
-
-    // Tell cargo to watch the input file
-    println!("cargo:rerun-if-changed={}", &xml_input_pathname);
+    let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, metadata_file_name);
 
     let f_xml = File::open(Path::new(&xml_input_pathname))?;
     let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
@@ -141,7 +139,15 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // errors occur, the output file remains empty
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 match run_rustfmt(&out_buffer) {
-                    Ok(formatted_bytes) => out_file.write_all(&formatted_bytes).unwrap(),
+                    Ok(formatted_bytes) => {
+                        out_file.write_all(&formatted_bytes).unwrap();
+
+                        // Tell cargo to watch the input file
+                        println!(
+                            "cargo:rerun-if-changed={}",
+                            format!("{}/{}.xml", DEFAULT_INPUT_DIR, metadata_file_name)
+                        );
+                    },
                     Err(err) => println!("Error: rustfmt ended with {}", err.to_string()),
                 }
             } else {
