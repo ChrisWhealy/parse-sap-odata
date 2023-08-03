@@ -61,9 +61,9 @@ All metadata XML for the OData services your app consumes must be located in the
 If `cargo` detects a `build.rs` file in your project/crate, then it automatically populates the environment variable `OUT_DIR`.
 This variable then points to the directory into which all build script output is written.
 
-The default directory name will be `target/debug/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
+The default directory name is `target/debug/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
 
-You can specify your own value for `OUT_DIR` either by calling `cargo` with the `--out_dir` flag, or by creating your own `config.toml` file in the `./cargo` directory.
+You can specify your own value for `OUT_DIR` either by calling `cargo` with the `--out_dir` flag, or by creating your own `config.toml` file in the `./.cargo` directory.
 See [Cargo Configuration](https://doc.rust-lang.org/cargo/reference/config.html) for more details.
 
 ---
