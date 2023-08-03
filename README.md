@@ -81,7 +81,7 @@ fn main() {
     let now = Utc::now().naive_utc();
     let bp = BusinessPartner {
         address: Address {
-            address_type: Some(String::from("Dummay addres type")),
+            address_type: Some(String::from("Dummy address type")),
             building: Some(String::from("Dummy building")),
             city: Some(String::from("Dummy city")),
             country: Some(String::from("Dummy country")),
@@ -95,7 +95,7 @@ fn main() {
         created_at: Some(now),
         currency_code: String::from("GBP"),
         email_address: String::from("Dummy email address"),
-        fax_number: Some(String::from("Dummy fax number")),
+        fax_number: Some(String::from("0123456789")),
         legal_form: Some(String::from("Dummy legal form")),
         phone_number: Some(String::from("0123456789")),
         web_address: Some(String::from("Dummy website address")),
