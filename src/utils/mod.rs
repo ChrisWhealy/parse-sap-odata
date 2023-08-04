@@ -82,7 +82,7 @@ pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>
     if rustfmt_output.status.success() {
         Ok(rustfmt_output.stdout)
     } else {
-        // For diagnostic purposes during developemnt, write the failed source code to $OUT_DIR as file
+        // For diagnostic purposes during development, write the failed source code to $OUT_DIR as file
         // "failed_<metadata_file_name>.rs"
         let out_dir = env::var_os("OUT_DIR").unwrap();
         let failed_file_name = format!("failed_{}.rs", metadata_file_name);
