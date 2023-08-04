@@ -11,7 +11,6 @@ use check_keyword::CheckKeyword;
 use crate::{edmx::Edmx, property::Property, utils::parse_error::ParseError, utils::run_rustfmt};
 
 static DEFAULT_INPUT_DIR: &str = &"./odata";
-static DEFAULT_OUTPUT_DIR: &str = &"./gen";
 
 static LINE_FEED: &[u8] = &[0x0a];
 static SPACE: &[u8] = &[0x20];
@@ -65,7 +64,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
         // This can happen for example, when a quoted XML attribute value contains unescaped double quote characters
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
-            let out_dir = env::var_os("OUT_DIR").unwrap_or(DEFAULT_OUTPUT_DIR.into());
+            let out_dir = env::var_os("OUT_DIR").unwrap();
             let output_path = Path::new(&out_dir).join(format!("{}.rs", metadata_file_name));
 
             let mut out_file = OpenOptions::new()
@@ -132,13 +131,8 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // TODO Generate function imports
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Syntax check and format the generated code
-                //
-                // TODO: Need to write the raw source code to a file before passing it through `rustfmt` because if any
-                // errors occur, the output file remains empty
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                match run_rustfmt(&out_buffer) {
+                match run_rustfmt(&out_buffer, &metadata_file_name) {
                     Ok(formatted_bytes) => {
                         out_file.write_all(&formatted_bytes).unwrap();
 
@@ -151,7 +145,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     Err(err) => println!("Error: rustfmt ended with {}", err.to_string()),
                 }
             } else {
-                println!("Namespace {} not found in schema", namespace);
+                println!("Required namespace '{}' not found in schema", namespace);
             };
         },
     };

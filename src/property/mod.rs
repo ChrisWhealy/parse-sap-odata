@@ -154,8 +154,8 @@ pub struct PropertyRef {
     pub name: String,
 }
 
+// *********************************************************************************************************************
 mod tests {
-
     #[test]
     fn should_convert_unsafe_property_name() {
         use check_keyword::CheckKeyword;

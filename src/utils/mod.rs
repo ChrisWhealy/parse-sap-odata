@@ -1,10 +1,13 @@
-use std::cmp::max;
-use std::collections::HashMap;
-use std::fmt::Debug;
-use std::str::FromStr;
 use std::{
+    cmp::max,
+    collections::HashMap,
+    env,
+    fmt::Debug,
+    fs::OpenOptions,
     io::Write,
+    path::Path,
     process::{Command, Stdio},
+    str::FromStr,
 };
 
 use anyhow::{anyhow, Context};
@@ -59,7 +62,7 @@ where
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Pass the generated source code through rustfmt
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn run_rustfmt(buffer: &Vec<u8>) -> Result<Vec<u8>, anyhow::Error> {
+pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>, anyhow::Error> {
     let rustfmt_path = which("rustfmt").with_context(|| "Cannot find `rustfmt` in the path.  Is it installed?")?;
 
     let mut fmt_proc = Command::new(rustfmt_path)
@@ -79,6 +82,20 @@ pub fn run_rustfmt(buffer: &Vec<u8>) -> Result<Vec<u8>, anyhow::Error> {
     if rustfmt_output.status.success() {
         Ok(rustfmt_output.stdout)
     } else {
+        // For diagnostic purposes during developemnt, write the failed source code to $OUT_DIR as file
+        // "failed_<metadata_file_name>.rs"
+        let out_dir = env::var_os("OUT_DIR").unwrap();
+        let failed_file_name = format!("failed_{}.rs", metadata_file_name);
+        let gen_failed_path = Path::new(&out_dir).join(failed_file_name);
+
+        let _dont_care = OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(&gen_failed_path)
+            .unwrap()
+            .write_all(&buffer);
+
         let rustfmt_err_out = std::str::from_utf8(&rustfmt_output.stderr).unwrap();
 
         Err(anyhow!("Syntax error in generated source code:\n{}", rustfmt_err_out))
