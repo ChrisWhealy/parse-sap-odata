@@ -15,7 +15,7 @@ static DEFAULT_INPUT_DIR: &str = &"./odata";
 static LINE_FEED: &[u8] = &[0x0a];
 static SPACE: &[u8] = &[0x20];
 
-static DERIVE_CLONE_DEBUG: &[u8] = &"#[derive(Clone, Debug, Default)]".as_bytes();
+static DERIVE_CLONE_DEBUG_DEFAULT: &[u8] = &"#[derive(Clone, Debug, Default)]".as_bytes();
 static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 static OPEN_CURLY: &[u8] = &"{".as_bytes();
 static CLOSE_CURLY: &[u8] = &"}".as_bytes();
@@ -23,7 +23,7 @@ static CLOSE_CURLY: &[u8] = &"}".as_bytes();
 fn start_struct(struct_name: String, derive: &[u8]) -> Vec<u8> {
     [
         LINE_FEED,
-        &derive,
+        derive,
         LINE_FEED,
         START_PUB_STRUCT,
         SPACE,
@@ -95,7 +95,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                             let mut props = ct.properties.clone();
                             props.sort();
 
-                            out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_DEBUG));
+                            out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_DEBUG_DEFAULT));
 
                             for prop in props {
                                 out_buffer.append(&mut prop.to_rust(namespace));
@@ -115,7 +115,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
                         convert_case::Case::UpperCamel,
                     );
-                    out_buffer.append(&mut start_struct(struct_name, DERIVE_CLONE_DEBUG));
+                    out_buffer.append(&mut start_struct(struct_name, DERIVE_CLONE_DEBUG_DEFAULT));
 
                     let mut props = entity.properties.clone();
                     props.sort();
