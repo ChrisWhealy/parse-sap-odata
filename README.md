@@ -1,8 +1,6 @@
 # Parse the Metadata from an SAP OData Service
 
-This is a work in progress!
-
-Parse the metadata XML describing an SAP OData service and generate Rust entities for each EDM type:
+Parse the metadata XML describing an SAP OData service and generate basic Rust entities for each EDM type:
 
 * [x] `ComplexType`
 * [x] `EntityType`
@@ -25,7 +23,7 @@ In the `Cargo.toml` of your application, define an entry in `[build-dependencies
 parse-sap-odata = "^1.1.0"
 ```
 
-Your app will also require these dependencies
+Your app will also (almost certainly) require these dependencies
 
 ```toml
 [dependencies]
@@ -36,7 +34,7 @@ chrono = "^0.4"
 
 ### Create a Build Script
 
-In your app's `build.rs`, run the generator for your desired OData service:
+In your app's build script (`build.rs`), run the generator for your desired OData service:
 
 ```rust
 use parse_sap_odata::utils::parse_odata::gen_src;
@@ -56,6 +54,8 @@ See the Rust documentation page for [build scripts](https://doc.rust-lang.org/ca
 
 All metadata XML for the OData services your app consumes must be located in the `./odata` directory immediately under your app's top level directory.
 
+Using the above example, the [OData metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for service [`GWSAMPLE_BASIC`](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/) must be located in file [`./odata/gwsample_basic.xml`](./build_test_crate/odata/gwsample_basic.xml)
+
 ### Generated Output
 
 If `cargo` detects a `build.rs` file in your project/crate, then it automatically populates the environment variable `OUT_DIR`.
@@ -63,14 +63,14 @@ This variable then points to the directory into which all build script output is
 
 The default directory name is `target/debug/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
 
-You can specify your own value for `OUT_DIR` either by calling `cargo` with the `--out_dir` flag, or by creating your own `config.toml` file in the `./.cargo` directory.
+You can specify your own value for `OUT_DIR` either by passing a value to `cargo`'s `--out_dir` flag, or by defining your own location in a `config.toml` file in the `./.cargo` directory.
 See [Cargo Configuration](https://doc.rust-lang.org/cargo/reference/config.html) for more details.
 
 ---
 
 ## Referencing Generated Output
 
-In the source code of your application, the generated OData `structs` can be referenced like this:
+Since `cargo` runs the build script before compiling your application code, the source code of your application can reference the generated `structs` like this:
 
 ```rust
 use chrono::Utc;
