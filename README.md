@@ -54,7 +54,7 @@ See the Rust documentation page for [build scripts](https://doc.rust-lang.org/ca
 
 All metadata XML for the OData services your app consumes must be located in the `./odata` directory immediately under your app's top level directory.
 
-Using the above example, the [OData metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for service [`GWSAMPLE_BASIC`](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/) must be located in file [`./odata/gwsample_basic.xml`](./build_test_crate/odata/gwsample_basic.xml)
+Using the above example from SAP's Dev Center server, the [OData metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for service [`GWSAMPLE_BASIC`](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/) must be located in file [`./odata/gwsample_basic.xml`](./build_test_crate/odata/gwsample_basic.xml)
 
 ### Generated Output
 
