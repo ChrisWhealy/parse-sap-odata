@@ -9,6 +9,7 @@ use std::{
 };
 include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
 
+static HOST_PATH: &[u8] = "https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep".as_bytes();
 static SERVICE_NAME: &[u8] = "GWSAMPLE_BASIC".as_bytes();
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
@@ -28,11 +29,11 @@ fn fetch_auth() -> Result<String, String> {
         for line in lines {
             match line {
                 Ok(l) => {
-                    if l.starts_with("SAP_DEVCENTER_USER") {
+                    if l.starts_with("SAP_USER") {
                         let (_, u) = l.split_at(l.find("=").unwrap() + 1);
                         user = u.to_owned();
                     }
-                    if l.starts_with("SAP_DEVCENTER_PASSWORD") {
+                    if l.starts_with("SAP_PASSWORD") {
                         let (_, p) = l.split_at(l.find("=").unwrap() + 1);
                         pwd = p.to_owned();
                     }
@@ -43,7 +44,7 @@ fn fetch_auth() -> Result<String, String> {
     }
 
     if user.eq("unknown") || pwd.eq("unknown") {
-        Err("SAP Dev Center userid and/or password missing from .env file".to_owned())
+        Err("SAP userid and/or password missing from .env file".to_owned())
     } else {
         Ok(general_purpose::STANDARD.encode(format!("{}:{}", user, pwd)))
     }
@@ -58,7 +59,8 @@ async fn fetch_entity_set() -> impl Responder {
         Ok(auth_chars) => {
             match client
                 .get(format!(
-                    "https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/{}/{}?$format=json",
+                    "{}/{}/{}?$format=json",
+                    str::from_utf8(HOST_PATH).unwrap(),
                     str::from_utf8(SERVICE_NAME).unwrap(),
                     ent_set_name
                 ))

@@ -166,8 +166,8 @@ You must already have a userid and password for the SAP Dev Center server `sapes
 2. Change into the repo's `build_test_crate` subdirectory.
 3. Create a `.env` file containing your userid and password in the following format
    ```env
-   SAP_DEVCENTER_USER=<your userid>
-   SAP_DEVCENTER_PASSWORD=<your password>
+   SAP_USER=<your userid>
+   SAP_PASSWORD=<your password>
    ```
 4. Run `cargo run`
 5. Open your browser and go to <http://localhost:8080>
