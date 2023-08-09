@@ -1,5 +1,7 @@
 # Parse the Metadata from an SAP OData Service
 
+This is a work in progress!
+
 Parse the metadata XML describing an SAP OData service and generate basic Rust entities for each EDM type:
 
 * [x] `ComplexType`
