@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::utils::de_str_to_bool;
-use crate::utils::default_true;
+use crate::utils::{default_false, default_true};
 
 pub fn default_sap_schema_version() -> String {
     "1".to_string()
@@ -29,6 +29,30 @@ pub struct SAPAnnotations {
         default = "default_true"
     )]
     pub sap_creatable: bool,
+
+    #[serde(
+        rename = "sap:deletable",
+        deserialize_with = "de_str_to_bool",
+        default = "default_false"
+    )]
+    pub sap_deletatable: bool,
+
+    #[serde(
+        rename = "sap:pageable",
+        deserialize_with = "de_str_to_bool",
+        default = "default_true"
+    )]
+    pub sap_pageable: bool,
+
+    #[serde(
+        rename = "sap:addressable",
+        deserialize_with = "de_str_to_bool",
+        default = "default_true"
+    )]
+    pub sap_addressable: bool,
+
+    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
+    pub sap_content_version: String,
 
     #[serde(
         rename = "sap:filterable",

@@ -1,5 +1,6 @@
 use std::{
     env,
+    fmt::Debug,
     fs::{File, OpenOptions},
     io::{BufReader, Read, Write},
     path::Path,
@@ -8,7 +9,7 @@ use std::{
 
 use check_keyword::CheckKeyword;
 
-use crate::{edmx::Edmx, property::Property, utils::parse_error::ParseError, utils::run_rustfmt};
+use crate::{edmx::Edmx, property::Property, utils::run_rustfmt};
 
 static DEFAULT_INPUT_DIR: &str = &"./odata";
 
@@ -127,6 +128,12 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     out_buffer.append(&mut end_struct());
                 }
 
+                // Create enum + impl for the entity container
+                // The values in this enum act as a proxy for the service document
+                if let Some(ent_cont) = &schema.entity_container {
+                    out_buffer.append(&mut ent_cont.to_enum_with_impl());
+                }
+
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // TODO Generate function imports
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -151,4 +158,48 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
     };
 
     out_buffer.clear();
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Handle errors
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[derive(Debug)]
+pub struct ParseError {
+    pub msg: String,
+}
+
+impl std::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.msg)
+    }
+}
+
+impl std::error::Error for ParseError {
+    fn description(&self) -> &str {
+        &self.msg
+    }
+}
+
+impl From<std::io::Error> for ParseError {
+    fn from(io_err: std::io::Error) -> ParseError {
+        ParseError { msg: io_err.to_string() }
+    }
+}
+
+impl From<std::string::FromUtf8Error> for ParseError {
+    fn from(utf8_err: std::string::FromUtf8Error) -> ParseError {
+        ParseError { msg: utf8_err.to_string() }
+    }
+}
+
+impl From<std::io::ErrorKind> for ParseError {
+    fn from(io_err: std::io::ErrorKind) -> ParseError {
+        ParseError { msg: io_err.to_string() }
+    }
+}
+
+impl From<quick_xml::DeError> for ParseError {
+    fn from(xml_err: quick_xml::DeError) -> ParseError {
+        ParseError { msg: xml_err.to_string() }
+    }
 }

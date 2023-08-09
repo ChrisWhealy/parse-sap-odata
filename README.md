@@ -40,11 +40,10 @@ In your app's build script (`build.rs`), run the generator for your desired ODat
 use parse_sap_odata::utils::parse_odata::gen_src;
 
 fn main() {
-    // gen_src() requires two arguments
-    // 1) metadata_file_name: String  The name of the XML file in the ./odata directory
-    //                                Do not include the '.xml' suffix in the file name!
-    // 2) namespace:          String  The namespace defined in the <Schema> attribute of the OData XML
-    gen_src("gwsample_basic", "GWSAMPLE_BASIC");
+    gen_src(
+        metadata_file_name: "gwsample_basic",
+        namespace: "GWSAMPLE_BASIC"
+    );
 }
 ```
 
@@ -157,31 +156,45 @@ In such cases, fields declared to be of these "simple" complex types (such as `C
 
 ## Testing this Crate Locally
 
+### Prerequisites
+
+You must already have a userid and password for the SAP Dev Center server `sapes5.sapdevcenter.com`
+
 1. Clone this repo
 2. Change into the repo's `build_test_crate` subdirectory.
-3. Run `cargo build`
-4. Run `./target/debug/build-test-crate` and you will see output like this:
+3. Create a `.env` file containing your userid and password in the following format
+   ```env
+   SAP_DEVCENTER_USER=<your userid>
+   SAP_DEVCENTER_PASSWORD=<your password>
+   ```
+4. Run `cargo build`
+5. Run `./target/debug/build-test-crate`
+6. Open your browser and go to <http://localhost:8080>
+7. You will see the entity set `BusinessPartnerSet` belonging to the OData service `GWSAMPLE_BASIC` displayed in JSON format.
 
-```rust
-BusinessPartner {
-    address: Address {
-        address_type: None,
-        building: None,
-        city: None,
-        country: None,
-        postal_code: None,
-        street: None,
+```json
+{
+  "d": {
+    "results": [
+      {
+        "__metadata": {
+        "id": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
+        "uri": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
+        "type": "GWSAMPLE_BASIC.BusinessPartner",
+        "etag": "W/\"datetime'2023-08-09T05%3A31%3A57.3627400'\""
+      },
+      "Address": {
+        "__metadata": {
+        "type": "GWSAMPLE_BASIC.CT_Address"
+      },
+      "City": "Walldorf",
+      "PostalCode": "69190",
+      "Street": "Dietmar-Hopp-Allee",
+      "Building": "16",
+      "Country": "DE",
+      "AddressType": "02"
     },
-    business_partner_id: "",
-    business_partner_role: "",
-    changed_at: None,
-    company_name: "",
-    created_at: None,
-    currency_code: "",
-    email_address: "",
-    fax_number: None,
-    legal_form: None,
-    phone_number: None,
-    web_address: None,
-}
+    "BusinessPartnerID": "0100000000",
+
+  <SNIP>
 ```

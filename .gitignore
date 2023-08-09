@@ -18,3 +18,5 @@ Cargo.lock
 # Parsed output files and generated source code
 parsed/*.txt
 gen/*.rs
+
+.env
