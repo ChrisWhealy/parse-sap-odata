@@ -167,10 +167,9 @@ You must already have a userid and password for the SAP Dev Center server `sapes
    SAP_DEVCENTER_USER=<your userid>
    SAP_DEVCENTER_PASSWORD=<your password>
    ```
-4. Run `cargo build`
-5. Run `./target/debug/build-test-crate`
-6. Open your browser and go to <http://localhost:8080>
-7. You will see the entity set `BusinessPartnerSet` belonging to the OData service `GWSAMPLE_BASIC` displayed in JSON format.
+4. Run `cargo run`
+5. Open your browser and go to <http://localhost:8080>
+6. You will see the entity set `BusinessPartnerSet` belonging to the OData service `GWSAMPLE_BASIC` displayed in JSON format.
 
 ```json
 {
