@@ -171,7 +171,7 @@ You must already have a userid and password for the SAP Dev Center server `sapes
    ```
 4. Run `cargo run`
 5. Open your browser and go to <http://localhost:8080>
-6. You will see the entity set `BusinessPartnerSet` belonging to the OData service `GWSAMPLE_BASIC` displayed in JSON format.
+6. You will see the first 100 entries from the entity set `BusinessPartnerSet` belonging to the OData service `GWSAMPLE_BASIC` displayed in JSON format.
 
 ```json
 {

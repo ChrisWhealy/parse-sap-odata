@@ -53,18 +53,16 @@ fn fetch_auth() -> Result<String, String> {
 #[get("/")]
 async fn fetch_entity_set() -> impl Responder {
     let client = reqwest::Client::new();
-    let ent_set_name = GwsampleBasicEntities::BusinessPartnerSet.value();
 
     match fetch_auth() {
         Ok(auth_chars) => {
             match client
                 .get(format!(
-                    "{}/{}/{}?$format=json",
+                    "{}/{}/{}?$format=json&$top=100",
                     str::from_utf8(HOST_PATH).unwrap(),
                     str::from_utf8(SERVICE_NAME).unwrap(),
-                    ent_set_name
+                    GwsampleBasicEntities::BusinessPartnerSet.value()
                 ))
-                //        .header("Authorization", "Basic UDIwMDEzODU3ODk6VHJhbnF1aWwlMGNlYW4=")
                 .header("Authorization", format!("Basic {}", auth_chars))
                 .send()
                 .await
