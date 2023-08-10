@@ -179,23 +179,23 @@ You must already have a userid and password for the SAP Dev Center server `sapes
     "results": [
       {
         "__metadata": {
-        "id": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
-        "uri": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
-        "type": "GWSAMPLE_BASIC.BusinessPartner",
-        "etag": "W/\"datetime'2023-08-09T05%3A31%3A57.3627400'\""
-      },
-      "Address": {
-        "__metadata": {
-        "type": "GWSAMPLE_BASIC.CT_Address"
-      },
-      "City": "Walldorf",
-      "PostalCode": "69190",
-      "Street": "Dietmar-Hopp-Allee",
-      "Building": "16",
-      "Country": "DE",
-      "AddressType": "02"
-    },
-    "BusinessPartnerID": "0100000000",
+          "id": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
+          "uri": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
+          "type": "GWSAMPLE_BASIC.BusinessPartner",
+          "etag": "W/\"datetime'2023-08-09T05%3A31%3A57.3627400'\""
+        },
+        "Address": {
+          "__metadata": {
+            "type": "GWSAMPLE_BASIC.CT_Address"
+          },
+          "City": "Walldorf",
+          "PostalCode": "69190",
+          "Street": "Dietmar-Hopp-Allee",
+          "Building": "16",
+          "Country": "DE",
+          "AddressType": "02"
+        },
+        "BusinessPartnerID": "0100000000",
 
   <SNIP>
 ```
