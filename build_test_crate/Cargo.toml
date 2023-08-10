@@ -1,6 +1,6 @@
 [package]
 name = "build-test-crate"
-version = "1.1.0"
+version = "1.2.0"
 edition = "2021"
 
 [build-dependencies]
@@ -8,9 +8,14 @@ parse-sap-odata = { path = "../" }
 
 [dependencies]
 actix-web = "4.3.1"
-actix-rt = "^2.8.0"
+actix-rt = "2.8.0"
 base64 = "0.21"
 chrono = "0.4.26"
+env_logger = "0.10"
+log = "0.4"
 reqwest = { version = "^0.11", features = ["json"]}
 rust_decimal = "1.30.0"
+serde_json = "1.0.104"
+tinytemplate = "1.2.1"
 uuid = "1.4.1"
+url = "2.4"

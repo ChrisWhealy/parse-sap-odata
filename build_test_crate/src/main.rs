@@ -1,67 +1,60 @@
-use actix_web::{get, http::header::ContentType, App, HttpResponse, HttpServer, Responder};
-use base64::{engine::general_purpose, Engine as _};
-use std::{
-    fs::File,
-    io::BufReader,
-    io::{self, BufRead},
-    path::Path,
-    str,
+pub mod auth;
+pub mod err_handlers;
+
+use actix_web::{
+    error, get,
+    http::{header::ContentType, StatusCode},
+    middleware, web, App, Error, HttpResponse, HttpServer, Result,
 };
+use auth::fetch_auth;
+use err_handlers::error_handlers;
+use serde_json::json;
+use std::{collections::HashMap, str};
+use tinytemplate::TinyTemplate;
+
 include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
 
+static INDEX: &str = include_str!("../html/index.html");
 static HOST_PATH: &[u8] = "https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep".as_bytes();
 static SERVICE_NAME: &[u8] = "GWSAMPLE_BASIC".as_bytes();
 
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(BufReader::new(file).lines())
+// ---------------------------------------------------------------------------------------------------------------------
+// Serve document root
+// ---------------------------------------------------------------------------------------------------------------------
+async fn doc_root(
+    tmpl: web::Data<TinyTemplate<'_>>,
+    _query: web::Query<HashMap<String, String>>,
+) -> Result<HttpResponse, Error> {
+    let ctx = json!({
+      "service_name": str::from_utf8(SERVICE_NAME).unwrap(),
+      "option_list": GwsampleBasicEntities::as_list()
+    });
+
+    let body = tmpl
+        .render("index.html", &ctx)
+        .map_err(|err| error::ErrorInternalServerError(format!("Template error\n{}", err)))?;
+
+    Ok(HttpResponse::build(StatusCode::OK)
+        .content_type("text/html; charset=utf-8")
+        .body(body))
 }
 
-fn fetch_auth() -> Result<String, String> {
-    let mut user = String::from("unknown");
-    let mut pwd = String::from("unknown");
-
-    // Try to obtain userid and password from environment variable file .env
-    if let Ok(lines) = read_lines(".env") {
-        for line in lines {
-            match line {
-                Ok(l) => {
-                    if l.starts_with("SAP_USER") {
-                        let (_, u) = l.split_at(l.find("=").unwrap() + 1);
-                        user = u.to_owned();
-                    }
-                    if l.starts_with("SAP_PASSWORD") {
-                        let (_, p) = l.split_at(l.find("=").unwrap() + 1);
-                        pwd = p.to_owned();
-                    }
-                },
-                Err(_) => (),
-            }
-        }
-    }
-
-    if user.eq("unknown") || pwd.eq("unknown") {
-        Err("SAP userid and/or password missing from .env file".to_owned())
-    } else {
-        Ok(general_purpose::STANDARD.encode(format!("{}:{}", user, pwd)))
-    }
-}
-
-#[get("/")]
-async fn fetch_entity_set() -> impl Responder {
+// ---------------------------------------------------------------------------------------------------------------------
+// Serve entity set contents
+// ---------------------------------------------------------------------------------------------------------------------
+#[get("/{entity_set_name}")]
+async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
     let client = reqwest::Client::new();
+    let entity_set_name = path.into_inner();
 
-    match fetch_auth() {
+    let http_responce = match fetch_auth() {
         Ok(auth_chars) => {
             match client
                 .get(format!(
                     "{}/{}/{}?$format=json&$top=100",
                     str::from_utf8(HOST_PATH).unwrap(),
                     str::from_utf8(SERVICE_NAME).unwrap(),
-                    GwsampleBasicEntities::BusinessPartnerSet.value()
+                    entity_set_name
                 ))
                 .header("Authorization", format!("Basic {}", auth_chars))
                 .send()
@@ -75,13 +68,31 @@ async fn fetch_entity_set() -> impl Responder {
             }
         },
         Err(err) => HttpResponse::BadRequest().body(format!("{:#?}", err)),
-    }
+    };
+
+    Ok(http_responce)
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+// Start web server
+// ---------------------------------------------------------------------------------------------------------------------
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(fetch_entity_set))
-        .bind(("0.0.0.0", 8080))?
-        .run()
-        .await
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+    log::info!("Starting HTTP server at http://localhost:8080");
+
+    HttpServer::new(|| {
+        let mut tt = TinyTemplate::new();
+        tt.add_template("index.html", INDEX).unwrap();
+
+        App::new()
+            .app_data(web::Data::new(tt))
+            .wrap(middleware::Logger::default())
+            .service(web::resource("/").route(web::get().to(doc_root)))
+            .service(entity_set)
+            .service(web::scope("").wrap(error_handlers()))
+    })
+    .bind(("0.0.0.0", 8080))?
+    .run()
+    .await
 }

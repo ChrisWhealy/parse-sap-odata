@@ -59,8 +59,9 @@ Using the above example from SAP's Dev Center server, the [OData metadata XML](h
 
 ### Generated Output
 
-If `cargo` detects a `build.rs` file in your project/crate, then it automatically populates the environment variable `OUT_DIR`.
-This variable then points to the directory into which all build script output is written.
+If `cargo` detects a `build.rs` file in your project/crate, then it automatically populates the environment variable `OUT_DIR` and runs `build.rs` before compiling your application.
+
+The `OUT_DIR` variable then points to the directory into which all build script output is written.
 
 The default directory name is `target/debug/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
 
@@ -76,8 +77,10 @@ All generated `struct`s implement `#[derive(Clone, Debug, Default)]`
 Since `cargo` runs the build script before compiling your application code, the source code of your application can reference the generated `structs` like this:
 
 ```rust
+// Include the generated code
 include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
 
+// Use the BusinessPartner struct for example
 fn main() {
     let bp: BusinessPartner = Default::default();
     println!("{:#?}", bp);
@@ -149,6 +152,64 @@ In such cases, fields declared to be of these "simple" complex types (such as `C
 
 ---
 
+## Entity Sets Enum
+
+Under the `<Schema>` element in the service document of your selected OData service, there is an `<EntityContainer>` element.
+All entity sets available through this OData service have a corresponding `<EntitySet Name="<some_name>">` tag.
+
+These values are then turned into an `enum`.
+
+Using `GWSAMPLE_BASIC` as the example, the following `enum` is created using the naming convention `<service_name>Entities`:
+
+```rust
+#[derive(Copy, Clone, Debug)]
+pub enum GwsampleBasicEntities {
+    BusinessPartnerSet,
+    ProductSet,
+    SalesOrderSet,
+    SalesOrderLineItemSet,
+    ContactSet,
+    VhSexSet,
+    VhCountrySet,
+    VhAddressTypeSet,
+    VhCategorySet,
+    VhCurrencySet,
+    VhUnitQuantitySet,
+    VhUnitWeightSet,
+    VhUnitLengthSet,
+    VhProductTypeCodeSet,
+    VhBpRoleSet,
+    VhLanguageSet,
+}
+```
+
+Three convenience functions are then implemented for `enum GwsampleBasicEntities`:
+
+* `fn value(&self) -> &'static str`
+* `fn iterator() -> impl Iterator<Item = GwsampleBasicEntities>`
+* `fn as_list() -> Vec<&'static str>`
+
+### Entity Set Enum `value` function
+
+This function returns the entity set name as a static string slice:
+
+```rust
+GwsampleBasicEntities::ProductSet::value();   // "ProductSet"
+```
+
+### Entity Set Enum `iterator` function
+
+Unlike the `Option` `enum` whose members are `Some(<T>)` and `None` (where `<T>` could be absolutely any type), all the members here are entity sets; so under these circumstances it is convenient (and safe) to be able to iterate over the `enum`
+
+This is the under-lying helper function that allows the drop-down list of entity sets to be generated
+
+
+### Entity Set Enum `as_list` function
+
+Returns the names of the entity sets as a vector of string slices.
+
+---
+
 ## TODOs
 
 1. Consider fetching the metadata at build time &mdash; but this raises the question of whether allowing a build script to look outside its sandbox is an anti-pattern...
@@ -163,39 +224,15 @@ In such cases, fields declared to be of these "simple" complex types (such as `C
 You must already have a userid and password for the SAP Dev Center server `sapes5.sapdevcenter.com`
 
 1. Clone this repo
-2. Change into the repo's `build_test_crate` subdirectory.
-3. Create a `.env` file containing your userid and password in the following format
-   ```env
+1. Change into the repo's `build_test_crate` subdirectory.
+1. Create a `.env` file containing your userid and password in the following format
+
+   ```
    SAP_USER=<your userid>
    SAP_PASSWORD=<your password>
    ```
-4. Run `cargo run`
-5. Open your browser and go to <http://localhost:8080>
-6. You will see the first 100 entries from the entity set `BusinessPartnerSet` belonging to the OData service `GWSAMPLE_BASIC` displayed in JSON format.
-
-```json
-{
-  "d": {
-    "results": [
-      {
-        "__metadata": {
-          "id": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
-          "uri": "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')",
-          "type": "GWSAMPLE_BASIC.BusinessPartner",
-          "etag": "W/\"datetime'2023-08-09T05%3A31%3A57.3627400'\""
-        },
-        "Address": {
-          "__metadata": {
-            "type": "GWSAMPLE_BASIC.CT_Address"
-          },
-          "City": "Walldorf",
-          "PostalCode": "69190",
-          "Street": "Dietmar-Hopp-Allee",
-          "Building": "16",
-          "Country": "DE",
-          "AddressType": "02"
-        },
-        "BusinessPartnerID": "0100000000",
-
-  <SNIP>
-```
+1. Run `cargo run`
+1. Open your browser and go to <http://localhost:8080>
+1. Select the name of the entity set whose data you want to see
+    ![Start screen](./img/start_screen.png)
+1. You will then see the first 100 entries from the selected entity set in JSON format.

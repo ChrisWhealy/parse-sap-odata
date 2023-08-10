@@ -15,13 +15,33 @@ static DOUBLE_QUOTE: &[u8] = &[0x22];
 static COMMA: &[u8] = &[0x2C];
 static COLON2: &[u8] = &[0x3A, 0x3A];
 static FAT_ARROW: &[u8] = &[0x3D, 0x3E];
+static OPEN_SQR: &[u8] = &[0x5B];
+static CLOSE_SQR: &[u8] = &[0x5D];
 static OPEN_CURLY: &[u8] = &[0x7B];
 static CLOSE_CURLY: &[u8] = &[0x7D];
 
+static COPY_CLONE_DEBUG: &[u8] = "#[derive(Copy, Clone, Debug)]".as_bytes();
 static START_ENUM: &[u8] = "pub enum ".as_bytes();
 static START_IMPL: &[u8] = "impl ".as_bytes();
-static FN_DECL: &[u8] = "pub const fn value(&self) -> &'static str {".as_bytes();
+static FN_VALUE_DECL: &[u8] = "pub const fn value(&self) -> &'static str {".as_bytes();
+static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
+static FN_ITERATOR_DECL_END: &[u8] = "> {".as_bytes();
 static MATCH_SELF: &[u8] = "match *self {".as_bytes();
+static CALL_ITER: &[u8] = ".iter()".as_bytes();
+static CALL_COPIED: &[u8] = ".copied()".as_bytes();
+static AS_OPT_LIST_START: &[u8] = "
+pub fn as_list() -> Vec<&'static str> {
+  let mut list = "
+    .as_bytes();
+static AS_OPT_LIST_END: &[u8] = "::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
+      acc.insert(0, &mut es.value());
+      acc
+  });
+  list.reverse();
+  list
+}
+"
+.as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EntityContainer
@@ -57,22 +77,37 @@ impl EntityContainer {
         let cont_name_camel = convert_case::Casing::to_case(&self.name, convert_case::Case::UpperCamel);
 
         // Output the start of an enum for this entity container
-        // enum <entity_container_name> {↩︎
-        let mut output_enum = [START_ENUM, cont_name_camel.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat();
-
-        // Output the start of a function implementation called "value" for this enum
-        // impl <entity_container_name> {↩︎
-        //     pub const fn value(&self) -> &'static str {↩︎
-        //         match *self {↩︎
-        let mut output_impl = [
-            START_IMPL,
+        // #[derive(Copy, Clone, Debug)]↩︎
+        // pub enum <entity_container_name> {↩︎
+        let mut output_enum = [
+            COPY_CLONE_DEBUG,
+            LINE_FEED,
+            START_ENUM,
             cont_name_camel.as_bytes(),
             SPACE,
             OPEN_CURLY,
             LINE_FEED,
-            FN_DECL,
+        ]
+        .concat();
+
+        // Output the start of an enum implementation
+        // impl <entity_container_name> {↩︎
+        let output_impl = [START_IMPL, cont_name_camel.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat();
+
+        // Output the start of a "value" function within the enum implementation
+        //   pub const fn value(&self) -> &'static str {↩︎
+        //       match *self {↩︎
+        let mut fn_value = [FN_VALUE_DECL, LINE_FEED, MATCH_SELF, LINE_FEED].concat();
+
+        // Output the start of an "iterator" function within the enum implementation
+        //   pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {↩︎
+        //       match *self {↩︎
+        let mut fn_iterator = [
+            FN_ITERATOR_DECL_START,
+            cont_name_camel.as_bytes(),
+            FN_ITERATOR_DECL_END,
             LINE_FEED,
-            MATCH_SELF,
+            OPEN_SQR,
             LINE_FEED,
         ]
         .concat();
@@ -84,8 +119,8 @@ impl EntityContainer {
             // Add enum member
             output_enum.append(&mut [ent_set_name_camel.as_bytes(), COMMA, LINE_FEED].concat());
 
-            // Add function impl member value
-            output_impl.append(
+            // Add value function member value
+            fn_value.append(
                 &mut [
                     cont_name_camel.as_bytes(),
                     COLON2,
@@ -101,11 +136,41 @@ impl EntityContainer {
                 ]
                 .concat(),
             );
+
+            // Add iterator function member value
+            fn_iterator.append(
+                &mut [
+                    cont_name_camel.as_bytes(),
+                    COLON2,
+                    ent_set_name_camel.as_bytes(),
+                    COMMA,
+                    LINE_FEED,
+                ]
+                .concat(),
+            );
         }
 
         output_enum.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
-        output_impl.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY].concat());
+        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY].concat());
+        fn_iterator.append(
+            &mut [
+                LINE_FEED,
+                CLOSE_SQR,
+                CALL_ITER,
+                LINE_FEED,
+                CALL_COPIED,
+                LINE_FEED,
+                CLOSE_CURLY,
+                LINE_FEED,
+                AS_OPT_LIST_START,
+                cont_name_camel.as_bytes(),
+                AS_OPT_LIST_END,
+                LINE_FEED,
+                CLOSE_CURLY, // Extra close curly needed to close the impl block
+            ]
+            .concat(),
+        );
 
-        return [output_enum, output_impl].concat();
+        return [output_enum, output_impl, fn_value, fn_iterator].concat();
     }
 }
