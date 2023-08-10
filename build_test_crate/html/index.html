@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+  <h2>Select Entity Set from OData Service {service_name}</h2>
+  <script type="text/javascript">
+    const showEntSet = () => \{
+      document.entSetForm.action = `./` + document.querySelector("#entitySetList").selectedOptions[0].value;
+    return true;
+    }
+  </script>
+  <form name="entSetForm" onsubmit="return showEntSet();">
+    <label for="entitySetList">Select an entity set</label>
+    <select id="entitySetList">
+      {{ for opt in option_list }}
+      <option value="{opt}">{opt}</option>
+      {{ endfor }}
+    </select>
+
+    <input type="submit" value="Show entity set data">
+  </form>
+</body>
+
+</html>
