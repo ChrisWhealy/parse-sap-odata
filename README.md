@@ -8,10 +8,11 @@ Parse the metadata XML describing an SAP OData service and generate basic Rust e
 * [x] `EntityType`
 * [ ] `FunctionImport`
 
-> ***TODO***
+> ***Limitations***
 >
-> Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.<br>
-> Consider how the other XML attribute values and SAP annotations could be made available within the Rust `struct`.
+> Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
+>
+> ***TODO***<br>Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
 
 ---
 ## Usage
@@ -154,12 +155,14 @@ In such cases, fields declared to be of these "simple" complex types (such as `C
 
 ## Entity Sets Enum
 
-Under the `<Schema>` element in the service document of your selected OData service, there is an `<EntityContainer>` element.
-All entity sets available through this OData service have a corresponding `<EntitySet Name="<some_name>">` tag.
+On the basis that a single OData service exposes a static list of entity sets, and within the scope of any single request, you will only ever be interacting with a single entity set, it makes sense to treat each entity set name as an `enum` variant.
 
-These values are then turned into an `enum`.
+Under the `<Schema>` element in the OData service document, there is an `<EntityContainer>` element.
+All entity sets available through this OData service are identified here with their own `<EntitySet Name="<some_name>">` tag.
 
-Using `GWSAMPLE_BASIC` as the example, the following `enum` is created using the naming convention `<service_name>Entities`:
+The following naming convention is used: `<odata_service_name>Entities`.
+
+For example, the entity sets belonging to the OData service `GWSAMPLE_BASIC` become the following `enum`:
 
 ```rust
 #[derive(Copy, Clone, Debug)]
@@ -185,34 +188,40 @@ pub enum GwsampleBasicEntities {
 
 Three convenience functions are then implemented for `enum GwsampleBasicEntities`:
 
-* `fn value(&self) -> &'static str`
-* `fn iterator() -> impl Iterator<Item = GwsampleBasicEntities>`
-* `fn as_list() -> Vec<&'static str>`
+```rust
+impl GwsampleBasicEntities {
+    pub const fn value(&self) -> &'static str { /* SNIP */ }
+    pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> { /* SNIP */ }
+    pub fn as_list() -> Vec<&'static str> { /* SNIP */ }
+}
+```
 
 ### Entity Set Enum `value` function
 
-This function returns the entity set name as a static string slice:
+This function returns the name of the entity set variant as a static string slice:
 
 ```rust
-GwsampleBasicEntities::ProductSet::value();   // "ProductSet"
+GwsampleBasicEntities::ProductSet::value();   // -> "ProductSet"
 ```
 
 ### Entity Set Enum `iterator` function
 
-Unlike the `Option` `enum` whose members are `Some(<T>)` and `None` (where `<T>` could be absolutely any type), all the members here are entity sets; so under these circumstances it is convenient (and safe) to be able to iterate over the `enum`
+For standard Rust `enums` such as `Option` and `Result`, it makes little sense to attempt to loop over their variants simply because these `enum`s exist specifically to gather together diverse types into a single object.
+E.G. The `Option` `enum` exists to provide a type-safe mechanism for handling the possibility that a variable might not contain a value.
 
-This is the under-lying helper function that allows the drop-down list of entity sets to be generated
-
+However, an OData service guarantees that the entity set names form an immutable, type-safe list.
+Therefore, on the basis of this guarantee, it is now both safe and meaningful to implement an `iterator` function.
 
 ### Entity Set Enum `as_list` function
 
-Returns the names of the entity sets as a vector of string slices.
+By making use of the above `iterator` and `value` functions, the `as_list` function returns the names of the entity sets as a vector of string slices.
 
 ---
 
 ## TODOs
 
 1. Consider fetching the metadata at build time &mdash; but this raises the question of whether allowing a build script to look outside its sandbox is an anti-pattern...
+1. Implement `serde` directives for the generated `structs`
 1. Support Function Imports
 
 ---
