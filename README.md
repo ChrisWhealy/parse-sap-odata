@@ -44,8 +44,8 @@ use parse_sap_odata::parser::gen_src;
 
 fn main() {
     gen_src(
-        metadata_file_name: "gwsample_basic",
-        namespace: "GWSAMPLE_BASIC"
+        "gwsample_basic", // metadata_file_name
+        "GWSAMPLE_BASIC"  // namespace
     );
 }
 ```
