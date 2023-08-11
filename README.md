@@ -40,7 +40,7 @@ chrono = "^0.4"
 In your app's build script (`build.rs`), run the generator for your desired OData service:
 
 ```rust
-use parse_sap_odata::utils::parse_odata::gen_src;
+use parse_sap_odata::parser::gen_src;
 
 fn main() {
     gen_src(
