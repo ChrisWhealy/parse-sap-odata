@@ -19,3 +19,7 @@ pub struct ReferentialConstraint {
     pub principal: Principal,
     pub dependent: Dependent,
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(test)]
+pub mod unit_tests;

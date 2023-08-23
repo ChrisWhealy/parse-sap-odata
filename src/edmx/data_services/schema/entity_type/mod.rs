@@ -52,3 +52,7 @@ impl EntityType {
             .find(|property| self.key.property_refs.iter().any(|prop_ref| prop_ref.name == property.name))
     }
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(test)]
+pub mod unit_tests;

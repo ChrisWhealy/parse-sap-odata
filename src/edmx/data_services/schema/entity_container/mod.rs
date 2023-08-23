@@ -3,6 +3,8 @@ pub mod entity_set;
 pub mod function_import;
 
 use crate::ms_annotations::MSAnnotationsEntityType;
+use crate::utils::{de_str_to_bool, de_str_to_list, default_list, default_true};
+
 use association_set::AssociationSet;
 use serde::{Deserialize, Serialize};
 
@@ -59,8 +61,19 @@ pub struct EntityContainer {
     #[serde(flatten)]
     pub ms_annotations: MSAnnotationsEntityType,
 
-    #[serde(rename = "sap:supported-formats")]
-    pub sap_supported_formats: Option<String>,
+    #[serde(
+        rename = "sap:message-scope-supported",
+        deserialize_with = "de_str_to_bool",
+        default = "default_true"
+    )]
+    pub sap_message_scope_supported: bool,
+
+    #[serde(
+        rename = "sap:supported-formats",
+        deserialize_with = "de_str_to_list",
+        default = "default_list"
+    )]
+    pub sap_supported_formats: Vec<String>,
 
     #[serde(rename = "EntitySet", default)]
     pub entity_sets: Vec<EntitySet>,
@@ -116,10 +129,10 @@ impl EntityContainer {
         for ent_set in self.entity_sets.iter() {
             let ent_set_name_camel = convert_case::Casing::to_case(&ent_set.name, convert_case::Case::UpperCamel);
 
-            // Add enum member
+            // Add variant to enum
             output_enum.append(&mut [ent_set_name_camel.as_bytes(), COMMA, LINE_FEED].concat());
 
-            // Add value function member value
+            // Add variant to value function
             fn_value.append(
                 &mut [
                     cont_name_camel.as_bytes(),
@@ -137,7 +150,7 @@ impl EntityContainer {
                 .concat(),
             );
 
-            // Add iterator function member value
+            // Add variant to iterator function
             fn_iterator.append(
                 &mut [
                     cont_name_camel.as_bytes(),
@@ -174,3 +187,7 @@ impl EntityContainer {
         return [output_enum, output_impl, fn_value, fn_iterator].concat();
     }
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(test)]
+pub mod unit_tests;

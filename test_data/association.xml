@@ -1,0 +1,12 @@
+<Association Name="Assoc_VH_UnitQuantity_SalesOrderLineItem" sap:content-version="1">
+  <End Type="GWSAMPLE_BASIC.VH_UnitQuantity" Multiplicity="1" Role="FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem"/>
+  <End Type="GWSAMPLE_BASIC.SalesOrderLineItem" Multiplicity="*" Role="ToRole_Assoc_VH_UnitQuantity_SalesOrderLineItem"/>
+  <ReferentialConstraint>
+    <Principal Role="FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem">
+      <PropertyRef Name="Msehi"/>
+    </Principal>
+    <Dependent Role="ToRole_Assoc_VH_UnitQuantity_SalesOrderLineItem">
+      <PropertyRef Name="QuantityUnit"/>
+    </Dependent>
+  </ReferentialConstraint>
+</Association>

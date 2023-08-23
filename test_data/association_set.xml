@@ -1,0 +1,4 @@
+<AssociationSet Name="Assoc_VH_UnitQuantity_SalesOrderLineItem" Association="GWSAMPLE_BASIC.Assoc_VH_UnitQuantity_SalesOrderLineItem" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+  <End EntitySet="VH_UnitQuantitySet" Role="FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem"/>
+  <End EntitySet="SalesOrderLineItemSet" Role="ToRole_Assoc_VH_UnitQuantity_SalesOrderLineItem"/>
+</AssociationSet>

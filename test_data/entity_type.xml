@@ -1,0 +1,20 @@
+<EntityType Name="BusinessPartner" sap:content-version="1">
+  <Key>
+    <PropertyRef Name="BusinessPartnerID"/>
+  </Key>
+  <Property Name="Address" Type="GWSAMPLE_BASIC.CT_Address" Nullable="false"/>
+  <Property Name="BusinessPartnerID" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Bus. Part. ID" sap:creatable="false" sap:updatable="false"/>
+  <Property Name="CompanyName" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Company Name"/>
+  <Property Name="WebAddress" Type="Edm.String" sap:unicode="false" sap:label="Web Address" sap:sortable="false" sap:filterable="false" sap:semantics="url"/>
+  <Property Name="EmailAddress" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="E-Mail Address" sap:semantics="email"/>
+  <Property Name="PhoneNumber" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="Phone No." sap:semantics="tel"/>
+  <Property Name="FaxNumber" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="Fax Number"/>
+  <Property Name="LegalForm" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Legal Form"/>
+  <Property Name="CurrencyCode" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:semantics="currency-code"/>
+  <Property Name="BusinessPartnerRole" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Bus. Part. Role"/>
+  <Property Name="CreatedAt" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Time Stamp" sap:creatable="false" sap:updatable="false"/>
+  <Property Name="ChangedAt" Type="Edm.DateTime" Precision="7" ConcurrencyMode="Fixed" sap:unicode="false" sap:label="Time Stamp" sap:creatable="false" sap:updatable="false"/>
+  <NavigationProperty Name="ToSalesOrders" Relationship="GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders" FromRole="FromRole_Assoc_BusinessPartner_SalesOrders" ToRole="ToRole_Assoc_BusinessPartner_SalesOrders"/>
+  <NavigationProperty Name="ToContacts" Relationship="GWSAMPLE_BASIC.Assoc_BusinessPartner_Contacts" FromRole="FromRole_Assoc_BusinessPartner_Contacts" ToRole="ToRole_Assoc_BusinessPartner_Contacts"/>
+  <NavigationProperty Name="ToProducts" Relationship="GWSAMPLE_BASIC.Assoc_BusinessPartner_Products" FromRole="FromRole_Assoc_BusinessPartner_Products" ToRole="ToRole_Assoc_BusinessPartner_Products"/>
+</EntityType>

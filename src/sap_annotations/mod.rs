@@ -24,7 +24,7 @@ pub struct SAPAnnotations {
     pub sap_unicode: bool,
 
     #[serde(
-        rename = "sap:createable",
+        rename = "sap:creatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]

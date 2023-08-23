@@ -20,6 +20,9 @@ pub fn default_true() -> bool {
 pub fn default_false() -> bool {
     false
 }
+pub fn default_list() -> Vec<String> {
+    vec![String::from("")]
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Find longest keyname in hashmap
@@ -54,6 +57,17 @@ where
 {
     let s = String::deserialize(deserializer)?;
     bool::from_str(&s).or_else(|_| Ok(false))
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Deserialize string to list
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn de_str_to_list<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    Ok(s.split(" ").map(|fmt| String::from(fmt)).collect())
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

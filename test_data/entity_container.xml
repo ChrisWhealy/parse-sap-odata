@@ -1,0 +1,8 @@
+<EntityContainer Name="GWSAMPLE_BASIC_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+  <EntitySet Name="BusinessPartnerSet" EntityType="GWSAMPLE_BASIC.BusinessPartner" sap:content-version="1"/>
+  <EntitySet Name="VH_CategorySet" EntityType="GWSAMPLE_BASIC.VH_Category" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+  <AssociationSet Name="Assoc_VH_Language_Contacts_AssocSet" Association="GWSAMPLE_BASIC.Assoc_VH_Language_Contacts" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+    <End EntitySet="VH_LanguageSet" Role="FromRole_Assoc_VH_Language_Contacts"/>
+    <End EntitySet="ContactSet" Role="ToRole_Assoc_VH_Language_Contacts"/>
+  </AssociationSet>
+</EntityContainer>

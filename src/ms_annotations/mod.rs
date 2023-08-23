@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::utils::de_str_to_bool;
-use crate::utils::default_false;
+use crate::utils::{default_false, default_true};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum DataServiceVersion {
@@ -21,6 +21,13 @@ pub struct MSAnnotationsEntityType {
         default = "default_false"
     )]
     pub has_stream: bool,
+
+    #[serde(
+        rename = "m:IsDefaultEntityContainer",
+        deserialize_with = "de_str_to_bool",
+        default = "default_true"
+    )]
+    pub is_default_entity_container: bool,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
