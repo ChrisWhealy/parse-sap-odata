@@ -16,9 +16,9 @@ impl std::str::FromStr for EntityType {
 }
 
 #[test]
-pub fn should_parse_entity_type() {
+pub fn should_parse_entity_type_business_partner() {
     let mut xml_buffer: Vec<u8> = Vec::new();
-    let test_data = File::open(Path::new("./test_data/entity_type.xml")).unwrap();
+    let test_data = File::open(Path::new("./test_data/entity_type_business_partner.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
 
     match String::from_utf8(xml_buffer) {
@@ -55,6 +55,53 @@ pub fn should_parse_entity_type() {
                 "GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders"
             );
             assert_eq!(ent_type.navigations[0].to_role, "ToRole_Assoc_BusinessPartner_SalesOrders");
+        },
+        Err(err) => println!("XML test data was not in UTF8 format: {}", err),
+    };
+}
+
+#[test]
+pub fn should_parse_entity_type_product() {
+    let mut xml_buffer: Vec<u8> = Vec::new();
+    let test_data = File::open(Path::new("./test_data/entity_type_product.xml")).unwrap();
+    let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
+
+    match String::from_utf8(xml_buffer) {
+        Ok(xml) => {
+            let ent_type = EntityType::from_str(&xml).unwrap();
+
+            assert_eq!(ent_type.name, "Product");
+            assert_eq!(ent_type.sap_content_version, "1");
+
+            assert_eq!(ent_type.key.property_refs.len(), 1);
+            assert_eq!(ent_type.key.property_refs[0].name, "ProductID");
+
+            assert_eq!(ent_type.properties.len(), 21);
+            assert_eq!(ent_type.properties[14].name, "Price");
+            assert_eq!(ent_type.properties[14].edm_type, "Edm.Decimal");
+            assert_eq!(ent_type.properties[14].precision, Some(16));
+            assert_eq!(ent_type.properties[14].scale, Some(3));
+            assert_eq!(ent_type.properties[14].nullable, true);
+            assert_eq!(ent_type.properties[14].sap_annotations.sap_unicode, false);
+            assert_eq!(
+                ent_type.properties[14].sap_annotations.sap_unit,
+                Some(String::from("CurrencyCode"))
+            );
+            assert_eq!(
+                ent_type.properties[14].sap_annotations.sap_label,
+                Some(String::from("Unit Price"))
+            );
+            assert_eq!(ent_type.properties[1].sap_annotations.sap_creatable, true);
+            assert_eq!(ent_type.properties[1].sap_annotations.sap_updatable, true);
+
+            assert_eq!(ent_type.navigations.len(), 2);
+            assert_eq!(ent_type.navigations[0].name, "ToSupplier");
+            assert_eq!(
+                ent_type.navigations[0].relationship,
+                "GWSAMPLE_BASIC.Assoc_BusinessPartner_Products"
+            );
+            assert_eq!(ent_type.navigations[0].from_role, "ToRole_Assoc_BusinessPartner_Products");
+            assert_eq!(ent_type.navigations[0].to_role, "FromRole_Assoc_BusinessPartner_Products");
         },
         Err(err) => println!("XML test data was not in UTF8 format: {}", err),
     };
