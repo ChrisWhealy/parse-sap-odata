@@ -228,19 +228,53 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 
 ## Testing this Crate Locally
 
+In the simple case, you can test the parser functionality by running `cargo test`
+
+```bash
+   Compiling parse-sap-odata v1.1.5 (/Users/chris/Developer/lighthouse-no/parse-sap-odata)
+    Finished test [unoptimized + debuginfo] target(s) in 2.92s
+     Running unittests src/lib.rs (target/debug/deps/parse_sap_odata-8e2cd9f531d830c0)
+
+running 8 tests
+test property::unit_tests::should_not_convert_safe_property_name ... ok
+test property::unit_tests::should_convert_unsafe_property_name ... ok
+test edmx::data_services::schema::entity_container::unit_tests::should_parse_association_set ... ok
+test edmx::data_services::schema::association::referential_constraint::unit_tests::should_parse_referntial_constraint ... ok
+test edmx::data_services::schema::association::unit_tests::should_parse_association_set ... ok
+test edmx::data_services::schema::entity_container::unit_tests::should_parse_entity_set ... ok
+test edmx::data_services::schema::entity_container::unit_tests::should_parse_entity_container ... ok
+test edmx::data_services::schema::entity_type::unit_tests::should_parse_entity_type ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests parse-sap-odata
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+```
+
+## Test App Built Using Generated Source Code
+
+The `build_test_crate` subdirectory contains a test Rust app that consumes the SAP sample OData service `GWSAMPLE_BASIC`.
+
 ### Prerequisites
 
 You must already have a userid and password for the SAP Dev Center server `sapes5.sapdevcenter.com`
 
 1. Clone this repo
-1. Change into the repo's `build_test_crate` subdirectory.
-1. Create a `.env` file containing your userid and password in the following format
+1. `cd parse_sap_odata/build_test_crate`
+1. Create a `.env` file containing your SAP DevCenter userid and password in the following format
 
    ```
    SAP_USER=<your userid>
    SAP_PASSWORD=<your password>
    ```
-1. Run `cargo run`
+
+### Running `build_test_crate`
+
+
+1. In directory `build_test_crate` run `cargo run`
 1. Open your browser and go to <http://localhost:8080>
 1. Select the name of the entity set whose data you want to see
     ![Start screen](./img/start_screen.png)
