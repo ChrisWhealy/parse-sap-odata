@@ -2,47 +2,16 @@ pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
-use crate::utils::{de_str_to_bool, de_str_to_list, default_false, default_list, default_true};
+use crate::{
+    parser::syntax_fragments::*,
+    utils::{de_str_to_bool, de_str_to_list, default_false, default_list, default_true},
+};
 
 use association_set::AssociationSet;
 use serde::{Deserialize, Serialize};
 
 use entity_set::EntitySet;
 use function_import::FunctionImport;
-
-static LINE_FEED: &[u8] = &[0x0A];
-static SPACE: &[u8] = &[0x20];
-static DOUBLE_QUOTE: &[u8] = &[0x22];
-static COMMA: &[u8] = &[0x2C];
-static COLON2: &[u8] = &[0x3A, 0x3A];
-static FAT_ARROW: &[u8] = &[0x3D, 0x3E];
-static OPEN_SQR: &[u8] = &[0x5B];
-static CLOSE_SQR: &[u8] = &[0x5D];
-static OPEN_CURLY: &[u8] = &[0x7B];
-static CLOSE_CURLY: &[u8] = &[0x7D];
-
-static COPY_CLONE_DEBUG: &[u8] = "#[derive(Copy, Clone, Debug)]".as_bytes();
-static START_ENUM: &[u8] = "pub enum ".as_bytes();
-static START_IMPL: &[u8] = "impl ".as_bytes();
-static FN_VALUE_DECL: &[u8] = "pub const fn value(&self) -> &'static str {".as_bytes();
-static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
-static FN_ITERATOR_DECL_END: &[u8] = "> {".as_bytes();
-static MATCH_SELF: &[u8] = "match *self {".as_bytes();
-static CALL_ITER: &[u8] = ".iter()".as_bytes();
-static CALL_COPIED: &[u8] = ".copied()".as_bytes();
-static AS_OPT_LIST_START: &[u8] = "
-pub fn as_list() -> Vec<&'static str> {
-  let mut list = "
-    .as_bytes();
-static AS_OPT_LIST_END: &[u8] = "::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
-      acc.insert(0, &mut es.value());
-      acc
-  });
-  list.reverse();
-  list
-}
-"
-.as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EntityContainer
@@ -96,7 +65,7 @@ impl EntityContainer {
         // #[derive(Copy, Clone, Debug)]↩︎
         // pub enum <entity_container_name> {↩︎
         let mut output_enum = [
-            COPY_CLONE_DEBUG,
+            DERIVE_COPY_CLONE_DEBUG,
             LINE_FEED,
             START_ENUM,
             cont_name_camel.as_bytes(),

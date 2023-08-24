@@ -1,3 +1,5 @@
+pub mod syntax_fragments;
+
 use std::{
     env,
     fmt::Debug,
@@ -7,19 +9,10 @@ use std::{
     str::FromStr,
 };
 
-use check_keyword::CheckKeyword;
-
 use crate::{edmx::Edmx, property::Property, utils::run_rustfmt};
 
-static DEFAULT_INPUT_DIR: &str = &"./odata";
-
-static LINE_FEED: &[u8] = &[0x0a];
-static SPACE: &[u8] = &[0x20];
-
-static DERIVE_CLONE_DEBUG_DEFAULT: &[u8] = &"#[derive(Clone, Debug, Default)]".as_bytes();
-static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
-static OPEN_CURLY: &[u8] = &"{".as_bytes();
-static CLOSE_CURLY: &[u8] = &"}".as_bytes();
+use check_keyword::CheckKeyword;
+use syntax_fragments::*;
 
 fn start_struct(struct_name: String, derive: &[u8]) -> Vec<u8> {
     [
@@ -36,6 +29,8 @@ fn start_struct(struct_name: String, derive: &[u8]) -> Vec<u8> {
 fn end_struct() -> Vec<u8> {
     [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
 }
+
+static DEFAULT_INPUT_DIR: &str = &"./odata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Deserialize a given metadata document

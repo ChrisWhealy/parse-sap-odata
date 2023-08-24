@@ -4,34 +4,11 @@ use check_keyword::CheckKeyword;
 use convert_case::Case;
 use serde::{Deserialize, Serialize};
 
-use crate::sap_annotations::SAPAnnotations;
-use crate::utils::{de_str_to_bool, default_false, default_true};
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// All known strings are hard-coded as u8 arrays
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-static LINE_FEED: &[u8] = &[0x0a];
-static SPACE: &[u8] = &[0x20];
-
-static BOOLEAN: &[u8] = "bool".as_bytes();
-static COMMA: &[u8] = ",".as_bytes();
-static COLON: &[u8] = ":".as_bytes();
-static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
-static F32: &[u8] = "f32".as_bytes();
-static F64: &[u8] = "f64".as_bytes();
-static I8: &[u8] = "i8".as_bytes();
-static I16: &[u8] = "i16".as_bytes();
-static I32: &[u8] = "i32".as_bytes();
-static I64: &[u8] = "i64".as_bytes();
-static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
-static OPTION_DECLARATION: &[u8] = "Option<".as_bytes();
-static PUBLIC: &[u8] = "pub".as_bytes();
-static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
-static STRING: &[u8] = "String".as_bytes();
-static TYPE_TERMINATOR: &[u8] = ">".as_bytes();
-static UUID: &[u8] = "uuid::Uuid".as_bytes();
-static U8: &[u8] = "u8".as_bytes();
-static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
+use crate::{
+    parser::syntax_fragments::*,
+    sap_annotations::SAPAnnotations,
+    utils::{de_str_to_bool, default_false, default_true},
+};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
