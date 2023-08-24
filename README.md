@@ -228,7 +228,7 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 
 ## Testing this Crate Locally
 
-The prefered test tool is [`nextest`](https://crates.io/crates/cargo-nextest) [install from here](https://nexte.st/) first.
+The prefered test tool is [`nextest`](https://crates.io/crates/cargo-nextest) [install from here](https://nexte.st/).
 
 If you do not have `nextest` insalled, use `cargo test` instead.
 
