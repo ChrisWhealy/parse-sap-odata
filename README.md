@@ -228,30 +228,24 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 
 ## Testing this Crate Locally
 
-In the simple case, you can test the parser functionality by running `cargo test`
+This crate has been tested using [`nextest`](https://crates.io/crates/cargo-nextest).
+To test locally, please [install this tool](https://nexte.st/) first.
 
 ```bash
-   Compiling parse-sap-odata v1.1.5 (/Users/chris/Developer/lighthouse-no/parse-sap-odata)
-    Finished test [unoptimized + debuginfo] target(s) in 2.92s
-     Running unittests src/lib.rs (target/debug/deps/parse_sap_odata-8e2cd9f531d830c0)
-
-running 8 tests
-test property::unit_tests::should_not_convert_safe_property_name ... ok
-test property::unit_tests::should_convert_unsafe_property_name ... ok
-test edmx::data_services::schema::entity_container::unit_tests::should_parse_association_set ... ok
-test edmx::data_services::schema::association::referential_constraint::unit_tests::should_parse_referntial_constraint ... ok
-test edmx::data_services::schema::association::unit_tests::should_parse_association_set ... ok
-test edmx::data_services::schema::entity_container::unit_tests::should_parse_entity_set ... ok
-test edmx::data_services::schema::entity_container::unit_tests::should_parse_entity_container ... ok
-test edmx::data_services::schema::entity_type::unit_tests::should_parse_entity_type ... ok
-
-test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
-
-   Doc-tests parse-sap-odata
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+$ cargo nextest run
+    Finished test [unoptimized + debuginfo] target(s) in 0.15s
+    Starting 9 tests across 1 binary
+        PASS [   0.032s] parse-sap-odata edmx::data_services::schema::association::referential_constraint::unit_tests::should_parse_referntial_constraint
+        PASS [   0.033s] parse-sap-odata edmx::data_services::schema::association::unit_tests::should_parse_association_set
+        PASS [   0.035s] parse-sap-odata edmx::data_services::schema::entity_container::unit_tests::should_parse_association_set
+        PASS [   0.037s] parse-sap-odata edmx::data_services::schema::entity_container::unit_tests::should_parse_entity_container
+        PASS [   0.036s] parse-sap-odata edmx::data_services::schema::entity_container::unit_tests::should_parse_entity_set
+        PASS [   0.034s] parse-sap-odata property::unit_tests::should_convert_unsafe_property_name
+        PASS [   0.033s] parse-sap-odata property::unit_tests::should_not_convert_safe_property_name
+        PASS [   0.038s] parse-sap-odata edmx::data_services::schema::entity_type::unit_tests::should_parse_entity_type_business_partner
+        PASS [   0.037s] parse-sap-odata edmx::data_services::schema::entity_type::unit_tests::should_parse_entity_type_product
+------------
+     Summary [   0.046s] 9 tests run: 9 passed, 0 skipped
 ```
 
 ## Test App Built Using Generated Source Code
