@@ -3,7 +3,7 @@ pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
-use crate::atom::atom_link::AtomLink;
+use crate::atom::AtomLink;
 use crate::oasis::annotations::Annotations;
 use crate::sap_annotations::default_sap_schema_version;
 use crate::xml::{default_xml_language, default_xml_namespace};

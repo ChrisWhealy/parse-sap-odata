@@ -3,7 +3,11 @@ pub mod schema;
 use schema::Schema;
 use serde::{Deserialize, Serialize};
 
-use crate::ms_annotations::MSAnnotationsDataServices;
+#[derive(Debug, Serialize, Deserialize)]
+pub enum DataServiceVersion {
+    #[serde(rename = "2.0")]
+    V2_0,
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Data Services
@@ -14,8 +18,8 @@ use crate::ms_annotations::MSAnnotationsDataServices;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct DataServices {
-    #[serde(flatten)]
-    pub ms_annotations: MSAnnotationsDataServices,
+    #[serde(rename = "m:DataServiceVersion")]
+    pub data_service_version: DataServiceVersion,
 
     #[serde(rename = "Schema", default)]
     pub schemas: Vec<Schema>,

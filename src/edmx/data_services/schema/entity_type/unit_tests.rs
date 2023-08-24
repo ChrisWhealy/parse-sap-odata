@@ -27,6 +27,7 @@ pub fn should_parse_entity_type_business_partner() {
 
             assert_eq!(ent_type.name, "BusinessPartner");
             assert_eq!(ent_type.sap_content_version, "1");
+            assert_eq!(ent_type.has_stream, false);
 
             assert_eq!(ent_type.key.property_refs.len(), 1);
             assert_eq!(ent_type.key.property_refs[0].name, "BusinessPartnerID");

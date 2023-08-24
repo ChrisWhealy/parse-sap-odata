@@ -5,7 +5,7 @@ use std::{
     str::FromStr,
 };
 
-use super::atom_link::AtomLink;
+use super::AtomLink;
 
 impl std::str::FromStr for AtomLink {
     type Err = quick_xml::DeError;

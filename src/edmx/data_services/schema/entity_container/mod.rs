@@ -2,8 +2,7 @@ pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
-use crate::ms_annotations::MSAnnotationsEntityType;
-use crate::utils::{de_str_to_bool, de_str_to_list, default_list, default_true};
+use crate::utils::{de_str_to_bool, de_str_to_list, default_false, default_list, default_true};
 
 use association_set::AssociationSet;
 use serde::{Deserialize, Serialize};
@@ -58,8 +57,12 @@ static AS_OPT_LIST_END: &[u8] = "::iterator().fold(Vec::new(), |mut acc: Vec<&'s
 pub struct EntityContainer {
     pub name: String,
 
-    #[serde(flatten)]
-    pub ms_annotations: MSAnnotationsEntityType,
+    #[serde(
+        rename = "m:IsDefaultEntityContainer",
+        deserialize_with = "de_str_to_bool",
+        default = "default_false"
+    )]
+    pub is_default_entity_container: bool,
 
     #[serde(
         rename = "sap:message-scope-supported",

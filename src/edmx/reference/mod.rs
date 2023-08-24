@@ -14,3 +14,7 @@ pub struct Reference {
 
     pub include: Option<Include>,
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(test)]
+pub mod unit_tests;

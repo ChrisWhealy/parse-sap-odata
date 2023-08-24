@@ -38,8 +38,7 @@ pub fn should_parse_entity_container() {
             assert_eq!(ent_cont.sap_supported_formats[0], "atom");
             assert_eq!(ent_cont.sap_supported_formats[1], "json");
             assert_eq!(ent_cont.sap_supported_formats[2], "xlsx");
-            assert_eq!(ent_cont.ms_annotations.has_stream, false);
-            assert_eq!(ent_cont.ms_annotations.is_default_entity_container, true);
+            assert_eq!(ent_cont.is_default_entity_container, true);
         },
         Err(err) => println!("XML test data was not in UTF8 format: {}", err),
     };

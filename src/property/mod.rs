@@ -4,9 +4,8 @@ use check_keyword::CheckKeyword;
 use convert_case::Case;
 use serde::{Deserialize, Serialize};
 
-use crate::ms_annotations::MSAnnotationsProperty;
 use crate::sap_annotations::SAPAnnotations;
-use crate::xml::default_true;
+use crate::utils::{de_str_to_bool, default_false, default_true};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // All known strings are hard-coded as u8 arrays
@@ -52,8 +51,15 @@ pub struct Property {
     pub concurrency_mode: Option<String>,
 
     // Microsoft Annotations
-    #[serde(flatten)]
-    pub ms_annotations: MSAnnotationsProperty,
+    #[serde(
+        rename = "m:FC_KeepInContent",
+        deserialize_with = "de_str_to_bool",
+        default = "default_false"
+    )]
+    pub fc_keep_in_content: bool,
+
+    #[serde(rename = "m:FC_TargetPath")]
+    pub fc_target_path: Option<String>,
 
     // SAP Annotations
     #[serde(flatten)]
