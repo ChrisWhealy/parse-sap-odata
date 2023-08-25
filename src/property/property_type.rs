@@ -8,7 +8,6 @@ use chrono::NaiveDateTime;
 pub enum PropertyType {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Binary types
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(rename = "Edm.Binary")]
     Binary {
         max_length: Option<u32>,
@@ -27,7 +26,6 @@ pub enum PropertyType {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Temporal types
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(rename = "Edm.DateTime")]
     DateTime {
         precision: Option<u8>,
@@ -39,7 +37,6 @@ pub enum PropertyType {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Numeric types
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(rename = "Edm.Decimal")]
     Decimal { precision: Option<u8>, default: Option<f64> },
 
@@ -60,7 +57,6 @@ pub enum PropertyType {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // String types
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(rename = "Edm.String")]
     String {
         precision: Option<u8>,

@@ -4,6 +4,12 @@ use crate::xml::default_xml_namespace_oasis;
 use include::Include;
 use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an optional `<edmx:Reference>` tag
+///
+/// # Child Nodes
+/// `1:1 edmx:Include`
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Reference {

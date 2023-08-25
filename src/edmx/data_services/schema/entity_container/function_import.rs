@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents a `<Parameter>` tag
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Parameter {
@@ -14,11 +16,10 @@ pub struct Parameter {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// FunctionImport
-//
-// Child Nodes:
-//   1:n Parameter
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents a `<FunctionImport>` tag
+///
+/// # Child Nodes
+/// `1:n Parameter`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct FunctionImport {

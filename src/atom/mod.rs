@@ -1,6 +1,8 @@
 use crate::xml::default_xml_namespace_atom;
 use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `<atom:link>` tag
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AtomLink {
     #[serde(rename = "xmlns:atom", default = "default_xml_namespace_atom")]

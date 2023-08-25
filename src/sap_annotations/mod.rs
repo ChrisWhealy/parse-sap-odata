@@ -15,7 +15,6 @@ pub fn default_sap_content_version() -> String {
 pub struct SAPAnnotations {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Boolean annotation properties
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(
         rename = "sap:unicode",
         deserialize_with = "de_str_to_bool",
@@ -77,7 +76,6 @@ pub struct SAPAnnotations {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Optional annotation properties
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #[serde(rename = "sap:display-format")]
     pub sap_display_format: Option<String>,
 

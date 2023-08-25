@@ -4,11 +4,10 @@ use crate::utils::{de_str_to_bool, default_true};
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// AssociationSet
-//
-// Child Nodes:
-//   2:2 End
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `<AssociationSet>` tag
+///
+/// # Child Nodes
+/// `2:2 End`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct AssociationSet {

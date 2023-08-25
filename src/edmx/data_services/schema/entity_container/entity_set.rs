@@ -3,8 +3,7 @@ use crate::utils::{de_str_to_bool, default_true};
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// EntitySet
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `<EntitySet>` tag
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntitySet {

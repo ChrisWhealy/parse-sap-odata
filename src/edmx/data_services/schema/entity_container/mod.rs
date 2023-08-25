@@ -14,13 +14,12 @@ use entity_set::EntitySet;
 use function_import::FunctionImport;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// EntityContainer
-//
-// Child Nodes:
-//   1:n EntitySet
-//   1:n AssociationSet
-//   0:n FunctionImport
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `<EntityContainer>` tag
+///
+/// # Child Nodes
+/// `1:n EntitySet`<br>
+/// `1:n AssociationSet`<br>
+/// `0:n FunctionImport`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntityContainer {
@@ -58,6 +57,11 @@ pub struct EntityContainer {
 }
 
 impl EntityContainer {
+    /// Transforms an `EntityContainer` into an enumeration of entity set names.
+    /// Additionally, this enumeration is given three helper functions:
+    /// * `pub const fn value(&self) -> &'static str { /* SNIP */ }`
+    /// * `pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> { /* SNIP */ }`
+    /// * `pub fn as_list() -> Vec<&'static str> { /* SNIP */ }`
     pub fn to_enum_with_impl(&self) -> Vec<u8> {
         let cont_name_camel = convert_case::Casing::to_case(&self.name, convert_case::Case::UpperCamel);
 
@@ -65,7 +69,7 @@ impl EntityContainer {
         // #[derive(Copy, Clone, Debug)]↩︎
         // pub enum <entity_container_name> {↩︎
         let mut output_enum = [
-            derive_str(vec![DeriveDirectives::COPY, DeriveDirectives::CLONE, DeriveDirectives::DEBUG]).as_slice(),
+            derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]).as_slice(),
             START_ENUM,
             cont_name_camel.as_bytes(),
             SPACE,

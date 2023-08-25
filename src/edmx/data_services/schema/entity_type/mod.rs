@@ -7,11 +7,10 @@ use navigation_property::NavigationProperty;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Key
-//
-// Child Nodes:
-//   1:n PropertyRef
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents a `<Key>` tag
+///
+/// # Child Nodes
+/// `1:n PropertyRef`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Key {
@@ -20,13 +19,12 @@ pub struct Key {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// EntityType
-//
-// Child Nodes:
-//   1:1 Key
-//   1:n Property
-//   0:n NavigationProperty
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `<EntityType>`
+///
+/// # Child Nodes
+/// `1:1 Key`
+/// `1:n Property`
+/// `0:n NavigationProperty`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntityType {

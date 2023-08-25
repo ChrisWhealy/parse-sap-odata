@@ -24,8 +24,13 @@ fn end_struct() -> Vec<u8> {
 static DEFAULT_INPUT_DIR: &str = &"./odata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Deserialize a given metadata document
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Deserialize an SAP OData metadata document
+///
+/// The metadata file must exist in the `./odata` directory and have the `.xml` extension.
+/// For example:
+///
+/// `odata/`<br>
+/// `└── gwsample_basic.xml`
 pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, metadata_file_name);
@@ -39,10 +44,9 @@ pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseE
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Generate Rust structs from the OData metadata
-//
-// Any field whose name clashes with a Rust reserved word is written in raw format: E.G. "type" --> "r#type"
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate Rust structs from the OData metadata
+///
+/// Any fields whose names clashe with a Rust reserved word are written in raw format: E.G. `type --> r#type`
 pub fn gen_src(metadata_file_name: &str, namespace: &str) {
     let mut out_buffer: Vec<u8> = Vec::new();
 
@@ -86,11 +90,11 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                             props.sort();
 
                             out_buffer.append(&mut derive_str(vec![
-                                DeriveDirectives::CLONE,
-                                DeriveDirectives::DEBUG,
-                                DeriveDirectives::DEFAULT,
-                                DeriveDirectives::SERIALIZE,
-                                DeriveDirectives::DESERIALIZE,
+                                DeriveTraits::CLONE,
+                                DeriveTraits::DEBUG,
+                                DeriveTraits::DEFAULT,
+                                DeriveTraits::SERIALIZE,
+                                DeriveTraits::DESERIALIZE,
                             ]));
                             out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
                             out_buffer.append(&mut start_struct(ct_name));
@@ -117,11 +121,11 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         convert_case::Case::UpperCamel,
                     );
                     out_buffer.append(&mut derive_str(vec![
-                        DeriveDirectives::CLONE,
-                        DeriveDirectives::DEBUG,
-                        DeriveDirectives::DEFAULT,
-                        DeriveDirectives::SERIALIZE,
-                        DeriveDirectives::DESERIALIZE,
+                        DeriveTraits::CLONE,
+                        DeriveTraits::DEBUG,
+                        DeriveTraits::DEFAULT,
+                        DeriveTraits::SERIALIZE,
+                        DeriveTraits::DESERIALIZE,
                     ]));
                     out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
                     out_buffer.append(&mut start_struct(struct_name));
@@ -168,8 +172,6 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
     out_buffer.clear();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Handle errors
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug)]
 pub struct ParseError {

@@ -1,6 +1,5 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Single characters
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static LINE_FEED: &[u8] = &[0x0a];
 pub static SPACE: &[u8] = &[0x20];
 pub static DOUBLE_QUOTE: &[u8] = &[0x22];
@@ -15,13 +14,11 @@ pub static CLOSE_CURLY: &[u8] = &[0x7D];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Syntactical separators
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static COLON2: &[u8] = &[0x3A, 0x3A];
 pub static FAT_ARROW: &[u8] = &[0x3D, 0x3E];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Type names
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static BOOLEAN: &[u8] = "bool".as_bytes();
 pub static F32: &[u8] = "f32".as_bytes();
 pub static F64: &[u8] = "f64".as_bytes();
@@ -35,7 +32,6 @@ pub static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Keywords or keyword fragments
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static OPTION_DECLARATION: &[u8] = "Option<".as_bytes();
 pub static TYPE_TERMINATOR: &[u8] = ">".as_bytes();
 pub static PUBLIC: &[u8] = "pub".as_bytes();
@@ -44,7 +40,6 @@ pub static START_IMPL: &[u8] = "impl ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
 pub static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
 pub static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
@@ -52,7 +47,6 @@ pub static UUID: &[u8] = "uuid::Uuid".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Function calls and larger code fragments
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static FN_VALUE_DECL: &[u8] = "pub const fn value(&self) -> &'static str {".as_bytes();
 pub static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
 pub static FN_ITERATOR_DECL_END: &[u8] = "> {".as_bytes();
@@ -76,40 +70,50 @@ list
 pub static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Directives
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum DeriveDirectives {
+/// Derivable traits.
+///
+/// The Serde traits `Serialize` and `Deserialize` are also included
+pub enum DeriveTraits {
+    EQ,
+    PARTIALEQ,
+    ORD,
+    PARTIALORD,
     CLONE,
     COPY,
     DEBUG,
-    DERIVE,
+    DEFAULT,
+    HASH,
     SERIALIZE,
     DESERIALIZE,
-    DEFAULT,
 }
 
-impl DeriveDirectives {
+impl DeriveTraits {
+    /// Helper function to return the enum variant name as a static string slice
     pub const fn value(&self) -> &'static str {
         match *self {
-            DeriveDirectives::CLONE => "Clone",
-            DeriveDirectives::COPY => "Copy",
-            DeriveDirectives::DEBUG => "Debug",
-            DeriveDirectives::DEFAULT => "Default",
-            DeriveDirectives::DERIVE => "Derive",
-            DeriveDirectives::DESERIALIZE => "Deserialize",
-            DeriveDirectives::SERIALIZE => "Serialize",
+            DeriveTraits::EQ => "Eq",
+            DeriveTraits::PARTIALEQ => "PartialEq",
+            DeriveTraits::ORD => "Ord",
+            DeriveTraits::PARTIALORD => "PartialOrd",
+            DeriveTraits::CLONE => "Clone",
+            DeriveTraits::COPY => "Copy",
+            DeriveTraits::DEBUG => "Debug",
+            DeriveTraits::DEFAULT => "Default",
+            DeriveTraits::HASH => "Hash",
+            DeriveTraits::DESERIALIZE => "Deserialize",
+            DeriveTraits::SERIALIZE => "Serialize",
         }
     }
 }
 
-pub fn derive_str(directives: Vec<DeriveDirectives>) -> Vec<u8> {
+pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
     let mut d_str = Vec::new();
     d_str.extend_from_slice(DERIVE_START);
 
-    for (idx, d) in directives.iter().enumerate() {
+    for (idx, d) in traits.iter().enumerate() {
         d_str.extend_from_slice(d.value().as_bytes());
 
-        if idx < directives.len() - 1 {
+        if idx < traits.len() - 1 {
             d_str.extend_from_slice(COMMA);
             d_str.extend_from_slice(SPACE);
         }

@@ -10,11 +10,10 @@ pub enum DataServiceVersion {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Data Services
-//
-// Child Nodes:
-//   1:1 Schema
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `<edmx:DataServices>` tag
+///
+/// # Child Nodes
+/// `1:1 Schema`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct DataServices {

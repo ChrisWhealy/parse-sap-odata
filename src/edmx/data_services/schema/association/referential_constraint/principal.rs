@@ -2,11 +2,10 @@ use crate::property::PropertyRef;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Principal
+/// Represents a `<Principal>` tag
 //
-// Child Nodes:
-//   1:n PropertyRef
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// # Child Nodes
+// `1:n PropertyRef`
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Principal {

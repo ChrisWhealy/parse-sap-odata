@@ -16,16 +16,16 @@ pub enum EdmxVersion {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Entity Data Model
-//
-// Child Nodes:
-//   1:1 edmx:DataServices
-//
-// WARNING: quick-xml strips the namespace from XML tag names, but not attribute names!
-//
-// Consequently, tag names such as "edmx:DataServices" and "atom:link" will appear simply as "DataServices" and "link"
-// etc, but attribute names such as "sap:schema-version" will appear without modification
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents the top-level Entity Data Model, or `<edmx:Edmx>` tag in an OData metadata document
+///
+/// # Child Nodes
+/// `0:n edmx:Reference`<br>
+/// `1:1 edmx:DataServices`
+///
+/// ***WARNING:***<br>`quick-xml` strips the namespace from XML tag names, but not attribute names!
+///
+/// Consequently, tag names such as `<edmx:DataServices>` and `<atom:link>` will appear simply as `<DataServices>` and
+/// `<link>` etc, but attribute names such as `sap:schema-version` will appear without modification
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Edmx {

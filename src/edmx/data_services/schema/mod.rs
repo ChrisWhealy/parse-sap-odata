@@ -14,14 +14,14 @@ use entity_type::EntityType;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Schema
-//
-// Child Nodes:
-//   1:n EntityType
-//   0:n Association
-//   0:n ComplexType
-//   1:1 EntityContainer
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents a `<Schema>` tag
+///
+/// # Child Nodes
+///
+/// `1:n EntityType`<br>
+/// `0:n Association`<br>
+/// `0:n ComplexType`<br>
+/// `1:1 EntityContainer`
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Schema {
     #[serde(rename = "xmlns", default = "default_xml_namespace")]
@@ -51,7 +51,7 @@ pub struct Schema {
     #[serde(rename = "Annotations", default)]
     pub annotation_list: Option<Vec<Annotations>>,
 
-    // Appears in the XML as the tagname "atom:link"
+    // Appears in the original XML as the tagname "atom:link"
     #[serde(rename = "link")]
     pub atom_links: Vec<AtomLink>,
 }
