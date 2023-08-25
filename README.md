@@ -57,7 +57,7 @@ More information about Rust [build scripts](https://doc.rust-lang.org/cargo/refe
 
 All metadata XML for the OData services your app consumes must be located in the `./odata` directory immediately under your app's top level directory.
 
-Using the above example from SAP's Dev Center server, the [OData metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for service [`GWSAMPLE_BASIC`](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/) must be located in file [`./odata/gwsample_basic.xml`](./build_test_crate/odata/gwsample_basic.xml)
+Using the above example from SAP's Dev Center server, the [OData metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for service [`GWSAMPLE_BASIC`](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/) must be located in file [`./odata/gwsample_basic.xml`](./build_test_app/odata/gwsample_basic.xml)
 
 ### Generated Output
 
@@ -252,14 +252,14 @@ $ cargo nextest run
 
 ## Test App Built Using Generated Source Code
 
-The `build_test_crate` subdirectory contains a test Rust app that consumes the SAP sample OData service `GWSAMPLE_BASIC`.
+The `build_test_app` subdirectory contains a test Rust app that consumes the SAP sample OData service `GWSAMPLE_BASIC`.
 
 ### Prerequisites
 
 You must already have a userid and password for the SAP Dev Center server `sapes5.sapdevcenter.com`
 
 1. Clone this repo
-1. `cd parse_sap_odata/build_test_crate`
+1. `cd parse_sap_odata/build_test_app`
 1. Create a `.env` file containing your SAP DevCenter userid and password in the following format
 
    ```
@@ -267,10 +267,10 @@ You must already have a userid and password for the SAP Dev Center server `sapes
    SAP_PASSWORD=<your password>
    ```
 
-### Running `build_test_crate`
+### Running `build_test_app`
 
 
-1. In directory `build_test_crate` run `cargo run`
+1. In directory `build_test_app` run `cargo run`
 1. Open your browser and go to <http://localhost:8080>
 1. Select the name of the entity set whose data you want to see
     ![Start screen](./img/start_screen.png)
