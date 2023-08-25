@@ -45,8 +45,8 @@ use parse_sap_odata::parser::gen_src;
 
 fn main() {
     gen_src(
-        "gwsample_basic", // metadata_file_name
-        "GWSAMPLE_BASIC"  // namespace
+        "gwsample_basic", // metadata_file_name.  The ".xml" extension is assumed
+        "GWSAMPLE_BASIC"  // Value of the Namespace attribute on the <Schema> tag
     );
 }
 ```
