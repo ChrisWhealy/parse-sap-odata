@@ -51,7 +51,7 @@ fn main() {
 }
 ```
 
-See the Rust documentation page for [build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html) for more information.
+More information about Rust [build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html) is available on the documentation site.
 
 ### XML Input Files
 
