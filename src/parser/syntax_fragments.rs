@@ -4,6 +4,8 @@
 pub static LINE_FEED: &[u8] = &[0x0a];
 pub static SPACE: &[u8] = &[0x20];
 pub static DOUBLE_QUOTE: &[u8] = &[0x22];
+pub static OPEN_PAREN: &[u8] = &[0x28];
+pub static CLOSE_PAREN: &[u8] = &[0x29];
 pub static COMMA: &[u8] = &[0x2C];
 pub static COLON: &[u8] = &[0x3A];
 pub static OPEN_SQR: &[u8] = &[0x5B];
@@ -48,8 +50,9 @@ pub static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
 pub static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
 pub static UUID: &[u8] = "uuid::Uuid".as_bytes();
 
-pub static DERIVE_COPY_CLONE_DEBUG: &[u8] = "#[derive(Copy, Clone, Debug)]".as_bytes();
-pub static DERIVE_CLONE_DEBUG_DEFAULT: &[u8] = &"#[derive(Clone, Debug, Default)]".as_bytes();
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Function calls and larger code fragments
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub static FN_VALUE_DECL: &[u8] = "pub const fn value(&self) -> &'static str {".as_bytes();
 pub static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
 pub static FN_ITERATOR_DECL_END: &[u8] = "> {".as_bytes();
@@ -61,13 +64,64 @@ pub fn as_list() -> Vec<&'static str> {
   let mut list = "
     .as_bytes();
 pub static AS_OPT_LIST_END: &[u8] = "::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
-      acc.insert(0, &mut es.value());
-      acc
-  });
-  list.reverse();
-  list
+  acc.insert(0, &mut es.value());
+  acc
+});
+list.reverse();
+list
 }
 "
 .as_bytes();
 
 pub static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Directives
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub enum DeriveDirectives {
+    CLONE,
+    COPY,
+    DEBUG,
+    DERIVE,
+    SERIALIZE,
+    DESERIALIZE,
+    DEFAULT,
+}
+
+impl DeriveDirectives {
+    pub const fn value(&self) -> &'static str {
+        match *self {
+            DeriveDirectives::CLONE => "Clone",
+            DeriveDirectives::COPY => "Copy",
+            DeriveDirectives::DEBUG => "Debug",
+            DeriveDirectives::DEFAULT => "Default",
+            DeriveDirectives::DERIVE => "Derive",
+            DeriveDirectives::DESERIALIZE => "Deserialize",
+            DeriveDirectives::SERIALIZE => "Serialize",
+        }
+    }
+}
+
+pub fn derive_str(directives: Vec<DeriveDirectives>) -> Vec<u8> {
+    let mut d_str = Vec::new();
+    d_str.extend_from_slice(DERIVE_START);
+
+    for (idx, d) in directives.iter().enumerate() {
+        d_str.extend_from_slice(d.value().as_bytes());
+
+        if idx < directives.len() - 1 {
+            d_str.extend_from_slice(COMMA);
+            d_str.extend_from_slice(SPACE);
+        }
+    }
+
+    d_str.extend_from_slice(DERIVE_END);
+    d_str.extend_from_slice(LINE_FEED);
+    d_str
+}
+
+pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
+pub static DERIVE_END: &[u8] = ")]".as_bytes();
+
+pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};".as_bytes();
+pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]".as_bytes();

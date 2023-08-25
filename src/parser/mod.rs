@@ -14,17 +14,8 @@ use crate::{edmx::Edmx, property::Property, utils::run_rustfmt};
 use check_keyword::CheckKeyword;
 use syntax_fragments::*;
 
-fn start_struct(struct_name: String, derive: &[u8]) -> Vec<u8> {
-    [
-        LINE_FEED,
-        derive,
-        LINE_FEED,
-        START_PUB_STRUCT,
-        SPACE,
-        struct_name.as_bytes(),
-        OPEN_CURLY,
-    ]
-    .concat()
+fn start_struct(struct_name: String) -> Vec<u8> {
+    [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY].concat()
 }
 fn end_struct() -> Vec<u8> {
     [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
@@ -70,11 +61,13 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 .open(&output_path)
                 .unwrap();
 
-            // I can haz namespace?
+            // If this fails, then either the build script is being run with the wrong value for the namespace, or we're
+            // trying to parse from XML that is not valid OData metadata
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
+                out_buffer.append(&mut [USE_SERDE, LINE_FEED, LINE_FEED].concat());
+
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // If present, transform ComplexType definitions to Rust structs
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // Transform ComplexType definitions if present
                 if let Some(cts) = &schema.complex_types {
                     for ct in cts {
                         let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
@@ -85,13 +78,22 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                         // If the complex type contains only one property and the name suffix is a Rust type, then a
                         // struct does not need to be generated.  This happens with SAP complex types such as
-                        // `CT_String` which only contain a single property called `String`.  Such "complex" types are
-                        // collapsed down to a single native Rust type
+                        // `CT_String` which contains the single property called `String`.
+                        // Such complex types are in fact not "complex" at all, and should be replaced with a single
+                        // native Rust type
                         if ct.properties.len() > 1 && !ct_name.is_keyword() {
                             let mut props = ct.properties.clone();
                             props.sort();
 
-                            out_buffer.append(&mut start_struct(ct_name, DERIVE_CLONE_DEBUG_DEFAULT));
+                            out_buffer.append(&mut derive_str(vec![
+                                DeriveDirectives::CLONE,
+                                DeriveDirectives::DEBUG,
+                                DeriveDirectives::DEFAULT,
+                                DeriveDirectives::SERIALIZE,
+                                DeriveDirectives::DESERIALIZE,
+                            ]));
+                            out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
+                            out_buffer.append(&mut start_struct(ct_name));
 
                             for prop in props {
                                 out_buffer.append(&mut prop.to_rust(namespace));
@@ -105,13 +107,24 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Transform each EntityType definition to a Rust struct
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                //
+                // It is possible for an OData service to have zero EntityTypes; in which case, there will also be zero
+                // EntitySets. This in turns means that interaction with the OData service is only possible through the
+                // FunctionImports
                 for entity in &schema.entity_types {
                     let struct_name = convert_case::Casing::to_case(
                         &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
                         convert_case::Case::UpperCamel,
                     );
-                    out_buffer.append(&mut start_struct(struct_name, DERIVE_CLONE_DEBUG_DEFAULT));
+                    out_buffer.append(&mut derive_str(vec![
+                        DeriveDirectives::CLONE,
+                        DeriveDirectives::DEBUG,
+                        DeriveDirectives::DEFAULT,
+                        DeriveDirectives::SERIALIZE,
+                        DeriveDirectives::DESERIALIZE,
+                    ]));
+                    out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
+                    out_buffer.append(&mut start_struct(struct_name));
 
                     let mut props = entity.properties.clone();
                     props.sort();
@@ -138,7 +151,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     Ok(formatted_bytes) => {
                         out_file.write_all(&formatted_bytes).unwrap();
 
-                        // Tell cargo to watch the input file
+                        // Tell cargo to watch the input XML file
                         println!(
                             "cargo:rerun-if-changed={}",
                             format!("{}/{}.xml", DEFAULT_INPUT_DIR, metadata_file_name)

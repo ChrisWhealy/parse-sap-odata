@@ -65,8 +65,7 @@ impl EntityContainer {
         // #[derive(Copy, Clone, Debug)]↩︎
         // pub enum <entity_container_name> {↩︎
         let mut output_enum = [
-            DERIVE_COPY_CLONE_DEBUG,
-            LINE_FEED,
+            derive_str(vec![DeriveDirectives::COPY, DeriveDirectives::CLONE, DeriveDirectives::DEBUG]).as_slice(),
             START_ENUM,
             cont_name_camel.as_bytes(),
             SPACE,
@@ -96,6 +95,9 @@ impl EntityContainer {
             LINE_FEED,
         ]
         .concat();
+
+        // Output the "as_list" function within the enum implementation
+        let fn_as_list = [AS_OPT_LIST_START, cont_name_camel.as_bytes(), AS_OPT_LIST_END].concat();
 
         // Create entity set enum
         for ent_set in self.entity_sets.iter() {
@@ -136,7 +138,7 @@ impl EntityContainer {
         }
 
         output_enum.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
-        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY].concat());
+        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
         fn_iterator.append(
             &mut [
                 LINE_FEED,
@@ -147,16 +149,19 @@ impl EntityContainer {
                 LINE_FEED,
                 CLOSE_CURLY,
                 LINE_FEED,
-                AS_OPT_LIST_START,
-                cont_name_camel.as_bytes(),
-                AS_OPT_LIST_END,
-                LINE_FEED,
-                CLOSE_CURLY, // Extra close curly needed to close the impl block
             ]
             .concat(),
         );
 
-        return [output_enum, output_impl, fn_value, fn_iterator].concat();
+        return [
+            output_enum,
+            output_impl,
+            fn_value,
+            fn_iterator,
+            fn_as_list,
+            CLOSE_CURLY.to_vec(),
+        ]
+        .concat();
     }
 }
 

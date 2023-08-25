@@ -26,13 +26,14 @@ In the `Cargo.toml` of your application, define an entry in `[build-dependencies
 parse-sap-odata = "^1.1.0"
 ```
 
-Your app will also (almost certainly) require these dependencies
+Your app will require at least these dependencies:
 
 ```toml
 [dependencies]
+chrono = { version = "^0.4", features = ["serde"] }
 rust_decimal = "^1.30"
-uuid = "^1.4"
-chrono = "^0.4"
+serde = { version = "^1.0", features = ["derive"] }
+uuid = { version = "^1.4", features = ["serde"] }
 ```
 
 ### Create a Build Script
