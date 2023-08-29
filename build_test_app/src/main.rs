@@ -1,13 +1,16 @@
 pub mod auth;
 pub mod err_handlers;
+pub mod feed;
+pub mod xml;
+
+use crate::{auth::fetch_auth, err_handlers::error_handlers};
+use feed::Feed;
 
 use actix_web::{
     error, get,
     http::{header::ContentType, StatusCode},
     middleware, web, App, Error, HttpResponse, HttpServer, Result,
 };
-use auth::fetch_auth;
-use err_handlers::error_handlers;
 use serde_json::json;
 use std::{collections::HashMap, str};
 use tinytemplate::TinyTemplate;
@@ -51,7 +54,7 @@ async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
         Ok(auth_chars) => {
             match client
                 .get(format!(
-                    "{}/{}/{}?$format=json&$top=100",
+                    "{}/{}/{}?$top=100",
                     str::from_utf8(HOST_PATH).unwrap(),
                     str::from_utf8(SERVICE_NAME).unwrap(),
                     entity_set_name
@@ -63,7 +66,14 @@ async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
                 .text()
                 .await
             {
-                Ok(res) => HttpResponse::Ok().content_type(ContentType::json()).body(res),
+                Ok(res) => {
+                    let response = match Feed::<BusinessPartner>::from_str(&res) {
+                        Ok(bp) => format!("{bp:#?}"),
+                        Err(e) => format!("Error: {e:?}"),
+                    };
+
+                    HttpResponse::Ok().content_type(ContentType::plaintext()).body(response)
+                },
                 Err(err) => HttpResponse::BadRequest().body(format!("{:#?}", err)),
             }
         },

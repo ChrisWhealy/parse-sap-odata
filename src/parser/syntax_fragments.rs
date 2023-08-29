@@ -7,6 +7,8 @@ pub static OPEN_PAREN: &[u8] = &[0x28];
 pub static CLOSE_PAREN: &[u8] = &[0x29];
 pub static COMMA: &[u8] = &[0x2C];
 pub static COLON: &[u8] = &[0x3A];
+pub static OPEN_ANGLE: &[u8] = &[0x3C];
+pub static CLOSE_ANGLE: &[u8] = &[0x3E];
 pub static OPEN_SQR: &[u8] = &[0x5B];
 pub static CLOSE_SQR: &[u8] = &[0x5D];
 pub static OPEN_CURLY: &[u8] = &[0x7B];
@@ -32,8 +34,7 @@ pub static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Keywords or keyword fragments
-pub static OPTION_DECLARATION: &[u8] = "Option<".as_bytes();
-pub static TYPE_TERMINATOR: &[u8] = ">".as_bytes();
+pub static OPTION: &[u8] = "Option".as_bytes();
 pub static PUBLIC: &[u8] = "pub".as_bytes();
 pub static START_ENUM: &[u8] = "pub enum ".as_bytes();
 pub static START_IMPL: &[u8] = "impl ".as_bytes();
@@ -69,6 +70,25 @@ list
 
 pub static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// `from_str` implementation for each entity set struct
+pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
+    static FN_START: &[u8] = "
+  impl std::str::FromStr for "
+        .as_bytes();
+    static FN_END: &[u8] = " {
+    type Err = quick_xml::DeError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        quick_xml::de::from_str(s)
+    }
+}
+
+"
+    .as_bytes();
+
+    [FN_START, struct_name.as_bytes(), FN_END].concat()
+}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Derivable traits.
 ///
@@ -114,13 +134,11 @@ pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
         d_str.extend_from_slice(d.value().as_bytes());
 
         if idx < traits.len() - 1 {
-            d_str.extend_from_slice(COMMA);
-            d_str.extend_from_slice(SPACE);
+            d_str.extend([COMMA, SPACE].concat());
         }
     }
 
-    d_str.extend_from_slice(DERIVE_END);
-    d_str.extend_from_slice(LINE_FEED);
+    d_str.extend([DERIVE_END, LINE_FEED].concat());
     d_str
 }
 
@@ -128,4 +146,7 @@ pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
 pub static DERIVE_END: &[u8] = ")]".as_bytes();
 
 pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};".as_bytes();
+pub static USE_STD_STR: &[u8] = "use std::str::FromStr;".as_bytes();
 pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]".as_bytes();
+pub static SERDE_RENAME_SNAKE_CASE: &[u8] = "#[serde(rename_all = \"snake_case\")]".as_bytes();
+pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();

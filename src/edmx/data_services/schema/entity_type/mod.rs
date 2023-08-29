@@ -53,9 +53,12 @@ pub struct EntityType {
 
 impl EntityType {
     pub fn key_property(&self) -> Option<&Property> {
-        self.properties
-            .iter()
-            .find(|property| self.key.property_refs.iter().any(|prop_ref| prop_ref.name == property.name))
+        self.properties.iter().find(|property| {
+            self.key
+                .property_refs
+                .iter()
+                .any(|prop_ref| prop_ref.name == property.odata_name)
+        })
     }
 }
 

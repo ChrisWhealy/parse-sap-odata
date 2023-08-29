@@ -33,11 +33,11 @@ pub fn should_parse_entity_type_business_partner() {
             assert_eq!(ent_type.key.property_refs[0].name, "BusinessPartnerID");
 
             assert_eq!(ent_type.properties.len(), 12);
-            assert_eq!(ent_type.properties[0].name, "Address");
+            assert_eq!(ent_type.properties[0].odata_name, "Address");
             assert_eq!(ent_type.properties[0].edm_type, "GWSAMPLE_BASIC.CT_Address");
             assert_eq!(ent_type.properties[0].nullable, false);
 
-            assert_eq!(ent_type.properties[1].name, "BusinessPartnerID");
+            assert_eq!(ent_type.properties[1].odata_name, "BusinessPartnerID");
             assert_eq!(ent_type.properties[1].edm_type, "Edm.String");
             assert_eq!(ent_type.properties[1].nullable, false);
             assert_eq!(ent_type.properties[1].max_length, Some(10));
@@ -78,7 +78,7 @@ pub fn should_parse_entity_type_product() {
             assert_eq!(ent_type.key.property_refs[0].name, "ProductID");
 
             assert_eq!(ent_type.properties.len(), 21);
-            assert_eq!(ent_type.properties[14].name, "Price");
+            assert_eq!(ent_type.properties[14].odata_name, "Price");
             assert_eq!(ent_type.properties[14].edm_type, "Edm.Decimal");
             assert_eq!(ent_type.properties[14].precision, Some(16));
             assert_eq!(ent_type.properties[14].scale, Some(3));

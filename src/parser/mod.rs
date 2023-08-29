@@ -14,7 +14,7 @@ use crate::{edmx::Edmx, property::Property, utils::run_rustfmt};
 use check_keyword::CheckKeyword;
 use syntax_fragments::*;
 
-fn start_struct(struct_name: String) -> Vec<u8> {
+fn start_struct(struct_name: &str) -> Vec<u8> {
     [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY].concat()
 }
 fn end_struct() -> Vec<u8> {
@@ -68,7 +68,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
             // If this fails, then either the build script is being run with the wrong value for the namespace, or we're
             // trying to parse from XML that is not valid OData metadata
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                out_buffer.append(&mut [USE_SERDE, LINE_FEED, LINE_FEED].concat());
+                out_buffer.append(&mut [USE_SERDE, LINE_FEED, USE_STD_STR, LINE_FEED, LINE_FEED].concat());
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Transform ComplexType definitions if present
@@ -97,7 +97,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                                 DeriveTraits::DESERIALIZE,
                             ]));
                             out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
-                            out_buffer.append(&mut start_struct(ct_name));
+                            out_buffer.append(&mut start_struct(&ct_name));
 
                             for prop in props {
                                 out_buffer.append(&mut prop.to_rust(namespace));
@@ -105,6 +105,9 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                             // Add terminating line feed, close curly brace, then two more line feeds
                             out_buffer.append(&mut end_struct());
+
+                            // Implement `from_str` for this struct
+                            out_buffer.append(&mut impl_from_str_for(&ct_name));
                         }
                     }
                 }
@@ -128,7 +131,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         DeriveTraits::DESERIALIZE,
                     ]));
                     out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
-                    out_buffer.append(&mut start_struct(struct_name));
+                    out_buffer.append(&mut start_struct(&struct_name));
 
                     let mut props = entity.properties.clone();
                     props.sort();
@@ -138,6 +141,9 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     }
 
                     out_buffer.append(&mut end_struct());
+
+                    // Implement `from_str` for this struct
+                    out_buffer.append(&mut impl_from_str_for(&struct_name));
                 }
 
                 // Create enum + impl for the entity container

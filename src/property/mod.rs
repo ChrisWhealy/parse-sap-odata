@@ -1,19 +1,18 @@
 // pub mod property_type;
 
-use check_keyword::CheckKeyword;
-use convert_case::Case;
 use serde::{Deserialize, Serialize};
 
 use crate::{
     parser::syntax_fragments::*,
     sap_annotations::SAPAnnotations,
-    utils::{de_str_to_bool, default_false, default_true},
+    utils::{de_str_to_bool, default_false, default_true, odata_name_to_rust_safe_name, to_pascal_case},
 };
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Property {
-    pub name: String,
+    #[serde(rename = "Name")]
+    pub odata_name: String,
 
     #[serde(rename = "Type")]
     pub edm_type: String,
@@ -55,7 +54,7 @@ pub struct Property {
 /// uuid = { version = "1.4", features = ["serde"]}
 /// ```
 impl Property {
-    fn trim_prefix<'a>(some_str: &'a str, some_prefix: &str) -> &'a str {
+    fn trim_prefix<'de>(some_str: &'de str, some_prefix: &str) -> &'de str {
         if let Some(suffix) = some_str.strip_prefix(some_prefix) {
             suffix
         } else {
@@ -65,16 +64,10 @@ impl Property {
 
     fn maybe_optional(rust_type: &[u8], is_optional: bool) -> Vec<u8> {
         if is_optional {
-            [OPTION_DECLARATION, rust_type, TYPE_TERMINATOR].concat()
+            [OPTION, OPEN_ANGLE, rust_type, CLOSE_ANGLE].concat()
         } else {
             [rust_type].concat()
         }
-    }
-
-    fn to_rust_safe_name(&self) -> Vec<u8> {
-        CheckKeyword::into_safe(convert_case::Casing::to_case(&self.name, Case::Snake))
-            .as_bytes()
-            .to_vec()
     }
 
     // For complex types, the type struct will already have been generated using the <ct_name> part extracted
@@ -116,16 +109,39 @@ impl Property {
     }
 
     pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
-        [
-            LINE_FEED.to_vec(),
-            PUBLIC.to_vec(),
-            SPACE.to_vec(),
-            self.to_rust_safe_name(),
-            COLON.to_vec(),
-            self.to_rust_type(namespace),
-            COMMA.to_vec(),
-        ]
-        .concat()
+        let mut response: Vec<u8> = Vec::new();
+
+        // Check whether the Pascal case name is correctly transformed into a snake_case name.
+        // If not, output a serde_rename directive.
+        // This catches deserialization problems with fields that end in capitalised abbreviations:
+        // E.G. "ID" instead of "Id"
+        if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
+            response.extend(
+                [
+                    SERDE_RENAME.to_vec(),
+                    self.odata_name.clone().into_bytes(),
+                    DOUBLE_QUOTE.to_vec(),
+                    CLOSE_PAREN.to_vec(),
+                    CLOSE_SQR.to_vec(),
+                    LINE_FEED.to_vec(),
+                ]
+                .concat(),
+            )
+        }
+
+        response.extend(
+            [
+                LINE_FEED.to_vec(),
+                PUBLIC.to_vec(),
+                SPACE.to_vec(),
+                odata_name_to_rust_safe_name(&self.odata_name).as_bytes().to_vec(),
+                COLON.to_vec(),
+                self.to_rust_type(namespace),
+                COMMA.to_vec(),
+            ]
+            .concat(),
+        );
+        response
     }
 }
 
