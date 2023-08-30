@@ -14,13 +14,6 @@ use crate::{edmx::Edmx, property::Property, utils::run_rustfmt};
 use check_keyword::CheckKeyword;
 use syntax_fragments::*;
 
-fn start_struct(struct_name: &str) -> Vec<u8> {
-    [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY].concat()
-}
-fn end_struct() -> Vec<u8> {
-    [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
-}
-
 static DEFAULT_INPUT_DIR: &str = &"./odata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,7 +39,8 @@ pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate Rust structs from the OData metadata
 ///
-/// Any fields whose names clashe with a Rust reserved word are written in raw format: E.G. `type --> r#type`
+/// Any fields whose names clash with a Rust reserved word are written in raw format:<br>
+/// E.G. `type --> r#type`
 pub fn gen_src(metadata_file_name: &str, namespace: &str) {
     let mut out_buffer: Vec<u8> = Vec::new();
 
@@ -68,11 +62,25 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
             // If this fails, then either the build script is being run with the wrong value for the namespace, or we're
             // trying to parse from XML that is not valid OData metadata
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                out_buffer.append(&mut [USE_SERDE, LINE_FEED, USE_STD_STR, LINE_FEED, LINE_FEED].concat());
+                out_buffer.append(
+                    &mut [
+                        USE_SERDE,
+                        LINE_FEED,
+                        USE_STD_STR,
+                        LINE_FEED,
+                        LINE_FEED,
+                        MARKER_TRAIT_ENTITY_TYPE,
+                        LINE_FEED,
+                        LINE_FEED,
+                    ]
+                    .concat(),
+                );
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Transform ComplexType definitions if present
                 if let Some(cts) = &schema.complex_types {
+                    out_buffer.append(&mut comment_for("COMPLEX TYPES"));
+
                     for ct in cts {
                         let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
                         let ct_name = convert_case::Casing::to_case(
@@ -113,11 +121,13 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 }
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // Transform each EntityType definition to a Rust struct
+                // Transform each EntityType definition into a Rust struct
                 //
-                // It is possible for an OData service to have zero EntityTypes; in which case, there will also be zero
-                // EntitySets. This in turns means that interaction with the OData service is only possible through the
+                // It is possible for an OData service to have zero EntityTypes, in which case, there will also be zero
+                // EntitySets. This in turns means that interaction with the OData service is only possible through its
                 // FunctionImports
+                out_buffer.append(&mut comment_for("ENTITY TYPES"));
+
                 for entity in &schema.entity_types {
                     let struct_name = convert_case::Casing::to_case(
                         &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
@@ -142,13 +152,21 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                     out_buffer.append(&mut end_struct());
 
+                    // Each entity type struct implements the `EntityType` marker trait
+                    out_buffer.append(&mut impl_marker_trait(&struct_name));
+
                     // Implement `from_str` for this struct
                     out_buffer.append(&mut impl_from_str_for(&struct_name));
                 }
 
+                // Create enum + impl for the entity types
+                out_buffer.append(&mut comment_for("ENTITY TYPES ENUM"));
+                out_buffer.append(&mut schema.to_entity_types_enum());
+
                 // Create enum + impl for the entity container
-                // The values in this enum act as a proxy for the service document
+                // This enum acts as a proxy for the service document
                 if let Some(ent_cont) = &schema.entity_container {
+                    out_buffer.append(&mut comment_for("ENTITY SETS ENUM"));
                     out_buffer.append(&mut ent_cont.to_enum_with_impl());
                 }
 

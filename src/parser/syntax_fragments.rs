@@ -15,6 +15,12 @@ pub static OPEN_CURLY: &[u8] = &[0x7B];
 pub static CLOSE_CURLY: &[u8] = &[0x7D];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Comment separators
+pub static COMMMENT_LINE: &[u8] = "// ".as_bytes();
+pub static SEPARATOR: &[u8] =
+    "// -----------------------------------------------------------------------------".as_bytes();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Syntactical separators
 pub static COLON2: &[u8] = &[0x3A, 0x3A];
 pub static FAT_ARROW: &[u8] = &[0x3D, 0x3E];
@@ -38,6 +44,7 @@ pub static OPTION: &[u8] = "Option".as_bytes();
 pub static PUBLIC: &[u8] = "pub".as_bytes();
 pub static START_ENUM: &[u8] = "pub enum ".as_bytes();
 pub static START_IMPL: &[u8] = "impl ".as_bytes();
+pub static ENTITY_TYPE_FOR: &[u8] = " EntityType for ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
@@ -89,6 +96,11 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
 
     [FN_START, struct_name.as_bytes(), FN_END].concat()
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Marker traits
+pub static MARKER_TRAIT_ENTITY_TYPE: &[u8] = "trait EntityType {}".as_bytes();
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Derivable traits.
 ///
@@ -150,3 +162,37 @@ pub static USE_STD_STR: &[u8] = "use std::str::FromStr;".as_bytes();
 pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]".as_bytes();
 pub static SERDE_RENAME_SNAKE_CASE: &[u8] = "#[serde(rename_all = \"snake_case\")]".as_bytes();
 pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
+
+pub fn comment_for(something: &str) -> Vec<u8> {
+    [
+        SEPARATOR,
+        LINE_FEED,
+        COMMMENT_LINE,
+        something.as_bytes(),
+        LINE_FEED,
+        SEPARATOR,
+        LINE_FEED,
+    ]
+    .concat()
+}
+
+pub fn start_struct(struct_name: &str) -> Vec<u8> {
+    [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY].concat()
+}
+
+pub fn end_struct() -> Vec<u8> {
+    [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
+}
+
+pub fn impl_marker_trait(struct_name: &str) -> Vec<u8> {
+    [
+        START_IMPL,
+        ENTITY_TYPE_FOR,
+        struct_name.as_bytes(),
+        OPEN_CURLY,
+        CLOSE_CURLY,
+        LINE_FEED,
+        LINE_FEED,
+    ]
+    .concat()
+}
