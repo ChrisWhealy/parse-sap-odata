@@ -90,8 +90,10 @@ impl Property {
             "Edm.Binary" => Property::maybe_optional(VECTOR_U8, self.nullable),
             "Edm.Boolean" => Property::maybe_optional(BOOLEAN, self.nullable),
             "Edm.Byte" => U8.to_vec(),
-            "Edm.DateTime" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
-            // TODO I suspect that this may not be the correct Rust datatype for Edm.DateTimeOffset...
+            // TODO I suspect that this may not be the correct Rust datatype for Edm.DateTime or
+            // Edm.DateTimeOffset...
+            // "Edm.DateTime" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
+            "Edm.DateTime" => Property::maybe_optional(STRING, self.nullable),
             "Edm.DateTimeOffset" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
             "Edm.Decimal" => DECIMAL.to_vec(),
             "Edm.Double" => F64.to_vec(),

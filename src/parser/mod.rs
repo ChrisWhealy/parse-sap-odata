@@ -160,7 +160,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 }
 
                 // Create enum + impl for the entity types
-                out_buffer.append(&mut comment_for("ENTITY TYPES ENUM"));
+                out_buffer.append(&mut comment_for("ENTITY TYPES ENUM - Not sure if this enum is needed..."));
                 out_buffer.append(&mut schema.to_entity_types_enum());
 
                 // Create enum + impl for the entity container

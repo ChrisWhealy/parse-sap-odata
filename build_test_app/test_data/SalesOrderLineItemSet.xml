@@ -1,0 +1,245 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet</id>
+  <title type="text">SalesOrderLineItemSet</title>
+  <updated>2023-08-31T10:43:32Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="SalesOrderLineItemSet" rel="self" title="SalesOrderLineItemSet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000010')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000010')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000010')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000010')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000010')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000010</d:ItemPosition>
+        <d:ProductID>HT-1000</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000010</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>1137.64</d:GrossAmount>
+        <d:NetAmount>956.00</d:NetAmount>
+        <d:TaxAmount>181.64</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>1</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000020')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000020')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000020')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000020')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000020')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000020</d:ItemPosition>
+        <d:ProductID>HT-1257</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000020</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>1306.62</d:GrossAmount>
+        <d:NetAmount>1098.00</d:NetAmount>
+        <d:TaxAmount>208.62</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>2</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000030')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000030')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000030')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000030')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000030')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000030</d:ItemPosition>
+        <d:ProductID>HT-1251</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000030</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>2353.82</d:GrossAmount>
+        <d:NetAmount>1978.00</d:NetAmount>
+        <d:TaxAmount>375.82</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>2</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000040')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000040')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000040')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000040')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000040')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000040</d:ItemPosition>
+        <d:ProductID>HT-1252</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000040</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>1544.62</d:GrossAmount>
+        <d:NetAmount>1298.00</d:NetAmount>
+        <d:TaxAmount>246.62</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>2</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000050')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000050')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000050')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000050')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000050')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000050</d:ItemPosition>
+        <d:ProductID>HT-2001</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000050</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>1606.46</d:GrossAmount>
+        <d:NetAmount>1349.97</d:NetAmount>
+        <d:TaxAmount>256.49</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>3</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000060')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000060')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000060')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000060')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000060')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000060</d:ItemPosition>
+        <d:ProductID>HT-2000</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000060</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>594.98</d:GrossAmount>
+        <d:NetAmount>499.98</d:NetAmount>
+        <d:TaxAmount>95.00</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>2</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000070')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000070')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000070')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000070')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000070')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000070</d:ItemPosition>
+        <d:ProductID>HT-1253</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000070</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>2322.88</d:GrossAmount>
+        <d:NetAmount>1952.00</d:NetAmount>
+        <d:TaxAmount>370.88</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>2</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000080')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000080')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000080')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000080')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000080')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000080</d:ItemPosition>
+        <d:ProductID>HT-1254</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000080</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>595.00</d:GrossAmount>
+        <d:NetAmount>500.00</d:NetAmount>
+        <d:TaxAmount>95.00</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>2</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000090')</id>
+    <title type="text">SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000090')</title>
+    <updated>2023-08-31T10:43:32Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrderLineItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000090')" rel="edit" title="SalesOrderLineItem"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000090')/ToHeader" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToHeader" type="application/atom+xml;type=entry" title="ToHeader"/>
+    <link href="SalesOrderLineItemSet(SalesOrderID='0500000000',ItemPosition='0000000090')/ToProduct" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProduct" type="application/atom+xml;type=entry" title="ToProduct"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:ItemPosition>0000000090</d:ItemPosition>
+        <d:ProductID>HT-1255</d:ProductID>
+        <d:Note>EPM DG: SO ID 0500000000 Item 0000000090</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>963.90</d:GrossAmount>
+        <d:NetAmount>810.00</d:NetAmount>
+        <d:TaxAmount>153.90</d:TaxAmount>
+        <d:DeliveryDate>2018-01-07T23:00:00.0000000</d:DeliveryDate>
+        <d:Quantity>3</d:Quantity>
+        <d:QuantityUnit>EA</d:QuantityUnit>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

@@ -117,8 +117,16 @@ impl Schema {
         }
 
         output_enum.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
-        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
+        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED].concat());
 
-        return [output_enum, output_impl, fn_value, CLOSE_CURLY.to_vec(), LINE_FEED.to_vec()].concat();
+        return [
+            output_enum,
+            output_impl,
+            fn_value,
+            CLOSE_CURLY.to_vec(),
+            LINE_FEED.to_vec(),
+            LINE_FEED.to_vec(),
+        ]
+        .concat();
     }
 }

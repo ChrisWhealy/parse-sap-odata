@@ -1,0 +1,165 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet</id>
+  <title type="text">VH_UnitLengthSet</title>
+  <updated>2023-08-31T10:53:58Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="VH_UnitLengthSet" rel="self" title="VH_UnitLengthSet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('%22')</id>
+    <title type="text">VH_UnitLengthSet('%22')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('%22')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>"</d:Msehi>
+        <d:Msehl>Inch</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('CM')</id>
+    <title type="text">VH_UnitLengthSet('CM')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('CM')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>CM</d:Msehi>
+        <d:Msehl>Centimeter</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('DM')</id>
+    <title type="text">VH_UnitLengthSet('DM')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('DM')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>DM</d:Msehi>
+        <d:Msehl>Decimeter</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('FT')</id>
+    <title type="text">VH_UnitLengthSet('FT')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('FT')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>FT</d:Msehi>
+        <d:Msehl>Foot</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('KM')</id>
+    <title type="text">VH_UnitLengthSet('KM')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('KM')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>KM</d:Msehi>
+        <d:Msehl>Kilometer</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('M')</id>
+    <title type="text">VH_UnitLengthSet('M')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('M')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>M</d:Msehi>
+        <d:Msehl>Meter</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('MI')</id>
+    <title type="text">VH_UnitLengthSet('MI')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('MI')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>MI</d:Msehi>
+        <d:Msehl>Mile</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('MM')</id>
+    <title type="text">VH_UnitLengthSet('MM')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('MM')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>MM</d:Msehi>
+        <d:Msehl>Millimeter</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('NAM')</id>
+    <title type="text">VH_UnitLengthSet('NAM')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('NAM')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>NAM</d:Msehi>
+        <d:Msehl>Nanometer</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('YD')</id>
+    <title type="text">VH_UnitLengthSet('YD')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('YD')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>YD</d:Msehi>
+        <d:Msehl>Yards</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_UnitLengthSet('%C2%B5M')</id>
+    <title type="text">VH_UnitLengthSet('%C2%B5M')</title>
+    <updated>2023-08-31T10:53:58Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_UnitLength" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_UnitLengthSet('%C2%B5M')" rel="self" title="VH_UnitLength"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Msehi>µM</d:Msehi>
+        <d:Msehl>Micrometer</d:Msehl>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

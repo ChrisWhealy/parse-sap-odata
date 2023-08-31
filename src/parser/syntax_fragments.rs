@@ -48,7 +48,10 @@ pub static ENTITY_TYPE_FOR: &[u8] = " EntityType for ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
-pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
+
+// TODO: Create parser for values of type Decimal
+// pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
+pub static DECIMAL: &[u8] = "f64".as_bytes();
 pub static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
 pub static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
 pub static UUID: &[u8] = "uuid::Uuid".as_bytes();

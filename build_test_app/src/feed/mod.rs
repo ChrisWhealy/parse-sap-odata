@@ -6,10 +6,11 @@ use crate::xml::{default_xml_namespace_atom, default_xml_namespace_d, default_xm
 use author::Author;
 use entry::Entry;
 use link::AtomLink;
+
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Represents an Atom <feed>
+/// Represents an Atom `<feed>`
 ///
 /// # Child Nodes
 /// `1:1 author`<br>
@@ -31,9 +32,12 @@ pub struct Feed<T> {
     #[serde(rename = "xmlns:d", default = "default_xml_namespace_d")]
     pub namespace_d: String,
 
-    #[serde(rename = "xmlns:base")]
+    #[serde(rename = "xml:base")]
     pub xml_base: Option<String>,
 
+    pub id: String,
+    pub title: String,
+    pub updated: String,
     pub author: Author,
 
     #[serde(rename = "link")]

@@ -1,0 +1,181 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet</id>
+  <title type="text">BusinessPartnerSet</title>
+  <updated>2023-08-31T10:37:08Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="BusinessPartnerSet" rel="self" title="BusinessPartnerSet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000000')</id>
+    <title type="text">BusinessPartnerSet('0100000000')</title>
+    <updated>2023-08-31T10:37:08Z</updated>
+    <category term="GWSAMPLE_BASIC.BusinessPartner" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="BusinessPartnerSet('0100000000')" rel="edit" title="BusinessPartner"/>
+    <link href="BusinessPartnerSet('0100000000')/ToSalesOrders" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToSalesOrders" type="application/atom+xml;type=feed" title="ToSalesOrders"/>
+    <link href="BusinessPartnerSet('0100000000')/ToContacts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToContacts" type="application/atom+xml;type=feed" title="ToContacts"/>
+    <link href="BusinessPartnerSet('0100000000')/ToProducts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProducts" type="application/atom+xml;type=feed" title="ToProducts"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Address m:type="GWSAMPLE_BASIC.CT_Address">
+          <d:City>Walldorf</d:City>
+          <d:PostalCode>69190</d:PostalCode>
+          <d:Street>Dietmar-Hopp-Allee</d:Street>
+          <d:Building>16</d:Building>
+          <d:Country>DE</d:Country>
+          <d:AddressType>02</d:AddressType>
+        </d:Address>
+        <d:BusinessPartnerID>0100000000</d:BusinessPartnerID>
+        <d:CompanyName>SAP</d:CompanyName>
+        <d:WebAddress>http://www.sap.com</d:WebAddress>
+        <d:EmailAddress>customer-do.not.reply@sap.com</d:EmailAddress>
+        <d:PhoneNumber>0622734567</d:PhoneNumber>
+        <d:FaxNumber>0622734004</d:FaxNumber>
+        <d:LegalForm>SE</d:LegalForm>
+        <d:CurrencyCode>EUR</d:CurrencyCode>
+        <d:BusinessPartnerRole>01</d:BusinessPartnerRole>
+        <d:CreatedAt>2023-08-31T01:00:06.0000000</d:CreatedAt>
+        <d:ChangedAt>2023-08-31T01:00:06.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000001')</id>
+    <title type="text">BusinessPartnerSet('0100000001')</title>
+    <updated>2023-08-31T10:37:08Z</updated>
+    <category term="GWSAMPLE_BASIC.BusinessPartner" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="BusinessPartnerSet('0100000001')" rel="edit" title="BusinessPartner"/>
+    <link href="BusinessPartnerSet('0100000001')/ToSalesOrders" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToSalesOrders" type="application/atom+xml;type=feed" title="ToSalesOrders"/>
+    <link href="BusinessPartnerSet('0100000001')/ToContacts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToContacts" type="application/atom+xml;type=feed" title="ToContacts"/>
+    <link href="BusinessPartnerSet('0100000001')/ToProducts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProducts" type="application/atom+xml;type=feed" title="ToProducts"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Address m:type="GWSAMPLE_BASIC.CT_Address">
+          <d:City>Berlin</d:City>
+          <d:PostalCode>13467</d:PostalCode>
+          <d:Street>Calvinstraße</d:Street>
+          <d:Building>36</d:Building>
+          <d:Country>DE</d:Country>
+          <d:AddressType>02</d:AddressType>
+        </d:Address>
+        <d:BusinessPartnerID>0100000001</d:BusinessPartnerID>
+        <d:CompanyName>Becker Berlin</d:CompanyName>
+        <d:WebAddress>http://www.beckerberlin.de</d:WebAddress>
+        <d:EmailAddress>customer-dagmar.schulze@beckerberlin.de</d:EmailAddress>
+        <d:PhoneNumber>3088530</d:PhoneNumber>
+        <d:FaxNumber>3088004</d:FaxNumber>
+        <d:LegalForm>GmbH</d:LegalForm>
+        <d:CurrencyCode>EUR</d:CurrencyCode>
+        <d:BusinessPartnerRole>01</d:BusinessPartnerRole>
+        <d:CreatedAt>2023-08-31T01:00:06.0000000</d:CreatedAt>
+        <d:ChangedAt>2023-08-31T01:00:06.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000002')</id>
+    <title type="text">BusinessPartnerSet('0100000002')</title>
+    <updated>2023-08-31T10:37:08Z</updated>
+    <category term="GWSAMPLE_BASIC.BusinessPartner" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="BusinessPartnerSet('0100000002')" rel="edit" title="BusinessPartner"/>
+    <link href="BusinessPartnerSet('0100000002')/ToSalesOrders" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToSalesOrders" type="application/atom+xml;type=feed" title="ToSalesOrders"/>
+    <link href="BusinessPartnerSet('0100000002')/ToContacts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToContacts" type="application/atom+xml;type=feed" title="ToContacts"/>
+    <link href="BusinessPartnerSet('0100000002')/ToProducts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProducts" type="application/atom+xml;type=feed" title="ToProducts"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Address m:type="GWSAMPLE_BASIC.CT_Address">
+          <d:City>Wilmington, Delaware</d:City>
+          <d:PostalCode>19899</d:PostalCode>
+          <d:Street>1 2345 King Street</d:Street>
+          <d:Building>1</d:Building>
+          <d:Country>US</d:Country>
+          <d:AddressType>02</d:AddressType>
+        </d:Address>
+        <d:BusinessPartnerID>0100000002</d:BusinessPartnerID>
+        <d:CompanyName>DelBont Industries</d:CompanyName>
+        <d:WebAddress>http://www.delbont.com</d:WebAddress>
+        <d:EmailAddress>customer-maria.brown@delbont.com</d:EmailAddress>
+        <d:PhoneNumber>3023352668</d:PhoneNumber>
+        <d:FaxNumber>3023352004</d:FaxNumber>
+        <d:LegalForm>Ltd.</d:LegalForm>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:BusinessPartnerRole>01</d:BusinessPartnerRole>
+        <d:CreatedAt>2023-08-31T01:00:06.0000000</d:CreatedAt>
+        <d:ChangedAt>2023-08-31T01:00:06.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000003')</id>
+    <title type="text">BusinessPartnerSet('0100000003')</title>
+    <updated>2023-08-31T10:37:08Z</updated>
+    <category term="GWSAMPLE_BASIC.BusinessPartner" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="BusinessPartnerSet('0100000003')" rel="edit" title="BusinessPartner"/>
+    <link href="BusinessPartnerSet('0100000003')/ToSalesOrders" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToSalesOrders" type="application/atom+xml;type=feed" title="ToSalesOrders"/>
+    <link href="BusinessPartnerSet('0100000003')/ToContacts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToContacts" type="application/atom+xml;type=feed" title="ToContacts"/>
+    <link href="BusinessPartnerSet('0100000003')/ToProducts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProducts" type="application/atom+xml;type=feed" title="ToProducts"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Address m:type="GWSAMPLE_BASIC.CT_Address">
+          <d:City>Hannover</d:City>
+          <d:PostalCode>30625</d:PostalCode>
+          <d:Street>An der Breiten Wiese</d:Street>
+          <d:Building>422</d:Building>
+          <d:Country>DE</d:Country>
+          <d:AddressType>02</d:AddressType>
+        </d:Address>
+        <d:BusinessPartnerID>0100000003</d:BusinessPartnerID>
+        <d:CompanyName>Talpa</d:CompanyName>
+        <d:WebAddress>http://www.talpa-hannover.de</d:WebAddress>
+        <d:EmailAddress>customer-saskia.sommer@talpa-hannover.de</d:EmailAddress>
+        <d:PhoneNumber>511403266</d:PhoneNumber>
+        <d:FaxNumber>511403004</d:FaxNumber>
+        <d:LegalForm>GmbH</d:LegalForm>
+        <d:CurrencyCode>EUR</d:CurrencyCode>
+        <d:BusinessPartnerRole>01</d:BusinessPartnerRole>
+        <d:CreatedAt>2023-08-31T01:00:06.0000000</d:CreatedAt>
+        <d:ChangedAt>2023-08-31T01:00:06.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/BusinessPartnerSet('0100000004')</id>
+    <title type="text">BusinessPartnerSet('0100000004')</title>
+    <updated>2023-08-31T10:37:08Z</updated>
+    <category term="GWSAMPLE_BASIC.BusinessPartner" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="BusinessPartnerSet('0100000004')" rel="edit" title="BusinessPartner"/>
+    <link href="BusinessPartnerSet('0100000004')/ToSalesOrders" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToSalesOrders" type="application/atom+xml;type=feed" title="ToSalesOrders"/>
+    <link href="BusinessPartnerSet('0100000004')/ToContacts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToContacts" type="application/atom+xml;type=feed" title="ToContacts"/>
+    <link href="BusinessPartnerSet('0100000004')/ToProducts" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToProducts" type="application/atom+xml;type=feed" title="ToProducts"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Address m:type="GWSAMPLE_BASIC.CT_Address">
+          <d:City>Hollywood, California</d:City>
+          <d:PostalCode>91602</d:PostalCode>
+          <d:Street>Morning Drive</d:Street>
+          <d:Building>178</d:Building>
+          <d:Country>US</d:Country>
+          <d:AddressType>02</d:AddressType>
+        </d:Address>
+        <d:BusinessPartnerID>0100000004</d:BusinessPartnerID>
+        <d:CompanyName>Panorama Studios</d:CompanyName>
+        <d:WebAddress>http://www.panorama-studios.biz</d:WebAddress>
+        <d:EmailAddress>customer-bob.buyer@panorama-studios.biz</d:EmailAddress>
+        <d:PhoneNumber>2244668800</d:PhoneNumber>
+        <d:FaxNumber>2244668004</d:FaxNumber>
+        <d:LegalForm>Inc.</d:LegalForm>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:BusinessPartnerRole>01</d:BusinessPartnerRole>
+        <d:CreatedAt>2023-08-31T01:00:06.0000000</d:CreatedAt>
+        <d:ChangedAt>2023-08-31T01:00:06.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

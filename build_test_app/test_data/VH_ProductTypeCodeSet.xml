@@ -1,0 +1,39 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_ProductTypeCodeSet</id>
+  <title type="text">VH_ProductTypeCodeSet</title>
+  <updated>2023-08-31T10:54:47Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="VH_ProductTypeCodeSet" rel="self" title="VH_ProductTypeCodeSet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_ProductTypeCodeSet('AD')</id>
+    <title type="text">VH_ProductTypeCodeSet('AD')</title>
+    <updated>2023-08-31T10:54:47Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_ProductTypeCode" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_ProductTypeCodeSet('AD')" rel="self" title="VH_ProductTypeCode"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:TypeCode>AD</d:TypeCode>
+        <d:Shorttext>Advertisement</d:Shorttext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_ProductTypeCodeSet('PR')</id>
+    <title type="text">VH_ProductTypeCodeSet('PR')</title>
+    <updated>2023-08-31T10:54:47Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_ProductTypeCode" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_ProductTypeCodeSet('PR')" rel="self" title="VH_ProductTypeCode"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:TypeCode>PR</d:TypeCode>
+        <d:Shorttext>Product</d:Shorttext>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

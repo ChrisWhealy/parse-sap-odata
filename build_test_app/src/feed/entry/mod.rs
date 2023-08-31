@@ -17,7 +17,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Entry<T> {
     #[serde(rename = "m:etag")]
-    pub etag: String,
+    pub etag: Option<String>,
 
     pub id: String,
     pub title: String,

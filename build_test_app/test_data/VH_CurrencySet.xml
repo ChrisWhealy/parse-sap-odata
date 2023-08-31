@@ -1,0 +1,2937 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet</id>
+  <title type="text">VH_CurrencySet</title>
+  <updated>2023-08-31T10:51:31Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="VH_CurrencySet" rel="self" title="VH_CurrencySet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ADP')</id>
+    <title type="text">VH_CurrencySet('ADP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ADP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ADP</d:Waers>
+        <d:Ltext>Andorran Peseta --> (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AED')</id>
+    <title type="text">VH_CurrencySet('AED')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AED')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AED</d:Waers>
+        <d:Ltext>United Arab Emirates Dirham</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AFA')</id>
+    <title type="text">VH_CurrencySet('AFA')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AFA')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AFA</d:Waers>
+        <d:Ltext>Afghani (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AFN')</id>
+    <title type="text">VH_CurrencySet('AFN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AFN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AFN</d:Waers>
+        <d:Ltext>Afghani</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ALL')</id>
+    <title type="text">VH_CurrencySet('ALL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ALL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ALL</d:Waers>
+        <d:Ltext>Albanian Lek</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AMD')</id>
+    <title type="text">VH_CurrencySet('AMD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AMD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AMD</d:Waers>
+        <d:Ltext>Armenian Dram</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ANG')</id>
+    <title type="text">VH_CurrencySet('ANG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ANG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ANG</d:Waers>
+        <d:Ltext>West Indian Guilder</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AOA')</id>
+    <title type="text">VH_CurrencySet('AOA')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AOA')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AOA</d:Waers>
+        <d:Ltext>Angolanische Kwanza</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AON')</id>
+    <title type="text">VH_CurrencySet('AON')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AON')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AON</d:Waers>
+        <d:Ltext>Angolan New Kwanza (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AOR')</id>
+    <title type="text">VH_CurrencySet('AOR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AOR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AOR</d:Waers>
+        <d:Ltext>Angolan Kwanza Reajustado (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ARS')</id>
+    <title type="text">VH_CurrencySet('ARS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ARS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ARS</d:Waers>
+        <d:Ltext>Argentine Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ATS')</id>
+    <title type="text">VH_CurrencySet('ATS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ATS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ATS</d:Waers>
+        <d:Ltext>Austrian Schilling (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AUD')</id>
+    <title type="text">VH_CurrencySet('AUD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AUD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AUD</d:Waers>
+        <d:Ltext>Australian Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AWG')</id>
+    <title type="text">VH_CurrencySet('AWG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AWG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AWG</d:Waers>
+        <d:Ltext>Aruban Florin</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AZM')</id>
+    <title type="text">VH_CurrencySet('AZM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AZM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AZM</d:Waers>
+        <d:Ltext>Azerbaijani Manat (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('AZN')</id>
+    <title type="text">VH_CurrencySet('AZN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('AZN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>AZN</d:Waers>
+        <d:Ltext>Azerbaijani Manat</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BAM')</id>
+    <title type="text">VH_CurrencySet('BAM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BAM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BAM</d:Waers>
+        <d:Ltext>Bosnia and Herzegovina Convertible Mark</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BBD')</id>
+    <title type="text">VH_CurrencySet('BBD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BBD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BBD</d:Waers>
+        <d:Ltext>Barbados Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BDT')</id>
+    <title type="text">VH_CurrencySet('BDT')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BDT')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BDT</d:Waers>
+        <d:Ltext>Bangladesh Taka</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BEF')</id>
+    <title type="text">VH_CurrencySet('BEF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BEF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BEF</d:Waers>
+        <d:Ltext>Belgian Franc (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BGN')</id>
+    <title type="text">VH_CurrencySet('BGN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BGN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BGN</d:Waers>
+        <d:Ltext>Bulgarian Lev</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BHD')</id>
+    <title type="text">VH_CurrencySet('BHD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BHD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BHD</d:Waers>
+        <d:Ltext>Bahraini Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BIF')</id>
+    <title type="text">VH_CurrencySet('BIF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BIF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BIF</d:Waers>
+        <d:Ltext>Burundi Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BMD')</id>
+    <title type="text">VH_CurrencySet('BMD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BMD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BMD</d:Waers>
+        <d:Ltext>Bermudan Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BND')</id>
+    <title type="text">VH_CurrencySet('BND')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BND')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BND</d:Waers>
+        <d:Ltext>Brunei Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BOB')</id>
+    <title type="text">VH_CurrencySet('BOB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BOB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BOB</d:Waers>
+        <d:Ltext>Boliviano</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BRL')</id>
+    <title type="text">VH_CurrencySet('BRL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BRL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BRL</d:Waers>
+        <d:Ltext>Brazilian Real</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BSD')</id>
+    <title type="text">VH_CurrencySet('BSD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BSD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BSD</d:Waers>
+        <d:Ltext>Bahaman Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BTN')</id>
+    <title type="text">VH_CurrencySet('BTN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BTN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BTN</d:Waers>
+        <d:Ltext>Bhutan Ngultrum</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BWP')</id>
+    <title type="text">VH_CurrencySet('BWP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BWP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BWP</d:Waers>
+        <d:Ltext>Botswana Pula</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BYB')</id>
+    <title type="text">VH_CurrencySet('BYB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BYB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BYB</d:Waers>
+        <d:Ltext>Belarusian Ruble (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BYN')</id>
+    <title type="text">VH_CurrencySet('BYN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BYN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BYN</d:Waers>
+        <d:Ltext>Belarusian Ruble (New)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BYR')</id>
+    <title type="text">VH_CurrencySet('BYR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BYR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BYR</d:Waers>
+        <d:Ltext>Belarusian Ruble</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('BZD')</id>
+    <title type="text">VH_CurrencySet('BZD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('BZD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>BZD</d:Waers>
+        <d:Ltext>Belize Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CAD')</id>
+    <title type="text">VH_CurrencySet('CAD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CAD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CAD</d:Waers>
+        <d:Ltext>Canadian Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CDF')</id>
+    <title type="text">VH_CurrencySet('CDF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CDF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CDF</d:Waers>
+        <d:Ltext>Congolese Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CFP')</id>
+    <title type="text">VH_CurrencySet('CFP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CFP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CFP</d:Waers>
+        <d:Ltext>French Franc (Pacific Islands)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CHF')</id>
+    <title type="text">VH_CurrencySet('CHF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CHF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CHF</d:Waers>
+        <d:Ltext>Swiss Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CLP')</id>
+    <title type="text">VH_CurrencySet('CLP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CLP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CLP</d:Waers>
+        <d:Ltext>Chilean Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CNY')</id>
+    <title type="text">VH_CurrencySet('CNY')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CNY')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CNY</d:Waers>
+        <d:Ltext>Chinese Renminbi</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('COP')</id>
+    <title type="text">VH_CurrencySet('COP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('COP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>COP</d:Waers>
+        <d:Ltext>Colombian Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CRC')</id>
+    <title type="text">VH_CurrencySet('CRC')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CRC')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CRC</d:Waers>
+        <d:Ltext>Costa Rica Colon</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CSD')</id>
+    <title type="text">VH_CurrencySet('CSD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CSD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CSD</d:Waers>
+        <d:Ltext>Serbian Dinar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CUC')</id>
+    <title type="text">VH_CurrencySet('CUC')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CUC')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CUC</d:Waers>
+        <d:Ltext>Peso Convertible</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CUP')</id>
+    <title type="text">VH_CurrencySet('CUP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CUP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CUP</d:Waers>
+        <d:Ltext>Cuban Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CVE')</id>
+    <title type="text">VH_CurrencySet('CVE')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CVE')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CVE</d:Waers>
+        <d:Ltext>Cape Verde Escudo</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CYP')</id>
+    <title type="text">VH_CurrencySet('CYP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CYP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CYP</d:Waers>
+        <d:Ltext>Cyprus Pound (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('CZK')</id>
+    <title type="text">VH_CurrencySet('CZK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('CZK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>CZK</d:Waers>
+        <d:Ltext>Czech Krona</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('DEM')</id>
+    <title type="text">VH_CurrencySet('DEM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('DEM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>DEM</d:Waers>
+        <d:Ltext>German Mark (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('DEM3')</id>
+    <title type="text">VH_CurrencySet('DEM3')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('DEM3')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>DEM3</d:Waers>
+        <d:Ltext>(Internal) German Mark (3 dec.places)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('DJF')</id>
+    <title type="text">VH_CurrencySet('DJF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('DJF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>DJF</d:Waers>
+        <d:Ltext>Djibouti Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('DKK')</id>
+    <title type="text">VH_CurrencySet('DKK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('DKK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>DKK</d:Waers>
+        <d:Ltext>Danish Krone</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('DOP')</id>
+    <title type="text">VH_CurrencySet('DOP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('DOP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>DOP</d:Waers>
+        <d:Ltext>Dominican Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('DZD')</id>
+    <title type="text">VH_CurrencySet('DZD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('DZD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>DZD</d:Waers>
+        <d:Ltext>Algerian Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ECS')</id>
+    <title type="text">VH_CurrencySet('ECS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ECS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ECS</d:Waers>
+        <d:Ltext>Ecuadorian Sucre (Old --> USD)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('EEK')</id>
+    <title type="text">VH_CurrencySet('EEK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('EEK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>EEK</d:Waers>
+        <d:Ltext>Estonian Krone (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('EGP')</id>
+    <title type="text">VH_CurrencySet('EGP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('EGP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>EGP</d:Waers>
+        <d:Ltext>Egyptian Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ERN')</id>
+    <title type="text">VH_CurrencySet('ERN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ERN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ERN</d:Waers>
+        <d:Ltext>Eritrean Nafka</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ESP')</id>
+    <title type="text">VH_CurrencySet('ESP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ESP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ESP</d:Waers>
+        <d:Ltext>Spanish Peseta (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ETB')</id>
+    <title type="text">VH_CurrencySet('ETB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ETB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ETB</d:Waers>
+        <d:Ltext>Ethiopian Birr</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('EUR')</id>
+    <title type="text">VH_CurrencySet('EUR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('EUR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>EUR</d:Waers>
+        <d:Ltext>European Euro</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('FIM')</id>
+    <title type="text">VH_CurrencySet('FIM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('FIM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>FIM</d:Waers>
+        <d:Ltext>Finnish Markka (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('FJD')</id>
+    <title type="text">VH_CurrencySet('FJD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('FJD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>FJD</d:Waers>
+        <d:Ltext>Fiji Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('FKP')</id>
+    <title type="text">VH_CurrencySet('FKP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('FKP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>FKP</d:Waers>
+        <d:Ltext>Falkland Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('FRF')</id>
+    <title type="text">VH_CurrencySet('FRF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('FRF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>FRF</d:Waers>
+        <d:Ltext>French Franc (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GBP')</id>
+    <title type="text">VH_CurrencySet('GBP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GBP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GBP</d:Waers>
+        <d:Ltext>British Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GEL')</id>
+    <title type="text">VH_CurrencySet('GEL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GEL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GEL</d:Waers>
+        <d:Ltext>Georgian Lari</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GHC')</id>
+    <title type="text">VH_CurrencySet('GHC')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GHC')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GHC</d:Waers>
+        <d:Ltext>Ghanaian Cedi (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GHS')</id>
+    <title type="text">VH_CurrencySet('GHS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GHS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GHS</d:Waers>
+        <d:Ltext>Ghanian Cedi</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GIP')</id>
+    <title type="text">VH_CurrencySet('GIP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GIP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GIP</d:Waers>
+        <d:Ltext>Gibraltar Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GMD')</id>
+    <title type="text">VH_CurrencySet('GMD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GMD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GMD</d:Waers>
+        <d:Ltext>Gambian Dalasi</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GNF')</id>
+    <title type="text">VH_CurrencySet('GNF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GNF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GNF</d:Waers>
+        <d:Ltext>Guinean Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GRD')</id>
+    <title type="text">VH_CurrencySet('GRD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GRD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GRD</d:Waers>
+        <d:Ltext>Greek Drachma (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GTQ')</id>
+    <title type="text">VH_CurrencySet('GTQ')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GTQ')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GTQ</d:Waers>
+        <d:Ltext>Guatemalan Quetzal</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GWP')</id>
+    <title type="text">VH_CurrencySet('GWP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GWP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GWP</d:Waers>
+        <d:Ltext>Guinea Peso (Old --> SHP)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('GYD')</id>
+    <title type="text">VH_CurrencySet('GYD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('GYD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>GYD</d:Waers>
+        <d:Ltext>Guyana Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('HKD')</id>
+    <title type="text">VH_CurrencySet('HKD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('HKD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>HKD</d:Waers>
+        <d:Ltext>Hong Kong Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('HNL')</id>
+    <title type="text">VH_CurrencySet('HNL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('HNL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>HNL</d:Waers>
+        <d:Ltext>Honduran Lempira</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('HRK')</id>
+    <title type="text">VH_CurrencySet('HRK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('HRK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>HRK</d:Waers>
+        <d:Ltext>Croatian Kuna</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('HTG')</id>
+    <title type="text">VH_CurrencySet('HTG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('HTG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>HTG</d:Waers>
+        <d:Ltext>Haitian Gourde</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('HUF')</id>
+    <title type="text">VH_CurrencySet('HUF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('HUF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>HUF</d:Waers>
+        <d:Ltext>Hungarian Forint</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('IDR')</id>
+    <title type="text">VH_CurrencySet('IDR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('IDR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>IDR</d:Waers>
+        <d:Ltext>Indonesian Rupiah</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('IEP')</id>
+    <title type="text">VH_CurrencySet('IEP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('IEP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>IEP</d:Waers>
+        <d:Ltext>Irish Punt (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ILS')</id>
+    <title type="text">VH_CurrencySet('ILS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ILS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ILS</d:Waers>
+        <d:Ltext>Israeli Scheckel</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('INR')</id>
+    <title type="text">VH_CurrencySet('INR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('INR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>INR</d:Waers>
+        <d:Ltext>Indian Rupee</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('IQD')</id>
+    <title type="text">VH_CurrencySet('IQD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('IQD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>IQD</d:Waers>
+        <d:Ltext>Iraqui Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('IRR')</id>
+    <title type="text">VH_CurrencySet('IRR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('IRR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>IRR</d:Waers>
+        <d:Ltext>Iranian Rial</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ISK')</id>
+    <title type="text">VH_CurrencySet('ISK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ISK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ISK</d:Waers>
+        <d:Ltext>Iceland Krona</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ITL')</id>
+    <title type="text">VH_CurrencySet('ITL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ITL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ITL</d:Waers>
+        <d:Ltext>Italian Lira (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('JMD')</id>
+    <title type="text">VH_CurrencySet('JMD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('JMD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>JMD</d:Waers>
+        <d:Ltext>Jamaican Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('JOD')</id>
+    <title type="text">VH_CurrencySet('JOD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('JOD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>JOD</d:Waers>
+        <d:Ltext>Jordanian Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('JPY')</id>
+    <title type="text">VH_CurrencySet('JPY')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('JPY')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>JPY</d:Waers>
+        <d:Ltext>Japanese Yen</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KES')</id>
+    <title type="text">VH_CurrencySet('KES')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KES')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KES</d:Waers>
+        <d:Ltext>Kenyan Shilling</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KGS')</id>
+    <title type="text">VH_CurrencySet('KGS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KGS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KGS</d:Waers>
+        <d:Ltext>Kyrgyzstan Som</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KHR')</id>
+    <title type="text">VH_CurrencySet('KHR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KHR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KHR</d:Waers>
+        <d:Ltext>Cambodian Riel</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KMF')</id>
+    <title type="text">VH_CurrencySet('KMF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KMF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KMF</d:Waers>
+        <d:Ltext>Comoros Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KPW')</id>
+    <title type="text">VH_CurrencySet('KPW')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KPW')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KPW</d:Waers>
+        <d:Ltext>North Korean Won</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KRW')</id>
+    <title type="text">VH_CurrencySet('KRW')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KRW')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KRW</d:Waers>
+        <d:Ltext>South Korean Won</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KWD')</id>
+    <title type="text">VH_CurrencySet('KWD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KWD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KWD</d:Waers>
+        <d:Ltext>Kuwaiti Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KYD')</id>
+    <title type="text">VH_CurrencySet('KYD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KYD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KYD</d:Waers>
+        <d:Ltext>Cayman Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('KZT')</id>
+    <title type="text">VH_CurrencySet('KZT')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('KZT')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>KZT</d:Waers>
+        <d:Ltext>Kazakstanian Tenge</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LAK')</id>
+    <title type="text">VH_CurrencySet('LAK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LAK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LAK</d:Waers>
+        <d:Ltext>Laotian Kip</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LBP')</id>
+    <title type="text">VH_CurrencySet('LBP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LBP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LBP</d:Waers>
+        <d:Ltext>Lebanese Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LKR')</id>
+    <title type="text">VH_CurrencySet('LKR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LKR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LKR</d:Waers>
+        <d:Ltext>Sri Lankan Rupee</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LRD')</id>
+    <title type="text">VH_CurrencySet('LRD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LRD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LRD</d:Waers>
+        <d:Ltext>Liberian Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LSL')</id>
+    <title type="text">VH_CurrencySet('LSL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LSL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LSL</d:Waers>
+        <d:Ltext>Lesotho Loti</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LTL')</id>
+    <title type="text">VH_CurrencySet('LTL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LTL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LTL</d:Waers>
+        <d:Ltext>Lithuanian Lita</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LUF')</id>
+    <title type="text">VH_CurrencySet('LUF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LUF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LUF</d:Waers>
+        <d:Ltext>Luxembourg Franc (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LVL')</id>
+    <title type="text">VH_CurrencySet('LVL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LVL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LVL</d:Waers>
+        <d:Ltext>Latvian Lat</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('LYD')</id>
+    <title type="text">VH_CurrencySet('LYD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('LYD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>LYD</d:Waers>
+        <d:Ltext>Libyan Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MAD')</id>
+    <title type="text">VH_CurrencySet('MAD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MAD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MAD</d:Waers>
+        <d:Ltext>Moroccan Dirham</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MDL')</id>
+    <title type="text">VH_CurrencySet('MDL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MDL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MDL</d:Waers>
+        <d:Ltext>Moldavian Leu</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MGA')</id>
+    <title type="text">VH_CurrencySet('MGA')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MGA')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MGA</d:Waers>
+        <d:Ltext>Madagascan Ariary</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MGF')</id>
+    <title type="text">VH_CurrencySet('MGF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MGF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MGF</d:Waers>
+        <d:Ltext>Madagascan Franc (Old</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MKD')</id>
+    <title type="text">VH_CurrencySet('MKD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MKD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MKD</d:Waers>
+        <d:Ltext>Macedonian Denar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MMK')</id>
+    <title type="text">VH_CurrencySet('MMK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MMK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MMK</d:Waers>
+        <d:Ltext>Myanmar Kyat</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MNT')</id>
+    <title type="text">VH_CurrencySet('MNT')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MNT')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MNT</d:Waers>
+        <d:Ltext>Mongolian Tugrik</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MOP')</id>
+    <title type="text">VH_CurrencySet('MOP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MOP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MOP</d:Waers>
+        <d:Ltext>Macao Pataca</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MRO')</id>
+    <title type="text">VH_CurrencySet('MRO')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MRO')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MRO</d:Waers>
+        <d:Ltext>Mauritanian Ouguiya</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MTL')</id>
+    <title type="text">VH_CurrencySet('MTL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MTL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MTL</d:Waers>
+        <d:Ltext>Maltese Lira (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MUR')</id>
+    <title type="text">VH_CurrencySet('MUR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MUR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MUR</d:Waers>
+        <d:Ltext>Mauritian Rupee</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MVR')</id>
+    <title type="text">VH_CurrencySet('MVR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MVR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MVR</d:Waers>
+        <d:Ltext>Maldive Rufiyaa</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MWK')</id>
+    <title type="text">VH_CurrencySet('MWK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MWK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MWK</d:Waers>
+        <d:Ltext>Malawi Kwacha</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MXN')</id>
+    <title type="text">VH_CurrencySet('MXN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MXN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MXN</d:Waers>
+        <d:Ltext>Mexican Pesos</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MYR')</id>
+    <title type="text">VH_CurrencySet('MYR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MYR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MYR</d:Waers>
+        <d:Ltext>Malaysian Ringgit</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MZM')</id>
+    <title type="text">VH_CurrencySet('MZM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MZM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MZM</d:Waers>
+        <d:Ltext>Mozambique Metical (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('MZN')</id>
+    <title type="text">VH_CurrencySet('MZN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('MZN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>MZN</d:Waers>
+        <d:Ltext>Mozambique Metical</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NAD')</id>
+    <title type="text">VH_CurrencySet('NAD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NAD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NAD</d:Waers>
+        <d:Ltext>Namibian Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NGN')</id>
+    <title type="text">VH_CurrencySet('NGN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NGN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NGN</d:Waers>
+        <d:Ltext>Nigerian Naira</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NIO')</id>
+    <title type="text">VH_CurrencySet('NIO')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NIO')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NIO</d:Waers>
+        <d:Ltext>Nicaraguan Cordoba Oro</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NLG')</id>
+    <title type="text">VH_CurrencySet('NLG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NLG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NLG</d:Waers>
+        <d:Ltext>Dutch Guilder (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NOK')</id>
+    <title type="text">VH_CurrencySet('NOK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NOK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NOK</d:Waers>
+        <d:Ltext>Norwegian Krone</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NPR')</id>
+    <title type="text">VH_CurrencySet('NPR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NPR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NPR</d:Waers>
+        <d:Ltext>Nepalese Rupee</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('NZD')</id>
+    <title type="text">VH_CurrencySet('NZD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('NZD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>NZD</d:Waers>
+        <d:Ltext>New Zealand Dollars</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('OMR')</id>
+    <title type="text">VH_CurrencySet('OMR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('OMR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>OMR</d:Waers>
+        <d:Ltext>Omani Rial</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PAB')</id>
+    <title type="text">VH_CurrencySet('PAB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PAB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PAB</d:Waers>
+        <d:Ltext>Panamanian Balboa</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PEN')</id>
+    <title type="text">VH_CurrencySet('PEN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PEN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PEN</d:Waers>
+        <d:Ltext>Peruvian New Sol</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PGK')</id>
+    <title type="text">VH_CurrencySet('PGK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PGK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PGK</d:Waers>
+        <d:Ltext>Papua New Guinea Kina</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PHP')</id>
+    <title type="text">VH_CurrencySet('PHP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PHP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PHP</d:Waers>
+        <d:Ltext>Philippine Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PKR')</id>
+    <title type="text">VH_CurrencySet('PKR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PKR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PKR</d:Waers>
+        <d:Ltext>Pakistani Rupee</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PLN')</id>
+    <title type="text">VH_CurrencySet('PLN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PLN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PLN</d:Waers>
+        <d:Ltext>Polish Zloty (new)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PTE')</id>
+    <title type="text">VH_CurrencySet('PTE')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PTE')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PTE</d:Waers>
+        <d:Ltext>Portuguese Escudo (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('PYG')</id>
+    <title type="text">VH_CurrencySet('PYG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('PYG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>PYG</d:Waers>
+        <d:Ltext>Paraguayan Guarani</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('QAR')</id>
+    <title type="text">VH_CurrencySet('QAR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('QAR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>QAR</d:Waers>
+        <d:Ltext>Qatar Rial</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('RMB')</id>
+    <title type="text">VH_CurrencySet('RMB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('RMB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>RMB</d:Waers>
+        <d:Ltext>Chinese Yuan Renminbi</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ROL')</id>
+    <title type="text">VH_CurrencySet('ROL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ROL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ROL</d:Waers>
+        <d:Ltext>Romanian Leu (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('RON')</id>
+    <title type="text">VH_CurrencySet('RON')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('RON')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>RON</d:Waers>
+        <d:Ltext>Romanian Leu</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('RSD')</id>
+    <title type="text">VH_CurrencySet('RSD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('RSD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>RSD</d:Waers>
+        <d:Ltext>Serbian Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('RUB')</id>
+    <title type="text">VH_CurrencySet('RUB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('RUB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>RUB</d:Waers>
+        <d:Ltext>Russian Ruble</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('RWF')</id>
+    <title type="text">VH_CurrencySet('RWF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('RWF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>RWF</d:Waers>
+        <d:Ltext>Rwandan Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SAR')</id>
+    <title type="text">VH_CurrencySet('SAR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SAR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SAR</d:Waers>
+        <d:Ltext>Saudi Riyal</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SBD')</id>
+    <title type="text">VH_CurrencySet('SBD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SBD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SBD</d:Waers>
+        <d:Ltext>Solomon Islands Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SCR')</id>
+    <title type="text">VH_CurrencySet('SCR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SCR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SCR</d:Waers>
+        <d:Ltext>Seychelles Rupee</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SDD')</id>
+    <title type="text">VH_CurrencySet('SDD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SDD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SDD</d:Waers>
+        <d:Ltext>Sudanese Dinar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SDG')</id>
+    <title type="text">VH_CurrencySet('SDG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SDG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SDG</d:Waers>
+        <d:Ltext>Sudanese Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SDP')</id>
+    <title type="text">VH_CurrencySet('SDP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SDP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SDP</d:Waers>
+        <d:Ltext>Sudanese Pound (until 1992)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SEK')</id>
+    <title type="text">VH_CurrencySet('SEK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SEK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SEK</d:Waers>
+        <d:Ltext>Swedish Krona</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SGD')</id>
+    <title type="text">VH_CurrencySet('SGD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SGD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SGD</d:Waers>
+        <d:Ltext>Singapore Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SHP')</id>
+    <title type="text">VH_CurrencySet('SHP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SHP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SHP</d:Waers>
+        <d:Ltext>St.Helena Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SIT')</id>
+    <title type="text">VH_CurrencySet('SIT')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SIT')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SIT</d:Waers>
+        <d:Ltext>Slovenian Tolar (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SKK')</id>
+    <title type="text">VH_CurrencySet('SKK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SKK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SKK</d:Waers>
+        <d:Ltext>Slovakian Krona (Old --> EUR)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SLL')</id>
+    <title type="text">VH_CurrencySet('SLL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SLL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SLL</d:Waers>
+        <d:Ltext>Sierra Leone Leone</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SOS')</id>
+    <title type="text">VH_CurrencySet('SOS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SOS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SOS</d:Waers>
+        <d:Ltext>Somalian Shilling</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SRD')</id>
+    <title type="text">VH_CurrencySet('SRD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SRD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SRD</d:Waers>
+        <d:Ltext>Surinam Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SRG')</id>
+    <title type="text">VH_CurrencySet('SRG')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SRG')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SRG</d:Waers>
+        <d:Ltext>Surinam Guilder (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SSP')</id>
+    <title type="text">VH_CurrencySet('SSP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SSP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SSP</d:Waers>
+        <d:Ltext>South Sudanese Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('STD')</id>
+    <title type="text">VH_CurrencySet('STD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('STD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>STD</d:Waers>
+        <d:Ltext>Sao Tome / Principe Dobra</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SVC')</id>
+    <title type="text">VH_CurrencySet('SVC')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SVC')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SVC</d:Waers>
+        <d:Ltext>El Salvador Colon</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SYP')</id>
+    <title type="text">VH_CurrencySet('SYP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SYP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SYP</d:Waers>
+        <d:Ltext>Syrian Pound</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('SZL')</id>
+    <title type="text">VH_CurrencySet('SZL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('SZL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>SZL</d:Waers>
+        <d:Ltext>Swaziland Lilangeni</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('THB')</id>
+    <title type="text">VH_CurrencySet('THB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('THB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>THB</d:Waers>
+        <d:Ltext>Thailand Baht</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TJR')</id>
+    <title type="text">VH_CurrencySet('TJR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TJR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TJR</d:Waers>
+        <d:Ltext>Tajikistani Ruble (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TJS')</id>
+    <title type="text">VH_CurrencySet('TJS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TJS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TJS</d:Waers>
+        <d:Ltext>Tajikistani Somoni</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TMM')</id>
+    <title type="text">VH_CurrencySet('TMM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TMM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TMM</d:Waers>
+        <d:Ltext>Turkmenistani Manat (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TMT')</id>
+    <title type="text">VH_CurrencySet('TMT')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TMT')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TMT</d:Waers>
+        <d:Ltext>Turkmenistani Manat</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TND')</id>
+    <title type="text">VH_CurrencySet('TND')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TND')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TND</d:Waers>
+        <d:Ltext>Tunisian Dinar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TOP')</id>
+    <title type="text">VH_CurrencySet('TOP')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TOP')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TOP</d:Waers>
+        <d:Ltext>Tongan Pa'anga</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TPE')</id>
+    <title type="text">VH_CurrencySet('TPE')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TPE')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TPE</d:Waers>
+        <d:Ltext>Timor Escudo --> USD</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TRL')</id>
+    <title type="text">VH_CurrencySet('TRL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TRL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TRL</d:Waers>
+        <d:Ltext>Turkish Lira (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TRY')</id>
+    <title type="text">VH_CurrencySet('TRY')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TRY')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TRY</d:Waers>
+        <d:Ltext>Turkish Lira</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TTD')</id>
+    <title type="text">VH_CurrencySet('TTD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TTD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TTD</d:Waers>
+        <d:Ltext>Trinidad and Tobago Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TWD')</id>
+    <title type="text">VH_CurrencySet('TWD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TWD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TWD</d:Waers>
+        <d:Ltext>New Taiwan Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('TZS')</id>
+    <title type="text">VH_CurrencySet('TZS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('TZS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>TZS</d:Waers>
+        <d:Ltext>Tanzanian Shilling</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('UAH')</id>
+    <title type="text">VH_CurrencySet('UAH')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('UAH')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>UAH</d:Waers>
+        <d:Ltext>Ukraine Hryvnia</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('UGX')</id>
+    <title type="text">VH_CurrencySet('UGX')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('UGX')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>UGX</d:Waers>
+        <d:Ltext>Ugandan Shilling</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('USD')</id>
+    <title type="text">VH_CurrencySet('USD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('USD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>USD</d:Waers>
+        <d:Ltext>United States Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('USDN')</id>
+    <title type="text">VH_CurrencySet('USDN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('USDN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>USDN</d:Waers>
+        <d:Ltext>(Internal) United States Dollar (5 Dec.)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('UYU')</id>
+    <title type="text">VH_CurrencySet('UYU')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('UYU')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>UYU</d:Waers>
+        <d:Ltext>Uruguayan Peso</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('UZS')</id>
+    <title type="text">VH_CurrencySet('UZS')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('UZS')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>UZS</d:Waers>
+        <d:Ltext>Uzbekistan Som</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('VEB')</id>
+    <title type="text">VH_CurrencySet('VEB')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('VEB')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>VEB</d:Waers>
+        <d:Ltext>Venezuelan Bolivar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('VEF')</id>
+    <title type="text">VH_CurrencySet('VEF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('VEF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>VEF</d:Waers>
+        <d:Ltext>Venezuelan Bolivar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('VND')</id>
+    <title type="text">VH_CurrencySet('VND')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('VND')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>VND</d:Waers>
+        <d:Ltext>Vietnamese Dong</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('VUV')</id>
+    <title type="text">VH_CurrencySet('VUV')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('VUV')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>VUV</d:Waers>
+        <d:Ltext>Vanuatu Vatu</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('WST')</id>
+    <title type="text">VH_CurrencySet('WST')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('WST')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>WST</d:Waers>
+        <d:Ltext>Samoan Tala</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('XAF')</id>
+    <title type="text">VH_CurrencySet('XAF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('XAF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>XAF</d:Waers>
+        <d:Ltext>Gabon CFA Franc BEAC</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('XCD')</id>
+    <title type="text">VH_CurrencySet('XCD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('XCD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>XCD</d:Waers>
+        <d:Ltext>East Carribean Dollar</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('XEU')</id>
+    <title type="text">VH_CurrencySet('XEU')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('XEU')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>XEU</d:Waers>
+        <d:Ltext>European Currency Unit (E.C.U.)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('XOF')</id>
+    <title type="text">VH_CurrencySet('XOF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('XOF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>XOF</d:Waers>
+        <d:Ltext>Benin CFA Franc BCEAO</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('XPF')</id>
+    <title type="text">VH_CurrencySet('XPF')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('XPF')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>XPF</d:Waers>
+        <d:Ltext>CFP Franc</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('YER')</id>
+    <title type="text">VH_CurrencySet('YER')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('YER')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>YER</d:Waers>
+        <d:Ltext>Yemeni Ryal</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('YUM')</id>
+    <title type="text">VH_CurrencySet('YUM')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('YUM')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>YUM</d:Waers>
+        <d:Ltext>New Yugoslavian Dinar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZAR')</id>
+    <title type="text">VH_CurrencySet('ZAR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZAR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZAR</d:Waers>
+        <d:Ltext>South African Rand</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZMK')</id>
+    <title type="text">VH_CurrencySet('ZMK')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZMK')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZMK</d:Waers>
+        <d:Ltext>Zambian Kwacha (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZMW')</id>
+    <title type="text">VH_CurrencySet('ZMW')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZMW')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZMW</d:Waers>
+        <d:Ltext>Zambian Kwacha (New)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZRN')</id>
+    <title type="text">VH_CurrencySet('ZRN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZRN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZRN</d:Waers>
+        <d:Ltext>Zaire (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZWD')</id>
+    <title type="text">VH_CurrencySet('ZWD')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZWD')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZWD</d:Waers>
+        <d:Ltext>Zimbabwean Dollar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZWL')</id>
+    <title type="text">VH_CurrencySet('ZWL')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZWL')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZWL</d:Waers>
+        <d:Ltext>Zimbabwean Dollar (New)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZWN')</id>
+    <title type="text">VH_CurrencySet('ZWN')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZWN')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZWN</d:Waers>
+        <d:Ltext>Zimbabwean Dollar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CurrencySet('ZWR')</id>
+    <title type="text">VH_CurrencySet('ZWR')</title>
+    <updated>2023-08-31T10:51:31Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Currency" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CurrencySet('ZWR')" rel="self" title="VH_Currency"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Waers>ZWR</d:Waers>
+        <d:Ltext>Zimbabwean Dollar (Old)</d:Ltext>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

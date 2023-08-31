@@ -1,0 +1,39 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_AddressTypeSet</id>
+  <title type="text">VH_AddressTypeSet</title>
+  <updated>2023-08-31T10:47:20Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="VH_AddressTypeSet" rel="self" title="VH_AddressTypeSet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_AddressTypeSet('01')</id>
+    <title type="text">VH_AddressTypeSet('01')</title>
+    <updated>2023-08-31T10:47:20Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_AddressType" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_AddressTypeSet('01')" rel="self" title="VH_AddressType"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:AddressType>01</d:AddressType>
+        <d:Shorttext>Private</d:Shorttext>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_AddressTypeSet('02')</id>
+    <title type="text">VH_AddressTypeSet('02')</title>
+    <updated>2023-08-31T10:47:20Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_AddressType" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_AddressTypeSet('02')" rel="self" title="VH_AddressType"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:AddressType>02</d:AddressType>
+        <d:Shorttext>Business</d:Shorttext>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

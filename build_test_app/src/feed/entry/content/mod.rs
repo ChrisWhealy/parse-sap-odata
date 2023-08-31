@@ -2,7 +2,7 @@ use crate::xml::{default_xml_namespace_d, default_xml_namespace_m};
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Represents an Atom <content> tag
+/// Represents an Atom `<content>` tag
 ///
 /// # Child Nodes
 /// `1:1 m:properties: <T>` where `<T>` is the entity type of this particular entity set

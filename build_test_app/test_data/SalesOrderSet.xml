@@ -1,0 +1,166 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderSet</id>
+  <title type="text">SalesOrderSet</title>
+  <updated>2023-08-31T10:41:17Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="SalesOrderSet" rel="self" title="SalesOrderSet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderSet('0500000000')</id>
+    <title type="text">SalesOrderSet('0500000000')</title>
+    <updated>2023-08-31T10:41:17Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderSet('0500000000')" rel="self" title="SalesOrder"/>
+    <link href="SalesOrderSet('0500000000')/ToBusinessPartner" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToBusinessPartner" type="application/atom+xml;type=entry" title="ToBusinessPartner"/>
+    <link href="SalesOrderSet('0500000000')/ToLineItems" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToLineItems" type="application/atom+xml;type=feed" title="ToLineItems"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000000</d:SalesOrderID>
+        <d:Note>EPM DG: SO ID 0500000000 Deliver as fast as possible</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CustomerID>0100000000</d:CustomerID>
+        <d:CustomerName>SAP</d:CustomerName>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>14385.85</d:GrossAmount>
+        <d:NetAmount>12088.95</d:NetAmount>
+        <d:TaxAmount>2296.90</d:TaxAmount>
+        <d:LifecycleStatus>C</d:LifecycleStatus>
+        <d:LifecycleStatusDescription>Closed</d:LifecycleStatusDescription>
+        <d:BillingStatus>P</d:BillingStatus>
+        <d:BillingStatusDescription>Paid</d:BillingStatusDescription>
+        <d:DeliveryStatus>D</d:DeliveryStatus>
+        <d:DeliveryStatusDescription>Delivered</d:DeliveryStatusDescription>
+        <d:CreatedAt>2017-12-31T23:00:00.0000000</d:CreatedAt>
+        <d:ChangedAt>2018-01-07T23:00:00.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderSet('0500000001')</id>
+    <title type="text">SalesOrderSet('0500000001')</title>
+    <updated>2023-08-31T10:41:17Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderSet('0500000001')" rel="self" title="SalesOrder"/>
+    <link href="SalesOrderSet('0500000001')/ToBusinessPartner" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToBusinessPartner" type="application/atom+xml;type=entry" title="ToBusinessPartner"/>
+    <link href="SalesOrderSet('0500000001')/ToLineItems" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToLineItems" type="application/atom+xml;type=feed" title="ToLineItems"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000001</d:SalesOrderID>
+        <d:Note>EPM DG: SO ID 0500000001 Deliver as fast as possible</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CustomerID>0100000002</d:CustomerID>
+        <d:CustomerName>DelBont Industries</d:CustomerName>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>15117.76</d:GrossAmount>
+        <d:NetAmount>12704.00</d:NetAmount>
+        <d:TaxAmount>2413.76</d:TaxAmount>
+        <d:LifecycleStatus>C</d:LifecycleStatus>
+        <d:LifecycleStatusDescription>Closed</d:LifecycleStatusDescription>
+        <d:BillingStatus>P</d:BillingStatus>
+        <d:BillingStatusDescription>Paid</d:BillingStatusDescription>
+        <d:DeliveryStatus>D</d:DeliveryStatus>
+        <d:DeliveryStatusDescription>Delivered</d:DeliveryStatusDescription>
+        <d:CreatedAt>2017-12-31T23:00:00.0000000</d:CreatedAt>
+        <d:ChangedAt>2018-01-07T23:00:00.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderSet('0500000002')</id>
+    <title type="text">SalesOrderSet('0500000002')</title>
+    <updated>2023-08-31T10:41:17Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderSet('0500000002')" rel="self" title="SalesOrder"/>
+    <link href="SalesOrderSet('0500000002')/ToBusinessPartner" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToBusinessPartner" type="application/atom+xml;type=entry" title="ToBusinessPartner"/>
+    <link href="SalesOrderSet('0500000002')/ToLineItems" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToLineItems" type="application/atom+xml;type=feed" title="ToLineItems"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000002</d:SalesOrderID>
+        <d:Note>EPM DG: SO ID 0500000002 Deliver as fast as possible</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CustomerID>0100000005</d:CustomerID>
+        <d:CustomerName>TECUM</d:CustomerName>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>5631.08</d:GrossAmount>
+        <d:NetAmount>4732.00</d:NetAmount>
+        <d:TaxAmount>899.08</d:TaxAmount>
+        <d:LifecycleStatus>C</d:LifecycleStatus>
+        <d:LifecycleStatusDescription>Closed</d:LifecycleStatusDescription>
+        <d:BillingStatus>P</d:BillingStatus>
+        <d:BillingStatusDescription>Paid</d:BillingStatusDescription>
+        <d:DeliveryStatus>D</d:DeliveryStatus>
+        <d:DeliveryStatusDescription>Delivered</d:DeliveryStatusDescription>
+        <d:CreatedAt>2017-12-31T23:00:00.0000000</d:CreatedAt>
+        <d:ChangedAt>2018-01-07T23:00:00.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderSet('0500000003')</id>
+    <title type="text">SalesOrderSet('0500000003')</title>
+    <updated>2023-08-31T10:41:17Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderSet('0500000003')" rel="self" title="SalesOrder"/>
+    <link href="SalesOrderSet('0500000003')/ToBusinessPartner" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToBusinessPartner" type="application/atom+xml;type=entry" title="ToBusinessPartner"/>
+    <link href="SalesOrderSet('0500000003')/ToLineItems" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToLineItems" type="application/atom+xml;type=feed" title="ToLineItems"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000003</d:SalesOrderID>
+        <d:Note>EPM DG: SO ID 0500000003 Deliver as fast as possible</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CustomerID>0100000006</d:CustomerID>
+        <d:CustomerName>Asia High tech</d:CustomerName>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>1704.04</d:GrossAmount>
+        <d:NetAmount>1431.97</d:NetAmount>
+        <d:TaxAmount>272.07</d:TaxAmount>
+        <d:LifecycleStatus>C</d:LifecycleStatus>
+        <d:LifecycleStatusDescription>Closed</d:LifecycleStatusDescription>
+        <d:BillingStatus>P</d:BillingStatus>
+        <d:BillingStatusDescription>Paid</d:BillingStatusDescription>
+        <d:DeliveryStatus>D</d:DeliveryStatus>
+        <d:DeliveryStatusDescription>Delivered</d:DeliveryStatusDescription>
+        <d:CreatedAt>2018-01-01T23:00:00.0000000</d:CreatedAt>
+        <d:ChangedAt>2018-01-08T23:00:00.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/SalesOrderSet('0500000004')</id>
+    <title type="text">SalesOrderSet('0500000004')</title>
+    <updated>2023-08-31T10:41:17Z</updated>
+    <category term="GWSAMPLE_BASIC.SalesOrder" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="SalesOrderSet('0500000004')" rel="self" title="SalesOrder"/>
+    <link href="SalesOrderSet('0500000004')/ToBusinessPartner" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToBusinessPartner" type="application/atom+xml;type=entry" title="ToBusinessPartner"/>
+    <link href="SalesOrderSet('0500000004')/ToLineItems" rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/ToLineItems" type="application/atom+xml;type=feed" title="ToLineItems"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:SalesOrderID>0500000004</d:SalesOrderID>
+        <d:Note>EPM DG: SO ID 0500000004 Deliver as fast as possible</d:Note>
+        <d:NoteLanguage>EN</d:NoteLanguage>
+        <d:CustomerID>0100000006</d:CustomerID>
+        <d:CustomerName>Asia High tech</d:CustomerName>
+        <d:CurrencyCode>USD</d:CurrencyCode>
+        <d:GrossAmount>761.24</d:GrossAmount>
+        <d:NetAmount>639.70</d:NetAmount>
+        <d:TaxAmount>121.54</d:TaxAmount>
+        <d:LifecycleStatus>C</d:LifecycleStatus>
+        <d:LifecycleStatusDescription>Closed</d:LifecycleStatusDescription>
+        <d:BillingStatus>P</d:BillingStatus>
+        <d:BillingStatusDescription>Paid</d:BillingStatusDescription>
+        <d:DeliveryStatus>D</d:DeliveryStatus>
+        <d:DeliveryStatusDescription>Delivered</d:DeliveryStatusDescription>
+        <d:CreatedAt>2018-01-01T23:00:00.0000000</d:CreatedAt>
+        <d:ChangedAt>2018-01-08T23:00:00.0000000</d:ChangedAt>
+      </m:properties>
+    </content>
+  </entry>
+</feed>

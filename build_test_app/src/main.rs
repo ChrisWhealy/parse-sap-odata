@@ -42,6 +42,76 @@ async fn doc_root(
         .body(body))
 }
 
+fn fetch_entity_set(es_name: &str, res: &str) -> String {
+    match es_name {
+        "BusinessPartnerSet" => match Feed::<BusinessPartner>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "ProductSet" => match Feed::<Product>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "SalesOrderSet" => match Feed::<SalesOrder>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "SalesOrderLineItemSet" => match Feed::<SalesOrderLineItem>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "ContactSet" => match Feed::<Contact>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_SexSet" => match Feed::<VhSex>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_CountrySet" => match Feed::<VhCountry>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_AddressTypeSet" => match Feed::<VhAddressType>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_CategorySet" => match Feed::<VhCategory>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_CurrencySet" => match Feed::<VhCurrency>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_UnitQuantitySet" => match Feed::<VhUnitQuantity>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_UnitWeightSet" => match Feed::<VhUnitWeight>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_UnitLengthSet" => match Feed::<VhUnitLength>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_ProductTypeCodeSet" => match Feed::<VhProductTypeCode>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_BPRoleSet" => match Feed::<VhBpRole>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        "VH_LanguageSet" => match Feed::<VhLanguage>::from_str(&res) {
+            Ok(bp) => format!("{bp:#?}"),
+            Err(e) => format!("Error: {e:?}"),
+        },
+        _ => format!("Error: invalid entity set name {}", es_name),
+    }
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // Serve entity set contents
 // ---------------------------------------------------------------------------------------------------------------------
@@ -66,14 +136,9 @@ async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
                 .text()
                 .await
             {
-                Ok(res) => {
-                    let response = match Feed::<BusinessPartner>::from_str(&res) {
-                        Ok(bp) => format!("{bp:#?}"),
-                        Err(e) => format!("Error: {e:?}"),
-                    };
-
-                    HttpResponse::Ok().content_type(ContentType::plaintext()).body(response)
-                },
+                Ok(res) => HttpResponse::Ok()
+                    .content_type(ContentType::plaintext())
+                    .body(fetch_entity_set(&entity_set_name, &res)),
                 Err(err) => HttpResponse::BadRequest().body(format!("{:#?}", err)),
             }
         },
@@ -106,3 +171,7 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(test)]
+pub mod unit_tests;

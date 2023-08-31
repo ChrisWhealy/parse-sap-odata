@@ -1,0 +1,349 @@
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+  xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xml:base="https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/">
+  <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet</id>
+  <title type="text">VH_CategorySet</title>
+  <updated>2023-08-31T10:50:08Z</updated>
+  <author>
+    <name/>
+  </author>
+  <link href="VH_CategorySet" rel="self" title="VH_CategorySet"/>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Accessories')</id>
+    <title type="text">VH_CategorySet('Accessories')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Accessories')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Accessories</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Camcorders')</id>
+    <title type="text">VH_CategorySet('Camcorders')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Camcorders')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Camcorders</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Computer%20System%20Accessories')</id>
+    <title type="text">VH_CategorySet('Computer%20System%20Accessories')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Computer%20System%20Accessories')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Computer System Accessories</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Flat%20Screen%20Monitors')</id>
+    <title type="text">VH_CategorySet('Flat%20Screen%20Monitors')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Flat%20Screen%20Monitors')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Flat Screen Monitors</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Flat%20Screen%20TVs')</id>
+    <title type="text">VH_CategorySet('Flat%20Screen%20TVs')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Flat%20Screen%20TVs')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Flat Screen TVs</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Graphic%20Cards')</id>
+    <title type="text">VH_CategorySet('Graphic%20Cards')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Graphic%20Cards')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Graphic Cards</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Headsets')</id>
+    <title type="text">VH_CategorySet('Headsets')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Headsets')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Headsets</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Ink%20Jet%20Printers')</id>
+    <title type="text">VH_CategorySet('Ink%20Jet%20Printers')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Ink%20Jet%20Printers')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Ink Jet Printers</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Keyboards')</id>
+    <title type="text">VH_CategorySet('Keyboards')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Keyboards')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Keyboards</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Laser%20Printers')</id>
+    <title type="text">VH_CategorySet('Laser%20Printers')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Laser%20Printers')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Laser Printers</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('MP3%20Players')</id>
+    <title type="text">VH_CategorySet('MP3%20Players')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('MP3%20Players')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>MP3 Players</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Mice')</id>
+    <title type="text">VH_CategorySet('Mice')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Mice')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Mice</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Mousepads')</id>
+    <title type="text">VH_CategorySet('Mousepads')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Mousepads')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Mousepads</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Multifunction%20Printers')</id>
+    <title type="text">VH_CategorySet('Multifunction%20Printers')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Multifunction%20Printers')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Multifunction Printers</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Notebooks')</id>
+    <title type="text">VH_CategorySet('Notebooks')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Notebooks')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Notebooks</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('PCs')</id>
+    <title type="text">VH_CategorySet('PCs')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('PCs')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>PCs</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('PDAs%20%26%20Organizers')</id>
+    <title type="text">VH_CategorySet('PDAs%20%26%20Organizers')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('PDAs%20%26%20Organizers')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>PDAs & Organizers</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Portable%20Players')</id>
+    <title type="text">VH_CategorySet('Portable%20Players')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Portable%20Players')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Portable Players</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Projectors')</id>
+    <title type="text">VH_CategorySet('Projectors')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Projectors')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Projectors</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Scanners')</id>
+    <title type="text">VH_CategorySet('Scanners')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Scanners')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Scanners</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Servers')</id>
+    <title type="text">VH_CategorySet('Servers')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Servers')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Servers</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Smartphones')</id>
+    <title type="text">VH_CategorySet('Smartphones')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Smartphones')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Smartphones</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Software')</id>
+    <title type="text">VH_CategorySet('Software')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Software')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Software</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Speakers')</id>
+    <title type="text">VH_CategorySet('Speakers')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Speakers')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Speakers</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Tablets')</id>
+    <title type="text">VH_CategorySet('Tablets')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Tablets')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Tablets</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+  <entry>
+    <id>https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/VH_CategorySet('Telecommunications')</id>
+    <title type="text">VH_CategorySet('Telecommunications')</title>
+    <updated>2023-08-31T10:50:08Z</updated>
+    <category term="GWSAMPLE_BASIC.VH_Category" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
+    <link href="VH_CategorySet('Telecommunications')" rel="self" title="VH_Category"/>
+    <content type="application/xml">
+      <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+        <d:Category>Telecommunications</d:Category>
+      </m:properties>
+    </content>
+  </entry>
+</feed>
