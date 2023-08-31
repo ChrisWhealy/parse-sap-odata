@@ -221,6 +221,5 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 
 ## TODOs
 
-1. Consider fetching the metadata at build time &mdash; but this raises the question of whether allowing a build script to look outside its sandbox is an anti-pattern...
-1. Implement `serde` directives for the generated `structs`
+1. Implement dedicated parser functions for`Edm.DateTime` and `Edm.Decimal` fields as these are currently interpreted simply as `String` and `f64` fields
 1. Support Function Imports
