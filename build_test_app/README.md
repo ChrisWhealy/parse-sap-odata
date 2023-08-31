@@ -2,27 +2,39 @@
 
 This is a simple test app that invokes `parse-sap-odata` in a build script for the SAP demo OData service `GWSAMPLE_BASIC` and then consumes generated the `struct`s and `enum`s.
 
-The app then starts a webserver running <http://localhost:8080> that displays a simple drop down list
+```shell
+$ cargo run
+ Compiling parse-sap-odata v1.1.8 (/Users/chris/Developer/lighthouse-no/parse-sap-odata)
+ Compiling build-test-app v1.2.0 (/Users/chris/Developer/lighthouse-no/parse-sap-odata/build_test_app)
+  Finished dev [unoptimized + debuginfo] target(s) in 8.92s
+   Running `target/debug/build-test-app`
+```
 
-## Known Issues
+The app then starts a webserver running on <http://localhost:8080> that displays a simple drop down list
+
+![Start screen](../img/start_screen.png)
+
+Select the desired entity set and the first 100 entries will be displayed in plain text.
+This output comes from the Rust `println!()` macro printing the Rust `struct` into which the entity set data has been parsed.
+
+## Known Issues/Workarounds
 
 ### Invalid ETag Attribute Values
 
-On the SAP demo OData `GWSAMPLE_BASIC`, various entity sets (such as `BusinessPartnerSet` and `ProductSet`) return `<entry>` with an `m:etag` attribute containing an invalid value.
+When calling the SAP demo OData service `GWSAMPLE_BASIC`, various entity sets (such as `BusinessPartnerSet` and `ProductSet`) return `<entry>` tags whose `m:etag` attribute contains an invalid value.
 
-Your will see `m:etag` attributes values like this:
+The raw XML will contain `m:etag` attributes with values like this:
 
 ```xml
 <entry m:etag="W/"datetime'2023-08-31T01%3A00%3A06.0000000'"">
 ```
 
-Instead of this:
+The extra `"W/` characters at the start and the extra `"` character at the end are invalid XML and will cause the XML parser to throws its toys out of the pram.
+These invalid values are checked for and removed to give:
 
 ```xml
 <entry m:etag="datetime'2023-08-31T01%3A00%3A06.0000000'">
 ```
-
-Such invalid values must be detected and removed otherwise the parser will reject the entire XML document.
 
 ### Empty `DateOfBirth` Field
 
@@ -66,7 +78,7 @@ You must already have a userid and password for the SAP Dev Center server `sapes
 1. In directory `build_test_app` run `cargo run`
 1. Open your browser and go to <http://localhost:8080>
 1. Select the name of the entity set whose data you want to see
-    ![Start screen](../img/start_screen.png)
+
 1. You will then see the first 100 entries from the selected entity set in JSON format.
 
 ## Testing this Crate Locally

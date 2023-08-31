@@ -5,7 +5,7 @@ use std::{
     string::FromUtf8Error,
 };
 
-use crate::Feed;
+use crate::{xml::sanitise_invalid_etag_values, Feed};
 
 static FEED_XML_BASE: &str = "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/";
 
@@ -17,33 +17,6 @@ fn fetch_xml_as_string(filename: &str) -> Result<String, FromUtf8Error> {
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
 
     String::from_utf8(xml_buffer)
-}
-
-/// # UGLY HACK
-///
-/// This hack is needed because when you read the entity set `BuisnessPartnerSet` from SAP's demo OData service
-/// `GWSAMPLE_BASIC`, the `m:etag` attribute of each `<entry>` tag contains an invalid value:
-///
-/// ```xml
-/// <entry m:etag="W/"datetime'2023-08-31T01%3A00%3A06.0000000'"">
-/// ```
-///
-/// Instead of
-///
-/// ```xml
-/// <entry m:etag="datetime'2023-08-31T01%3A00%3A06.0000000'">
-/// ```
-///
-/// Therefore, before attempting to parse the XML as a `Feed::<BuisnessPartner>`, we must first check for and then
-/// remove any invalid `m:etag` attribute values
-fn sanitise_invalid_etag_values(xml: String) -> String {
-    if xml.contains("entry m:etag=\"W/\"") {
-        let mut clean_xml = xml.replace("m:etag=\"W/\"", "m:etag=\"");
-        clean_xml = clean_xml.replace("'\"\">", "'\">");
-        clean_xml
-    } else {
-        xml
-    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

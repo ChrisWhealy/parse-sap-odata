@@ -3,7 +3,7 @@ pub mod err_handlers;
 pub mod feed;
 pub mod xml;
 
-use crate::{auth::fetch_auth, err_handlers::error_handlers};
+use crate::{auth::fetch_auth, err_handlers::error_handlers, xml::sanitise_invalid_etag_values};
 use feed::Feed;
 
 use actix_web::{
@@ -43,68 +43,70 @@ async fn doc_root(
 }
 
 fn fetch_entity_set(es_name: &str, res: &str) -> String {
+    let clean_xml = sanitise_invalid_etag_values(String::from(res));
+
     match es_name {
-        "BusinessPartnerSet" => match Feed::<BusinessPartner>::from_str(&res) {
+        "BusinessPartnerSet" => match Feed::<BusinessPartner>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "ProductSet" => match Feed::<Product>::from_str(&res) {
+        "ProductSet" => match Feed::<Product>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "SalesOrderSet" => match Feed::<SalesOrder>::from_str(&res) {
+        "SalesOrderSet" => match Feed::<SalesOrder>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "SalesOrderLineItemSet" => match Feed::<SalesOrderLineItem>::from_str(&res) {
+        "SalesOrderLineItemSet" => match Feed::<SalesOrderLineItem>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "ContactSet" => match Feed::<Contact>::from_str(&res) {
+        "ContactSet" => match Feed::<Contact>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_SexSet" => match Feed::<VhSex>::from_str(&res) {
+        "VH_SexSet" => match Feed::<VhSex>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_CountrySet" => match Feed::<VhCountry>::from_str(&res) {
+        "VH_CountrySet" => match Feed::<VhCountry>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_AddressTypeSet" => match Feed::<VhAddressType>::from_str(&res) {
+        "VH_AddressTypeSet" => match Feed::<VhAddressType>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_CategorySet" => match Feed::<VhCategory>::from_str(&res) {
+        "VH_CategorySet" => match Feed::<VhCategory>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_CurrencySet" => match Feed::<VhCurrency>::from_str(&res) {
+        "VH_CurrencySet" => match Feed::<VhCurrency>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_UnitQuantitySet" => match Feed::<VhUnitQuantity>::from_str(&res) {
+        "VH_UnitQuantitySet" => match Feed::<VhUnitQuantity>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_UnitWeightSet" => match Feed::<VhUnitWeight>::from_str(&res) {
+        "VH_UnitWeightSet" => match Feed::<VhUnitWeight>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_UnitLengthSet" => match Feed::<VhUnitLength>::from_str(&res) {
+        "VH_UnitLengthSet" => match Feed::<VhUnitLength>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_ProductTypeCodeSet" => match Feed::<VhProductTypeCode>::from_str(&res) {
+        "VH_ProductTypeCodeSet" => match Feed::<VhProductTypeCode>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_BPRoleSet" => match Feed::<VhBpRole>::from_str(&res) {
+        "VH_BPRoleSet" => match Feed::<VhBpRole>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_LanguageSet" => match Feed::<VhLanguage>::from_str(&res) {
+        "VH_LanguageSet" => match Feed::<VhLanguage>::from_str(&clean_xml) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
