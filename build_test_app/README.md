@@ -2,6 +2,20 @@
 
 This is a simple test app that invokes `parse-sap-odata` in a build script for the SAP demo OData service `GWSAMPLE_BASIC` and then consumes generated the `struct`s and `enum`s.
 
+## Prerequisites
+
+You must already have a userid and password for the SAP Dev Center server `sapes5.sapdevcenter.com`
+
+1. Clone this repo
+1. `cd parse_sap_odata/build_test_app`
+1. Create a `.env` file containing your SAP DevCenter userid and password in the following format
+
+   ```
+   SAP_USER=<your userid>
+   SAP_PASSWORD=<your password>
+   ```
+Once the `.env` file has been created, you can run the app.
+
 ```shell
 $ cargo run
  Compiling parse-sap-odata v1.1.8 (/Users/chris/Developer/lighthouse-no/parse-sap-odata)
@@ -59,27 +73,6 @@ A dedicated parser function is needed here.
 ### Parsing `Edm.Decimal` Fields
 
 At the moment, there is no dedicated parser function for fields of type `Edm.Decimal`; they are currently stored as `f64` values.
-
-## Prerequisites
-
-You must already have a userid and password for the SAP Dev Center server `sapes5.sapdevcenter.com`
-
-1. Clone this repo
-1. `cd parse_sap_odata/build_test_app`
-1. Create a `.env` file containing your SAP DevCenter userid and password in the following format
-
-   ```
-   SAP_USER=<your userid>
-   SAP_PASSWORD=<your password>
-   ```
-
-## Running `build_test_app`
-
-1. In directory `build_test_app` run `cargo run`
-1. Open your browser and go to <http://localhost:8080>
-1. Select the name of the entity set whose data you want to see
-
-1. You will then see the first 100 entries from the selected entity set in JSON format.
 
 ## Testing this Crate Locally
 
