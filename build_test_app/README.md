@@ -14,7 +14,7 @@ You must already have a userid and password for the SAP Dev Center server `sapes
    SAP_USER=<your userid>
    SAP_PASSWORD=<your password>
    ```
-Once the `.env` file has been created, you can run the app.
+Once the `.env` file has been created, you can start the app.
 
 ```shell
 $ cargo run
@@ -24,7 +24,7 @@ $ cargo run
    Running `target/debug/build-test-app`
 ```
 
-The app then starts a webserver running on <http://localhost:8080> that displays a simple drop down list
+Visit <http://localhost:8080> and you will see a simple drop down list containing the entity sets available on the `GWSAMPLE_BASIC` OData service.
 
 ![Start screen](../img/start_screen.png)
 
@@ -77,5 +77,17 @@ At the moment, there is no dedicated parser function for fields of type `Edm.Dec
 ## Testing this Crate Locally
 
 The prefered test tool is [`nextest`](https://crates.io/crates/cargo-nextest) which can be [installed from here](https://nexte.st/).
+
+```shell
+$ cargo nextest run
+ Compiling build-test-app v1.2.0 (/Users/chris/Developer/lighthouse-no/parse-sap-odata/build_test_app)
+  Finished test [unoptimized + debuginfo] target(s) in 2.75s
+  Starting 3 tests across 1 binary
+      PASS [   0.025s] build-test-app::bin/build-test-app unit_tests::should_parse_contact_set
+      PASS [   0.027s] build-test-app::bin/build-test-app unit_tests::should_parse_business_partner_set
+      PASS [   0.024s] build-test-app::bin/build-test-app unit_tests::should_parse_product_set
+----------
+   Summary [   0.028s] 3 tests run: 3 passed, 0 skipped
+```
 
 If you have not installed `nextest`, `cargo test` can be used instead.
