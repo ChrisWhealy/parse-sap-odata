@@ -8,11 +8,16 @@ Parse the metadata XML describing an SAP OData service and generate basic Rust e
 * [x] `EntityType`
 * [ ] `FunctionImport`
 
-> ***Limitations***
->
-> Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
->
-> ***TODO***<br>Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
+***Limitations and Issues***
+
+1. Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
+  Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
+
+1. Certain XML properties within some of the entity sets in the demo OData service `GWSAMPLE_BASIC` contain values that are not valid XML.
+   Then, when `quick_xml` encounters such values, it throws its toys out the pram.
+
+   Consequently, before attempting to parse the XML, it first must be sanitised.
+   See the [README of `build_test_app`](./build_test_app/README.md) for more details.
 
 ---
 ## Usage
