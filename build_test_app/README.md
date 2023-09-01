@@ -50,6 +50,23 @@ These invalid values are checked for and removed to give:
 <entry m:etag="datetime'2023-08-31T01%3A00%3A06.0000000'">
 ```
 
+### Naked Ampersand Characters
+
+Certain text description tags are generated that contain a naked ampersand character.
+For example:
+
+```xml
+<d:Category>PDAs & Organizers</d:Category>
+<d:Landx>St Kitts&Nevis</d:Landx>
+```
+
+The characters are replaced with their character encoding
+
+```xml
+<d:Category>PDAs &amp; Organizers</d:Category>
+<d:Landx>St Kitts&amp;Nevis</d:Landx>
+```
+
 ### Empty `DateOfBirth` Field
 
 Some entity sets have `<entry>` tags that contain `edm:DateTime` properties that can be null.

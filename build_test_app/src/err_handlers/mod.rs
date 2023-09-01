@@ -38,8 +38,8 @@ fn get_error_response<B>(res: &ServiceResponse<B>, error: &str) -> HttpResponse 
     match tt {
         Some(tt) => {
             let mut context = std::collections::HashMap::new();
-            context.insert("error", error.to_owned());
-            context.insert("status_code", res.status().as_str().to_owned());
+            context.insert("error", String::from(error));
+            context.insert("status_code", String::from(res.status().as_str()));
             let body = tt.render("error.html", &context);
 
             match body {

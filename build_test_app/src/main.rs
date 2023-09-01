@@ -3,7 +3,7 @@ pub mod err_handlers;
 pub mod feed;
 pub mod xml;
 
-use crate::{auth::fetch_auth, err_handlers::error_handlers, xml::sanitise_invalid_etag_values};
+use crate::{auth::fetch_auth, err_handlers::error_handlers, xml::sanitise_xml};
 use feed::Feed;
 
 use actix_web::{
@@ -139,7 +139,7 @@ async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
                 .await
             {
                 Ok(res) => {
-                    let clean_xml = sanitise_invalid_etag_values(String::from(res));
+                    let clean_xml = sanitise_xml(String::from(res));
 
                     HttpResponse::Ok()
                         .content_type(ContentType::plaintext())
