@@ -222,4 +222,5 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 ## TODOs
 
 1. Implement dedicated parser functions for`Edm.DateTime` and `Edm.Decimal` fields as these are currently interpreted simply as `String` and `f64` fields
-1. Support Function Imports
+2. The coding in `build_test_app` to parse an `atom:Feed` needs to be injected into `$OUT_DIR` by the build script rather than being hard-coded in `build_test_app/src`
+3. Support Function Imports

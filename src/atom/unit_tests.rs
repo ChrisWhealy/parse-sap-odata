@@ -25,7 +25,7 @@ pub fn should_parse_atom_link() {
         Ok(xml) => {
             let atom_link = AtomLink::from_str(&xml).unwrap();
 
-            assert_eq!(atom_link.xml_namespace_atom, "http://www.w3.org/2005/Atom");
+            assert_eq!(atom_link.xml_namespace_atom, Some("http://www.w3.org/2005/Atom".to_owned()));
             assert_eq!(atom_link.rel, "latest-version");
             assert_eq!(
                 atom_link.href,

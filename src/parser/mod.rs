@@ -16,6 +16,16 @@ use syntax_fragments::*;
 
 static DEFAULT_INPUT_DIR: &str = &"./odata";
 
+fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
+    let mut xml_buffer: Vec<u8> = Vec::new();
+    let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
+
+    let f_xml = File::open(Path::new(&xml_input_pathname))?;
+    let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
+
+    Ok(String::from_utf8(xml_buffer)?)
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Deserialize an SAP OData metadata document
 ///
@@ -25,28 +35,26 @@ static DEFAULT_INPUT_DIR: &str = &"./odata";
 /// `odata/`<br>
 /// `└── gwsample_basic.xml`
 pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
-    let mut xml_buffer: Vec<u8> = Vec::new();
-    let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, metadata_file_name);
-
-    let f_xml = File::open(Path::new(&xml_input_pathname))?;
-    let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
-    let xml = String::from_utf8(xml_buffer)?;
+    let xml = fetch_xml_as_string(metadata_file_name)?;
     let edmx = Edmx::from_str(&xml)?;
 
     return Ok(edmx);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate Rust structs from the OData metadata
+/// Generate Rust structs and enums from the OData metadata
 ///
-/// Any fields whose names clash with a Rust reserved word are written in raw format:<br>
+/// Any field whose name clashes with a Rust reserved word is written in raw format:<br>
 /// E.G. `type --> r#type`
 pub fn gen_src(metadata_file_name: &str, namespace: &str) {
     let mut out_buffer: Vec<u8> = Vec::new();
 
     match deserialize_sap_metadata(metadata_file_name) {
-        // Deserialization can fail sometimes.
+        // Deserialization can fail sometimes!
         // This can happen for example, when a quoted XML attribute value contains unescaped double quote characters
+        //
+        // The Atom `<feed>` documents returned from the entity sets of certain SAP OData services have been known to
+        // contain `<entry>` elements whose `m:etag` attribute cntains an incorrectly quoted value
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
             let out_dir = env::var_os("OUT_DIR").unwrap();
@@ -59,8 +67,8 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 .open(&output_path)
                 .unwrap();
 
-            // If this fails, then either the build script is being run with the wrong value for the namespace, or we're
-            // trying to parse from XML that is not valid OData metadata
+            // If this fails, then either the build script been passed the wrong namespace value, or we're trying to
+            // parse XML that is not an OData metadata document
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
                 out_buffer.append(
                     &mut [
@@ -79,9 +87,14 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Transform ComplexType definitions if present
                 if let Some(cts) = &schema.complex_types {
+                    let mut ignored_cts: usize = 0;
                     out_buffer.append(&mut comment_for("COMPLEX TYPES"));
 
-                    for ct in cts {
+                    for (idx, ct) in cts.into_iter().enumerate() {
+                        if idx > 0 && idx + ignored_cts + 1 < cts.len() {
+                            out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
+                        }
+
                         let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
                         let ct_name = convert_case::Casing::to_case(
                             &String::from_utf8(trimmed_name).unwrap(),
@@ -116,6 +129,8 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                             // Implement `from_str` for this struct
                             out_buffer.append(&mut impl_from_str_for(&ct_name));
+                        } else {
+                            ignored_cts += 1;
                         }
                     }
                 }
@@ -128,7 +143,13 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // FunctionImports
                 out_buffer.append(&mut comment_for("ENTITY TYPES"));
 
-                for entity in &schema.entity_types {
+                let ets = &schema.entity_types;
+
+                for (idx, entity) in ets.into_iter().enumerate() {
+                    if idx > 0 {
+                        out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
+                    }
+
                     let struct_name = convert_case::Casing::to_case(
                         &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
                         convert_case::Case::UpperCamel,

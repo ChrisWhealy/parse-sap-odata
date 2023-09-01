@@ -6,14 +6,13 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AtomLink {
     #[serde(rename = "xmlns:atom", default = "default_xml_namespace_atom")]
-    pub xml_namespace_atom: String,
-
-    pub rel: String,
-    pub href: String,
+    pub xml_namespace_atom: Option<String>,
 
     #[serde(rename = "type")]
     pub mime_type: Option<String>,
 
+    pub rel: String,
+    pub href: String,
     pub title: Option<String>,
 }
 

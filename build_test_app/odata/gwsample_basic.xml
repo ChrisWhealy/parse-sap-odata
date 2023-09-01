@@ -196,6 +196,9 @@
         <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Language" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
         <Property Name="Sptxt" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
       </EntityType>
+      <ComplexType Name="CT_String">
+        <Property Name="String" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+      </ComplexType>
       <ComplexType Name="CT_Address">
         <Property Name="City" Type="Edm.String" MaxLength="40" sap:label="City" sap:semantics="city"/>
         <Property Name="PostalCode" Type="Edm.String" MaxLength="10" sap:label="Postal Code" sap:semantics="zip"/>
@@ -203,9 +206,6 @@
         <Property Name="Building" Type="Edm.String" MaxLength="10" sap:label="Building"/>
         <Property Name="Country" Type="Edm.String" MaxLength="3" sap:label="Country" sap:semantics="country"/>
         <Property Name="AddressType" Type="Edm.String" MaxLength="2" sap:label="Address Type"/>
-      </ComplexType>
-      <ComplexType Name="CT_String">
-        <Property Name="String" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
       </ComplexType>
       <Association Name="Assoc_VH_Country_Contacts" sap:content-version="1">
         <End Type="GWSAMPLE_BASIC.VH_Country" Multiplicity="1" Role="FromRole_Assoc_VH_Country_Contacts"/>

@@ -42,71 +42,69 @@ async fn doc_root(
         .body(body))
 }
 
-fn fetch_entity_set(es_name: &str, res: &str) -> String {
-    let clean_xml = sanitise_invalid_etag_values(String::from(res));
-
+fn fetch_entity_set(es_name: &str, xml_str: &str) -> String {
     match es_name {
-        "BusinessPartnerSet" => match Feed::<BusinessPartner>::from_str(&clean_xml) {
+        "BusinessPartnerSet" => match Feed::<BusinessPartner>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "ProductSet" => match Feed::<Product>::from_str(&clean_xml) {
+        "ProductSet" => match Feed::<Product>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "SalesOrderSet" => match Feed::<SalesOrder>::from_str(&clean_xml) {
+        "SalesOrderSet" => match Feed::<SalesOrder>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "SalesOrderLineItemSet" => match Feed::<SalesOrderLineItem>::from_str(&clean_xml) {
+        "SalesOrderLineItemSet" => match Feed::<SalesOrderLineItem>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "ContactSet" => match Feed::<Contact>::from_str(&clean_xml) {
+        "ContactSet" => match Feed::<Contact>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_SexSet" => match Feed::<VhSex>::from_str(&clean_xml) {
+        "VH_SexSet" => match Feed::<VhSex>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_CountrySet" => match Feed::<VhCountry>::from_str(&clean_xml) {
+        "VH_CountrySet" => match Feed::<VhCountry>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_AddressTypeSet" => match Feed::<VhAddressType>::from_str(&clean_xml) {
+        "VH_AddressTypeSet" => match Feed::<VhAddressType>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_CategorySet" => match Feed::<VhCategory>::from_str(&clean_xml) {
+        "VH_CategorySet" => match Feed::<VhCategory>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_CurrencySet" => match Feed::<VhCurrency>::from_str(&clean_xml) {
+        "VH_CurrencySet" => match Feed::<VhCurrency>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_UnitQuantitySet" => match Feed::<VhUnitQuantity>::from_str(&clean_xml) {
+        "VH_UnitQuantitySet" => match Feed::<VhUnitQuantity>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_UnitWeightSet" => match Feed::<VhUnitWeight>::from_str(&clean_xml) {
+        "VH_UnitWeightSet" => match Feed::<VhUnitWeight>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_UnitLengthSet" => match Feed::<VhUnitLength>::from_str(&clean_xml) {
+        "VH_UnitLengthSet" => match Feed::<VhUnitLength>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_ProductTypeCodeSet" => match Feed::<VhProductTypeCode>::from_str(&clean_xml) {
+        "VH_ProductTypeCodeSet" => match Feed::<VhProductTypeCode>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_BPRoleSet" => match Feed::<VhBpRole>::from_str(&clean_xml) {
+        "VH_BPRoleSet" => match Feed::<VhBpRole>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
-        "VH_LanguageSet" => match Feed::<VhLanguage>::from_str(&clean_xml) {
+        "VH_LanguageSet" => match Feed::<VhLanguage>::from_str(&xml_str) {
             Ok(bp) => format!("{bp:#?}"),
             Err(e) => format!("Error: {e:?}"),
         },
@@ -121,6 +119,8 @@ fn fetch_entity_set(es_name: &str, res: &str) -> String {
 async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
     let client = reqwest::Client::new();
     let entity_set_name = path.into_inner();
+
+    println!("GET: /{}", entity_set_name);
 
     let http_responce = match fetch_auth() {
         Ok(auth_chars) => {
@@ -138,9 +138,13 @@ async fn entity_set(path: web::Path<String>) -> Result<HttpResponse, Error> {
                 .text()
                 .await
             {
-                Ok(res) => HttpResponse::Ok()
-                    .content_type(ContentType::plaintext())
-                    .body(fetch_entity_set(&entity_set_name, &res)),
+                Ok(res) => {
+                    let clean_xml = sanitise_invalid_etag_values(String::from(res));
+
+                    HttpResponse::Ok()
+                        .content_type(ContentType::plaintext())
+                        .body(fetch_entity_set(&entity_set_name, &clean_xml))
+                },
                 Err(err) => HttpResponse::BadRequest().body(format!("{:#?}", err)),
             }
         },

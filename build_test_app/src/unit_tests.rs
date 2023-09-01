@@ -25,9 +25,10 @@ pub fn should_parse_business_partner_set() {
     static ENTITY_SET_NAME: &str = "BusinessPartnerSet";
     let base_service_name = format!("{}{}", FEED_XML_BASE, ENTITY_SET_NAME);
 
-    match fetch_xml_as_string(&format!("{}-etags.xml", ENTITY_SET_NAME)) {
+    match fetch_xml_as_string(&format!("{}.xml", ENTITY_SET_NAME)) {
         Ok(xml) => {
-            let bp_feed = Feed::<BusinessPartner>::from_str(&sanitise_invalid_etag_values(xml)).unwrap();
+            let clean_xml = sanitise_invalid_etag_values(xml);
+            let bp_feed = Feed::<BusinessPartner>::from_str(&clean_xml).unwrap();
 
             assert_eq!(bp_feed.namespace, "http://www.w3.org/2005/Atom");
             assert_eq!(bp_feed.xml_base, Some(String::from(FEED_XML_BASE)));
@@ -40,6 +41,9 @@ pub fn should_parse_business_partner_set() {
             if let Some(entries) = bp_feed.entries {
                 assert_eq!(entries.len(), 5);
                 assert_eq!(entries[0].id, format!("{}('0100000000')", base_service_name));
+
+                let etag = String::from(entries[0].etag.as_ref().unwrap());
+                assert!(etag.starts_with("datetime"));
 
                 assert_eq!(entries[0].content.properties.address.city, Some("Walldorf".to_owned()));
                 assert_eq!(entries[0].content.properties.company_name, "SAP");
@@ -64,7 +68,8 @@ pub fn should_parse_contact_set() {
 
     match fetch_xml_as_string(&format!("{}.xml", ENTITY_SET_NAME)) {
         Ok(xml) => {
-            let c_feed = Feed::<Contact>::from_str(&sanitise_invalid_etag_values(xml)).unwrap();
+            let clean_xml = sanitise_invalid_etag_values(xml);
+            let c_feed = Feed::<Contact>::from_str(&clean_xml).unwrap();
 
             assert_eq!(c_feed.namespace, "http://www.w3.org/2005/Atom");
             assert_eq!(c_feed.xml_base, Some(String::from(FEED_XML_BASE)));
@@ -102,7 +107,8 @@ pub fn should_parse_product_set() {
 
     match fetch_xml_as_string(&format!("{}.xml", ENTITY_SET_NAME)) {
         Ok(xml) => {
-            let p_feed = Feed::<Product>::from_str(&sanitise_invalid_etag_values(xml)).unwrap();
+            let clean_xml = sanitise_invalid_etag_values(xml);
+            let p_feed = Feed::<Product>::from_str(&clean_xml).unwrap();
 
             assert_eq!(p_feed.namespace, "http://www.w3.org/2005/Atom");
             assert_eq!(p_feed.xml_base, Some(String::from(FEED_XML_BASE)));
@@ -114,6 +120,10 @@ pub fn should_parse_product_set() {
 
             if let Some(entries) = p_feed.entries {
                 assert_eq!(entries.len(), 5);
+
+                let etag = String::from(entries[0].etag.as_ref().unwrap());
+                assert!(etag.starts_with("datetime"));
+
                 assert_eq!(entries[0].content.properties.product_id, "2GOYBEBFLB");
                 assert_eq!(entries[0].content.properties.category, "Notebooks");
                 // assert_eq!(entries[0].content.properties.weight_measure, Decimal::new(4200000, 3));

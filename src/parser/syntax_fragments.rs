@@ -109,33 +109,35 @@ pub static MARKER_TRAIT_ENTITY_TYPE: &[u8] = "trait EntityType {}".as_bytes();
 ///
 /// The Serde traits `Serialize` and `Deserialize` are also included
 pub enum DeriveTraits {
-    EQ,
-    PARTIALEQ,
-    ORD,
-    PARTIALORD,
     CLONE,
     COPY,
     DEBUG,
     DEFAULT,
-    HASH,
-    SERIALIZE,
     DESERIALIZE,
+    EQ,
+    HASH,
+    ITERATOR,
+    ORD,
+    PARTIALEQ,
+    PARTIALORD,
+    SERIALIZE,
 }
 
 impl DeriveTraits {
     /// Helper function to return the enum variant name as a static string slice
     pub const fn value(&self) -> &'static str {
         match *self {
-            DeriveTraits::EQ => "Eq",
-            DeriveTraits::PARTIALEQ => "PartialEq",
-            DeriveTraits::ORD => "Ord",
-            DeriveTraits::PARTIALORD => "PartialOrd",
             DeriveTraits::CLONE => "Clone",
             DeriveTraits::COPY => "Copy",
             DeriveTraits::DEBUG => "Debug",
             DeriveTraits::DEFAULT => "Default",
-            DeriveTraits::HASH => "Hash",
             DeriveTraits::DESERIALIZE => "Deserialize",
+            DeriveTraits::EQ => "Eq",
+            DeriveTraits::HASH => "Hash",
+            DeriveTraits::ITERATOR => "Iterator",
+            DeriveTraits::ORD => "Ord",
+            DeriveTraits::PARTIALEQ => "PartialEq",
+            DeriveTraits::PARTIALORD => "PartialOrd",
             DeriveTraits::SERIALIZE => "Serialize",
         }
     }

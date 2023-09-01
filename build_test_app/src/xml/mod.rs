@@ -49,10 +49,14 @@ pub fn default_xml_namespace_sap() -> String {
 ///
 /// Therefore, before attempting to parse the XML as a `Feed::<impl EntityType>`, we must first check for and then
 /// remove any invalid `m:etag` attribute values
+///
+/// The malformed attribute value might also have been character encoded
 pub fn sanitise_invalid_etag_values(xml: String) -> String {
-    if xml.contains("entry m:etag=\"W/\"") {
+    if xml.contains("entry m:etag=\"W/\"") || xml.contains("entry m:etag=\"W/&quot;") {
         let mut clean_xml = xml.replace("m:etag=\"W/\"", "m:etag=\"");
+        clean_xml = clean_xml.replace("m:etag=\"W/&quot;", "m:etag=\"");
         clean_xml = clean_xml.replace("'\"\">", "'\">");
+        clean_xml = clean_xml.replace("'&quot;\">", "'\">");
         clean_xml
     } else {
         xml
