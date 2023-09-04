@@ -54,7 +54,7 @@ In this case, the `m:etag` value is sanitised to:
 
 ### Naked Ampersand Characters
 
-Certain text descriptions are provided that contain a unescaped (or naked) ampersand characters.
+Certain text descriptions are provided that contain an unescaped (or naked) ampersand character.
 For example:
 
 ```xml
