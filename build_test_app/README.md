@@ -1,6 +1,6 @@
 # Build Test App
 
-This is a simple test app that invokes `parse-sap-odata` in a build script for the SAP demo OData service `GWSAMPLE_BASIC` and then consumes generated the `struct`s and `enum`s.
+This is a simple test app that invokes `parse-sap-odata` in a build script for the SAP demo OData service `GWSAMPLE_BASIC` and then use the generated `struct`s and `enum`s to consume teh data from this service's entity sets.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ This output comes from the Rust `println!()` macro printing the Rust `struct` in
 
 ### Invalid ETag Attribute Values
 
-When calling the SAP demo OData service `GWSAMPLE_BASIC`, various entity sets (such as `BusinessPartnerSet` and `ProductSet`) return `<entry>` tags whose `m:etag` attribute contains an invalid value.
+When calling the SAP demo OData service `GWSAMPLE_BASIC`, various entity sets (such as `BusinessPartnerSet` and `ProductSet`) return `<entry>` tags whose `m:etag` attribute contains a value that is not in valid XML format.
 
 The raw XML will contain `m:etag` attributes with values like this:
 
@@ -43,8 +43,10 @@ The raw XML will contain `m:etag` attributes with values like this:
 <entry m:etag="W/"datetime'2023-08-31T01%3A00%3A06.0000000'"">
 ```
 
-The extra `"W/` characters at the start and the extra `"` character at the end are invalid XML and will cause the XML parser to throws its toys out of the pram.
-These invalid values are checked for and removed to give:
+The extra `"W/` characters at the start and the extra `"` character at the end are invalid XML and may cause an XML parser to throws its toys out of the pram.
+So, before parsing the raw string containing this XML, such invalid values are checked for and removed.
+
+In this case, the `m:etag` value is sanitised to:
 
 ```xml
 <entry m:etag="datetime'2023-08-31T01%3A00%3A06.0000000'">
@@ -52,7 +54,7 @@ These invalid values are checked for and removed to give:
 
 ### Naked Ampersand Characters
 
-Certain text description tags are generated that contain a naked ampersand character.
+Certain text descriptions are provided that contain a unescaped (or naked) ampersand characters.
 For example:
 
 ```xml
@@ -60,7 +62,7 @@ For example:
 <d:Landx>St Kitts&Nevis</d:Landx>
 ```
 
-The characters are replaced with their character encoding
+In order to stop the XML parser from barfing, these characters must be replaced with their character encoding:
 
 ```xml
 <d:Category>PDAs &amp; Organizers</d:Category>
@@ -83,13 +85,14 @@ It is provided as:
 ```
 
 When attempting to parse such values as `Option<chrono::NaiveDateTime>`, the `quick_xml` parser aborts with the error `Premature end of input`.
-Consequently, such fields are interpreted simply as `String`s.
+At the moment therefore, such fields are interpreted simply as `String`s.
 
-A dedicated parser function is needed here.
+TODO: A dedicated parser function is needed here.
 
 ### Parsing `Edm.Decimal` Fields
 
 At the moment, there is no dedicated parser function for fields of type `Edm.Decimal`; they are currently stored as `f64` values.
+This means at the moment that the value of the `Precision` attribute is not retained.
 
 ## Testing this Crate Locally
 
