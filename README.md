@@ -1,4 +1,4 @@
-# Parse the Metadata from an SAP OData Service
+# Parse the Metadata from an SAP OData V2 Service
 
 This is a work in progress!
 
