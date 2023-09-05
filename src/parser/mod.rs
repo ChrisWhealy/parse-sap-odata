@@ -21,7 +21,7 @@ use crate::{
 use check_keyword::CheckKeyword;
 use syntax_fragments::*;
 
-static DEFAULT_INPUT_DIR: &str = &"./odata";
+static DEFAULT_INPUT_DIR: &str = "./odata";
 
 fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
     let mut xml_buffer: Vec<u8> = Vec::new();
