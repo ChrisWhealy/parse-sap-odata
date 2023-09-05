@@ -2,7 +2,7 @@
 
 This is a work in progress!
 
-Parse the metadata XML describing an SAP OData service and generate basic Rust entities for each EDM type:
+Parse the metadata XML describing an SAP OData V2 service and generate basic Rust entities for each EDM type:
 
 * [x] `ComplexType`
 * [x] `EntityType`
@@ -13,11 +13,14 @@ Parse the metadata XML describing an SAP OData service and generate basic Rust e
 1. Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
   Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
 
-1. Certain XML properties within some of the entity sets in the demo OData service `GWSAMPLE_BASIC` contain values that are not valid XML.
-   Consequently, when `quick_xml` encounters such values, it throws its toys out the pram.
+1. The OData metadata contained within the `<FunctionImport>`, `<Association>` and `<AssociationSet>` tags is parsed, but not currently acted upon.
 
-   Therefore, the raw XML string must first be sanitised before attempting to it.
-   See the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo) for more details.
+1. When calling some of the entity sets in the demo OData service `GWSAMPLE_BASIC`, certain XML properties are returned whose values that are not valid XML.
+   Consequently, when `quick_xml` attempts to parse such values, it simply throws its toys out the pram and doesn't want to play anymore.
+
+   If you encounter such errors, the raw XML string must first be sanitised before attempting to parse it.
+
+   This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
 
 ---
 
@@ -30,9 +33,9 @@ Parse the metadata XML describing an SAP OData service and generate basic Rust e
 
 ## Usage
 
-You are writing a Rust application to consume data from an SAP OData V2 service.
+You want to write a Rust application to interact with an SAP OData V2 service.
 
-The functionality in this crate is invoked by the build script in your application and generates the `struct`s and `enum`s needed to consume the data returned by callin the OData service's entity sets.
+The functionality in this crate is invoked by the build script in your application and generates the `struct`s and `enum`s needed to consume the data returned by calling the OData service's entity sets.
 
 Your app can then consume the entity set data using the code in crate [`parse-sap-atom-feed`](https://crates.io/crates/parse-sap-atom-feed)
 
