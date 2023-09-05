@@ -8,18 +8,26 @@ Parse the metadata XML describing an SAP OData service and generate basic Rust e
 * [x] `EntityType`
 * [ ] `FunctionImport`
 
-***Limitations and Issues***
+## Limitations and Issues
 
 1. Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
   Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
 
 1. Certain XML properties within some of the entity sets in the demo OData service `GWSAMPLE_BASIC` contain values that are not valid XML.
-   Then, when `quick_xml` encounters such values, it throws its toys out the pram.
+   Consequently, when `quick_xml` encounters such values, it throws its toys out the pram.
 
-   Consequently, before attempting to parse the XML, it first must be sanitised.
-   See the [README of `build_test_app`](./build_test_app/README.md) for more details.
+   Therefore, the raw XML string must first be sanitised before attempting to it.
+   See the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo) for more details.
 
 ---
+
+## TODOs
+
+1. Implement dedicated parser functions for the types `Edm.DateTime` and `Edm.Decimal` as fields of these types are currently interpreted simply as `String` and `f64` fields respectively.
+1. Support Function Imports.
+
+---
+
 ## Usage
 
 ### Declare Build Dependency
@@ -36,10 +44,17 @@ Your app will require at least these dependencies:
 ```toml
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
+parse-sap-atom-feed = "0.1"
 rust_decimal = "1.30"
 serde = { version = "1.0", features = ["derive"] }
 uuid = { version = "1.4", features = ["serde"] }
 ```
+
+### XML Input Files
+
+All metadata XML for the OData services your app consumes must be located in the `./odata` directory immediately under your app's top level directory.
+
+Using the demo service `GWSAMPLE_BASIC` available from SAP's Dev Center server, display the [metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for this service, then save that in file `./odata/gwsample_basic.xml`.
 
 ### Create a Build Script
 
@@ -58,12 +73,6 @@ fn main() {
 
 More information about Rust [build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html) is available on the documentation site.
 
-### XML Input Files
-
-All metadata XML for the OData services your app consumes must be located in the `./odata` directory immediately under your app's top level directory.
-
-Using the above example from SAP's Dev Center server, the [OData metadata XML](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata) for service [`GWSAMPLE_BASIC`](https://sapes5.sapdevcenter.com/sap/opu/odata/iwbep/GWSAMPLE_BASIC/) must be located in file [`./odata/gwsample_basic.xml`](./build_test_app/odata/gwsample_basic.xml)
-
 ### Generated Output
 
 If `cargo` detects a `build.rs` file in your project/crate, then it automatically populates the environment variable `OUT_DIR` and runs `build.rs` before compiling your application.
@@ -75,13 +84,13 @@ The default directory name is `target/debug/build/<your_package_name>/out`, and 
 You can specify your own value for `OUT_DIR` either by passing a value to `cargo`'s `--out_dir` flag, or by defining your own location in a `config.toml` file in the `./.cargo` directory.
 See [Cargo Configuration](https://doc.rust-lang.org/cargo/reference/config.html) for more details.
 
-All generated `struct`s implement `#[derive(Clone, Debug, Default)]`
+All generated `struct`s implement at least the following traits `#[derive(Clone, Debug, Default)]`
 
 ---
 
 ## Referencing Generated Output
 
-Since `cargo` runs the build script before compiling your application code, the source code of your application can reference the generated `structs` like this:
+In the source code of your application, you can reference the generated source code like this:
 
 ```rust
 // Include the generated code
@@ -221,10 +230,3 @@ Therefore, on the basis of this guarantee, it is now both safe and meaningful to
 ### Entity Set Enum `as_list` function
 
 By making use of the above `iterator` and `value` functions, the `as_list` function returns the names of the entity sets as a vector of string slices.
-
----
-
-## TODOs
-
-1. Implement dedicated parser functions for`Edm.DateTime` and `Edm.Decimal` fields as these are currently interpreted simply as `String` and `f64` fields
-1. Support Function Imports
