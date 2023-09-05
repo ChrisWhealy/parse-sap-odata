@@ -1,10 +1,8 @@
 pub mod auth;
 pub mod err_handlers;
-pub mod feed;
-pub mod xml;
 
-use crate::{auth::fetch_auth, err_handlers::error_handlers, xml::sanitise_xml};
-use feed::Feed;
+use crate::{auth::fetch_auth, err_handlers::error_handlers};
+use parse_sap_atom_feed::{atom::feed::Feed, xml::sanitise_xml};
 
 use actix_web::{
     error, get,

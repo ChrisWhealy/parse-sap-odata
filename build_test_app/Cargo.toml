@@ -17,6 +17,7 @@ log = "0.4"
 quick-xml = { version = "0.26", features = ["serialize"] }
 regex = "1.9"
 reqwest = { version = "0.11", features = ["json"]}
+parse-sap-atom-feed = { path = "../../parse-sap-atom-feed" }
 rust_decimal = "1.30"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

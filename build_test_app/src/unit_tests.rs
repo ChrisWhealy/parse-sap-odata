@@ -5,9 +5,11 @@ use std::{
     string::FromUtf8Error,
 };
 
-use crate::{xml::sanitise_xml, Feed};
+use parse_sap_atom_feed::{atom::feed::Feed, xml::sanitise_xml};
 
 static FEED_XML_BASE: &str = "https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/";
+
+static ATOM_XML_NAMESPACE: &str = "http://www.w3.org/2005/Atom";
 
 include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
 
@@ -30,7 +32,7 @@ pub fn should_parse_business_partner_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<BusinessPartner>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -71,7 +73,7 @@ pub fn should_parse_contact_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<Contact>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -110,7 +112,7 @@ pub fn should_parse_product_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<Product>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -151,7 +153,7 @@ pub fn should_parse_sales_order_line_item_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<SalesOrderLineItem>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -189,7 +191,7 @@ pub fn should_parse_sales_order_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<SalesOrder>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -231,7 +233,7 @@ pub fn should_parse_vh_address_type_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhAddressType>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -268,7 +270,7 @@ pub fn should_parse_vh_bp_role_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhBpRole>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -305,7 +307,7 @@ pub fn should_parse_vh_category_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhCategory>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -341,7 +343,7 @@ pub fn should_parse_vh_country_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhCountry>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -378,7 +380,7 @@ pub fn should_parse_vh_currency_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhCurrency>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -415,7 +417,7 @@ pub fn should_parse_vh_language_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhLanguage>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -452,7 +454,7 @@ pub fn should_parse_vh_product_type_code_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhProductTypeCode>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -489,7 +491,7 @@ pub fn should_parse_vh_sex_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhSex>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -526,7 +528,7 @@ pub fn should_parse_vh_unit_length_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhUnitLength>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -563,7 +565,7 @@ pub fn should_parse_vh_unit_quantity_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhUnitQuantity>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);
@@ -600,7 +602,7 @@ pub fn should_parse_vh_unit_weight_set() {
             let clean_xml = sanitise_xml(xml);
             let feed = Feed::<VhUnitWeight>::from_str(&clean_xml).unwrap();
 
-            assert_eq!(feed.namespace, "http://www.w3.org/2005/Atom");
+            assert_eq!(feed.namespace, Some(String::from(ATOM_XML_NAMESPACE)));
             assert_eq!(feed.xml_base, Some(String::from(FEED_XML_BASE)));
             assert_eq!(feed.id, base_service_name);
             assert_eq!(feed.title, ENTITY_SET_NAME);

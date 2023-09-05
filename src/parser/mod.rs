@@ -9,7 +9,11 @@ use std::{
     str::FromStr,
 };
 
-use crate::{edmx::Edmx, property::Property, utils::run_rustfmt};
+use crate::{
+    edmx::Edmx,
+    property::Property,
+    utils::{copy_src_tree, run_rustfmt},
+};
 
 use check_keyword::CheckKeyword;
 use syntax_fragments::*;
@@ -58,13 +62,25 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
             let out_dir = env::var_os("OUT_DIR").unwrap();
-            let output_path = Path::new(&out_dir).join(format!("{}.rs", metadata_file_name));
+            let odata_srv_output_pathbuf = Path::new(&out_dir).join(format!("{}.rs", metadata_file_name));
+            let src_path_atom_feed = Path::new("../src/atom/feed/");
+            let src_path_xml = Path::new("../src/xml/");
 
-            let mut out_file = OpenOptions::new()
+            // Copy source trees for parsing an `atom:Feed` response to OUT_DIR
+            match copy_src_tree(&src_path_atom_feed, &Path::new(&out_dir).join(format!("feed/"))) {
+                Ok(_copied_bytes) => (),
+                Err(err) => panic!("Copy source tree failed: {:#?}", err),
+            };
+            match copy_src_tree(&src_path_xml, &Path::new(&out_dir).join(format!("xml/"))) {
+                Ok(_copied_bytes) => (),
+                Err(err) => panic!("Copy source tree failed: {:#?}", err),
+            };
+
+            let mut odata_srv_output_file = OpenOptions::new()
                 .create(true)
                 .write(true)
                 .truncate(true)
-                .open(&output_path)
+                .open(&odata_srv_output_pathbuf)
                 .unwrap();
 
             // If this fails, then either the build script been passed the wrong namespace value, or we're trying to
@@ -198,7 +214,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // Syntax check and format the generated code
                 match run_rustfmt(&out_buffer, &metadata_file_name) {
                     Ok(formatted_bytes) => {
-                        out_file.write_all(&formatted_bytes).unwrap();
+                        odata_srv_output_file.write_all(&formatted_bytes).unwrap();
 
                         // Tell cargo to watch the input XML file
                         println!(

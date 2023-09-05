@@ -1,5 +1,6 @@
 use check_keyword::CheckKeyword;
 use convert_case::Case;
+use fs_extra::{copy_items, dir::CopyOptions, error::Error};
 use std::{
     cmp::max,
     collections::HashMap,
@@ -27,13 +28,13 @@ pub fn default_list() -> Vec<String> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Find longest keyname in hashmap
+/// Find longest keyname in `hashmap` of `<&str, &str>`
 pub fn longest(m: &HashMap<&str, &str>) -> usize {
     m.iter().fold(0, |max_len, e| max(max_len, e.0.len()))
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Append entity definition to output buffer
+/// Append entity definition to output buffer
 pub fn write_entity<T: Debug>(out_buf: &mut Vec<u8>, maybe_entity: Option<&Vec<T>>) {
     match maybe_entity {
         Some(entity) => {
@@ -49,7 +50,7 @@ pub fn write_entity<T: Debug>(out_buf: &mut Vec<u8>, maybe_entity: Option<&Vec<T
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Deserialize string to Boolean
+/// Deserialize string to Boolean
 pub fn de_str_to_bool<'de, D>(deserializer: D) -> Result<bool, D::Error>
 where
     D: Deserializer<'de>,
@@ -59,7 +60,7 @@ where
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Deserialize space-delimited string to list
+/// Deserialize space-delimited string to list
 pub fn de_str_to_list<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
 where
     D: Deserializer<'de>,
@@ -80,8 +81,10 @@ pub fn odata_name_to_rust_safe_name(odata_name: &str) -> String {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Pass the generated source code through rustfmt
-/// If rustfmt finds any errors, the source code is written to OUT_DIR with the prefix "failed_" in the file name
+/// Pass the generated source code through `rustfmt`
+///
+/// If `rustfmt` finds any errors, the source code is still written to `OUT_DIR`, but with `failed_` prefixed to the
+/// filename
 pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>, anyhow::Error> {
     let rustfmt_path = which("rustfmt").with_context(|| "Cannot find `rustfmt` in the path.  Is it installed?")?;
 
@@ -121,3 +124,24 @@ pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>
         Err(anyhow!("Syntax error in generated source code:\n{}", rustfmt_err_out))
     }
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Copy the source code tree under `pathname` into `$OUT_DIR`
+pub fn copy_src_tree(from: &Path, to: &Path) -> Result<u64, Error> {
+    copy_items(
+        &[from],
+        to,
+        &CopyOptions {
+            overwrite: true,
+            skip_exist: true,
+            buffer_size: 65536,
+            copy_inside: true,
+            content_only: false,
+            depth: 0,
+        },
+    )
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(test)]
+mod unit_tests;
