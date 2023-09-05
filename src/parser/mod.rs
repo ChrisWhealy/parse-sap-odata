@@ -10,9 +10,12 @@ use std::{
 };
 
 use crate::{
-    edmx::Edmx,
+    edmx::{
+        data_services::schema::{complex_type::ComplexType, entity_type::EntityType},
+        Edmx,
+    },
     property::Property,
-    utils::{copy_src_tree, run_rustfmt},
+    utils::run_rustfmt,
 };
 
 use check_keyword::CheckKeyword;
@@ -38,11 +41,89 @@ fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
 ///
 /// `odata/`<br>
 /// `└── gwsample_basic.xml`
-pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
+fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
     let xml = fetch_xml_as_string(metadata_file_name)?;
     let edmx = Edmx::from_str(&xml)?;
 
     return Ok(edmx);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate a Rust struct for a complex type
+fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
+    let mut out_buffer: Vec<u8> = Vec::new();
+    let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
+    let ct_name =
+        convert_case::Casing::to_case(&String::from_utf8(trimmed_name).unwrap(), convert_case::Case::UpperCamel);
+
+    // If the complex type contains only one property and the name suffix is a Rust type, then a
+    // struct does not need to be generated.  This happens with SAP complex types such as
+    // `CT_String` which contains the single property called `String`.
+    // Such complex types are in fact not "complex" at all, and should be replaced with a single
+    // native Rust type
+    if ct.properties.len() > 1 && !ct_name.is_keyword() {
+        let mut props = ct.properties.clone();
+        props.sort();
+
+        out_buffer.append(&mut derive_str(vec![
+            DeriveTraits::CLONE,
+            DeriveTraits::DEBUG,
+            DeriveTraits::DEFAULT,
+            DeriveTraits::SERIALIZE,
+            DeriveTraits::DESERIALIZE,
+        ]));
+        out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
+        out_buffer.append(&mut start_struct(&ct_name));
+
+        for prop in props {
+            out_buffer.append(&mut prop.to_rust(namespace));
+        }
+
+        // Add terminating line feed, close curly brace, then two more line feeds
+        out_buffer.append(&mut end_struct());
+
+        // Implement `from_str` for this struct
+        out_buffer.append(&mut impl_from_str_for(&ct_name));
+        Some(out_buffer)
+    } else {
+        // This is just a simple type pretending to be complex
+        None
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate a Rust struct for an EntityType
+fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
+    let mut out_buffer: Vec<u8> = Vec::new();
+    let struct_name = convert_case::Casing::to_case(
+        &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
+        convert_case::Case::UpperCamel,
+    );
+    out_buffer.append(&mut derive_str(vec![
+        DeriveTraits::CLONE,
+        DeriveTraits::DEBUG,
+        DeriveTraits::DEFAULT,
+        DeriveTraits::SERIALIZE,
+        DeriveTraits::DESERIALIZE,
+    ]));
+    out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
+    out_buffer.append(&mut start_struct(&struct_name));
+
+    let mut props = entity.properties.clone();
+    props.sort();
+
+    for prop in props {
+        out_buffer.append(&mut prop.to_rust(namespace));
+    }
+
+    out_buffer.append(&mut end_struct());
+
+    // Each entity type struct implements the `EntityType` marker trait
+    out_buffer.append(&mut impl_marker_trait(&struct_name));
+
+    // Implement `from_str` for this struct
+    out_buffer.append(&mut impl_from_str_for(&struct_name));
+    out_buffer
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -63,18 +144,6 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
         Ok(edmx) => {
             let out_dir = env::var_os("OUT_DIR").unwrap();
             let odata_srv_output_pathbuf = Path::new(&out_dir).join(format!("{}.rs", metadata_file_name));
-            let src_path_atom_feed = Path::new("../src/atom/feed/");
-            let src_path_xml = Path::new("../src/xml/");
-
-            // Copy source trees for parsing an `atom:Feed` response to OUT_DIR
-            match copy_src_tree(&src_path_atom_feed, &Path::new(&out_dir).join(format!("feed/"))) {
-                Ok(_copied_bytes) => (),
-                Err(err) => panic!("Copy source tree failed: {:#?}", err),
-            };
-            match copy_src_tree(&src_path_xml, &Path::new(&out_dir).join(format!("xml/"))) {
-                Ok(_copied_bytes) => (),
-                Err(err) => panic!("Copy source tree failed: {:#?}", err),
-            };
 
             let mut odata_srv_output_file = OpenOptions::new()
                 .create(true)
@@ -84,7 +153,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 .unwrap();
 
             // If this fails, then either the build script been passed the wrong namespace value, or we're trying to
-            // parse XML that is not an OData metadata document
+            // parse XML that is not an OData V2 metadata document
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
                 out_buffer.append(
                     &mut [
@@ -111,40 +180,8 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                             out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
                         }
 
-                        let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
-                        let ct_name = convert_case::Casing::to_case(
-                            &String::from_utf8(trimmed_name).unwrap(),
-                            convert_case::Case::UpperCamel,
-                        );
-
-                        // If the complex type contains only one property and the name suffix is a Rust type, then a
-                        // struct does not need to be generated.  This happens with SAP complex types such as
-                        // `CT_String` which contains the single property called `String`.
-                        // Such complex types are in fact not "complex" at all, and should be replaced with a single
-                        // native Rust type
-                        if ct.properties.len() > 1 && !ct_name.is_keyword() {
-                            let mut props = ct.properties.clone();
-                            props.sort();
-
-                            out_buffer.append(&mut derive_str(vec![
-                                DeriveTraits::CLONE,
-                                DeriveTraits::DEBUG,
-                                DeriveTraits::DEFAULT,
-                                DeriveTraits::SERIALIZE,
-                                DeriveTraits::DESERIALIZE,
-                            ]));
-                            out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
-                            out_buffer.append(&mut start_struct(&ct_name));
-
-                            for prop in props {
-                                out_buffer.append(&mut prop.to_rust(namespace));
-                            }
-
-                            // Add terminating line feed, close curly brace, then two more line feeds
-                            out_buffer.append(&mut end_struct());
-
-                            // Implement `from_str` for this struct
-                            out_buffer.append(&mut impl_from_str_for(&ct_name));
+                        if let Some(mut ct_src) = gen_src_complex_type(ct, namespace) {
+                            out_buffer.append(&mut ct_src);
                         } else {
                             ignored_cts += 1;
                         }
@@ -153,10 +190,6 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Transform each EntityType definition into a Rust struct
-                //
-                // It is possible for an OData service to have zero EntityTypes, in which case, there will also be zero
-                // EntitySets. This in turns means that interaction with the OData service is only possible through its
-                // FunctionImports
                 out_buffer.append(&mut comment_for("ENTITY TYPES"));
 
                 let ets = &schema.entity_types;
@@ -166,38 +199,11 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
                     }
 
-                    let struct_name = convert_case::Casing::to_case(
-                        &String::from_utf8(entity.name.clone().into_bytes()).unwrap(),
-                        convert_case::Case::UpperCamel,
-                    );
-                    out_buffer.append(&mut derive_str(vec![
-                        DeriveTraits::CLONE,
-                        DeriveTraits::DEBUG,
-                        DeriveTraits::DEFAULT,
-                        DeriveTraits::SERIALIZE,
-                        DeriveTraits::DESERIALIZE,
-                    ]));
-                    out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
-                    out_buffer.append(&mut start_struct(&struct_name));
-
-                    let mut props = entity.properties.clone();
-                    props.sort();
-
-                    for prop in props {
-                        out_buffer.append(&mut prop.to_rust(namespace));
-                    }
-
-                    out_buffer.append(&mut end_struct());
-
-                    // Each entity type struct implements the `EntityType` marker trait
-                    out_buffer.append(&mut impl_marker_trait(&struct_name));
-
-                    // Implement `from_str` for this struct
-                    out_buffer.append(&mut impl_from_str_for(&struct_name));
+                    out_buffer.append(&mut gen_src_entity_type(entity, namespace));
                 }
 
                 // Create enum + impl for the entity types
-                out_buffer.append(&mut comment_for("ENTITY TYPES ENUM - Not sure if this enum is needed..."));
+                out_buffer.append(&mut comment_for("ENTITY TYPES ENUM - Is this enum is really needed...?"));
                 out_buffer.append(&mut schema.to_entity_types_enum());
 
                 // Create enum + impl for the entity container

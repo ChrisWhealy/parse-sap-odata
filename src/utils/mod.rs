@@ -1,6 +1,5 @@
 use check_keyword::CheckKeyword;
 use convert_case::Case;
-use fs_extra::{copy_items, dir::CopyOptions, error::Error};
 use std::{
     cmp::max,
     collections::HashMap,
@@ -124,24 +123,3 @@ pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>
         Err(anyhow!("Syntax error in generated source code:\n{}", rustfmt_err_out))
     }
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Copy the source code tree under `pathname` into `$OUT_DIR`
-pub fn copy_src_tree(from: &Path, to: &Path) -> Result<u64, Error> {
-    copy_items(
-        &[from],
-        to,
-        &CopyOptions {
-            overwrite: true,
-            skip_exist: true,
-            buffer_size: 65536,
-            copy_inside: true,
-            content_only: false,
-            depth: 0,
-        },
-    )
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#[cfg(test)]
-mod unit_tests;
