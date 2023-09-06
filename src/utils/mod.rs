@@ -22,9 +22,6 @@ pub fn default_true() -> bool {
 pub fn default_false() -> bool {
     false
 }
-pub fn default_list() -> Vec<String> {
-    vec![String::from("")]
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Find longest keyname in `hashmap` of `<&str, &str>`

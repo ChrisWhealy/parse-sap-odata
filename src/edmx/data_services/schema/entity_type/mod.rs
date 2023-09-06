@@ -6,6 +6,27 @@ use crate::utils::{de_str_to_bool, default_false};
 use navigation_property::NavigationProperty;
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Serialize, Deserialize)]
+pub enum EntityTypeSAPSemantics {
+    #[serde(rename = "vcard")]
+    VCard,
+
+    #[serde(rename = "vevent")]
+    VEvent,
+
+    #[serde(rename = "vtodo")]
+    VToDo,
+
+    #[serde(rename = "parameters")]
+    Paramaters,
+
+    #[serde(rename = "aggregate")]
+    Aggregate,
+
+    #[serde(rename = "variant")]
+    Variant,
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents a `<Key>` tag
 ///
@@ -33,6 +54,9 @@ pub struct EntityType {
 
     #[serde(rename = "sap:label")]
     pub sap_label: Option<String>,
+
+    #[serde(rename = "sap:semantics")]
+    pub sap_semantics: Option<EntityTypeSAPSemantics>,
 
     #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
     pub sap_content_version: String,

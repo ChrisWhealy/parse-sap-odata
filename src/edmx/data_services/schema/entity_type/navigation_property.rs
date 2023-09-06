@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::sap_annotations::navigation_property_sap_annotations::NavigationPropertySAPAnnotations;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Represents a `<NavigationProperty>` tag
 #[derive(Debug, Serialize, Deserialize)]
@@ -9,4 +11,7 @@ pub struct NavigationProperty {
     pub relationship: String,
     pub to_role: String,
     pub from_role: String,
+
+    #[serde(flatten)]
+    pub sap_annotations: NavigationPropertySAPAnnotations,
 }

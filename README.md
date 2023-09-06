@@ -22,6 +22,8 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 
    This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
 
+1. All [SAP OData V2 Annotations](https://sap.github.io/odata-vocabularies/docs/v2-annotations.html) are processed by [serde](https://serde.rs); however, no action is yet taken based on the property values.
+
 ---
 
 ## TODOs

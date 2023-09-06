@@ -4,7 +4,8 @@ pub mod function_import;
 
 use crate::{
     parser::syntax_fragments::*,
-    utils::{de_str_to_bool, de_str_to_list, default_false, default_list, default_true},
+    sap_annotations::entity_container_sap_annotations::EntityContainerSAPAnnotations,
+    utils::{de_str_to_bool, default_false},
 };
 
 use association_set::AssociationSet;
@@ -32,19 +33,8 @@ pub struct EntityContainer {
     )]
     pub is_default_entity_container: bool,
 
-    #[serde(
-        rename = "sap:message-scope-supported",
-        deserialize_with = "de_str_to_bool",
-        default = "default_true"
-    )]
-    pub sap_message_scope_supported: bool,
-
-    #[serde(
-        rename = "sap:supported-formats",
-        deserialize_with = "de_str_to_list",
-        default = "default_list"
-    )]
-    pub sap_supported_formats: Vec<String>,
+    #[serde(flatten)]
+    pub sap_annotations: EntityContainerSAPAnnotations,
 
     #[serde(rename = "EntitySet", default)]
     pub entity_sets: Vec<EntitySet>,

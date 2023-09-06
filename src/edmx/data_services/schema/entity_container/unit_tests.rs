@@ -34,10 +34,10 @@ pub fn should_parse_entity_container() {
             let ent_cont = EntityContainer::from_str(&xml).unwrap();
 
             assert_eq!(ent_cont.name, "GWSAMPLE_BASIC_Entities");
-            assert_eq!(ent_cont.sap_message_scope_supported, true);
-            assert_eq!(ent_cont.sap_supported_formats[0], "atom");
-            assert_eq!(ent_cont.sap_supported_formats[1], "json");
-            assert_eq!(ent_cont.sap_supported_formats[2], "xlsx");
+            assert_eq!(ent_cont.sap_annotations.message_scope_supported, false);
+            assert_eq!(ent_cont.sap_annotations.supported_formats[0], "atom");
+            assert_eq!(ent_cont.sap_annotations.supported_formats[1], "json");
+            assert_eq!(ent_cont.sap_annotations.supported_formats[2], "xlsx");
             assert_eq!(ent_cont.is_default_entity_container, true);
         },
         Err(err) => println!("XML test data was not in UTF8 format: {}", err),
@@ -57,19 +57,19 @@ pub fn should_parse_entity_set() {
 
             assert_eq!(ent_cont.entity_sets[0].name, "BusinessPartnerSet");
             assert_eq!(ent_cont.entity_sets[0].entity_type, "GWSAMPLE_BASIC.BusinessPartner");
-            assert_eq!(ent_cont.entity_sets[0].sap_content_version, "1");
-            assert_eq!(ent_cont.entity_sets[0].sap_creatable, true);
-            assert_eq!(ent_cont.entity_sets[0].sap_deletable, true);
-            assert_eq!(ent_cont.entity_sets[0].sap_updatable, true);
-            assert_eq!(ent_cont.entity_sets[0].sap_pageable, true);
+            assert_eq!(ent_cont.entity_sets[0].sap_annotations.content_version, "1");
+            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_creatable, true);
+            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_deletable, true);
+            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_updatable, true);
+            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_pageable, true);
 
             assert_eq!(ent_cont.entity_sets[1].name, "VH_CategorySet");
             assert_eq!(ent_cont.entity_sets[1].entity_type, "GWSAMPLE_BASIC.VH_Category");
-            assert_eq!(ent_cont.entity_sets[1].sap_content_version, "1");
-            assert_eq!(ent_cont.entity_sets[1].sap_creatable, false);
-            assert_eq!(ent_cont.entity_sets[1].sap_deletable, false);
-            assert_eq!(ent_cont.entity_sets[1].sap_updatable, false);
-            assert_eq!(ent_cont.entity_sets[1].sap_pageable, false);
+            assert_eq!(ent_cont.entity_sets[1].sap_annotations.content_version, "1");
+            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_creatable, false);
+            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_deletable, false);
+            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_updatable, false);
+            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_pageable, false);
         },
         Err(err) => println!("XML test data was not in UTF8 format: {}", err),
     };
@@ -86,10 +86,10 @@ pub fn should_parse_association_set() {
             let assoc_set = AssociationSet::from_str(&xml).unwrap();
             assert_eq!(assoc_set.name, "Assoc_VH_UnitQuantity_SalesOrderLineItem");
             assert_eq!(assoc_set.association, "GWSAMPLE_BASIC.Assoc_VH_UnitQuantity_SalesOrderLineItem");
-            assert_eq!(assoc_set.sap_creatable, false);
-            assert_eq!(assoc_set.sap_deletable, false);
-            assert_eq!(assoc_set.sap_updatable, false);
-            assert_eq!(assoc_set.sap_content_version, "1");
+            assert_eq!(assoc_set.sap_annotations.content_version, "1");
+            assert_eq!(assoc_set.sap_annotations.is_creatable, false);
+            assert_eq!(assoc_set.sap_annotations.is_deletable, false);
+            assert_eq!(assoc_set.sap_annotations.is_updatable, false);
 
             assert_eq!(assoc_set.ends.len(), 2);
 

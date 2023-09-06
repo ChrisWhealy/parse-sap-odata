@@ -41,13 +41,13 @@ pub fn should_parse_entity_type_business_partner() {
             assert_eq!(ent_type.properties[1].edm_type, "Edm.String");
             assert_eq!(ent_type.properties[1].nullable, false);
             assert_eq!(ent_type.properties[1].max_length, Some(10));
-            assert_eq!(ent_type.properties[1].sap_annotations.sap_unicode, false);
+            assert_eq!(ent_type.properties[1].sap_annotations.is_unicode, false);
             assert_eq!(
-                ent_type.properties[1].sap_annotations.sap_label,
+                ent_type.properties[1].sap_annotations.label,
                 Some(String::from("Bus. Part. ID"))
             );
-            assert_eq!(ent_type.properties[1].sap_annotations.sap_creatable, false);
-            assert_eq!(ent_type.properties[1].sap_annotations.sap_updatable, false);
+            assert_eq!(ent_type.properties[1].sap_annotations.is_creatable, false);
+            assert_eq!(ent_type.properties[1].sap_annotations.is_updatable, false);
 
             assert_eq!(ent_type.navigations.len(), 3);
             assert_eq!(ent_type.navigations[0].name, "ToSalesOrders");
@@ -83,17 +83,9 @@ pub fn should_parse_entity_type_product() {
             assert_eq!(ent_type.properties[14].precision, Some(16));
             assert_eq!(ent_type.properties[14].scale, Some(3));
             assert_eq!(ent_type.properties[14].nullable, true);
-            assert_eq!(ent_type.properties[14].sap_annotations.sap_unicode, false);
-            assert_eq!(
-                ent_type.properties[14].sap_annotations.sap_unit,
-                Some(String::from("CurrencyCode"))
-            );
-            assert_eq!(
-                ent_type.properties[14].sap_annotations.sap_label,
-                Some(String::from("Unit Price"))
-            );
-            assert_eq!(ent_type.properties[1].sap_annotations.sap_creatable, true);
-            assert_eq!(ent_type.properties[1].sap_annotations.sap_updatable, true);
+            assert_eq!(ent_type.properties[14].sap_annotations.is_unicode, false);
+            assert_eq!(ent_type.properties[14].sap_annotations.unit, Some(String::from("CurrencyCode")));
+            assert_eq!(ent_type.properties[14].sap_annotations.label, Some(String::from("Unit Price")));
 
             assert_eq!(ent_type.navigations.len(), 2);
             assert_eq!(ent_type.navigations[0].name, "ToSupplier");

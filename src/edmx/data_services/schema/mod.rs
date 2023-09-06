@@ -7,7 +7,7 @@ use crate::{
     atom::AtomLink,
     oasis::annotations::Annotations,
     parser::syntax_fragments::*,
-    sap_annotations::default_sap_schema_version,
+    sap_annotations::schema_sap_annotations::SchemaSAPAnnotations,
     xml::{default_xml_language, default_xml_namespace},
 };
 
@@ -38,8 +38,8 @@ pub struct Schema {
     #[serde(rename = "xml:lang", default = "default_xml_language")]
     pub xml_lang: String,
 
-    #[serde(rename = "sap:schema_version", default = "default_sap_schema_version")]
-    pub sap_schema_version: String,
+    #[serde(flatten)]
+    pub sap_annotations: SchemaSAPAnnotations,
 
     #[serde(rename = "EntityType", default)]
     pub entity_types: Vec<EntityType>,

@@ -1,5 +1,10 @@
 use serde::{Deserialize, Serialize};
 
+use crate::sap_annotations::{
+    function_import_parameter_sap_annotations::FunctionImportParameterSAPAnnotations,
+    function_import_sap_annotations::FunctionImportSAPAnnotations,
+};
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents a `<Parameter>` tag
 #[derive(Debug, Serialize, Deserialize)]
@@ -13,6 +18,9 @@ pub struct Parameter {
 
     pub mode: String,
     pub max_length: Option<String>,
+
+    #[serde(flatten)]
+    pub sap_annotations: FunctionImportParameterSAPAnnotations,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -30,8 +38,8 @@ pub struct FunctionImport {
     #[serde(rename = "m:HttpMethod")]
     pub http_method: String,
 
-    #[serde(rename = "sap:action-for")]
-    pub sap_action_for: Option<String>,
+    #[serde(flatten)]
+    pub sap_annotations: FunctionImportSAPAnnotations,
 
     #[serde(rename = "Parameter")]
     pub parameters: Option<Vec<Parameter>>,
