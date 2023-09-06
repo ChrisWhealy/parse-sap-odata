@@ -11,7 +11,7 @@ pub struct FunctionImportSAPAnnotations {
     pub label: Option<String>,
 
     #[serde(rename = "sap:action-for")]
-    pub action_for: String,
+    pub action_for: Option<String>,
 
     #[serde(rename = "sap:applicable-path")]
     pub creatable_path: Option<String>,
