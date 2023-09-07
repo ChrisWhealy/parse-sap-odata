@@ -1,4 +1,4 @@
-use crate::sap_annotations::entity_set_sap_annotations::EntitySetSAPAnnotations;
+use crate::sap_annotations::EntitySetSAPAnnotations;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

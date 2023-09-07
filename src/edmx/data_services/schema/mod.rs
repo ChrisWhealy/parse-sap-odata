@@ -7,7 +7,7 @@ use crate::{
     atom::AtomLink,
     oasis::annotations::Annotations,
     parser::syntax_fragments::*,
-    sap_annotations::schema_sap_annotations::SchemaSAPAnnotations,
+    sap_annotations::SchemaSAPAnnotations,
     xml::{default_xml_language, default_xml_namespace},
 };
 

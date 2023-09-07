@@ -1,7 +1,4 @@
-use crate::{
-    edmx::data_services::schema::association::End,
-    sap_annotations::association_set_sap_annotations::AssociationSetSAPAnnotations,
-};
+use crate::{edmx::data_services::schema::association::End, sap_annotations::AssociationSetSAPAnnotations};
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

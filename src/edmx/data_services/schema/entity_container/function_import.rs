@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::sap_annotations::{
-    function_import_parameter_sap_annotations::FunctionImportParameterSAPAnnotations,
-    function_import_sap_annotations::FunctionImportSAPAnnotations,
-};
+use crate::sap_annotations::{FunctionImportParameterSAPAnnotations, FunctionImportSAPAnnotations};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents a `<Parameter>` tag

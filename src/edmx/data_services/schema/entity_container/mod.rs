@@ -4,7 +4,7 @@ pub mod function_import;
 
 use crate::{
     parser::syntax_fragments::*,
-    sap_annotations::entity_container_sap_annotations::EntityContainerSAPAnnotations,
+    sap_annotations::EntityContainerSAPAnnotations,
     utils::{de_str_to_bool, default_false},
 };
 
