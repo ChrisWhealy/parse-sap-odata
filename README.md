@@ -7,6 +7,7 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 * [x] `ComplexType`
 * [x] `EntityType`
 * [ ] `FunctionImport`
+* [ ] Add SAP Annotation information to generated source code
 
 ## Limitations and Issues
 
@@ -29,6 +30,7 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 ## TODOs
 
 1. Implement dedicated parser functions for the types `Edm.DateTime` and `Edm.Decimal` as fields of these types are currently interpreted simply as `String` and `f64` fields respectively.
+1. Supplement generated source code with SAP annotation information.
 1. Support Function Imports.
 
 ---
