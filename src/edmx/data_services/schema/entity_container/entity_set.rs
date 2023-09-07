@@ -1,4 +1,4 @@
-use crate::sap_annotations::EntitySetSAPAnnotations;
+use crate::sap_annotations::SAPAnnotationsEntitySet;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10,7 +10,7 @@ pub struct EntitySet {
     pub entity_type: String,
 
     #[serde(flatten)]
-    pub sap_annotations: EntitySetSAPAnnotations,
+    pub sap_annotations: SAPAnnotationsEntitySet,
 }
 
 impl EntitySet {

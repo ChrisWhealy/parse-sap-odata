@@ -23,7 +23,7 @@ pub fn default_entity_container_supported_formats() -> Vec<String> {
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmassociationset
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct AssociationSetSAPAnnotations {
+pub struct SAPAnnotationsAssociationSet {
     #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
     pub content_version: String,
 
@@ -55,7 +55,7 @@ pub struct AssociationSetSAPAnnotations {
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmentitycontainer
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct EntityContainerSAPAnnotations {
+pub struct SAPAnnotationsEntityContainer {
     #[serde(
         rename = "sap:message-scope-supported",
         deserialize_with = "de_str_to_bool",
@@ -83,7 +83,7 @@ pub struct EntityContainerSAPAnnotations {
 ///
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmentityset
 #[derive(Debug, Serialize, Deserialize)]
-pub enum EntitySetSAPSemantics {
+pub enum SAPSemanticsEntitySet {
     #[serde(rename = "aggregate")]
     Aggregate,
 
@@ -93,12 +93,12 @@ pub enum EntitySetSAPSemantics {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct EntitySetSAPAnnotations {
+pub struct SAPAnnotationsEntitySet {
     #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
     pub content_version: String,
 
     #[serde(rename = "sap:semantics")]
-    pub semantics: Option<EntitySetSAPSemantics>,
+    pub semantics: Option<SAPSemanticsEntitySet>,
 
     #[serde(rename = "sap:label")]
     pub label: Option<String>,
@@ -185,7 +185,7 @@ pub struct EntitySetSAPAnnotations {
 ///
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmentitytype
 #[derive(Debug, Serialize, Deserialize)]
-pub enum EntityTypeSAPSemantics {
+pub enum SAPSemanticsEntityType {
     #[serde(rename = "vcard")]
     VCard,
 
@@ -207,12 +207,12 @@ pub enum EntityTypeSAPSemantics {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct EntityTypeSAPAnnotations {
+pub struct SAPAnnotationsEntityType {
     #[serde(rename = "sap:label")]
     pub sap_label: Option<String>,
 
     #[serde(rename = "sap:semantics")]
-    pub sap_semantics: Option<EntityTypeSAPSemantics>,
+    pub sap_semantics: Option<SAPSemanticsEntityType>,
 
     #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
     pub sap_content_version: String,
@@ -224,7 +224,7 @@ pub struct EntityTypeSAPAnnotations {
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmfunctionimport
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct FunctionImportParameterSAPAnnotations {
+pub struct SAPAnnotationsFunctionImportParameter {
     #[serde(rename = "sap:label")]
     pub label: Option<String>,
 
@@ -242,7 +242,7 @@ pub struct FunctionImportParameterSAPAnnotations {
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmfunctionimport
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct FunctionImportSAPAnnotations {
+pub struct SAPAnnotationsFunctionImport {
     #[serde(rename = "sap:label")]
     pub label: Option<String>,
 
@@ -262,7 +262,7 @@ pub struct FunctionImportSAPAnnotations {
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmnavigationproperty
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct NavigationPropertySAPAnnotations {
+pub struct SAPAnnotationsNavigationProperty {
     #[serde(
         rename = "sap:creatable",
         deserialize_with = "de_str_to_bool",
@@ -286,7 +286,7 @@ pub struct NavigationPropertySAPAnnotations {
 ///
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmproperty
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
-pub enum PropertySAPSemantics {
+pub enum SAPSemanticsProperty {
     #[serde(rename = "tel")]
     TelephoneNumber,
 
@@ -469,7 +469,7 @@ pub enum PropertySAPSemantics {
 }
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
-pub enum PropertySAPFieldControl {
+pub enum SAPFieldControlProperty {
     #[serde(rename = "0")]
     Hidden,
 
@@ -484,7 +484,7 @@ pub enum PropertySAPFieldControl {
 }
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
-pub enum PropertySAPDisplayFormat {
+pub enum SAPDisplayFormatProperty {
     #[serde(rename = "Date")]
     Date,
 
@@ -496,7 +496,7 @@ pub enum PropertySAPDisplayFormat {
 }
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
-pub enum PropertySAPFilterRestriction {
+pub enum SAPFilterRestrictionProperty {
     #[serde(rename = "single-value")]
     SingleValue,
 
@@ -508,7 +508,7 @@ pub enum PropertySAPFilterRestriction {
 }
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
-pub enum PropertySAPAggregationRole {
+pub enum SAPAggregationRoleProperty {
     #[serde(rename = "dimension")]
     Dimension,
 
@@ -520,7 +520,7 @@ pub enum PropertySAPAggregationRole {
 }
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
-pub enum PropertySAPParameter {
+pub enum SAPParameterProperty {
     #[serde(rename = "mandatory")]
     Mandatory,
 
@@ -530,7 +530,7 @@ pub enum PropertySAPParameter {
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct PropertySAPAnnotations {
+pub struct SAPAnnotationsProperty {
     #[serde(rename = "sap:label")]
     pub label: Option<String>,
 
@@ -548,7 +548,7 @@ pub struct PropertySAPAnnotations {
     pub is_unicode: bool,
 
     #[serde(rename = "sap:semantics")]
-    pub semantics: Option<PropertySAPSemantics>,
+    pub semantics: Option<SAPSemanticsProperty>,
 
     #[serde(
         rename = "sap:creatable",
@@ -593,7 +593,7 @@ pub struct PropertySAPAnnotations {
     pub is_required_in_filter: bool,
 
     #[serde(rename = "sap:filter-restriction")]
-    pub filter_restriction: Option<PropertySAPFilterRestriction>,
+    pub filter_restriction: Option<SAPFilterRestrictionProperty>,
 
     #[serde(rename = "sap:filter-for")]
     pub filter_for: Option<String>,
@@ -618,13 +618,13 @@ pub struct PropertySAPAnnotations {
     pub is_visible: bool,
 
     #[serde(rename = "sap:field-control")]
-    pub field_control: Option<PropertySAPFieldControl>,
+    pub field_control: Option<SAPFieldControlProperty>,
 
     #[serde(rename = "sap:validation-regexp")]
     pub validation_regexp: Option<String>,
 
     #[serde(rename = "sap:display-format")]
-    pub display_format: Option<PropertySAPDisplayFormat>,
+    pub display_format: Option<SAPDisplayFormatProperty>,
 
     #[serde(rename = "sap:value-list")]
     pub value_list: Option<String>,
@@ -636,7 +636,7 @@ pub struct PropertySAPAnnotations {
     pub upper_boundary: Option<String>,
 
     #[serde(rename = "sap:aggregation-role")]
-    pub aggregation_role: Option<PropertySAPAggregationRole>,
+    pub aggregation_role: Option<SAPAggregationRoleProperty>,
 
     #[serde(rename = "sap:super-ordinate")]
     pub super_ordinate: Option<String>,
@@ -672,7 +672,7 @@ pub struct PropertySAPAnnotations {
     pub hierarchy_sibling_rank_for: Option<String>,
 
     #[serde(rename = "sap:parameter")]
-    pub parameter: Option<PropertySAPParameter>,
+    pub parameter: Option<SAPParameterProperty>,
 
     #[serde(
         rename = "sap:is-annotation",
@@ -701,7 +701,7 @@ pub struct PropertySAPAnnotations {
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmschema
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct SchemaSAPAnnotations {
+pub struct SAPAnnotationsSchema {
     #[serde(rename = "sap:schema_version", default = "default_sap_schema_version")]
     pub schema_version: String,
 }

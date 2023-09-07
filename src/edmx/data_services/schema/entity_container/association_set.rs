@@ -1,4 +1,4 @@
-use crate::{edmx::data_services::schema::association::End, sap_annotations::AssociationSetSAPAnnotations};
+use crate::{edmx::data_services::schema::association::End, sap_annotations::SAPAnnotationsAssociationSet};
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13,7 +13,7 @@ pub struct AssociationSet {
     pub association: String,
 
     #[serde(flatten)]
-    pub sap_annotations: AssociationSetSAPAnnotations,
+    pub sap_annotations: SAPAnnotationsAssociationSet,
 
     #[serde(rename = "End")]
     pub ends: [End; 2],

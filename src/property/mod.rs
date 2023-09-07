@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     parser::syntax_fragments::*,
-    sap_annotations::PropertySAPAnnotations,
+    sap_annotations::SAPAnnotationsProperty,
     utils::{de_str_to_bool, default_false, default_true, odata_name_to_rust_safe_name, to_pascal_case},
 };
 
@@ -39,7 +39,7 @@ pub struct Property {
 
     // SAP Annotations
     #[serde(flatten)]
-    pub sap_annotations: PropertySAPAnnotations,
+    pub sap_annotations: SAPAnnotationsProperty,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

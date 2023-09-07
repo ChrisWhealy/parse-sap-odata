@@ -4,7 +4,7 @@ pub mod function_import;
 
 use crate::{
     parser::syntax_fragments::*,
-    sap_annotations::EntityContainerSAPAnnotations,
+    sap_annotations::SAPAnnotationsEntityContainer,
     utils::{de_str_to_bool, default_false},
 };
 
@@ -34,7 +34,7 @@ pub struct EntityContainer {
     pub is_default_entity_container: bool,
 
     #[serde(flatten)]
-    pub sap_annotations: EntityContainerSAPAnnotations,
+    pub sap_annotations: SAPAnnotationsEntityContainer,
 
     #[serde(rename = "EntitySet", default)]
     pub entity_sets: Vec<EntitySet>,
