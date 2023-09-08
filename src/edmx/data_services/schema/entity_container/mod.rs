@@ -60,6 +60,8 @@ impl EntityContainer {
         // pub enum <entity_container_name> {↩︎
         let mut output_enum = [
             derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]).as_slice(),
+            RUSTC_ALLOW_DEAD_CODE,
+            LINE_FEED,
             START_ENUM,
             cont_name_camel.as_bytes(),
             SPACE,
@@ -70,7 +72,16 @@ impl EntityContainer {
 
         // Output the start of an enum implementation
         // impl <entity_container_name> {↩︎
-        let output_impl = [START_IMPL, cont_name_camel.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat();
+        let output_impl = [
+            RUSTC_ALLOW_DEAD_CODE,
+            LINE_FEED,
+            START_IMPL,
+            cont_name_camel.as_bytes(),
+            SPACE,
+            OPEN_CURLY,
+            LINE_FEED,
+        ]
+        .concat();
 
         // Output the start of a "value" function within the enum implementation
         //   pub const fn value(&self) -> &'static str {↩︎

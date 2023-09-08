@@ -106,6 +106,10 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
 pub static MARKER_TRAIT_ENTITY_TYPE: &[u8] = "trait EntityType {}".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Compiler attributes
+pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]".as_bytes();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Derivable traits.
 ///
 /// The Serde traits `Serialize` and `Deserialize` are also included
