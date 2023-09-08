@@ -1,13 +1,12 @@
-// pub mod property_type;
-
-use serde::{Deserialize, Serialize};
-
 use crate::{
     parser::syntax_fragments::*,
     sap_annotations::SAPAnnotationsProperty,
     utils::{de_str_to_bool, default_false, default_true, odata_name_to_rust_safe_name, to_pascal_case},
 };
+use serde::{Deserialize, Serialize};
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents an `edm:Property` element
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Property {
@@ -62,11 +61,11 @@ impl Property {
         }
     }
 
-    fn maybe_optional(rust_type: &[u8], is_optional: bool) -> Vec<u8> {
-        if is_optional {
-            [OPTION, OPEN_ANGLE, rust_type, CLOSE_ANGLE].concat()
+    fn maybe_optional(&self, rust_type: &[u8]) -> Vec<u8> {
+        if self.nullable {
+            [OPTION, OPEN_ANGLE, rust_type, CLOSE_ANGLE].concat().to_vec()
         } else {
-            [rust_type].concat()
+            rust_type.to_vec()
         }
     }
 
@@ -75,7 +74,7 @@ impl Property {
     //   <namespace>.CT_<ct_name>
     //   <namespace>.<ct_name>
     //   <ct_name>
-    pub fn trim_complex_type_name(type_name: &str, namespace: &str) -> Vec<u8> {
+    pub fn trim_complex_type_name<'a>(type_name: &'a str, namespace: &'a str) -> Vec<u8> {
         let trimmed = Property::trim_prefix(type_name, namespace);
         let trimmed = Property::trim_prefix(trimmed, ".");
         let trimmed = Property::trim_prefix(trimmed, "CT_");
@@ -85,29 +84,35 @@ impl Property {
             .to_vec()
     }
 
-    fn to_rust_type(&self, namespace: &str) -> Vec<u8> {
-        match self.edm_type.as_ref() {
-            "Edm.Binary" => Property::maybe_optional(VECTOR_U8, self.nullable),
-            "Edm.Boolean" => Property::maybe_optional(BOOLEAN, self.nullable),
-            "Edm.Byte" => U8.to_vec(),
-            // TODO I suspect that this may not be the correct Rust datatype for Edm.DateTime or
-            // Edm.DateTimeOffset...
-            // "Edm.DateTime" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
-            "Edm.DateTime" => Property::maybe_optional(STRING, self.nullable),
-            "Edm.DateTimeOffset" => Property::maybe_optional(NAIVE_DATE_TIME, self.nullable),
-            "Edm.Decimal" => DECIMAL.to_vec(),
-            "Edm.Double" => F64.to_vec(),
-            "Edm.Single" => F32.to_vec(),
-            "Edm.Guid" => UUID.to_vec(),
-            "Edm.SByte" => Property::maybe_optional(I8, self.nullable),
-            "Edm.Int16" => Property::maybe_optional(I16, self.nullable),
-            "Edm.Int32" => Property::maybe_optional(I32, self.nullable),
-            "Edm.Int64" => Property::maybe_optional(I64, self.nullable),
-            "Edm.String" => Property::maybe_optional(STRING, self.nullable),
-            "Edm.Time" => Property::maybe_optional(STD_TIME_SYSTEMTIME, self.nullable),
+    fn to_rust_type<'a>(&self, namespace: &str) -> Vec<u8> {
+        // Handle complex types separately
+        let type_bytes: Vec<u8> = if self.edm_type.starts_with("Edm.") {
+            match self.edm_type.as_ref() {
+                // Although "Null" is listed as a valid EDM datatype, this type is excluded here as Rust has no means to
+                // represent this value
+                "Edm.Binary" => self.maybe_optional(VECTOR_U8),
+                "Edm.Boolean" => self.maybe_optional(BOOLEAN),
+                "Edm.Byte" => U8.to_vec(),
+                "Edm.DateTime" => self.maybe_optional(STRING),
+                "Edm.DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
+                "Edm.Decimal" => DECIMAL.to_vec(),
+                "Edm.Double" => F64.to_vec(),
+                "Edm.Single" => F32.to_vec(),
+                "Edm.Guid" => UUID.to_vec(),
+                "Edm.SByte" => self.maybe_optional(I8),
+                "Edm.Int16" => self.maybe_optional(I16),
+                "Edm.Int32" => self.maybe_optional(I32),
+                "Edm.Int64" => self.maybe_optional(I64),
+                "Edm.Time" => self.maybe_optional(STD_TIME_SYSTEMTIME),
 
-            type_name => Property::trim_complex_type_name(type_name, namespace),
-        }
+                // If the type is none of the above, then assume it must be a string
+                _ => self.maybe_optional(STRING),
+            }
+        } else {
+            Property::trim_complex_type_name(&self.edm_type, namespace)
+        };
+
+        type_bytes.to_vec()
     }
 
     pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
@@ -115,34 +120,38 @@ impl Property {
 
         // Check whether the Pascal case name is correctly transformed into a snake_case name.
         // If not, output a serde_rename directive.
-        // This catches deserialization problems with fields that end in capitalised abbreviations:
+        // This catches deserialization problems with fields that contain capitalised abbreviations:
         // E.G. "ID" instead of "Id"
         if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
             response.extend(
                 [
-                    SERDE_RENAME.to_vec(),
-                    self.odata_name.clone().into_bytes(),
-                    DOUBLE_QUOTE.to_vec(),
-                    CLOSE_PAREN.to_vec(),
-                    CLOSE_SQR.to_vec(),
-                    LINE_FEED.to_vec(),
+                    SERDE_RENAME,
+                    self.odata_name.clone().as_bytes(),
+                    DOUBLE_QUOTE,
+                    CLOSE_PAREN,
+                    CLOSE_SQR,
+                    LINE_FEED,
                 ]
                 .concat(),
             )
         }
 
+        let rust_safe_name = odata_name_to_rust_safe_name(&self.odata_name);
+
+        // Write struct field
         response.extend(
             [
-                LINE_FEED.to_vec(),
-                PUBLIC.to_vec(),
-                SPACE.to_vec(),
-                odata_name_to_rust_safe_name(&self.odata_name).as_bytes().to_vec(),
-                COLON.to_vec(),
-                self.to_rust_type(namespace),
-                COMMA.to_vec(),
+                PUBLIC,
+                SPACE,
+                rust_safe_name.as_bytes(),
+                COLON,
+                &self.to_rust_type(namespace),
+                COMMA,
+                LINE_FEED,
             ]
             .concat(),
         );
+
         response
     }
 }

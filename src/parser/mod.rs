@@ -53,8 +53,10 @@ fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError
 fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
     let mut out_buffer: Vec<u8> = Vec::new();
     let trimmed_name = Property::trim_complex_type_name(&ct.name, namespace);
-    let ct_name =
-        convert_case::Casing::to_case(&String::from_utf8(trimmed_name).unwrap(), convert_case::Case::UpperCamel);
+    let ct_name = convert_case::Casing::to_case(
+        &String::from_utf8(trimmed_name.to_vec()).unwrap(),
+        convert_case::Case::UpperCamel,
+    );
 
     // If the complex type contains only one property and the name suffix is a Rust type, then a
     // struct does not need to be generated.  This happens with SAP complex types such as
@@ -157,9 +159,14 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
                 out_buffer.append(
                     &mut [
-                        USE_SERDE,
+                        MOD_START,
+                        metadata_file_name.as_bytes(),
+                        SPACE,
+                        OPEN_CURLY,
                         LINE_FEED,
-                        USE_STD_STR,
+                        // USE_ATOM_FEED_PROPERTY_ATTRIBUTES,
+                        // LINE_FEED,
+                        USE_SERDE,
                         LINE_FEED,
                         LINE_FEED,
                         MARKER_TRAIT_ENTITY_TYPE,
@@ -203,8 +210,8 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 }
 
                 // Create enum + impl for the entity types
-                out_buffer.append(&mut comment_for("ENTITY TYPES ENUM - Is this enum is really needed...?"));
-                out_buffer.append(&mut schema.to_entity_types_enum());
+                // out_buffer.append(&mut comment_for("ENTITY TYPES ENUM - Is this enum is really needed...?"));
+                // out_buffer.append(&mut schema.to_entity_types_enum());
 
                 // Create enum + impl for the entity container
                 // This enum acts as a proxy for the service document
@@ -212,6 +219,9 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                     out_buffer.append(&mut comment_for("ENTITY SETS ENUM"));
                     out_buffer.append(&mut ent_cont.to_enum_with_impl());
                 }
+
+                // Close module definition
+                out_buffer.append(&mut [CLOSE_CURLY, LINE_FEED].concat());
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // TODO Generate function imports

@@ -45,6 +45,7 @@ pub static PUBLIC: &[u8] = "pub".as_bytes();
 pub static START_ENUM: &[u8] = "pub enum ".as_bytes();
 pub static START_IMPL: &[u8] = "impl ".as_bytes();
 pub static ENTITY_TYPE_FOR: &[u8] = " EntityType for ".as_bytes();
+pub static MOD_START: &[u8] = "mod ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
@@ -164,6 +165,8 @@ pub static DERIVE_END: &[u8] = ")]".as_bytes();
 
 pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};".as_bytes();
 pub static USE_STD_STR: &[u8] = "use std::str::FromStr;".as_bytes();
+pub static USE_ATOM_FEED_PROPERTY_ATTRIBUTES: &[u8] =
+    "use parse_sap_atom_feed::property::PropertyAttributes;".as_bytes();
 pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]".as_bytes();
 pub static SERDE_RENAME_SNAKE_CASE: &[u8] = "#[serde(rename_all = \"snake_case\")]".as_bytes();
 pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
@@ -182,11 +185,11 @@ pub fn comment_for(something: &str) -> Vec<u8> {
 }
 
 pub fn start_struct(struct_name: &str) -> Vec<u8> {
-    [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY].concat()
+    [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
 
 pub fn end_struct() -> Vec<u8> {
-    [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
+    [CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
 }
 
 pub fn impl_marker_trait(struct_name: &str) -> Vec<u8> {
