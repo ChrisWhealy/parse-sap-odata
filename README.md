@@ -109,6 +109,9 @@ In the source code of your application, you can reference the generated source c
 // Include the generated code
 include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
 
+use std::str::{self, FromStr};
+use gwsample_basic::*;
+
 // Use the BusinessPartner struct for example
 fn main() {
     let bp: BusinessPartner = Default::default();
