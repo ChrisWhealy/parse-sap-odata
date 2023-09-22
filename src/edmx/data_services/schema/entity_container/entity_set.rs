@@ -6,7 +6,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntitySet {
+    #[serde(rename = "@Name")]
     pub name: String,
+
+    #[serde(rename = "@EntityType")]
     pub entity_type: String,
 
     #[serde(flatten)]

@@ -15,6 +15,7 @@ impl std::str::FromStr for EntityType {
     }
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
 pub fn should_parse_entity_type_business_partner() {
     let mut xml_buffer: Vec<u8> = Vec::new();
@@ -27,7 +28,7 @@ pub fn should_parse_entity_type_business_partner() {
 
             assert_eq!(ent_type.name, "BusinessPartner");
             assert_eq!(ent_type.sap_content_version, "1");
-            assert_eq!(ent_type.has_stream, false);
+            assert_eq!(ent_type.has_stream, true);
 
             assert_eq!(ent_type.key.property_refs.len(), 1);
             assert_eq!(ent_type.key.property_refs[0].name, "BusinessPartnerID");
@@ -61,6 +62,7 @@ pub fn should_parse_entity_type_business_partner() {
     };
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
 pub fn should_parse_entity_type_product() {
     let mut xml_buffer: Vec<u8> = Vec::new();
@@ -72,12 +74,14 @@ pub fn should_parse_entity_type_product() {
             let ent_type = EntityType::from_str(&xml).unwrap();
 
             assert_eq!(ent_type.name, "Product");
+            assert_eq!(ent_type.has_stream, true);
             assert_eq!(ent_type.sap_content_version, "1");
 
             assert_eq!(ent_type.key.property_refs.len(), 1);
             assert_eq!(ent_type.key.property_refs[0].name, "ProductID");
 
             assert_eq!(ent_type.properties.len(), 21);
+
             assert_eq!(ent_type.properties[14].odata_name, "Price");
             assert_eq!(ent_type.properties[14].edm_type, "Edm.Decimal");
             assert_eq!(ent_type.properties[14].precision, Some(16));
@@ -93,8 +97,22 @@ pub fn should_parse_entity_type_product() {
                 ent_type.navigations[0].relationship,
                 "GWSAMPLE_BASIC.Assoc_BusinessPartner_Products"
             );
-            assert_eq!(ent_type.navigations[0].from_role, "ToRole_Assoc_BusinessPartner_Products");
-            assert_eq!(ent_type.navigations[0].to_role, "FromRole_Assoc_BusinessPartner_Products");
+
+            assert_eq!(ent_type.navigations[0].name, "ToSupplier");
+            assert_eq!(
+                ent_type.navigations[0].relationship,
+                "GWSAMPLE_BASIC.Assoc_BusinessPartner_Products"
+            );
+            assert_eq!(ent_type.navigations[0].from_role, "FromRole_Assoc_BusinessPartner_Products");
+            assert_eq!(ent_type.navigations[0].to_role, "ToRole_Assoc_BusinessPartner_Products");
+
+            assert_eq!(ent_type.navigations[1].name, "ToSalesOrderLineItems");
+            assert_eq!(
+                ent_type.navigations[1].relationship,
+                "GWSAMPLE_BASIC.Assoc_Product_SalesOrderLineItems"
+            );
+            assert_eq!(ent_type.navigations[1].from_role, "FromRole_Assoc_Product_SalesOrderLineItems");
+            assert_eq!(ent_type.navigations[1].to_role, "ToRole_Assoc_Product_SalesOrderLineItems");
         },
         Err(err) => println!("XML test data was not in UTF8 format: {}", err),
     };

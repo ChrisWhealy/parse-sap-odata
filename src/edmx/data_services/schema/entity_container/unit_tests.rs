@@ -23,6 +23,7 @@ impl std::str::FromStr for AssociationSet {
     }
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
 pub fn should_parse_entity_container() {
     let mut xml_buffer: Vec<u8> = Vec::new();
@@ -44,6 +45,7 @@ pub fn should_parse_entity_container() {
     };
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
 pub fn should_parse_entity_set() {
     let mut xml_buffer: Vec<u8> = Vec::new();
@@ -75,6 +77,7 @@ pub fn should_parse_entity_set() {
     };
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
 pub fn should_parse_association_set() {
     let mut xml_buffer: Vec<u8> = Vec::new();

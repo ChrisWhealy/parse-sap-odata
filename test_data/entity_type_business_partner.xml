@@ -1,4 +1,4 @@
-<EntityType Name="BusinessPartner" sap:content-version="1">
+<EntityType Name="BusinessPartner" sap:content-version="1" m:HasStream="true">
   <Key>
     <PropertyRef Name="BusinessPartnerID"/>
   </Key>

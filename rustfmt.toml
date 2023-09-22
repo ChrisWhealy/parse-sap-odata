@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # See https://rust-lang.github.io/rustfmt for latest documentation
-# rustfmt : v1.5.2-stable
+# rustfmt : v1.6.0-stable
 # ----------------------------------------------------------------------------------------------------------------------
 # unstable_features = true                                   # true, *false
 # edition = "2018"                                           # *"2015", "2018", "2021"  <-- Picked up from Cargo.toml
@@ -11,10 +11,14 @@
 array_width = 80                                           # *60, or any integer <= max_wdith
 attr_fn_like_width = 80                                    # *70, or any integer <= max_wdith
 chain_width = 80                                           # *60, or any integer <= max_wdith
-fn_params_layout = "Tall"                                  # "Compressed", *"Tall", "Vertical"
+disable_all_formatting = false                             # true, *false
+edition = "2021"                                           # *"2015", "2018", "2021"
+fn_args_layout = "Tall"                                    # "Compressed", *"Tall", "Vertical"
 fn_call_width = 80                                         # *60, or any integer <= max_width
+fn_params_layout = "Tall"                                  # "Compressed", *"Tall", "Vertical"
 force_explicit_abi = true                                  # *true, false
 hard_tabs = false                                          # true, *false
+indent_style = "Visual"                                    # *"Block", "Visual"
 match_arm_leading_pipes = "Preserve"                       # "Always", *"Never", "Preserve"
 match_block_trailing_comma = true                          # true, *false
 max_width = 120                                            # *100
@@ -23,14 +27,15 @@ newline_style = "Auto"                                     # *"Auto", "Native", 
 remove_nested_parens = true                                # *true, false
 reorder_imports = true                                     # *true, false
 reorder_modules = true                                     # *true, false
-tab_spaces = 4                                             # *4
-short_array_element_width_threshold = 10                   # *10, or any integer <= max_width
+short_array_element_width_threshold = 16                   # *10, or any integer <= max_width
 single_line_if_else_max_width = 80                         # *50, or any integer <= max_width
+single_line_let_else_max_width = 80                        # *50, or any integer <= max_width
 struct_lit_width = 30                                      # *18, or any integer <= max_width
 struct_variant_width = 50                                  # *35, or any integer <= max_width
+tab_spaces = 4                                             # *4
 use_field_init_shorthand = true                            # true, *false
 use_small_heuristics = "Default"                           # *"Default", "Off", "Max"
-use_try_shorthand = false                                  # true, *false
+use_try_shorthand = true                                   # true, *false
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Unstable options
@@ -44,7 +49,6 @@ use_try_shorthand = false                                  # true, *false
 # comment_width = 120                                        # *80
 # condense_wildcard_suffixes = false                         # true, *false
 # control_brace_style = "ClosingNextLine"                    # "AlwaysNextLine", "AlwaysSameLine", "ClosingNextLine"
-# disable_all_formatting = false                             # true, *false
 # doc_comment_code_block_width = 20                          # *100, or any integer <= max_width
 # empty_item_single_line = true                              # *true, false
 # enum_discrim_align_threshold = 20                          # *0
@@ -64,7 +68,7 @@ use_try_shorthand = false                                  # true, *false
 # imports_granularity = "Crate"                              # *"Preserve", "Crate", "Module", "Item", "One"
 # imports_indent = "Block"                                   # *"Block", "Visual"
 # imports_layout = "HorizontalVertical"                      # "Horizontal", "HorizontalVertical", *"Mixed", "Vertical"
-# indent_style = "Visual"                                    # *"Block", "Visual"
+# indent_style = "Block"                                     # *"Block, "Visual"
 # inline_attribute_width = 0                                 # *0
 # license_template_path = ""                                 # *""  Provide pathname to license template text file
 # match_arm_blocks = true                                    # *true, false
@@ -75,15 +79,16 @@ use_try_shorthand = false                                  # true, *false
 # reorder_impl_items = true                                  # true, *false
 # report_fixme = "Never"                                     # "Always", "Unnumbered", *"Never"
 # report_todo = "Never"                                      # "Always", "Unnumbered", *"Never"
-# required_version = "1.5.2"                                 # *CARGO_PKG_VERSION or some specific rustfmt version nuumber
+# required_version = "1.6.0"                                 # *CARGO_PKG_VERSION or some specific rustfmt version nuumber
 # skip_children = false                                      # true, *false
+# skip_maroc_invocation                                      # *[], or a list of macro names whose bodies are not to be formatted
 # space_after_colon = true                                   # *true, false
 # space_before_colon = false                                 # true, *false
 # spaces_around_ranges = false                               # true, *false
 # struct_field_align_threshold = 20                          # *0
 # struct_lit_single_line = true                              # *true, false
 # trailing_comma = "Never"                                   # "Always", "Never", *"Vertical"
-# trailing_semicolon = false                                  # *true, false
+# trailing_semicolon = false                                 # *true, false
 # type_punctuation_density = "Wide"                          # "Compressed", *"Wide"
 # version = "One"                                            # *"One", "Two"
 # where_single_line = false                                  # true, *false

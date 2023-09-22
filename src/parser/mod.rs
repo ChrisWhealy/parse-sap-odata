@@ -138,10 +138,10 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
     match deserialize_sap_metadata(metadata_file_name) {
         // Deserialization can fail sometimes!
-        // This can happen for example, when a quoted XML attribute value contains unescaped double quote characters
+        // This can happen for example, when a quoted XML attribute value contains an unescaped double quote character
         //
-        // The Atom `<feed>` documents returned from the entity sets of certain SAP OData services have been known to
-        // contain `<entry>` elements whose `m:etag` attribute cntains an incorrectly quoted value
+        // The Atom `<feed>` document returned from the entity sets of certain SAP OData services have been known to
+        // contain `<entry>` elements whose `m:etag` attribute contains such an incorrectly quoted value
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
             let out_dir = env::var_os("OUT_DIR").unwrap();
@@ -164,8 +164,6 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                         SPACE,
                         OPEN_CURLY,
                         LINE_FEED,
-                        // USE_ATOM_FEED_PROPERTY_ATTRIBUTES,
-                        // LINE_FEED,
                         USE_SERDE,
                         LINE_FEED,
                         LINE_FEED,
@@ -208,10 +206,6 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
 
                     out_buffer.append(&mut gen_src_entity_type(entity, namespace));
                 }
-
-                // Create enum + impl for the entity types
-                // out_buffer.append(&mut comment_for("ENTITY TYPES ENUM - Is this enum is really needed...?"));
-                // out_buffer.append(&mut schema.to_entity_types_enum());
 
                 // Create enum + impl for the entity container
                 // This enum acts as a proxy for the service document

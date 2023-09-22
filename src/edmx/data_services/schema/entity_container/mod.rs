@@ -24,10 +24,11 @@ use function_import::FunctionImport;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntityContainer {
+    #[serde(rename = "@Name")]
     pub name: String,
 
     #[serde(
-        rename = "m:IsDefaultEntityContainer",
+        rename = "@IsDefaultEntityContainer",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]

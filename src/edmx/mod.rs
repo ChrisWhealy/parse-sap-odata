@@ -29,15 +29,16 @@ pub enum EdmxVersion {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Edmx {
+    #[serde(rename = "@Version")]
     pub version: EdmxVersion,
 
-    #[serde(rename = "xmlns:edmx", default = "default_xml_namespace_edmx")]
+    #[serde(rename = "@xmlns:edmx", default = "default_xml_namespace_edmx")]
     pub namespace_edmx: String,
 
-    #[serde(rename = "xmlns:m", default = "default_xml_namespace_m")]
+    #[serde(rename = "@xmlns:m", default = "default_xml_namespace_m")]
     pub namespace_m: String,
 
-    #[serde(rename = "xmlns:sap", default = "default_xml_namespace_sap")]
+    #[serde(rename = "@xmlns:sap", default = "default_xml_namespace_sap")]
     pub namespace_sap: String,
 
     #[serde(rename = "Reference")]

@@ -49,24 +49,26 @@ pub struct Key {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EntityType {
+    #[serde(rename = "@Name")]
     pub name: String,
-    pub key: Key,
 
-    #[serde(rename = "sap:label")]
+    #[serde(rename = "@label")]
     pub sap_label: Option<String>,
 
-    #[serde(rename = "sap:semantics")]
+    #[serde(rename = "@semantics")]
     pub sap_semantics: Option<EntityTypeSAPSemantics>,
 
-    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
+    #[serde(rename = "@content-version", default = "default_sap_content_version")]
     pub sap_content_version: String,
 
     #[serde(
-        rename = "m:HasStream",
+        rename = "@HasStream",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub has_stream: bool,
+
+    pub key: Key,
 
     #[serde(rename = "Property", default)]
     pub properties: Vec<Property>,

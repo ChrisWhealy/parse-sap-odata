@@ -1,4 +1,4 @@
-<EntityType Name="Product" sap:content-version="1">
+<EntityType Name="Product" sap:content-version="1" m:HasStream="true">
   <Key>
     <PropertyRef Name="ProductID"/>
   </Key>
@@ -23,6 +23,6 @@
   <Property Name="DimUnit" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Dim. Unit" sap:semantics="unit-of-measure"/>
   <Property Name="CreatedAt" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Time Stamp" sap:creatable="false" sap:updatable="false"/>
   <Property Name="ChangedAt" Type="Edm.DateTime" Precision="7" ConcurrencyMode="Fixed" sap:unicode="false" sap:label="Time Stamp" sap:creatable="false" sap:updatable="false"/>
-  <NavigationProperty Name="ToSupplier" Relationship="GWSAMPLE_BASIC.Assoc_BusinessPartner_Products" FromRole="ToRole_Assoc_BusinessPartner_Products" ToRole="FromRole_Assoc_BusinessPartner_Products"/>
+  <NavigationProperty Name="ToSupplier" Relationship="GWSAMPLE_BASIC.Assoc_BusinessPartner_Products" FromRole="FromRole_Assoc_BusinessPartner_Products" ToRole="ToRole_Assoc_BusinessPartner_Products"/>
   <NavigationProperty Name="ToSalesOrderLineItems" Relationship="GWSAMPLE_BASIC.Assoc_Product_SalesOrderLineItems" FromRole="FromRole_Assoc_Product_SalesOrderLineItems" ToRole="ToRole_Assoc_Product_SalesOrderLineItems"/>
 </EntityType>

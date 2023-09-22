@@ -10,30 +10,36 @@ use serde::{Deserialize, Serialize};
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Property {
-    #[serde(rename = "Name")]
+    #[serde(rename = "@Name")]
     pub odata_name: String,
 
-    #[serde(rename = "Type")]
+    #[serde(rename = "@Type")]
     pub edm_type: String,
 
-    #[serde(default = "default_true")]
+    #[serde(rename = "@Nullable", default = "default_true")]
     pub nullable: bool,
 
+    #[serde(rename = "@MaxLength")]
     pub max_length: Option<u16>,
 
+    #[serde(rename = "@Precision")]
     pub precision: Option<u16>,
+
+    #[serde(rename = "@Scale")]
     pub scale: Option<u16>,
+
+    #[serde(rename = "@ConcurrencyMode")]
     pub concurrency_mode: Option<String>,
 
     // Microsoft Annotations
     #[serde(
-        rename = "m:FC_KeepInContent",
+        rename = "@FC_KeepInContent",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub fc_keep_in_content: bool,
 
-    #[serde(rename = "m:FC_TargetPath")]
+    #[serde(rename = "@FC_TargetPath")]
     pub fc_target_path: Option<String>,
 
     // SAP Annotations
@@ -105,7 +111,7 @@ impl Property {
                 "Edm.Int64" => self.maybe_optional(I64),
                 "Edm.Time" => self.maybe_optional(STD_TIME_SYSTEMTIME),
 
-                // If the type is none of the above, then assume it must be a string
+                // Use String as the catch-all case
                 _ => self.maybe_optional(STRING),
             }
         } else {
@@ -119,7 +125,7 @@ impl Property {
         let mut response: Vec<u8> = Vec::new();
 
         // Check whether the Pascal case name is correctly transformed into a snake_case name.
-        // If not, output a serde_rename directive.
+        // If not, output a serde_rename attribute.
         // This catches deserialization problems with fields that contain capitalised abbreviations:
         // E.G. "ID" instead of "Id"
         if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
@@ -156,9 +162,12 @@ impl Property {
     }
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Represents a `<PropertyRef>` tag
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct PropertyRef {
+    #[serde(rename = "@Name")]
     pub name: String,
 }
 

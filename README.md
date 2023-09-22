@@ -9,6 +9,10 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 * [ ] `FunctionImport`
 * [ ] Add SAP Annotation information to generated source code
 
+## Changes in V1.2
+
+The main change in version 1.2 is to adopt `quick-xml`'s [`@`-prefixed attribute syntax](https://docs.rs/quick-xml/latest/quick_xml/de/index.html#mapping-xml-to-rust-types) introduced in `0.27` and higher.
+
 ## Limitations and Issues
 
 1. Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
@@ -16,14 +20,14 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 
 1. The OData metadata contained within the `<FunctionImport>`, `<Association>` and `<AssociationSet>` tags is parsed, but not currently acted upon.
 
-1. When calling some of the entity sets in the demo OData service `GWSAMPLE_BASIC`, certain XML properties are returned whose values that are not valid XML.
+1. When calling some of the entity sets in the demo OData service `GWSAMPLE_BASIC`, certain XML properties are returned whose values are not valid XML.
    Consequently, when `quick_xml` attempts to parse such values, it simply throws its toys out the pram and doesn't want to play anymore.
 
    If you encounter such errors, the raw XML string must first be sanitised before attempting to parse it.
 
    This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
 
-1. All [SAP OData V2 Annotations](https://sap.github.io/odata-vocabularies/docs/v2-annotations.html) are processed by [serde](https://serde.rs); however, no action is yet taken based on the property values.
+1. All [SAP OData V2 Annotations](https://sap.github.io/odata-vocabularies/docs/v2-annotations.html) are processed by [serde](https://serde.rs); however, no action is yet taken based on the annotation values.
 
 ---
 
@@ -92,7 +96,7 @@ If `cargo` detects a `build.rs` file in your project/crate, then it automaticall
 
 The `OUT_DIR` variable then points to the directory into which all build script output is written.
 
-The default directory name is `target/debug/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
+The default directory name is `target/[debug|release]/build/<your_package_name>/out`, and this is where you can find the generated `struct` declarations for the OData service.
 
 You can specify your own value for `OUT_DIR` either by passing a value to `cargo`'s `--out_dir` flag, or by defining your own location in a `config.toml` file in the `./.cargo` directory.
 See [Cargo Configuration](https://doc.rust-lang.org/cargo/reference/config.html) for more details.
@@ -103,7 +107,7 @@ All generated `struct`s implement at least the following traits `#[derive(Clone,
 
 ## Referencing Generated Output
 
-In the source code of your application, you can reference the generated source code like this:
+In the source code of your application, use the `include!()` macro to pull in the generated source code, then bring the generated module into scope with a `use` command:
 
 ```rust
 // Include the generated code

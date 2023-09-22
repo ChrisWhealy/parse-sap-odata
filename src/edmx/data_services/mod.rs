@@ -17,7 +17,7 @@ pub enum DataServiceVersion {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct DataServices {
-    #[serde(rename = "m:DataServiceVersion")]
+    #[serde(rename = "@DataServiceVersion")]
     pub data_service_version: DataServiceVersion,
 
     #[serde(rename = "Schema", default)]

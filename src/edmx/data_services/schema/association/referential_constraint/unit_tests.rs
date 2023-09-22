@@ -16,7 +16,7 @@ impl std::str::FromStr for ReferentialConstraint {
 }
 
 #[test]
-pub fn should_parse_referntial_constraint() {
+pub fn should_parse_referential_constraint() {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let test_data = File::open(Path::new("./test_data/referential_constraint.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);

@@ -24,25 +24,25 @@ pub fn default_entity_container_supported_formats() -> Vec<String> {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsAssociationSet {
-    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
+    #[serde(rename = "@content-version", default = "default_sap_content_version")]
     pub content_version: String,
 
     #[serde(
-        rename = "sap:creatable",
+        rename = "@creatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_creatable: bool,
 
     #[serde(
-        rename = "sap:deletable",
+        rename = "@deletable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_deletable: bool,
 
     #[serde(
-        rename = "sap:updatable",
+        rename = "@updatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
@@ -57,21 +57,21 @@ pub struct SAPAnnotationsAssociationSet {
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsEntityContainer {
     #[serde(
-        rename = "sap:message-scope-supported",
+        rename = "@message-scope-supported",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub message_scope_supported: bool,
 
     #[serde(
-        rename = "sap:use-batch",
+        rename = "@use-batch",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub use_batch: bool,
 
     #[serde(
-        rename = "sap:supported-formats",
+        rename = "@supported-formats",
         deserialize_with = "de_str_to_list",
         default = "default_entity_container_supported_formats"
     )]
@@ -94,89 +94,89 @@ pub enum SAPSemanticsEntitySet {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsEntitySet {
-    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
+    #[serde(rename = "@content-version", default = "default_sap_content_version")]
     pub content_version: String,
 
-    #[serde(rename = "sap:semantics")]
+    #[serde(rename = "@semantics")]
     pub semantics: Option<SAPSemanticsEntitySet>,
 
-    #[serde(rename = "sap:label")]
+    #[serde(rename = "@label")]
     pub label: Option<String>,
 
     #[serde(
-        rename = "sap:creatable",
+        rename = "@creatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_creatable: bool,
 
     #[serde(
-        rename = "sap:updatable",
+        rename = "@updatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_updatable: bool,
 
     #[serde(
-        rename = "sap:deletable",
+        rename = "@deletable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_deletable: bool,
 
     #[serde(
-        rename = "sap:searchable",
+        rename = "@searchable",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub is_searchable: bool,
 
     #[serde(
-        rename = "sap:pageable",
+        rename = "@pageable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_pageable: bool,
 
     #[serde(
-        rename = "sap:topable",
+        rename = "@topable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_topable: bool,
 
     #[serde(
-        rename = "sap:countable",
+        rename = "@countable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_countable: bool,
 
     #[serde(
-        rename = "sap:addressable",
+        rename = "@addressable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_addressable: bool,
 
     #[serde(
-        rename = "sap:requires-filter",
+        rename = "@requires-filter",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub requires_filter: bool,
 
     #[serde(
-        rename = "sap:change-tracking",
+        rename = "@change-tracking",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub change_tracking_enabled: bool,
 
-    #[serde(rename = "sap:maxpagesize")]
+    #[serde(rename = "@maxpagesize")]
     pub max_page_size: Option<u32>,
 
-    #[serde(rename = "sap:delta-link-validity")]
+    #[serde(rename = "@delta-link-validity")]
     pub delta_link_validity: Option<u32>,
 }
 
@@ -208,13 +208,13 @@ pub enum SAPSemanticsEntityType {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsEntityType {
-    #[serde(rename = "sap:label")]
+    #[serde(rename = "@label")]
     pub sap_label: Option<String>,
 
-    #[serde(rename = "sap:semantics")]
+    #[serde(rename = "@semantics")]
     pub sap_semantics: Option<SAPSemanticsEntityType>,
 
-    #[serde(rename = "sap:content-version", default = "default_sap_content_version")]
+    #[serde(rename = "@content-version", default = "default_sap_content_version")]
     pub sap_content_version: String,
 }
 
@@ -225,11 +225,11 @@ pub struct SAPAnnotationsEntityType {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsFunctionImportParameter {
-    #[serde(rename = "sap:label")]
+    #[serde(rename = "@label")]
     pub label: Option<String>,
 
     #[serde(
-        rename = "sap:variable-scale",
+        rename = "@variable-scale",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
@@ -243,16 +243,16 @@ pub struct SAPAnnotationsFunctionImportParameter {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsFunctionImport {
-    #[serde(rename = "sap:label")]
+    #[serde(rename = "@label")]
     pub label: Option<String>,
 
-    #[serde(rename = "sap:action-for")]
+    #[serde(rename = "@action-for")]
     pub action_for: Option<String>,
 
-    #[serde(rename = "sap:applicable-path")]
+    #[serde(rename = "@applicable-path")]
     pub creatable_path: Option<String>,
 
-    #[serde(rename = "sap:planning-function")]
+    #[serde(rename = "@planning-function")]
     pub planning_function: Option<String>,
 }
 
@@ -264,17 +264,17 @@ pub struct SAPAnnotationsFunctionImport {
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsNavigationProperty {
     #[serde(
-        rename = "sap:creatable",
+        rename = "@creatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_creatable: bool,
 
-    #[serde(rename = "sap:creatable-path")]
+    #[serde(rename = "@creatable-path")]
     pub creatable_path: Option<String>,
 
     #[serde(
-        rename = "sap:filterable",
+        rename = "@filterable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
@@ -531,164 +531,164 @@ pub enum SAPParameterProperty {
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsProperty {
-    #[serde(rename = "sap:label")]
+    #[serde(rename = "@label")]
     pub label: Option<String>,
 
-    #[serde(rename = "sap:heading")]
+    #[serde(rename = "@heading")]
     pub heading: Option<String>,
 
-    #[serde(rename = "sap:quickinfo")]
+    #[serde(rename = "@quickinfo")]
     pub quick_info: Option<String>,
 
     #[serde(
-        rename = "sap:unicode",
+        rename = "@unicode",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub is_unicode: bool,
 
-    #[serde(rename = "sap:semantics")]
+    #[serde(rename = "@semantics")]
     pub semantics: Option<SAPSemanticsProperty>,
 
     #[serde(
-        rename = "sap:creatable",
+        rename = "@creatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_creatable: bool,
 
     #[serde(
-        rename = "sap:updatable",
+        rename = "@updatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_updatable: bool,
 
     #[serde(
-        rename = "sap:sortable",
+        rename = "@sortable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_sortable: bool,
 
     #[serde(
-        rename = "sap:filterable",
+        rename = "@filterable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_filterable: bool,
 
     #[serde(
-        rename = "sap:addressable",
+        rename = "@addressable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_addressable: bool,
 
     #[serde(
-        rename = "sap:required-in-filter",
+        rename = "@required-in-filter",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub is_required_in_filter: bool,
 
-    #[serde(rename = "sap:filter-restriction")]
+    #[serde(rename = "@filter-restriction")]
     pub filter_restriction: Option<SAPFilterRestrictionProperty>,
 
-    #[serde(rename = "sap:filter-for")]
+    #[serde(rename = "@filter-for")]
     pub filter_for: Option<String>,
 
-    #[serde(rename = "sap:text")]
+    #[serde(rename = "@text")]
     pub text: Option<String>,
 
-    #[serde(rename = "sap:text-for")]
+    #[serde(rename = "@text-for")]
     pub text_for: Option<String>,
 
-    #[serde(rename = "sap:unit")]
+    #[serde(rename = "@unit")]
     pub unit: Option<String>,
 
-    #[serde(rename = "sap:precision")]
+    #[serde(rename = "@precision")]
     pub precision: Option<String>,
 
     #[serde(
-        rename = "sap:visible",
+        rename = "@visible",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_visible: bool,
 
-    #[serde(rename = "sap:field-control")]
+    #[serde(rename = "@field-control")]
     pub field_control: Option<SAPFieldControlProperty>,
 
-    #[serde(rename = "sap:validation-regexp")]
+    #[serde(rename = "@validation-regexp")]
     pub validation_regexp: Option<String>,
 
-    #[serde(rename = "sap:display-format")]
+    #[serde(rename = "@display-format")]
     pub display_format: Option<SAPDisplayFormatProperty>,
 
-    #[serde(rename = "sap:value-list")]
+    #[serde(rename = "@value-list")]
     pub value_list: Option<String>,
 
-    #[serde(rename = "sap:lower-boundary")]
+    #[serde(rename = "@lower-boundary")]
     pub lower_boundary: Option<String>,
 
-    #[serde(rename = "sap:upper-boundary")]
+    #[serde(rename = "@upper-boundary")]
     pub upper_boundary: Option<String>,
 
-    #[serde(rename = "sap:aggregation-role")]
+    #[serde(rename = "@aggregation-role")]
     pub aggregation_role: Option<SAPAggregationRoleProperty>,
 
-    #[serde(rename = "sap:super-ordinate")]
+    #[serde(rename = "@super-ordinate")]
     pub super_ordinate: Option<String>,
 
-    #[serde(rename = "sap:attribute-for")]
+    #[serde(rename = "@attribute-for")]
     pub attribute_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-node-for")]
+    #[serde(rename = "@hierarchy-node-for")]
     pub hierarchy_node_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-node-external-key-for")]
+    #[serde(rename = "@hierarchy-node-external-key-for")]
     pub hierarchy_node_external_key_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-level-for")]
+    #[serde(rename = "@hierarchy-level-for")]
     pub hierarchy_level_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-parent-node-for")]
+    #[serde(rename = "@hierarchy-parent-node-for")]
     pub hierarchy_parent_node_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-parent-navigation-for")]
+    #[serde(rename = "@hierarchy-parent-navigation-for")]
     pub hierarchy_parent_navigation_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-drill-state-for")]
+    #[serde(rename = "@hierarchy-drill-state-for")]
     pub hierarchy_drill_state_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-node-descendant-count-for")]
+    #[serde(rename = "@hierarchy-node-descendant-count-for")]
     pub hierarchy_node_descendant_count_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-preorder-rank-for")]
+    #[serde(rename = "@hierarchy-preorder-rank-for")]
     pub hierarchy_preorder_rank_for: Option<String>,
 
-    #[serde(rename = "sap:hierarchy-sibling-rank-for")]
+    #[serde(rename = "@hierarchy-sibling-rank-for")]
     pub hierarchy_sibling_rank_for: Option<String>,
 
-    #[serde(rename = "sap:parameter")]
+    #[serde(rename = "@parameter")]
     pub parameter: Option<SAPParameterProperty>,
 
     #[serde(
-        rename = "sap:is-annotation",
+        rename = "@is-annotation",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub is_annotation: bool,
 
-    #[serde(rename = "sap:updatable-path")]
+    #[serde(rename = "@updatable-path")]
     pub updatable_path: Option<String>,
 
-    #[serde(rename = "sap:preserve-flag-for")]
+    #[serde(rename = "@preserve-flag-for")]
     pub preserve_flag_for: Option<String>,
 
     #[serde(
-        rename = "sap:variable-scale",
+        rename = "@variable-scale",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
@@ -702,6 +702,6 @@ pub struct SAPAnnotationsProperty {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsSchema {
-    #[serde(rename = "sap:schema_version", default = "default_sap_schema_version")]
+    #[serde(rename = "@schema_version", default = "default_sap_schema_version")]
     pub schema_version: String,
 }

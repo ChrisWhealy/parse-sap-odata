@@ -29,13 +29,13 @@ use serde::{Deserialize, Serialize};
 /// `1:1 EntityContainer`
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Schema {
-    #[serde(rename = "xmlns", default = "default_xml_namespace")]
+    #[serde(rename = "@xmlns", default = "default_xml_namespace")]
     pub xml_namespace: String,
 
-    #[serde(rename = "Namespace", default)]
+    #[serde(rename = "@Namespace", default)]
     pub namespace: String,
 
-    #[serde(rename = "xml:lang", default = "default_xml_language")]
+    #[serde(rename = "@xml:lang", default = "default_xml_language")]
     pub xml_lang: String,
 
     #[serde(flatten)]
