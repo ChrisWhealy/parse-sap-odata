@@ -1,6 +1,6 @@
 [package]
 name = "parse-sap-odata"
-version = "1.2.1"
+version = "1.2.2"
 authors = ["Chris Whealy <chris@lighthouse.no>"]
 edition = "2021"
 description = "Generate Rust structs from SAP OData V2 metadata"
@@ -9,6 +9,8 @@ repository = "https://github.com/lighthouse-no/parse-sap-odata"
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dev-dependencies]
+rust_decimal = { version ="1", features = ["serde-with-str"]}
 
 [dependencies]
 anyhow = "1.0"

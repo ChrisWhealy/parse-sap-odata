@@ -51,10 +51,7 @@ pub static MOD_START: &[u8] = "mod ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
-
-// TODO: Create parser for values of type Decimal
-/// pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
-pub static DECIMAL: &[u8] = "f64".as_bytes();
+pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
 pub static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
 pub static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
 pub static UUID: &[u8] = "uuid::Uuid".as_bytes();
@@ -174,14 +171,24 @@ pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\
 pub static SERDE_RENAME_SNAKE_CASE: &[u8] = "#[serde(rename_all = \"snake_case\")]".as_bytes();
 pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
 
+// Deserializers supplied by the rust_decimal crate
+// The consuming application needs to declare 'rust_decimal = { version = "1.nn", features = ["serde-with-str"]}'
+pub static SERDE_DE_DECIMAL: &str = "rust_decimal::serde::str";
+pub static SERDE_DE_DECIMAL_OPT: &str = "rust_decimal::serde::str_option";
+
 // These declarations makes forward references to custom deserializers declared in the parse-odata-atom-feed crate
 pub static SERDE_DE_DATETIME_OPT: &str = "parse_sap_atom_feed::deserializers::de_date_to_optional_naive_date_time";
 pub static SERDE_DE_DATETIME: &str = "parse_sap_atom_feed::deserializers::de_date_to_naive_date_time";
 
-pub fn deserialize_with(de: &'static str) -> Vec<u8> {
+pub fn deserialize_with(de: &'static str, de_is_function: bool) -> Vec<u8> {
     String::from_utf8(
         [
-            "#[serde(deserialize_with = \"".as_bytes(),
+            (if de_is_function {
+                "#[serde(deserialize_with = \""
+            } else {
+                "#[serde(with = \""
+            })
+            .as_bytes(),
             de.as_bytes(),
             DOUBLE_QUOTE,
             CLOSE_PAREN,

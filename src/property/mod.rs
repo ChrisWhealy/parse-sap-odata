@@ -48,6 +48,9 @@ pub struct Property {
 
     #[serde(skip, default)]
     pub custom_deserializer: &'static str,
+
+    #[serde(skip, default)]
+    pub package_deserializer: &'static str,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,14 +106,32 @@ impl Property {
                 "Edm.Boolean" => self.maybe_optional(BOOLEAN),
                 "Edm.Byte" => U8.to_vec(),
                 "Edm.DateTime" => {
-                    self.custom_deserializer = if self.nullable { SERDE_DE_DATETIME_OPT } else { SERDE_DE_DATETIME };
-                    self.maybe_optional(NAIVE_DATE_TIME)
+                    if self.nullable {
+                        self.custom_deserializer = SERDE_DE_DATETIME_OPT;
+                        self.maybe_optional(NAIVE_DATE_TIME)
+                    } else {
+                        self.custom_deserializer = SERDE_DE_DATETIME;
+                        NAIVE_DATE_TIME.to_vec()
+                    }
                 },
                 "Edm.DateTimeOffset" => {
-                    self.custom_deserializer = if self.nullable { SERDE_DE_DATETIME_OPT } else { SERDE_DE_DATETIME };
-                    self.maybe_optional(NAIVE_DATE_TIME)
+                    if self.nullable {
+                        self.custom_deserializer = SERDE_DE_DATETIME_OPT;
+                        self.maybe_optional(NAIVE_DATE_TIME)
+                    } else {
+                        self.custom_deserializer = SERDE_DE_DATETIME;
+                        NAIVE_DATE_TIME.to_vec()
+                    }
                 },
-                "Edm.Decimal" => DECIMAL.to_vec(),
+                "Edm.Decimal" => {
+                    if self.nullable {
+                        self.package_deserializer = SERDE_DE_DECIMAL_OPT;
+                        self.maybe_optional(DECIMAL)
+                    } else {
+                        self.package_deserializer = SERDE_DE_DECIMAL;
+                        DECIMAL.to_vec()
+                    }
+                },
                 "Edm.Double" => F64.to_vec(),
                 "Edm.Single" => F32.to_vec(),
                 "Edm.Guid" => UUID.to_vec(),
@@ -154,9 +175,13 @@ impl Property {
         let rust_safe_name = odata_name_to_rust_safe_name(&self.odata_name);
         let rust_type = &self.to_rust_type(namespace);
 
-        // Add attribute for custom deserializer
+        // Add attribute pointing either to a custom deserializer function or a package deserializer.
+        // Only one of these deserializer fields should ever be populated!
         if !self.custom_deserializer.is_empty() {
-            response.extend(deserialize_with(self.custom_deserializer))
+            response.extend(deserialize_with(self.custom_deserializer, true))
+        }
+        if !self.package_deserializer.is_empty() {
+            response.extend(deserialize_with(self.package_deserializer, false))
         }
 
         // Write struct field

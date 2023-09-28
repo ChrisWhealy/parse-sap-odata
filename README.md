@@ -7,8 +7,8 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 * [x] `ComplexType`
 * [x] `EntityType`
 * [ ] `FunctionImport`
-* [x] Custom parser for `Edm.DateTime`
-* [ ] Custom parser for `Edm.Decimal`
+* [x] Custom deserializer for `Edm.DateTime`
+* [x] Use deserializer in crate `rust_decimal` for `Edm.Decimal` (offers partial support)
 * [ ] Add SAP Annotation information as a separate module to generated source code
 
 ## Limitations and Issues
@@ -27,13 +27,21 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 
    This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
 
+1. The `rust_decimal::serde::str` deserializer can offer only partial support for fields of `Edm.Decimal` because it knows nothing about the attributes `Precision` and `Scale`:
+
+   ```xml
+   <Property Name="Price" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Unit Price"/>
+   ```
+
+   Consequently, these attribute values are not considered when extracting a decimal value.
+
 ---
 
 ## TODOs
 
-1. Implement dedicated parser functions for the type `Edm.Decimal` as fields of these types are currently interpreted simply as `f64` thus loosing the scale and precision values.
-1. Supplement generated source code with SAP annotation information.
-1. Support Function Imports.
+1. Improve support for fields of type `Edm.Decimal`.
+2. Supplement generated source code with SAP annotation information.
+3. Support Function Imports.
 
 ---
 
