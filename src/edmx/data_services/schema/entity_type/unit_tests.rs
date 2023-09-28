@@ -82,14 +82,32 @@ pub fn should_parse_entity_type_product() {
 
             assert_eq!(ent_type.properties.len(), 21);
 
-            assert_eq!(ent_type.properties[14].odata_name, "Price");
-            assert_eq!(ent_type.properties[14].edm_type, "Edm.Decimal");
-            assert_eq!(ent_type.properties[14].precision, Some(16));
-            assert_eq!(ent_type.properties[14].scale, Some(3));
-            assert_eq!(ent_type.properties[14].nullable, true);
-            assert_eq!(ent_type.properties[14].sap_annotations.is_unicode, false);
-            assert_eq!(ent_type.properties[14].sap_annotations.unit, Some(String::from("CurrencyCode")));
-            assert_eq!(ent_type.properties[14].sap_annotations.label, Some(String::from("Unit Price")));
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Test property values for Price
+            let property_price = &ent_type.properties[14];
+
+            assert_eq!(property_price.odata_name, "Price");
+            assert_eq!(property_price.edm_type, "Edm.Decimal");
+            assert_eq!(property_price.precision, Some(16));
+            assert_eq!(property_price.scale, Some(3));
+            assert_eq!(property_price.nullable, true);
+            assert_eq!(property_price.sap_annotations.is_unicode, false);
+            assert_eq!(property_price.sap_annotations.unit, Some(String::from("CurrencyCode")));
+            assert_eq!(property_price.sap_annotations.label, Some(String::from("Unit Price")));
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Test property values for a ChangedAt date
+            let property_changed_at = &ent_type.properties[20];
+
+            assert_eq!(property_changed_at.odata_name, "ChangedAt");
+            assert_eq!(property_changed_at.edm_type, "Edm.DateTime");
+            assert_eq!(property_changed_at.precision, Some(7));
+            assert_eq!(property_changed_at.scale, None);
+            assert_eq!(property_changed_at.concurrency_mode, Some(String::from("Fixed")));
+            assert_eq!(property_changed_at.sap_annotations.label, Some(String::from("Time Stamp")));
+            assert_eq!(property_changed_at.sap_annotations.is_unicode, false);
+            assert_eq!(property_changed_at.sap_annotations.is_creatable, false);
+            assert_eq!(property_changed_at.sap_annotations.is_updatable, false);
 
             assert_eq!(ent_type.navigations.len(), 2);
             assert_eq!(ent_type.navigations[0].name, "ToSupplier");

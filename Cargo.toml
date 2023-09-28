@@ -1,6 +1,6 @@
 [package]
 name = "parse-sap-odata"
-version = "1.2.0"
+version = "1.2.1"
 authors = ["Chris Whealy <chris@lighthouse.no>"]
 edition = "2021"
 description = "Generate Rust structs from SAP OData V2 metadata"
@@ -13,7 +13,6 @@ license = "MIT"
 [dependencies]
 anyhow = "1.0"
 check_keyword = "0.2"
-chrono = { version = "0.4", features = ["serde"] }
 convert_case = "0.6"
 quick-xml = { version = "0.30", features = ["serialize"] }
 regex = "1.9"

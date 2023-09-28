@@ -49,6 +49,61 @@ fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate the start of the service document module
+fn gen_srv_doc_mod_start(out_buffer: &mut Vec<u8>, odata_srv_name: &str) {
+    out_buffer.append(
+        &mut [
+            MOD_START,
+            odata_srv_name.as_bytes(),
+            SPACE,
+            OPEN_CURLY,
+            LINE_FEED,
+            USE_SERDE,
+            LINE_FEED,
+            LINE_FEED,
+            MARKER_TRAIT_ENTITY_TYPE,
+            LINE_FEED,
+            LINE_FEED,
+        ]
+        .concat(),
+    );
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate complex type structs
+fn gen_complex_types(out_buffer: &mut Vec<u8>, cts: &Vec<ComplexType>, namespace: &str) {
+    let mut ignored_cts: usize = 0;
+
+    out_buffer.append(&mut comment_for("COMPLEX TYPES"));
+
+    for (idx, ct) in cts.into_iter().enumerate() {
+        if idx > 0 && idx + ignored_cts + 1 < cts.len() {
+            out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
+        }
+
+        if let Some(mut ct_src) = gen_src_complex_type(ct, namespace) {
+            out_buffer.append(&mut ct_src);
+        } else {
+            ignored_cts += 1;
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate entity type structs
+fn gen_entity_types(out_buffer: &mut Vec<u8>, ets: &Vec<EntityType>, namespace: &str) {
+    out_buffer.append(&mut comment_for("ENTITY TYPES"));
+
+    for (idx, entity) in ets.into_iter().enumerate() {
+        if idx > 0 {
+            out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
+        }
+
+        out_buffer.append(&mut gen_src_entity_type(entity, namespace));
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate a Rust struct for a complex type
 fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
     let mut out_buffer: Vec<u8> = Vec::new();
@@ -58,11 +113,9 @@ fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
         convert_case::Case::UpperCamel,
     );
 
-    // If the complex type contains only one property and the name suffix is a Rust type, then a
-    // struct does not need to be generated.  This happens with SAP complex types such as
-    // `CT_String` which contains the single property called `String`.
-    // Such complex types are in fact not "complex" at all, and should be replaced with a single
-    // native Rust type
+    // If the complex type contains only one property and the name suffix is a Rust type, then it is unneccesary to
+    // create a Rust struct as this type can be replaced with a single native Rust type.
+    // This happens with SAP complex types such as `CT_String` which just contains a single property called `String`.
     if ct.properties.len() > 1 && !ct_name.is_keyword() {
         let mut props = ct.properties.clone();
         props.sort();
@@ -74,10 +127,11 @@ fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
             DeriveTraits::SERIALIZE,
             DeriveTraits::DESERIALIZE,
         ]));
-        out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
+        out_buffer.append(&mut [SERDE_RENAME_PASCAL_CASE, LINE_FEED].concat().to_vec());
         out_buffer.append(&mut start_struct(&ct_name));
 
-        for prop in props {
+        for mut prop in props {
+            if !prop.custom_deserializer.is_empty() {}
             out_buffer.append(&mut prop.to_rust(namespace));
         }
 
@@ -108,13 +162,13 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
         DeriveTraits::SERIALIZE,
         DeriveTraits::DESERIALIZE,
     ]));
-    out_buffer.append(&mut SERDE_RENAME_PASCAL_CASE.to_vec());
+    out_buffer.append(&mut [SERDE_RENAME_PASCAL_CASE, LINE_FEED].concat().to_vec());
     out_buffer.append(&mut start_struct(&struct_name));
 
     let mut props = entity.properties.clone();
     props.sort();
 
-    for prop in props {
+    for mut prop in props {
         out_buffer.append(&mut prop.to_rust(namespace));
     }
 
@@ -133,10 +187,10 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
 ///
 /// Any field whose name clashes with a Rust reserved word is written in raw format:<br>
 /// E.G. `type --> r#type`
-pub fn gen_src(metadata_file_name: &str, namespace: &str) {
+pub fn gen_src(odata_srv_name: &str, namespace: &str) {
     let mut out_buffer: Vec<u8> = Vec::new();
 
-    match deserialize_sap_metadata(metadata_file_name) {
+    match deserialize_sap_metadata(odata_srv_name) {
         // Deserialization can fail sometimes!
         // This can happen for example, when a quoted XML attribute value contains an unescaped double quote character
         //
@@ -145,7 +199,7 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
             let out_dir = env::var_os("OUT_DIR").unwrap();
-            let odata_srv_output_pathbuf = Path::new(&out_dir).join(format!("{}.rs", metadata_file_name));
+            let odata_srv_output_pathbuf = Path::new(&out_dir).join(format!("{}.rs", odata_srv_name));
 
             let mut odata_srv_output_file = OpenOptions::new()
                 .create(true)
@@ -157,55 +211,14 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
             // If this fails, then either the build script been passed the wrong namespace value, or we're trying to
             // parse XML that is not an OData V2 metadata document
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                out_buffer.append(
-                    &mut [
-                        MOD_START,
-                        metadata_file_name.as_bytes(),
-                        SPACE,
-                        OPEN_CURLY,
-                        LINE_FEED,
-                        USE_SERDE,
-                        LINE_FEED,
-                        LINE_FEED,
-                        MARKER_TRAIT_ENTITY_TYPE,
-                        LINE_FEED,
-                        LINE_FEED,
-                    ]
-                    .concat(),
-                );
+                // Start module definition
+                gen_srv_doc_mod_start(&mut out_buffer, odata_srv_name);
 
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // Transform ComplexType definitions if present
                 if let Some(cts) = &schema.complex_types {
-                    let mut ignored_cts: usize = 0;
-                    out_buffer.append(&mut comment_for("COMPLEX TYPES"));
-
-                    for (idx, ct) in cts.into_iter().enumerate() {
-                        if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                            out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
-                        }
-
-                        if let Some(mut ct_src) = gen_src_complex_type(ct, namespace) {
-                            out_buffer.append(&mut ct_src);
-                        } else {
-                            ignored_cts += 1;
-                        }
-                    }
+                    gen_complex_types(&mut out_buffer, cts, namespace);
                 }
 
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // Transform each EntityType definition into a Rust struct
-                out_buffer.append(&mut comment_for("ENTITY TYPES"));
-
-                let ets = &schema.entity_types;
-
-                for (idx, entity) in ets.into_iter().enumerate() {
-                    if idx > 0 {
-                        out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
-                    }
-
-                    out_buffer.append(&mut gen_src_entity_type(entity, namespace));
-                }
+                gen_entity_types(&mut out_buffer, &schema.entity_types, namespace);
 
                 // Create enum + impl for the entity container
                 // This enum acts as a proxy for the service document
@@ -221,15 +234,15 @@ pub fn gen_src(metadata_file_name: &str, namespace: &str) {
                 // TODO Generate function imports
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                // Syntax check and format the generated code
-                match run_rustfmt(&out_buffer, &metadata_file_name) {
+                // Run the generated code through rustfmt to syntax chack and format it
+                match run_rustfmt(&out_buffer, &odata_srv_name) {
                     Ok(formatted_bytes) => {
                         odata_srv_output_file.write_all(&formatted_bytes).unwrap();
 
                         // Tell cargo to watch the input XML file
                         println!(
                             "cargo:rerun-if-changed={}",
-                            format!("{}/{}.xml", DEFAULT_INPUT_DIR, metadata_file_name)
+                            format!("{}/{}.xml", DEFAULT_INPUT_DIR, odata_srv_name)
                         );
                     },
                     Err(err) => println!("Error: rustfmt ended with {}", err.to_string()),

@@ -45,6 +45,9 @@ pub struct Property {
     // SAP Annotations
     #[serde(flatten)]
     pub sap_annotations: SAPAnnotationsProperty,
+
+    #[serde(skip, default)]
+    pub custom_deserializer: &'static str,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -90,17 +93,23 @@ impl Property {
             .to_vec()
     }
 
-    fn to_rust_type<'a>(&self, namespace: &str) -> Vec<u8> {
+    fn to_rust_type<'a>(&mut self, namespace: &str) -> Vec<u8> {
         // Handle complex types separately
         let type_bytes: Vec<u8> = if self.edm_type.starts_with("Edm.") {
             match self.edm_type.as_ref() {
-                // Although "Null" is listed as a valid EDM datatype, this type is excluded here as Rust has no means to
-                // represent this value
+                // EDM allows for null which is intentionally excluded by Rust
+                "Edm.Null" => UNIT.to_vec(),
                 "Edm.Binary" => self.maybe_optional(VECTOR_U8),
                 "Edm.Boolean" => self.maybe_optional(BOOLEAN),
                 "Edm.Byte" => U8.to_vec(),
-                "Edm.DateTime" => self.maybe_optional(STRING),
-                "Edm.DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
+                "Edm.DateTime" => {
+                    self.custom_deserializer = if self.nullable { SERDE_DE_DATETIME_OPT } else { SERDE_DE_DATETIME };
+                    self.maybe_optional(NAIVE_DATE_TIME)
+                },
+                "Edm.DateTimeOffset" => {
+                    self.custom_deserializer = if self.nullable { SERDE_DE_DATETIME_OPT } else { SERDE_DE_DATETIME };
+                    self.maybe_optional(NAIVE_DATE_TIME)
+                },
                 "Edm.Decimal" => DECIMAL.to_vec(),
                 "Edm.Double" => F64.to_vec(),
                 "Edm.Single" => F32.to_vec(),
@@ -121,7 +130,7 @@ impl Property {
         type_bytes.to_vec()
     }
 
-    pub fn to_rust(&self, namespace: &str) -> Vec<u8> {
+    pub fn to_rust(&mut self, namespace: &str) -> Vec<u8> {
         let mut response: Vec<u8> = Vec::new();
 
         // Check whether the Pascal case name is correctly transformed into a snake_case name.
@@ -143,20 +152,15 @@ impl Property {
         }
 
         let rust_safe_name = odata_name_to_rust_safe_name(&self.odata_name);
+        let rust_type = &self.to_rust_type(namespace);
+
+        // Add attribute for custom deserializer
+        if !self.custom_deserializer.is_empty() {
+            response.extend(deserialize_with(self.custom_deserializer))
+        }
 
         // Write struct field
-        response.extend(
-            [
-                PUBLIC,
-                SPACE,
-                rust_safe_name.as_bytes(),
-                COLON,
-                &self.to_rust_type(namespace),
-                COMMA,
-                LINE_FEED,
-            ]
-            .concat(),
-        );
+        response.extend([PUBLIC, SPACE, rust_safe_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat());
 
         response
     }

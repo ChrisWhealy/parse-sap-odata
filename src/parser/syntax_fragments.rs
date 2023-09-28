@@ -10,6 +10,7 @@ pub static COLON: &[u8] = &[0x3A];
 pub static OPEN_ANGLE: &[u8] = &[0x3C];
 pub static CLOSE_ANGLE: &[u8] = &[0x3E];
 pub static OPEN_SQR: &[u8] = &[0x5B];
+pub static BACK_SLASH: &[u8] = &[0x5C];
 pub static CLOSE_SQR: &[u8] = &[0x5D];
 pub static OPEN_CURLY: &[u8] = &[0x7B];
 pub static CLOSE_CURLY: &[u8] = &[0x7D];
@@ -35,6 +36,7 @@ pub static I16: &[u8] = "i16".as_bytes();
 pub static I32: &[u8] = "i32".as_bytes();
 pub static I64: &[u8] = "i64".as_bytes();
 pub static U8: &[u8] = "u8".as_bytes();
+pub static UNIT: &[u8] = "()".as_bytes();
 pub static STRING: &[u8] = "String".as_bytes();
 pub static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
 
@@ -51,7 +53,7 @@ pub static MOD_START: &[u8] = "mod ".as_bytes();
 // External types
 
 // TODO: Create parser for values of type Decimal
-// pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
+/// pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
 pub static DECIMAL: &[u8] = "f64".as_bytes();
 pub static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
 pub static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
@@ -168,12 +170,29 @@ pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
 pub static DERIVE_END: &[u8] = ")]".as_bytes();
 
 pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};".as_bytes();
-pub static USE_STD_STR: &[u8] = "use std::str::FromStr;".as_bytes();
-pub static USE_ATOM_FEED_PROPERTY_ATTRIBUTES: &[u8] =
-    "use parse_sap_atom_feed::property::PropertyAttributes;".as_bytes();
 pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]".as_bytes();
 pub static SERDE_RENAME_SNAKE_CASE: &[u8] = "#[serde(rename_all = \"snake_case\")]".as_bytes();
 pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
+
+// These declarations makes forward references to custom deserializers declared in the parse-odata-atom-feed crate
+pub static SERDE_DE_DATETIME_OPT: &str = "parse_sap_atom_feed::deserializers::de_date_to_optional_naive_date_time";
+pub static SERDE_DE_DATETIME: &str = "parse_sap_atom_feed::deserializers::de_date_to_naive_date_time";
+
+pub fn deserialize_with(de: &'static str) -> Vec<u8> {
+    String::from_utf8(
+        [
+            "#[serde(deserialize_with = \"".as_bytes(),
+            de.as_bytes(),
+            DOUBLE_QUOTE,
+            CLOSE_PAREN,
+            CLOSE_SQR,
+            LINE_FEED,
+        ]
+        .concat(),
+    )
+    .unwrap()
+    .into()
+}
 
 pub fn comment_for(something: &str) -> Vec<u8> {
     [
