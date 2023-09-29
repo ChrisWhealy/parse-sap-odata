@@ -68,7 +68,7 @@ Your app will require at least these dependencies:
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
 parse-sap-atom-feed = "0.2"
-rust_decimal = "1.30"
+rust_decimal = { version = "1.30", features = ["serde-with-str"]}
 serde = { version = "1.0", features = ["derive"] }
 uuid = { version = "1.4", features = ["serde"] }
 ```
