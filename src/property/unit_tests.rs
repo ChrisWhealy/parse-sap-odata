@@ -1,7 +1,4 @@
-use rust_decimal::{
-    serde::{str, str_option},
-    Decimal,
-};
+use rust_decimal::{serde::str, Decimal};
 use serde::Deserialize;
 use std::str::FromStr;
 

@@ -9,7 +9,8 @@ Parse the metadata XML describing an SAP OData V2 service and generate basic Rus
 * [ ] `FunctionImport`
 * [x] Custom deserializer for `Edm.DateTime`
 * [x] Use deserializer in crate `rust_decimal` for `Edm.Decimal` (offers partial support)
-* [ ] Add SAP Annotation information as a separate module to generated source code
+* [x] Internal refactorisation in preparation for generating metadata module
+* [ ] Generate metadata module
 
 ## Limitations and Issues
 

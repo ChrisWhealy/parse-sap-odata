@@ -63,7 +63,8 @@ impl EntityContainer {
             derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]).as_slice(),
             RUSTC_ALLOW_DEAD_CODE,
             LINE_FEED,
-            START_ENUM,
+            PUBLIC,
+            ENUM,
             cont_name_camel.as_bytes(),
             SPACE,
             OPEN_CURLY,
@@ -76,7 +77,7 @@ impl EntityContainer {
         let output_impl = [
             RUSTC_ALLOW_DEAD_CODE,
             LINE_FEED,
-            START_IMPL,
+            IMPL,
             cont_name_camel.as_bytes(),
             SPACE,
             OPEN_CURLY,
@@ -147,14 +148,7 @@ impl EntityContainer {
         fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
         fn_iterator.append(
             &mut [
-                LINE_FEED,
-                CLOSE_SQR,
-                CALL_ITER,
-                LINE_FEED,
-                CALL_COPIED,
-                LINE_FEED,
-                CLOSE_CURLY,
-                LINE_FEED,
+                LINE_FEED, CLOSE_SQR, CALL_ITER, LINE_FEED, CALL_COPIED, LINE_FEED, CLOSE_CURLY, LINE_FEED,
             ]
             .concat(),
         );

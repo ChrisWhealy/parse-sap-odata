@@ -47,10 +47,10 @@ pub struct Property {
     pub sap_annotations: SAPAnnotationsProperty,
 
     #[serde(skip, default)]
-    pub custom_deserializer: &'static str,
+    pub deserializer_fn: &'static str,
 
     #[serde(skip, default)]
-    pub package_deserializer: &'static str,
+    pub deserializer_module: &'static str,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,28 +107,28 @@ impl Property {
                 "Edm.Byte" => U8.to_vec(),
                 "Edm.DateTime" => {
                     if self.nullable {
-                        self.custom_deserializer = SERDE_DE_DATETIME_OPT;
+                        self.deserializer_fn = SERDE_DE_DATETIME_OPT;
                         self.maybe_optional(NAIVE_DATE_TIME)
                     } else {
-                        self.custom_deserializer = SERDE_DE_DATETIME;
+                        self.deserializer_fn = SERDE_DE_DATETIME;
                         NAIVE_DATE_TIME.to_vec()
                     }
                 },
                 "Edm.DateTimeOffset" => {
                     if self.nullable {
-                        self.custom_deserializer = SERDE_DE_DATETIME_OPT;
+                        self.deserializer_fn = SERDE_DE_DATETIME_OPT;
                         self.maybe_optional(NAIVE_DATE_TIME)
                     } else {
-                        self.custom_deserializer = SERDE_DE_DATETIME;
+                        self.deserializer_fn = SERDE_DE_DATETIME;
                         NAIVE_DATE_TIME.to_vec()
                     }
                 },
                 "Edm.Decimal" => {
                     if self.nullable {
-                        self.package_deserializer = SERDE_DE_DECIMAL_OPT;
+                        self.deserializer_module = SERDE_DE_DECIMAL_OPT;
                         self.maybe_optional(DECIMAL)
                     } else {
-                        self.package_deserializer = SERDE_DE_DECIMAL;
+                        self.deserializer_module = SERDE_DE_DECIMAL;
                         DECIMAL.to_vec()
                     }
                 },
@@ -151,6 +151,9 @@ impl Property {
         type_bytes.to_vec()
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    /// Any property whose name clashes with a Rust reserved word is written in raw format:<br>
+    /// E.G. `clash --> r#clash`
     pub fn to_rust(&mut self, namespace: &str) -> Vec<u8> {
         let mut response: Vec<u8> = Vec::new();
 
@@ -175,17 +178,17 @@ impl Property {
         let rust_safe_name = odata_name_to_rust_safe_name(&self.odata_name);
         let rust_type = &self.to_rust_type(namespace);
 
-        // Add attribute pointing either to a custom deserializer function or a package deserializer.
-        // Only one of these deserializer fields should ever be populated!
-        if !self.custom_deserializer.is_empty() {
-            response.extend(deserialize_with(self.custom_deserializer, true))
+        // Add attribute pointing either to a custom deserializer function or a deserializer module.
+        // Only one of these deserializers should ever be populated at any one time!
+        if !self.deserializer_fn.is_empty() {
+            response.extend(deserialize_with(self.deserializer_fn, true))
         }
-        if !self.package_deserializer.is_empty() {
-            response.extend(deserialize_with(self.package_deserializer, false))
+        if !self.deserializer_module.is_empty() {
+            response.extend(deserialize_with(self.deserializer_module, false))
         }
 
         // Write struct field
-        response.extend([PUBLIC, SPACE, rust_safe_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat());
+        response.extend([PUBLIC, rust_safe_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat());
 
         response
     }

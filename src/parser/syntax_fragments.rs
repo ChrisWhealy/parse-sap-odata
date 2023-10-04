@@ -42,12 +42,13 @@ pub static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Keywords or keyword fragments
+pub static ENUM: &[u8] = "enum ".as_bytes();
+pub static FOR: &[u8] = "for ".as_bytes();
+pub static IMPL: &[u8] = "impl ".as_bytes();
+pub static MOD: &[u8] = "mod ".as_bytes();
 pub static OPTION: &[u8] = "Option".as_bytes();
-pub static PUBLIC: &[u8] = "pub".as_bytes();
-pub static START_ENUM: &[u8] = "pub enum ".as_bytes();
-pub static START_IMPL: &[u8] = "impl ".as_bytes();
-pub static ENTITY_TYPE_FOR: &[u8] = " EntityType for ".as_bytes();
-pub static MOD_START: &[u8] = "mod ".as_bytes();
+pub static PUBLIC: &[u8] = "pub ".as_bytes();
+pub static TRAIT: &[u8] = "trait ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
@@ -99,10 +100,6 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
 
     [FN_START, struct_name.as_bytes(), FN_END].concat()
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Marker traits
-pub static MARKER_TRAIT_ENTITY_TYPE: &[u8] = "trait EntityType {}".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes
@@ -176,7 +173,7 @@ pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
 pub static SERDE_DE_DECIMAL: &str = "rust_decimal::serde::str";
 pub static SERDE_DE_DECIMAL_OPT: &str = "rust_decimal::serde::str_option";
 
-// These declarations makes forward references to custom deserializers declared in the parse-odata-atom-feed crate
+// These declarations make forward references to custom deserializers that exist in the parse-odata-atom-feed crate
 pub static SERDE_DE_DATETIME_OPT: &str = "parse_sap_atom_feed::deserializers::de_date_to_optional_naive_date_time";
 pub static SERDE_DE_DATETIME: &str = "parse_sap_atom_feed::deserializers::de_date_to_naive_date_time";
 
@@ -214,6 +211,18 @@ pub fn comment_for(something: &str) -> Vec<u8> {
     .concat()
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Start a module declaration
+pub fn gen_mod_start(mod_name: &str) -> Vec<u8> {
+    [MOD, mod_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
+}
+
+pub fn gen_use_serde() -> Vec<u8> {
+    [USE_SERDE, LINE_FEED, LINE_FEED].concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Start and end of a struct declaration
 pub fn start_struct(struct_name: &str) -> Vec<u8> {
     [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
@@ -222,11 +231,29 @@ pub fn end_struct() -> Vec<u8> {
     [CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
 }
 
-pub fn impl_marker_trait(struct_name: &str) -> Vec<u8> {
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Marker trait declaration and empty implementation
+pub fn gen_marker_trait_for(struct_name: &str) -> Vec<u8> {
     [
-        START_IMPL,
-        ENTITY_TYPE_FOR,
+        TRAIT,
         struct_name.as_bytes(),
+        SPACE,
+        OPEN_CURLY,
+        CLOSE_CURLY,
+        LINE_FEED,
+        LINE_FEED,
+    ]
+    .concat()
+}
+
+pub fn impl_marker_trait(trait_name: &str, struct_name: &str) -> Vec<u8> {
+    [
+        IMPL,
+        trait_name.as_bytes(),
+        SPACE,
+        FOR,
+        struct_name.as_bytes(),
+        SPACE,
         OPEN_CURLY,
         CLOSE_CURLY,
         LINE_FEED,

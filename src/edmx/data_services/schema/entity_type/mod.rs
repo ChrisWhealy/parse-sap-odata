@@ -4,9 +4,10 @@ use crate::property::{Property, PropertyRef};
 use crate::sap_annotations::default_sap_content_version;
 use crate::utils::{de_str_to_bool, default_false};
 use navigation_property::NavigationProperty;
+
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, serde::Serialize, Deserialize)]
 pub enum EntityTypeSAPSemantics {
     #[serde(rename = "vcard")]
     VCard,
@@ -32,7 +33,7 @@ pub enum EntityTypeSAPSemantics {
 ///
 /// # Child Nodes
 /// `1:n PropertyRef`
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, serde::Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Key {
     #[serde(rename = "PropertyRef")]
@@ -75,17 +76,6 @@ pub struct EntityType {
 
     #[serde(rename = "NavigationProperty", default)]
     pub navigations: Vec<NavigationProperty>,
-}
-
-impl EntityType {
-    pub fn key_property(&self) -> Option<&Property> {
-        self.properties.iter().find(|property| {
-            self.key
-                .property_refs
-                .iter()
-                .any(|prop_ref| prop_ref.name == property.odata_name)
-        })
-    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

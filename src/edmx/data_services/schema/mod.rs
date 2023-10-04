@@ -73,7 +73,8 @@ impl Schema {
         // pub enum <schema_namespace>EntityTypes {↩︎
         let mut output_enum = [
             derive_str(vec![DeriveTraits::DEBUG]).as_slice(),
-            START_ENUM,
+            PUBLIC,
+            ENUM,
             pascal_entity_types_name.as_bytes(),
             SPACE,
             OPEN_CURLY,
@@ -83,7 +84,7 @@ impl Schema {
 
         // Output the start of an enum implementation
         // impl <schema_namespace>EntityTypes {↩︎
-        let output_impl = [START_IMPL, pascal_entity_types_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat();
+        let output_impl = [IMPL, pascal_entity_types_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat();
 
         // Output the start of a "value" function within the enum implementation
         //   pub const fn value(&self) -> &'static str {↩︎

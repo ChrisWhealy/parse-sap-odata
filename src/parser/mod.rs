@@ -11,7 +11,7 @@ use std::{
 
 use crate::{
     edmx::{
-        data_services::schema::{complex_type::ComplexType, entity_type::EntityType},
+        data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
         Edmx,
     },
     property::Property,
@@ -23,6 +23,7 @@ use syntax_fragments::*;
 
 static DEFAULT_INPUT_DIR: &str = "./odata";
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
@@ -31,6 +32,20 @@ fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
     let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
 
     Ok(String::from_utf8(xml_buffer)?)
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Write generated buffer to $OUT_DIR
+fn write_buffer_to_file(filename: &str, buf: Vec<u8>) {
+    let out_dir = env::var_os("OUT_DIR").unwrap();
+    let mut output_file = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open(Path::new(&out_dir).join(filename))
+        .unwrap();
+
+    output_file.write_all(&buf).unwrap();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,27 +61,6 @@ fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError
     let edmx = Edmx::from_str(&xml)?;
 
     return Ok(edmx);
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate the start of the service document module
-fn gen_srv_doc_mod_start(out_buffer: &mut Vec<u8>, odata_srv_name: &str) {
-    out_buffer.append(
-        &mut [
-            MOD_START,
-            odata_srv_name.as_bytes(),
-            SPACE,
-            OPEN_CURLY,
-            LINE_FEED,
-            USE_SERDE,
-            LINE_FEED,
-            LINE_FEED,
-            MARKER_TRAIT_ENTITY_TYPE,
-            LINE_FEED,
-            LINE_FEED,
-        ]
-        .concat(),
-    );
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,18 +125,16 @@ fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
         out_buffer.append(&mut start_struct(&ct_name));
 
         for mut prop in props {
-            if !prop.custom_deserializer.is_empty() {}
             out_buffer.append(&mut prop.to_rust(namespace));
         }
 
-        // Add terminating line feed, close curly brace, then two more line feeds
         out_buffer.append(&mut end_struct());
 
         // Implement `from_str` for this struct
         out_buffer.append(&mut impl_from_str_for(&ct_name));
         Some(out_buffer)
     } else {
-        // This is just a simple type pretending to be complex
+        // This is just a simple type pretending to have a complex
         None
     }
 }
@@ -175,7 +167,7 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
     out_buffer.append(&mut end_struct());
 
     // Each entity type struct implements the `EntityType` marker trait
-    out_buffer.append(&mut impl_marker_trait(&struct_name));
+    out_buffer.append(&mut impl_marker_trait("EntityType", &struct_name));
 
     // Implement `from_str` for this struct
     out_buffer.append(&mut impl_from_str_for(&struct_name));
@@ -183,13 +175,51 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate Rust structs and enums from the OData metadata
-///
-/// Any field whose name clashes with a Rust reserved word is written in raw format:<br>
-/// E.G. `type --> r#type`
-pub fn gen_src(odata_srv_name: &str, namespace: &str) {
+/// Generate a module containing the structs and enums for the service document
+fn gen_srv_doc_module(odata_srv_name: &str, namespace: &str, schema: &Schema) -> Vec<u8> {
     let mut out_buffer: Vec<u8> = Vec::new();
 
+    // Start module definition
+    out_buffer.append(&mut gen_mod_start(odata_srv_name));
+    out_buffer.append(&mut gen_use_serde());
+    out_buffer.append(&mut gen_marker_trait_for("EntityType"));
+
+    if let Some(cts) = &schema.complex_types {
+        gen_complex_types(&mut out_buffer, cts, namespace);
+    }
+
+    gen_entity_types(&mut out_buffer, &schema.entity_types, namespace);
+
+    // Create enum + impl for the entity container
+    // This enum acts as a proxy for the service document
+    if let Some(ent_cont) = &schema.entity_container {
+        out_buffer.append(&mut comment_for("ENTITY SETS ENUM"));
+        out_buffer.append(&mut ent_cont.to_enum_with_impl());
+    }
+
+    // Close module definition
+    out_buffer.append(&mut [CLOSE_CURLY, LINE_FEED].concat());
+
+    out_buffer
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate a module containing the metadata objects and their respective instances for this OData service
+fn gen_metadata_module(odata_srv_name: &str, _namespace: &str, _schema: &Schema) -> Vec<u8> {
+    let mut out_buffer: Vec<u8> = Vec::new();
+
+    // Start module definition
+    out_buffer.append(&mut gen_mod_start(&format!("{}_metadata", odata_srv_name)));
+
+    // Close module definition
+    out_buffer.append(&mut [CLOSE_CURLY, LINE_FEED].concat());
+
+    out_buffer
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate the service document and metadata modules
+pub fn gen_src(odata_srv_name: &str, namespace: &str) {
     match deserialize_sap_metadata(odata_srv_name) {
         // Deserialization can fail sometimes!
         // This can happen for example, when a quoted XML attribute value contains an unescaped double quote character
@@ -198,46 +228,13 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         // contain `<entry>` elements whose `m:etag` attribute contains such an incorrectly quoted value
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
-            let out_dir = env::var_os("OUT_DIR").unwrap();
-            let odata_srv_output_pathbuf = Path::new(&out_dir).join(format!("{}.rs", odata_srv_name));
-
-            let mut odata_srv_output_file = OpenOptions::new()
-                .create(true)
-                .write(true)
-                .truncate(true)
-                .open(&odata_srv_output_pathbuf)
-                .unwrap();
-
-            // If this fails, then either the build script been passed the wrong namespace value, or we're trying to
-            // parse XML that is not an OData V2 metadata document
+            // If this "if let" fails, then either the build script been passed the wrong namespace value, or we're
+            // trying to parse XML that is not an OData V2 metadata document
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                // Start module definition
-                gen_srv_doc_mod_start(&mut out_buffer, odata_srv_name);
-
-                if let Some(cts) = &schema.complex_types {
-                    gen_complex_types(&mut out_buffer, cts, namespace);
-                }
-
-                gen_entity_types(&mut out_buffer, &schema.entity_types, namespace);
-
-                // Create enum + impl for the entity container
-                // This enum acts as a proxy for the service document
-                if let Some(ent_cont) = &schema.entity_container {
-                    out_buffer.append(&mut comment_for("ENTITY SETS ENUM"));
-                    out_buffer.append(&mut ent_cont.to_enum_with_impl());
-                }
-
-                // Close module definition
-                out_buffer.append(&mut [CLOSE_CURLY, LINE_FEED].concat());
-
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // TODO Generate function imports
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-                // Run the generated code through rustfmt to syntax chack and format it
-                match run_rustfmt(&out_buffer, &odata_srv_name) {
+                // Generate the source code for the service document module and run it through rustfmt
+                match run_rustfmt(&gen_srv_doc_module(odata_srv_name, namespace, &schema), &odata_srv_name) {
                     Ok(formatted_bytes) => {
-                        odata_srv_output_file.write_all(&formatted_bytes).unwrap();
+                        write_buffer_to_file(&format!("{}.rs", odata_srv_name), formatted_bytes);
 
                         // Tell cargo to watch the input XML file
                         println!(
@@ -245,15 +242,21 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
                             format!("{}/{}.xml", DEFAULT_INPUT_DIR, odata_srv_name)
                         );
                     },
-                    Err(err) => println!("Error: rustfmt ended with {}", err.to_string()),
+                    Err(err) => println!("Error: rustfmt for service document module ended with {}", err.to_string()),
+                }
+
+                // Now generate the source code for the metadata document module and run that through rustfmt too
+                match run_rustfmt(&gen_metadata_module(odata_srv_name, namespace, &schema), &odata_srv_name) {
+                    Ok(formatted_bytes) => {
+                        write_buffer_to_file(&format!("{}_metadata.rs", odata_srv_name), formatted_bytes)
+                    },
+                    Err(err) => println!("Error: rustfmt for metadata document module ended with {}", err.to_string()),
                 }
             } else {
-                println!("Required namespace '{}' not found in schema", namespace);
-            };
+                println!("OData schema for namespace '{}' cannot be found", namespace);
+            }
         },
-    };
-
-    out_buffer.clear();
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
