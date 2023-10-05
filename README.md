@@ -257,5 +257,5 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 ## TODOs
 
 1. Improve support for fields of type `Edm.Decimal`.
-2. Generated OData metadata module.
+2. Populate the empty OData metadata module.
 3. Support Function Imports.
