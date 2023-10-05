@@ -1,58 +1,27 @@
 # Parse the Metadata from an SAP OData V2 Service
 
-This is a work in progress!
+***This is a work in progress!***
 
-Parse the metadata XML describing an SAP OData V2 service and generate basic Rust entities for each EDM type:
+Parse the metadata XML describing an SAP OData V2 service and generate Rust modules: one for the Service Document and one for the metadata document.
 
-* [x] `ComplexType`
-* [x] `EntityType`
-* [ ] `FunctionImport`
-* [x] Custom deserializer for `Edm.DateTime`
-* [x] Use deserializer in crate `rust_decimal` for `Edm.Decimal` (offers partial support)
-* [x] Internal refactorisation in preparation for generating metadata module
-* [ ] Generate metadata module
-
-## Limitations and Issues
-
-1. Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
-  Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
-
-1. The `<FunctionImport>`, `<Association>` and `<AssociationSet>` metadata tags are parsed, but their contents is not currently acted upon.
-
-1. All [SAP OData V2 Annotations](https://sap.github.io/odata-vocabularies/docs/v2-annotations.html) are processed by [serde](https://serde.rs); however, no action is yet taken based on the annotation values.
-
-1. When calling some of the entity sets in the demo OData service `GWSAMPLE_BASIC`, certain XML properties are returned whose values are not valid XML.
-   Consequently, when `quick_xml` attempts to parse such values, it simply throws its toys out the pram and doesn't want to play anymore.
-
-   If you encounter such errors, the raw XML string must first be sanitised before attempting to parse it.
-
-   This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
-
-1. The `rust_decimal::serde::str` deserializer can offer only partial support for fields of `Edm.Decimal` because it knows nothing about the attributes `Precision` and `Scale`:
-
-   ```xml
-   <Property Name="Price" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Unit Price"/>
-   ```
-
-   Consequently, these attribute values are not considered when extracting a decimal value.
-
----
-
-## TODOs
-
-1. Improve support for fields of type `Edm.Decimal`.
-2. Supplement generated source code with SAP annotation information.
-3. Support Function Imports.
+* [x] `<ComplexType>` and `<EntityType>` elements are mapped to Rust `structs`
+* [ ] `<FunctionImport>` functionality will be supported in time, but is not currently available
+* [x] A custom deserializer for `Edm.DateTime` has been implemntend that uses `chrono::NaiveDateTime`
+* [x] `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this can only offer partial support
+* [x] The OData metadata parsing functionality is vailable once the `parser` crate feature is switched on
+* [ ] Generate a metadata module.
+   At the moment, only an empty metadata module is generated.
+   I'm working on it...
 
 ---
 
 ## Usage
 
-You want to write a Rust application to interact with an SAP OData V2 service.
+You want to write a Rust application to consume the data exposed through an SAP OData V2 service.
 
-The functionality in this crate is invoked by the build script in your application and generates the `struct`s and `enum`s needed to consume the data returned by calling the OData service's entity sets.
+The functionality in this crate is invoked by the build script in your application that generates a module of the same name as the OData service you wish to consume.
 
-Your app can then consume the entity set data using the code in crate [`parse-sap-atom-feed`](https://crates.io/crates/parse-sap-atom-feed)
+Together with the code in crate [`parse-sap-atom-feed`](https://crates.io/crates/parse-sap-atom-feed) the coding in the generated module can then consume entity set data from the OData service.
 
 ### Declare Build Dependency
 
@@ -60,7 +29,7 @@ In the `Cargo.toml` of your application, define an entry in `[build-dependencies
 
 ```toml
 [build-dependencies]
-parse-sap-odata = "1.2"
+parse-sap-odata = { version = "1.2", features = ["parser"]}
 ```
 
 Your app will require at least these dependencies:
@@ -197,7 +166,7 @@ In such cases, fields declared to be of these "simple" complex types (such as `C
 
 ## Entity Sets Enum
 
-On the basis that a single OData service exposes a static list of entity sets, and within the scope of any single request, you will only ever be interacting with a single entity set, it makes sense to treat each entity set name as an `enum` variant.
+On the basis that a single OData service exposes a static list of entity sets, and that within the scope of any single request, you will only ever be interacting with a single entity set, it makes sense to treat each entity set name as an `enum` variant.
 
 Under the `<Schema>` element in the OData service document, there is an `<EntityContainer>` element.
 All entity sets available through this OData service are identified here with their own `<EntitySet Name="<some_name>">` tag.
@@ -252,8 +221,42 @@ For standard Rust `enums` such as `Option` and `Result`, it makes little sense t
 E.G. The `Option` `enum` exists to provide a type-safe mechanism for handling the possibility that a variable might not contain a value.
 
 However, an OData service guarantees that the entity set names form an immutable, type-safe list.
-Therefore, on the basis of this guarantee, it is now both safe and meaningful to implement an `iterator` function.
+Therefore, on the basis of this guarantee, the entity set names are placed into an `enum` that implements an `iterator` function over its variants.
 
 ### Entity Set Enum `as_list` function
 
 By making use of the above `iterator` and `value` functions, the `as_list` function returns the names of the entity sets as a vector of string slices.
+
+---
+
+## Limitations and Issues
+
+1. Currently when generating a Rust `struct`, only the `Name` and `Type` properties are extracted from the XML `<EntityType>` declaration.
+  Consider how the other XML attribute values and SAP annotations could be made available within the generated Rust `struct`.
+
+1. The `<FunctionImport>`, `<Association>` and `<AssociationSet>` metadata tags are parsed, but their contents is not currently acted upon.
+
+1. All [SAP OData V2 Annotations](https://sap.github.io/odata-vocabularies/docs/v2-annotations.html) are processed by [serde](https://serde.rs); however, no action is yet taken based on the annotation values.
+
+1. When calling some of the entity sets in the demo OData service `GWSAMPLE_BASIC`, certain XML properties are returned whose values are not valid XML.
+   Consequently, when `quick_xml` attempts to parse such values, it simply throws its toys out the pram and doesn't want to play anymore.
+
+   If you encounter such errors, the raw XML string must first be sanitised before attempting to parse it.
+
+   This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
+
+1. The `rust_decimal::serde::str` deserializer can offer only partial support for fields of `Edm.Decimal` because it knows nothing about the attributes `Precision` and `Scale`:
+
+   ```xml
+   <Property Name="Price" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Unit Price"/>
+   ```
+
+   Consequently, these attribute values are not considered when extracting a decimal value.
+
+---
+
+## TODOs
+
+1. Improve support for fields of type `Edm.Decimal`.
+2. Supplement generated source code with SAP annotation information.
+3. Support Function Imports.

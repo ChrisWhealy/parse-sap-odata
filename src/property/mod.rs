@@ -1,7 +1,12 @@
+#[cfg(feature = "parser")]
 use crate::{
     parser::syntax_fragments::*,
+    utils::{odata_name_to_rust_safe_name, to_pascal_case},
+};
+
+use crate::{
     sap_annotations::SAPAnnotationsProperty,
-    utils::{de_str_to_bool, default_false, default_true, odata_name_to_rust_safe_name, to_pascal_case},
+    utils::{de_str_to_bool, default_false, default_true},
 };
 use serde::{Deserialize, Serialize};
 
@@ -64,6 +69,7 @@ pub struct Property {
 /// serde = { version = "1.0", features = ["derive"] }
 /// uuid = { version = "1.4", features = ["serde"]}
 /// ```
+#[cfg(feature = "parser")]
 impl Property {
     fn trim_prefix<'de>(some_str: &'de str, some_prefix: &str) -> &'de str {
         if let Some(suffix) = some_str.strip_prefix(some_prefix) {
@@ -75,7 +81,7 @@ impl Property {
 
     fn maybe_optional(&self, rust_type: &[u8]) -> Vec<u8> {
         if self.nullable {
-            [OPTION, OPEN_ANGLE, rust_type, CLOSE_ANGLE].concat().to_vec()
+            gen_option_of_type(rust_type)
         } else {
             rust_type.to_vec()
         }
@@ -157,22 +163,14 @@ impl Property {
     pub fn to_rust(&mut self, namespace: &str) -> Vec<u8> {
         let mut response: Vec<u8> = Vec::new();
 
-        // Check whether the Pascal case name is correctly transformed into a snake_case name.
+        // Check whether the Pascal case name is correctly transformed into a Pascal case name.
         // If not, output a serde_rename attribute.
+        //
         // This catches deserialization problems with fields that contain capitalised abbreviations:
-        // E.G. "ID" instead of "Id"
+        // E.G. SAP tends not to format abbreviations such as "ID" into correct PascalCase.  Consequently, you will see
+        // fields such as "BusinessPartnerID" instead of "BusinessPartnerId"
         if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
-            response.extend(
-                [
-                    SERDE_RENAME,
-                    self.odata_name.clone().as_bytes(),
-                    DOUBLE_QUOTE,
-                    CLOSE_PAREN,
-                    CLOSE_SQR,
-                    LINE_FEED,
-                ]
-                .concat(),
-            )
+            response.extend(gen_serde_rename(&self.odata_name))
         }
 
         let rust_safe_name = odata_name_to_rust_safe_name(&self.odata_name);
@@ -188,7 +186,7 @@ impl Property {
         }
 
         // Write struct field
-        response.extend([PUBLIC, rust_safe_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat());
+        response.extend(gen_struct_field(&rust_safe_name, rust_type));
 
         response
     }

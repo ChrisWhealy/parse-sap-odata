@@ -18,8 +18,9 @@ pub static CLOSE_CURLY: &[u8] = &[0x7D];
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Comment separators
 pub static COMMMENT_LINE: &[u8] = "// ".as_bytes();
-pub static SEPARATOR: &[u8] =
-    "// -----------------------------------------------------------------------------".as_bytes();
+pub static SEPARATOR: &[u8] = "// -----------------------------------------------------------------------------
+"
+.as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Syntactical separators
@@ -59,10 +60,16 @@ pub static UUID: &[u8] = "uuid::Uuid".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Function calls and larger code fragments
-pub static FN_VALUE_DECL: &[u8] = "pub const fn value(&self) -> &'static str {".as_bytes();
+pub static FN_VALUE_DECL: &[u8] = "pub const fn value(&self) -> &'static str {
+"
+.as_bytes();
 pub static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
-pub static FN_ITERATOR_DECL_END: &[u8] = "> {".as_bytes();
-pub static MATCH_SELF: &[u8] = "match *self {".as_bytes();
+pub static FN_ITERATOR_DECL_END: &[u8] = "> {
+"
+.as_bytes();
+pub static MATCH_SELF: &[u8] = "match *self {
+"
+.as_bytes();
 pub static CALL_ITER: &[u8] = ".iter()".as_bytes();
 pub static CALL_COPIED: &[u8] = ".copied()".as_bytes();
 pub static AS_OPT_LIST_START: &[u8] = "
@@ -103,7 +110,9 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes
-pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]".as_bytes();
+pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]
+"
+.as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Derivable traits.
@@ -156,16 +165,21 @@ pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
         }
     }
 
-    d_str.extend([DERIVE_END, LINE_FEED].concat());
+    d_str.extend(DERIVE_END);
     d_str
 }
 
 pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
-pub static DERIVE_END: &[u8] = ")]".as_bytes();
+pub static DERIVE_END: &[u8] = ")]
+"
+.as_bytes();
 
-pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};".as_bytes();
-pub static SERDE_RENAME_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]".as_bytes();
-pub static SERDE_RENAME_SNAKE_CASE: &[u8] = "#[serde(rename_all = \"snake_case\")]".as_bytes();
+pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};
+"
+.as_bytes();
+pub static SERDE_RENAME_ALL_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]
+"
+.as_bytes();
 pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
 
 // Deserializers supplied by the rust_decimal crate
@@ -199,16 +213,7 @@ pub fn deserialize_with(de: &'static str, de_is_function: bool) -> Vec<u8> {
 }
 
 pub fn comment_for(something: &str) -> Vec<u8> {
-    [
-        SEPARATOR,
-        LINE_FEED,
-        COMMMENT_LINE,
-        something.as_bytes(),
-        LINE_FEED,
-        SEPARATOR,
-        LINE_FEED,
-    ]
-    .concat()
+    [SEPARATOR, COMMMENT_LINE, something.as_bytes(), LINE_FEED, SEPARATOR].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -217,8 +222,16 @@ pub fn gen_mod_start(mod_name: &str) -> Vec<u8> {
     [MOD, mod_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
 
-pub fn gen_use_serde() -> Vec<u8> {
-    [USE_SERDE, LINE_FEED, LINE_FEED].concat()
+pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
+    [
+        SERDE_RENAME,
+        odata_name.as_bytes(),
+        DOUBLE_QUOTE,
+        CLOSE_PAREN,
+        CLOSE_SQR,
+        LINE_FEED,
+    ]
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -227,23 +240,80 @@ pub fn start_struct(struct_name: &str) -> Vec<u8> {
     [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
 
-pub fn end_struct() -> Vec<u8> {
+pub fn gen_struct_field(field_name: &str, rust_type: &Vec<u8>) -> Vec<u8> {
+    [PUBLIC, field_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat()
+}
+
+pub fn end_block() -> Vec<u8> {
     [CLOSE_CURLY, LINE_FEED, LINE_FEED].concat()
+}
+
+pub fn end_iter_fn() -> Vec<u8> {
+    [CLOSE_SQR, CALL_ITER, CALL_COPIED, LINE_FEED, &end_block()[..]].concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Start of an implementation
+pub fn gen_impl_start(some_name: &str) -> Vec<u8> {
+    [IMPL, some_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Start of an enum declaration
+pub fn gen_enum_start(enum_name: &str) -> Vec<u8> {
+    [PUBLIC, ENUM, enum_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
+}
+
+pub fn gen_fq_enum_variant_name(enum_name: &str, variant_name: &str) -> Vec<u8> {
+    [enum_name.as_bytes(), COLON2, variant_name.as_bytes()].concat()
+}
+
+pub fn gen_enum_variant(variant_name: &str) -> Vec<u8> {
+    [variant_name.as_bytes(), COMMA, LINE_FEED].concat()
+}
+
+pub fn gen_fq_enum_variant(enum_name: &str, variant_name: &str) -> Vec<u8> {
+    [&gen_fq_enum_variant_name(&enum_name, &variant_name)[..], COMMA, LINE_FEED].concat()
+}
+
+pub fn gen_enum_as_list_fn(enum_name: &str) -> Vec<u8> {
+    [AS_OPT_LIST_START, enum_name.as_bytes(), AS_OPT_LIST_END].concat()
+}
+
+pub fn gen_enum_value_fn_start() -> Vec<u8> {
+    [FN_VALUE_DECL, MATCH_SELF].concat()
+}
+
+pub fn gen_enum_iter_fn_start(type_name: &str) -> Vec<u8> {
+    [
+        FN_ITERATOR_DECL_START,
+        type_name.as_bytes(),
+        FN_ITERATOR_DECL_END,
+        OPEN_SQR,
+        LINE_FEED,
+    ]
+    .concat()
+}
+
+pub fn gen_enum_match_arm(enum_name: &str, variant_name: &str, variant_value: &str) -> Vec<u8> {
+    [
+        &gen_fq_enum_variant_name(enum_name, variant_name)[..],
+        SPACE,
+        FAT_ARROW,
+        SPACE,
+        DOUBLE_QUOTE,
+        variant_value.as_bytes(),
+        DOUBLE_QUOTE,
+        COMMA,
+        LINE_FEED,
+    ]
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Marker trait declaration and empty implementation
 pub fn gen_marker_trait_for(struct_name: &str) -> Vec<u8> {
-    [
-        TRAIT,
-        struct_name.as_bytes(),
-        SPACE,
-        OPEN_CURLY,
-        CLOSE_CURLY,
-        LINE_FEED,
-        LINE_FEED,
-    ]
-    .concat()
+    [TRAIT, struct_name.as_bytes(), SPACE, OPEN_CURLY, &end_block()[..]].concat()
 }
 
 pub fn impl_marker_trait(trait_name: &str, struct_name: &str) -> Vec<u8> {
@@ -255,9 +325,12 @@ pub fn impl_marker_trait(trait_name: &str, struct_name: &str) -> Vec<u8> {
         struct_name.as_bytes(),
         SPACE,
         OPEN_CURLY,
-        CLOSE_CURLY,
-        LINE_FEED,
-        LINE_FEED,
+        &end_block()[..],
     ]
     .concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn gen_option_of_type(ty: &[u8]) -> Vec<u8> {
+    [OPTION, OPEN_ANGLE, ty, CLOSE_ANGLE].concat()
 }

@@ -3,10 +3,12 @@ pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::*;
+
 use crate::{
     atom::AtomLink,
     oasis::annotations::Annotations,
-    parser::syntax_fragments::*,
     sap_annotations::SAPAnnotationsSchema,
     xml::{default_xml_language, default_xml_namespace},
 };
@@ -61,6 +63,7 @@ pub struct Schema {
     pub atom_links: Vec<AtomLink>,
 }
 
+#[cfg(feature = "parser")]
 impl Schema {
     pub fn to_entity_types_enum(&self) -> Vec<u8> {
         let pascal_entity_types_name = format!(
@@ -68,66 +71,34 @@ impl Schema {
             convert_case::Casing::to_case(&self.namespace, convert_case::Case::Pascal)
         );
 
-        // Output the start of an enum for all the entity types
+        // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
-        let mut output_enum = [
-            derive_str(vec![DeriveTraits::DEBUG]).as_slice(),
-            PUBLIC,
-            ENUM,
-            pascal_entity_types_name.as_bytes(),
-            SPACE,
-            OPEN_CURLY,
-            LINE_FEED,
-        ]
-        .concat();
-
-        // Output the start of an enum implementation
-        // impl <schema_namespace>EntityTypes {↩︎
-        let output_impl = [IMPL, pascal_entity_types_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat();
+        let mut output_enum = derive_str(vec![DeriveTraits::DEBUG]).as_slice().to_vec();
+        output_enum.append(&mut gen_enum_start(&pascal_entity_types_name));
 
         // Output the start of a "value" function within the enum implementation
         //   pub const fn value(&self) -> &'static str {↩︎
         //       match *self {↩︎
-        let mut fn_value = [FN_VALUE_DECL, LINE_FEED, MATCH_SELF, LINE_FEED].concat();
+        let mut fn_value = gen_enum_value_fn_start();
 
         // Create entity type enum
         for ent_type in self.entity_types.iter() {
             let ent_type_name_camel = convert_case::Casing::to_case(&ent_type.name, convert_case::Case::UpperCamel);
 
-            // Add variant to enum
-            output_enum.append(&mut [ent_type_name_camel.as_bytes(), COMMA, LINE_FEED].concat());
-
-            // Add variant to value function
-            fn_value.append(
-                &mut [
-                    pascal_entity_types_name.as_bytes(),
-                    COLON2,
-                    ent_type_name_camel.as_bytes(),
-                    SPACE,
-                    FAT_ARROW,
-                    SPACE,
-                    DOUBLE_QUOTE,
-                    &ent_type.name.as_bytes(),
-                    DOUBLE_QUOTE,
-                    COMMA,
-                    LINE_FEED,
-                ]
-                .concat(),
-            );
+            // Add variant to enum and value function
+            output_enum.append(&mut gen_enum_variant(&ent_type_name_camel));
+            fn_value.append(&mut gen_enum_match_arm(
+                &pascal_entity_types_name,
+                &ent_type_name_camel,
+                &ent_type.name,
+            ));
         }
 
-        output_enum.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
-        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED].concat());
+        output_enum.append(&mut end_block());
+        fn_value.append(&mut end_block());
+        fn_value.append(&mut end_block());
 
-        return [
-            output_enum,
-            output_impl,
-            fn_value,
-            CLOSE_CURLY.to_vec(),
-            LINE_FEED.to_vec(),
-            LINE_FEED.to_vec(),
-        ]
-        .concat();
+        return [output_enum, gen_impl_start(&pascal_entity_types_name), fn_value, end_block()].concat();
     }
 }

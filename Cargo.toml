@@ -8,7 +8,9 @@ keywords = ["odata", "sap", "parser", "opendata"]
 repository = "https://github.com/lighthouse-no/parse-sap-odata"
 license = "MIT"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+parser = []
+
 [dev-dependencies]
 rust_decimal = { version ="1", features = ["serde-with-str"]}
 

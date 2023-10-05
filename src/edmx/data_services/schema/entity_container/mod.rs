@@ -2,8 +2,10 @@ pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::*;
+
 use crate::{
-    parser::syntax_fragments::*,
     sap_annotations::SAPAnnotationsEntityContainer,
     utils::{de_str_to_bool, default_false},
 };
@@ -47,6 +49,7 @@ pub struct EntityContainer {
     pub function_imports: Option<Vec<FunctionImport>>,
 }
 
+#[cfg(feature = "parser")]
 impl EntityContainer {
     /// Transforms an `EntityContainer` into an enumeration of entity set names.
     /// Additionally, this enumeration is given three helper functions:
@@ -62,104 +65,50 @@ impl EntityContainer {
         let mut output_enum = [
             derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]).as_slice(),
             RUSTC_ALLOW_DEAD_CODE,
-            LINE_FEED,
-            PUBLIC,
-            ENUM,
-            cont_name_camel.as_bytes(),
-            SPACE,
-            OPEN_CURLY,
-            LINE_FEED,
         ]
         .concat();
 
-        // Output the start of an enum implementation
+        output_enum.append(&mut gen_enum_start(&cont_name_camel));
+
+        // Output the start of an enum implementation in which dead code is permitted
+        // #[allow(dead_code)]
         // impl <entity_container_name> {↩︎
-        let output_impl = [
-            RUSTC_ALLOW_DEAD_CODE,
-            LINE_FEED,
-            IMPL,
-            cont_name_camel.as_bytes(),
-            SPACE,
-            OPEN_CURLY,
-            LINE_FEED,
-        ]
-        .concat();
+        let mut output_impl = RUSTC_ALLOW_DEAD_CODE.to_vec();
 
-        // Output the start of a "value" function within the enum implementation
+        output_impl.append(&mut gen_impl_start(&cont_name_camel));
+
+        // Output the start of the "value" function within the enum implementation
         //   pub const fn value(&self) -> &'static str {↩︎
         //       match *self {↩︎
-        let mut fn_value = [FN_VALUE_DECL, LINE_FEED, MATCH_SELF, LINE_FEED].concat();
+        let mut fn_value = gen_enum_value_fn_start();
 
-        // Output the start of an "iterator" function within the enum implementation
+        // Output the start of the "iterator" function within the enum implementation
         //   pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {↩︎
         //       match *self {↩︎
-        let mut fn_iterator = [
-            FN_ITERATOR_DECL_START,
-            cont_name_camel.as_bytes(),
-            FN_ITERATOR_DECL_END,
-            LINE_FEED,
-            OPEN_SQR,
-            LINE_FEED,
-        ]
-        .concat();
-
-        // Output the "as_list" function within the enum implementation
-        let fn_as_list = [AS_OPT_LIST_START, cont_name_camel.as_bytes(), AS_OPT_LIST_END].concat();
+        let mut fn_iterator = gen_enum_iter_fn_start(&cont_name_camel);
 
         // Create entity set enum
         for ent_set in self.entity_sets.iter() {
             let ent_set_name_camel = convert_case::Casing::to_case(&ent_set.name, convert_case::Case::UpperCamel);
 
-            // Add variant to enum
-            output_enum.append(&mut [ent_set_name_camel.as_bytes(), COMMA, LINE_FEED].concat());
-
-            // Add variant to value function
-            fn_value.append(
-                &mut [
-                    cont_name_camel.as_bytes(),
-                    COLON2,
-                    ent_set_name_camel.as_bytes(),
-                    SPACE,
-                    FAT_ARROW,
-                    SPACE,
-                    DOUBLE_QUOTE,
-                    &ent_set.name.as_bytes(),
-                    DOUBLE_QUOTE,
-                    COMMA,
-                    LINE_FEED,
-                ]
-                .concat(),
-            );
-
-            // Add variant to iterator function
-            fn_iterator.append(
-                &mut [
-                    cont_name_camel.as_bytes(),
-                    COLON2,
-                    ent_set_name_camel.as_bytes(),
-                    COMMA,
-                    LINE_FEED,
-                ]
-                .concat(),
-            );
+            // Add variant to enum, value and iterator functions
+            output_enum.append(&mut gen_enum_variant(&ent_set_name_camel));
+            fn_value.append(&mut gen_enum_match_arm(&cont_name_camel, &ent_set_name_camel, &ent_set.name));
+            fn_iterator.append(&mut gen_fq_enum_variant(&cont_name_camel, &ent_set_name_camel));
         }
 
-        output_enum.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
-        fn_value.append(&mut [LINE_FEED, CLOSE_CURLY, LINE_FEED, CLOSE_CURLY, LINE_FEED, LINE_FEED].concat());
-        fn_iterator.append(
-            &mut [
-                LINE_FEED, CLOSE_SQR, CALL_ITER, LINE_FEED, CALL_COPIED, LINE_FEED, CLOSE_CURLY, LINE_FEED,
-            ]
-            .concat(),
-        );
+        output_enum.append(&mut end_block());
+        fn_value.append(&mut end_block());
+        fn_value.append(&mut end_block());
+        fn_iterator.append(&mut end_iter_fn());
 
         return [
             output_enum,
             output_impl,
             fn_value,
             fn_iterator,
-            fn_as_list,
-            CLOSE_CURLY.to_vec(),
+            gen_enum_as_list_fn(&cont_name_camel),
+            end_block(),
         ]
         .concat();
     }

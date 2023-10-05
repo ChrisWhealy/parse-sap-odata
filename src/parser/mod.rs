@@ -1,67 +1,17 @@
+mod error;
+mod io;
 pub mod syntax_fragments;
 
-use std::{
-    env,
-    fmt::Debug,
-    fs::{File, OpenOptions},
-    io::{BufReader, Read, Write},
-    path::Path,
-    str::FromStr,
-};
+use io::*;
+use syntax_fragments::*;
 
 use crate::{
-    edmx::{
-        data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
-        Edmx,
-    },
+    edmx::data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
     property::Property,
     utils::run_rustfmt,
 };
 
 use check_keyword::CheckKeyword;
-use syntax_fragments::*;
-
-static DEFAULT_INPUT_DIR: &str = "./odata";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
-    let mut xml_buffer: Vec<u8> = Vec::new();
-    let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
-
-    let f_xml = File::open(Path::new(&xml_input_pathname))?;
-    let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
-
-    Ok(String::from_utf8(xml_buffer)?)
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Write generated buffer to $OUT_DIR
-fn write_buffer_to_file(filename: &str, buf: Vec<u8>) {
-    let out_dir = env::var_os("OUT_DIR").unwrap();
-    let mut output_file = OpenOptions::new()
-        .create(true)
-        .write(true)
-        .truncate(true)
-        .open(Path::new(&out_dir).join(filename))
-        .unwrap();
-
-    output_file.write_all(&buf).unwrap();
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Deserialize an SAP OData metadata document
-///
-/// The metadata file must exist in the `./odata` directory and have the `.xml` extension.
-/// For example:
-///
-/// `odata/`<br>
-/// `└── gwsample_basic.xml`
-fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
-    let xml = fetch_xml_as_string(metadata_file_name)?;
-    let edmx = Edmx::from_str(&xml)?;
-
-    return Ok(edmx);
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate complex type structs
@@ -72,7 +22,7 @@ fn gen_complex_types(out_buffer: &mut Vec<u8>, cts: &Vec<ComplexType>, namespace
 
     for (idx, ct) in cts.into_iter().enumerate() {
         if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-            out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
+            out_buffer.append(&mut SEPARATOR.to_vec());
         }
 
         if let Some(mut ct_src) = gen_src_complex_type(ct, namespace) {
@@ -90,7 +40,7 @@ fn gen_entity_types(out_buffer: &mut Vec<u8>, ets: &Vec<EntityType>, namespace: 
 
     for (idx, entity) in ets.into_iter().enumerate() {
         if idx > 0 {
-            out_buffer.append(&mut [SEPARATOR, LINE_FEED].concat());
+            out_buffer.append(&mut SEPARATOR.to_vec());
         }
 
         out_buffer.append(&mut gen_src_entity_type(entity, namespace));
@@ -121,14 +71,14 @@ fn gen_src_complex_type(ct: &ComplexType, namespace: &str) -> Option<Vec<u8>> {
             DeriveTraits::SERIALIZE,
             DeriveTraits::DESERIALIZE,
         ]));
-        out_buffer.append(&mut [SERDE_RENAME_PASCAL_CASE, LINE_FEED].concat().to_vec());
+        out_buffer.append(&mut SERDE_RENAME_ALL_PASCAL_CASE.to_vec());
         out_buffer.append(&mut start_struct(&ct_name));
 
         for mut prop in props {
             out_buffer.append(&mut prop.to_rust(namespace));
         }
 
-        out_buffer.append(&mut end_struct());
+        out_buffer.append(&mut end_block());
 
         // Implement `from_str` for this struct
         out_buffer.append(&mut impl_from_str_for(&ct_name));
@@ -154,7 +104,7 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
         DeriveTraits::SERIALIZE,
         DeriveTraits::DESERIALIZE,
     ]));
-    out_buffer.append(&mut [SERDE_RENAME_PASCAL_CASE, LINE_FEED].concat().to_vec());
+    out_buffer.append(&mut SERDE_RENAME_ALL_PASCAL_CASE.to_vec());
     out_buffer.append(&mut start_struct(&struct_name));
 
     let mut props = entity.properties.clone();
@@ -164,7 +114,7 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
         out_buffer.append(&mut prop.to_rust(namespace));
     }
 
-    out_buffer.append(&mut end_struct());
+    out_buffer.append(&mut end_block());
 
     // Each entity type struct implements the `EntityType` marker trait
     out_buffer.append(&mut impl_marker_trait("EntityType", &struct_name));
@@ -181,7 +131,7 @@ fn gen_srv_doc_module(odata_srv_name: &str, namespace: &str, schema: &Schema) ->
 
     // Start module definition
     out_buffer.append(&mut gen_mod_start(odata_srv_name));
-    out_buffer.append(&mut gen_use_serde());
+    out_buffer.append(&mut USE_SERDE.to_vec());
     out_buffer.append(&mut gen_marker_trait_for("EntityType"));
 
     if let Some(cts) = &schema.complex_types {
@@ -198,7 +148,7 @@ fn gen_srv_doc_module(odata_srv_name: &str, namespace: &str, schema: &Schema) ->
     }
 
     // Close module definition
-    out_buffer.append(&mut [CLOSE_CURLY, LINE_FEED].concat());
+    out_buffer.append(&mut end_block());
 
     out_buffer
 }
@@ -212,10 +162,14 @@ fn gen_metadata_module(odata_srv_name: &str, _namespace: &str, _schema: &Schema)
     out_buffer.append(&mut gen_mod_start(&format!("{}_metadata", odata_srv_name)));
 
     // Close module definition
-    out_buffer.append(&mut [CLOSE_CURLY, LINE_FEED].concat());
+    out_buffer.append(&mut end_block());
 
     out_buffer
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//                                               P U B L I C   A P I
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate the service document and metadata modules
@@ -256,47 +210,5 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
                 println!("OData schema for namespace '{}' cannot be found", namespace);
             }
         },
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#[derive(Debug)]
-pub struct ParseError {
-    pub msg: String,
-}
-
-impl std::fmt::Display for ParseError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.msg)
-    }
-}
-
-impl std::error::Error for ParseError {
-    fn description(&self) -> &str {
-        &self.msg
-    }
-}
-
-impl From<std::io::Error> for ParseError {
-    fn from(io_err: std::io::Error) -> ParseError {
-        ParseError { msg: io_err.to_string() }
-    }
-}
-
-impl From<std::string::FromUtf8Error> for ParseError {
-    fn from(utf8_err: std::string::FromUtf8Error) -> ParseError {
-        ParseError { msg: utf8_err.to_string() }
-    }
-}
-
-impl From<std::io::ErrorKind> for ParseError {
-    fn from(io_err: std::io::ErrorKind) -> ParseError {
-        ParseError { msg: io_err.to_string() }
-    }
-}
-
-impl From<quick_xml::DeError> for ParseError {
-    fn from(xml_err: quick_xml::DeError) -> ParseError {
-        ParseError { msg: xml_err.to_string() }
     }
 }
