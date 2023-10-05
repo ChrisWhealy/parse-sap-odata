@@ -3,7 +3,7 @@
 You want to write a Rust application to consume the data exposed through an SAP OData V2 service.
 
 The functionality in this crate is invoked by your application's build script and generates two Rust modules.
-For example, if you wist to consume the demo OData service `GWSAMPLE_BASIC`, then the following two modules will be generated:
+For example, if you wish to consume the demo OData service `GWSAMPLE_BASIC`, then after parsing this service's metadata document, the following two modules will be generated:
 
 * `gwsample_basic.rs`
 * `gwsample_basic_metadata.rs`
