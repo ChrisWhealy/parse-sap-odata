@@ -7,7 +7,7 @@ Parse the metadata XML describing an SAP OData V2 service and generate Rust modu
 * [x] `<ComplexType>` and `<EntityType>` elements are mapped to Rust `structs`
 * [ ] `<FunctionImport>` functionality will be supported in time, but is not currently available
 * [x] Transform `Edm.DateTime` into `chrono::NaiveDateTime` using a custom deserializer
-* [x] `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this can only offer partial support
+* [x] `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this offers only partial support
 * [x] OData metadata parsing functionality is only available when the `parser` crate feature is used
 * [x] Generate a metadata module
 * [ ] Populate the metadata module - I'm working on it...
