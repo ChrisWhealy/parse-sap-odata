@@ -8,6 +8,7 @@ For example, if you wist to consume the demo OData service `GWSAMPLE_BASIC`, the
 * `gwsample_basic.rs`
 * `gwsample_basic_metadata.rs`
 
+![Build process](./build.png)
 ## Declare a Build Dependency
 
 In the `Cargo.toml` of your application, define an entry in `[build-dependencies]` that points to the `parse-sap-odata` crate with the create feature `parser` switched on:
