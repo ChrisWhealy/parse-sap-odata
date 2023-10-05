@@ -8,10 +8,9 @@ Parse the metadata XML describing an SAP OData V2 service and generate Rust modu
 * [ ] `<FunctionImport>` functionality will be supported in time, but is not currently available
 * [x] A custom deserializer for `Edm.DateTime` has been implemntend that uses `chrono::NaiveDateTime`
 * [x] `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this can only offer partial support
-* [x] The OData metadata parsing functionality is vailable once the `parser` crate feature is switched on
-* [ ] Generate a metadata module.
-   At the moment, only an empty metadata module is generated.
-   I'm working on it...
+* [x] OData metadata parsing functionality is only available when the `parser` crate feature is used
+* [x] Generate a metadata module
+* [ ] Populate the metadata module - I'm working on it...
 
 ---
 
@@ -258,5 +257,5 @@ By making use of the above `iterator` and `value` functions, the `as_list` funct
 ## TODOs
 
 1. Improve support for fields of type `Edm.Decimal`.
-2. Supplement generated source code with SAP annotation information.
+2. Generated OData metadata module.
 3. Support Function Imports.
