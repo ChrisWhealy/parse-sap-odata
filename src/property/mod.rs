@@ -167,8 +167,9 @@ impl Property {
         // If not, output a serde_rename attribute.
         //
         // This catches deserialization problems with fields that contain capitalised abbreviations:
-        // E.G. SAP tends not to format abbreviations such as "ID" into correct PascalCase.  Consequently, you will see
-        // fields such as "BusinessPartnerID" instead of "BusinessPartnerId"
+        // E.G. SAP tends not to format abbreviations such as "ID" into correct PascalCase.  Consequently, instead of
+        // seeing the correct value "BusinessPartnerId" , you will see "BusinessPartnerID"
+        //                         Correct character ^              Incorrect character ^
         if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
             response.extend(gen_serde_rename(&self.odata_name))
         }

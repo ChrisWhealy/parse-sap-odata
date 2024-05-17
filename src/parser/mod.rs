@@ -116,8 +116,13 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
 
     out_buffer.append(&mut end_block());
 
-    // Each entity type struct implements the `EntityType` marker trait
-    out_buffer.append(&mut impl_marker_trait("EntityType", &struct_name));
+    // Each entity type struct implements the `EntityType` trait
+    // Currently, only the first key name is used
+    out_buffer.append(&mut impl_entity_type_trait(
+        "EntityType",
+        &struct_name,
+        &entity.key.property_refs,
+    ));
 
     // Implement `from_str` for this struct
     out_buffer.append(&mut impl_from_str_for(&struct_name));
@@ -132,7 +137,7 @@ fn gen_srv_doc_module(odata_srv_name: &str, namespace: &str, schema: &Schema) ->
     // Start module definition
     out_buffer.append(&mut gen_mod_start(odata_srv_name));
     out_buffer.append(&mut USE_SERDE.to_vec());
-    out_buffer.append(&mut gen_marker_trait_for("EntityType"));
+    out_buffer.append(&mut gen_entity_type_trait_for("EntityType"));
 
     if let Some(cts) = &schema.complex_types {
         gen_complex_types(&mut out_buffer, cts, namespace);

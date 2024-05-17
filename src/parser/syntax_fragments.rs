@@ -1,3 +1,5 @@
+use crate::{property::PropertyRef, utils::odata_name_to_rust_safe_name};
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Single characters
 pub static LINE_FEED: &[u8] = &[0x0a];
@@ -7,6 +9,7 @@ pub static OPEN_PAREN: &[u8] = &[0x28];
 pub static CLOSE_PAREN: &[u8] = &[0x29];
 pub static COMMA: &[u8] = &[0x2C];
 pub static COLON: &[u8] = &[0x3A];
+pub static SEMI_COLON: &[u8] = &[0x3B];
 pub static OPEN_ANGLE: &[u8] = &[0x3C];
 pub static CLOSE_ANGLE: &[u8] = &[0x3E];
 pub static OPEN_SQR: &[u8] = &[0x5B];
@@ -40,11 +43,13 @@ pub static U8: &[u8] = "u8".as_bytes();
 pub static UNIT: &[u8] = "()".as_bytes();
 pub static STRING: &[u8] = "String".as_bytes();
 pub static VECTOR_U8: &[u8] = "Vec<u8>".as_bytes();
+pub static VECTOR_STATIC_STR: &[u8] = "Vec<&'static str>".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Keywords or keyword fragments
 pub static ENUM: &[u8] = "enum ".as_bytes();
 pub static FOR: &[u8] = "for ".as_bytes();
+pub static FN: &[u8] = "fn ".as_bytes();
 pub static IMPL: &[u8] = "impl ".as_bytes();
 pub static MOD: &[u8] = "mod ".as_bytes();
 pub static OPTION: &[u8] = "Option".as_bytes();
@@ -311,23 +316,51 @@ pub fn gen_enum_match_arm(enum_name: &str, variant_name: &str, variant_value: &s
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Marker trait declaration and empty implementation
-pub fn gen_marker_trait_for(struct_name: &str) -> Vec<u8> {
-    [TRAIT, struct_name.as_bytes(), SPACE, OPEN_CURLY, &end_block()[..]].concat()
+/// EntityType public trait declaration and implementation
+pub fn gen_entity_type_trait_for(struct_name: &str) -> Vec<u8> {
+    [
+        RUSTC_ALLOW_DEAD_CODE,
+        PUBLIC,
+        SPACE,
+        TRAIT,
+        struct_name.as_bytes(),
+        OPEN_CURLY,
+        &gen_get_key_fn_sig(),
+        SEMI_COLON,
+        &end_block()[..],
+    ]
+    .concat()
 }
 
-pub fn impl_marker_trait(trait_name: &str, struct_name: &str) -> Vec<u8> {
+pub fn impl_entity_type_trait(trait_name: &str, struct_name: &str, key_names: &Vec<PropertyRef>) -> Vec<u8> {
     [
         IMPL,
         trait_name.as_bytes(),
         SPACE,
         FOR,
         struct_name.as_bytes(),
-        SPACE,
         OPEN_CURLY,
+        &gen_get_key_fn_sig(),
+        OPEN_CURLY,
+        "vec!".as_bytes(),
+        OPEN_SQR,
+        key_names
+            .into_iter()
+            .map(|pr| format!("\"{}\"", odata_name_to_rust_safe_name(&pr.name)))
+            .collect::<Vec<String>>()
+            .join(",")
+            .as_bytes(),
+        CLOSE_SQR,
+        CLOSE_CURLY,
         &end_block()[..],
     ]
     .concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Signature of EntityType trait function get_key()
+pub fn gen_get_key_fn_sig() -> Vec<u8> {
+    [FN, "get_key() -> ".as_bytes(), VECTOR_STATIC_STR].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

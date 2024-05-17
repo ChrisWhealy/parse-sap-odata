@@ -1,11 +1,11 @@
 [package]
 name = "parse-sap-odata"
-version = "1.2.3"
+version = "1.2.4"
 authors = ["Chris Whealy <chris@lighthouse.no>"]
 edition = "2021"
 description = "Generate Rust structs from SAP OData V2 metadata"
 keywords = ["odata", "sap", "parser", "opendata"]
-repository = "https://github.com/lighthouse-no/parse-sap-odata"
+repository = "https://github.com/ChrisWhealy/parse-sap-odata"
 license = "MIT"
 
 [features]
@@ -18,7 +18,7 @@ rust_decimal = { version ="1", features = ["serde-with-str"]}
 anyhow = "1.0"
 check_keyword = "0.2"
 convert_case = "0.6"
-quick-xml = { version = "0.30", features = ["serialize"] }
+quick-xml = { version = "0.31.0", features = ["serialize"] }
 regex = "1.9"
 serde = { version = "1.0", features = ["derive"] }
-which = "4.0"
+which = "6.0.1"
