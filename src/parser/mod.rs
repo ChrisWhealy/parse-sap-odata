@@ -14,6 +14,13 @@ use crate::{
 use check_keyword::CheckKeyword;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
+pub trait AsRustSrc {
+    fn to_rust_type<'a>(&mut self, namespace: &str) -> Vec<u8>;
+    fn to_rust(&mut self, namespace: &str) -> Vec<u8>;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate complex type structs
 fn gen_complex_types(out_buffer: &mut Vec<u8>, cts: &Vec<ComplexType>, namespace: &str) {
     let mut ignored_cts: usize = 0;
@@ -116,8 +123,7 @@ fn gen_src_entity_type(entity: &EntityType, namespace: &str) -> Vec<u8> {
 
     out_buffer.append(&mut end_block());
 
-    // Each entity type struct implements the `EntityType` trait
-    // Currently, only the first key name is used
+    // Each entity type struct implements the `EntityType` trait which implements the static function `get_key()`
     out_buffer.append(&mut impl_entity_type_trait(
         "EntityType",
         &struct_name,

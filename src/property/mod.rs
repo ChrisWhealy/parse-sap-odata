@@ -1,6 +1,6 @@
 #[cfg(feature = "parser")]
 use crate::{
-    parser::syntax_fragments::*,
+    parser::{syntax_fragments::*, AsRustSrc},
     utils::{odata_name_to_rust_safe_name, to_pascal_case},
 };
 
@@ -101,7 +101,10 @@ impl Property {
             .as_bytes()
             .to_vec()
     }
+}
 
+#[cfg(feature = "parser")]
+impl AsRustSrc for Property {
     fn to_rust_type<'a>(&mut self, namespace: &str) -> Vec<u8> {
         // Handle complex types separately
         let type_bytes: Vec<u8> = if self.edm_type.starts_with("Edm.") {
@@ -160,7 +163,7 @@ impl Property {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     /// Any property whose name clashes with a Rust reserved word is written in raw format:<br>
     /// E.G. `clash --> r#clash`
-    pub fn to_rust(&mut self, namespace: &str) -> Vec<u8> {
+    fn to_rust(&mut self, namespace: &str) -> Vec<u8> {
         let mut response: Vec<u8> = Vec::new();
 
         // Check whether the Pascal case name is correctly transformed into a Pascal case name.
