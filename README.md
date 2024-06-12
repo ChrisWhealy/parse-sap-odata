@@ -29,4 +29,4 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 | Version | Description
 |--:|---
-1.2.5 | Update Cargo.toml dependency versions
+1.2.5 | Update `Cargo.toml` dependency versions
