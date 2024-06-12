@@ -24,3 +24,9 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 1. Populate the empty OData metadata module.
 2. Improve support for fields of type `Edm.Decimal`.
 3. Support Function Imports.
+
+## Change Log
+
+| Version | Description
+|--:|---
+1.2.5 | Update Cargo.toml dependency versions
