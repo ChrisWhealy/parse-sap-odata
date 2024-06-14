@@ -40,6 +40,7 @@ For example, if you wish to consume the demo OData service `GWSAMPLE_BASIC`, the
    chrono = { version = "0.4", features = ["serde"] }
    parse-sap-odata = "1.2"
    parse-sap-atom-feed = "0.2"
+   quick-xml = { version = "0.32", features = ["serialize"] }
    rust_decimal = { version = "1.30", features = ["serde-with-str"]}
    serde = { version = "1.0", features = ["derive"] }
    uuid = { version = "1.4", features = ["serde"] }
