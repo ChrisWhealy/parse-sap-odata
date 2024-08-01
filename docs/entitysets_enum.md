@@ -45,11 +45,8 @@ impl GwsampleBasicEntities {
 
 ## Entitysets Enum `iterator` function
 
-For standard Rust `enums` such as `Option` and `Result`, it makes little sense to attempt to loop over their variants simply because these `enum`s exist specifically to gather together diverse types into a single object.
-E.G. The `Option` `enum` exists to provide a type-safe mechanism for handling the possibility that a variable might not contain a value.
-
-However, an OData service guarantees that the entity set names form an immutable, type-safe list.
-Therefore, on the basis of this guarantee, the entity set names are placed into an `enum` that implements an `iterator` function over its variants.
+The entity set names within an OData service form an immutable, type-safe list.
+Therefore, on the basis of this guarantee, the entity set names are placed into an `enum` that implements an `iterator` over its variants.
 
 ```rust
 pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {
@@ -78,7 +75,7 @@ pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {
 
 ## Entitysets Enum `variant_name` function
 
-This function returns the name of the entity set variant as a static string slice:
+This function returns the name of the entity set variant:
 
 ```rust
 pub const fn variant_name(&self) -> &'static str {
@@ -105,7 +102,7 @@ pub const fn variant_name(&self) -> &'static str {
 
 ## Entitysets Enum `variant_names` function
 
-By making use of the above `iterator` and `bvariant_name` functions, the `variant_names` function returns the names of the entity sets as a vector of string slices.
+By making use of the above `iterator` and `variant_name` functions, the `variant_names` function returns a vector of entity set names.
 
 ```rust
 pub fn variant_names() -> Vec<&'static str> {

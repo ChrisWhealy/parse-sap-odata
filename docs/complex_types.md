@@ -48,7 +48,7 @@ pub struct CtAddress {
 }
 ```
 
-Then the `<EntityType>` for `BusinessPartner` is translated into the followinf Rust `struct`
+Then the `<EntityType>` for `BusinessPartner` is translated into the following Rust `struct`
 
 ```rust
 pub struct BusinessPartner {
@@ -70,6 +70,7 @@ The metadata for the `GWSAMPLE_BASIC` OData service contains the following compl
 </ComplexType>
 ```
 
-This particular type turns out not to be complex at all because it contains a single field whose type is equivalent to a standard Rust `String`.
+This particular type turns out not to be complex at all because it contains a single field whose Entity Data Model `Edm.String` type is equivalent to a standard Rust `String`.
+In such cases, it would be redundant to create an entire Rust `struct` for a single field.
 
-In such cases, it is redundant to create a Rust `struct` for these "simple" complex types; instead, the corresponding `<EntityType>` field is declared simply as the standard Rust type.
+Therefore, these "simple" complex types are ignored, and the corresponding `<EntityType>` field is declared simply as the standard Rust type.

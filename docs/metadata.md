@@ -1,14 +1,20 @@
 # Metadata Module
 
 Most of the metadata captured from the OData `$metadata` HTTP request is output to a separate module.
+That is, all Schema `<EntityType>` and `<ComplexType>` entities are transformed to Rust `struct`s and `enum`s.
 
-Currently, the metatdata information for `<FunctionImport>`, `<NavigationProperty>`, `<Association>` and `<AssociationSet>` is parsed, but is not output to the generated metadata module.
+The metadata information for the following entities is parsed, but not yet written to the generated metadata module:
+
+* `<FunctionImport>`
+* `<NavigationProperty>`
+* `<Association>`
+* `<AssociationSet>` 
 
 ## Metadata for Complex Type `struct`s
 
-For each metadata `<ComplexType>` containing more than one `<Property>`, a corresponding `struct` is created.
+For each metadata `<ComplexType>` containing more than one `<Property>`, a corresponding metadata `struct` is created.
 
-E.G. The metadata XML for an `Address` complex type could be;
+E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for the complex type `CT_Address`is:
 
 ```xml
 <ComplexType Name="CT_Address">
@@ -21,7 +27,7 @@ E.G. The metadata XML for an `Address` complex type could be;
 </ComplexType>
 ```
 
-This is then translated to the following Rust `struct`;
+This is then translated to Rust `struct` whose name ends with `Metadata`:
  
 ```rust   
 pub struct CtAddressMetadata {
@@ -39,9 +45,9 @@ All fields within a complex type metadata `struct` are of type `Property`.
     
 ## Metadata for Entity Type `struct`s
 
-One or more `struct`s for each metadata `<EntityType>`.
+One or more `struct`s are created for each metadata `<EntityType>`.
 
-E.G. The metadata XML for `BusinessPartner`
+E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for `BusinessPartner` is the following:
 
 ```xml
 <EntityType Name="BusinessPartner" sap:content-version="1">
@@ -66,7 +72,7 @@ E.G. The metadata XML for `BusinessPartner`
 </EntityType>
 ```
 
-Is translated into the following Rust `struct`:
+This is translated into the following Rust `struct`:
 
 ```rust
 pub struct BusinessPartnerMetadata {
@@ -85,18 +91,17 @@ pub struct BusinessPartnerMetadata {
     pub web_address: Property,
 }
 ```
+
+All `<EntityType>` metadata `struct`s have an additional `key` field of type `Vec<PropertyRef>`
     
 The fields in this `struct` will only ever be of type `Property` or of a previously declared complex type `struct`.
-
-All `<EntityType>` metadata `struct`s have a `key` field of type `Vec<PropertyRef>`
 
 ## Implementation of Metadata Entity Type `struct`s
 
 Each metadata `struct` for an `<EntityType>` has an implementation containing a getter function for the `key` and a getter function for each `struct` field.
 
-The `get_key()` function returns an instance of `Vec<PropertyRef>`
-
-The field getter functions return either an instance of a `Property` or an instance of `ComplexType`.
+* The `get_key()` function returns a vector of `PropertyRef`
+* The field getter functions return either an instance of a `Property` or an instance of `ComplexType`.
 
 E.G. The implementation of the `BusinessPartnerMetadata` `struct` shown above starts as follows:
 
