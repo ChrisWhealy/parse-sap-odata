@@ -1,7 +1,7 @@
-use crate::utils::default_false;
+use serde::{Deserialize, Serialize};
 
 use super::record::Record;
-use serde::{Deserialize, Serialize};
+use crate::utils::default_false;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]

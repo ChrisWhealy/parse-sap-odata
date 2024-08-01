@@ -1,8 +1,10 @@
 pub mod include;
 
-use crate::xml::default_xml_namespace_oasis;
-use include::Include;
 use serde::{Deserialize, Serialize};
+
+use include::Include;
+
+use crate::xml::default_xml_namespace_oasis;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an optional `<edmx:Reference>` tag

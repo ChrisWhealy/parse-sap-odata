@@ -1,10 +1,12 @@
 pub mod data_services;
 pub mod reference;
 
-use crate::xml::{default_xml_namespace_edmx, default_xml_namespace_m, default_xml_namespace_sap};
+use serde::{Deserialize, Serialize};
+
 use data_services::DataServices;
 use reference::Reference;
-use serde::{Deserialize, Serialize};
+
+use crate::xml::{default_xml_namespace_edmx, default_xml_namespace_m, default_xml_namespace_sap};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum EdmxVersion {

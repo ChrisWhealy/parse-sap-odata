@@ -6,28 +6,32 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 ## Available Functionality
 
-* [x] `<ComplexType>` and `<EntityType>` elements are mapped to Rust `structs`
-* [x] Transforms `Edm.DateTime` into `chrono::NaiveDateTime` using a custom deserializer
-* [x] `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this offers only partial support
-* [ ] `<FunctionImport>` functionality will be supported in time, but is not currently available
-* [ ] The metadata module is currently empty and needs to be populated - I'm working on it...
+1. Creates a module representing the OData service document.
+
+   This contains a set of `struct`s for holding `<ComplexType>` and `<EntityType>` data returned from the OData service.
+
+   `Edm.DateTime` fields are transformed into `chrono::NaiveDateTime` using a custom deserializer.
+
+   `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this offers only partial support
+
+1. Creates a module representing the OData `$metadata` document.
+
+   This contains a set of `structs` that hold the `<ComplexType>` and `<EntityType>` metadata.
+
+   Each metadata `struct` has an `impl` containing a getter function for each `struct` property that returns an instance of that property's metadata, including any SAP annotations.
 
 ## Table of Contents
 
 * [Usage](./docs/usage.md)
 * [OData Complex Types](./docs/complex_types.md)
+* [Metadata Module](./docs/metadata.md)
 * [EntitySets Enum](./docs/entitysets_enum.md)
 * [Limitations and Issues](./docs/limitations.md)
-
-## TODOs
-
-1. Populate the empty OData metadata module.
-2. Improve support for fields of type `Edm.Decimal`.
-3. Support Function Imports.
 
 ## Change Log
 
 | Version | Description
 |--:|---
+1.3.0 | Generate a metadata module
 1.2.5 | Update `Cargo.toml` dependency versions
 1.2.4 | Add `get_key()` function to `EntityType` trait

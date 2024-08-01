@@ -1,29 +1,27 @@
-mod navigation_property;
+use serde::{Deserialize, Serialize};
 
-use crate::property::{Property, PropertyRef};
-use crate::sap_annotations::default_sap_content_version;
-use crate::utils::{de_str_to_bool, default_false};
 use navigation_property::NavigationProperty;
 
-use serde::{Deserialize, Serialize};
+use crate::{
+    property::{property_ref::PropertyRef, Property},
+    sap_annotations::default_sap_content_version,
+    utils::{de_str_to_bool, default_false},
+};
+
+pub mod navigation_property;
 
 #[derive(Debug, serde::Serialize, Deserialize)]
 pub enum EntityTypeSAPSemantics {
     #[serde(rename = "vcard")]
     VCard,
-
     #[serde(rename = "vevent")]
     VEvent,
-
     #[serde(rename = "vtodo")]
     VToDo,
-
     #[serde(rename = "parameters")]
     Paramaters,
-
     #[serde(rename = "aggregate")]
     Aggregate,
-
     #[serde(rename = "variant")]
     Variant,
 }

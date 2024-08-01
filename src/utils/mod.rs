@@ -1,5 +1,3 @@
-use check_keyword::CheckKeyword;
-use convert_case::Case;
 use std::{
     cmp::max,
     collections::HashMap,
@@ -13,6 +11,8 @@ use std::{
 };
 
 use anyhow::{anyhow, Context};
+use check_keyword::CheckKeyword;
+use convert_case::Case;
 use serde::{Deserialize, Deserializer};
 use which::which;
 

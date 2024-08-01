@@ -1,5 +1,8 @@
-use crate::{edmx::data_services::schema::association::End, sap_annotations::SAPAnnotationsAssociationSet};
 use serde::{Deserialize, Serialize};
+
+use crate::{
+    edmx::data_services::schema::association::End, sap_annotations::association_set::SAPAnnotationsAssociationSet,
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<AssociationSet>` tag

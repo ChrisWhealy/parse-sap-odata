@@ -2,19 +2,26 @@ pub mod association_set;
 pub mod entity_set;
 pub mod function_import;
 
-#[cfg(feature = "parser")]
-use crate::parser::syntax_fragments::*;
-
-use crate::{
-    sap_annotations::SAPAnnotationsEntityContainer,
-    utils::{de_str_to_bool, default_false},
-};
-
-use association_set::AssociationSet;
 use serde::{Deserialize, Serialize};
 
+use association_set::AssociationSet;
 use entity_set::EntitySet;
 use function_import::FunctionImport;
+
+#[cfg(feature = "parser")]
+use crate::{
+    parser::syntax_fragments::{
+        derive_traits::*,
+        fragment_generators::{
+            end_iter_fn, gen_enum_iter_fn_start, gen_enum_match_arm, gen_enum_start, gen_enum_variant,
+            gen_enum_variant_name_fn_start, gen_enum_variant_names_fn, gen_fq_enum_variant, gen_impl_start,
+            gen_type_name,
+        },
+        *,
+    },
+    sap_annotations::entity_container::SAPAnnotationsEntityContainer,
+    utils::{de_str_to_bool, default_false},
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<EntityContainer>` tag
@@ -53,11 +60,11 @@ pub struct EntityContainer {
 impl EntityContainer {
     /// Transforms an `EntityContainer` into an enumeration of entity set names.
     /// Additionally, this enumeration is given three helper functions:
-    /// * `pub const fn value(&self) -> &'static str { /* SNIP */ }`
     /// * `pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> { /* SNIP */ }`
-    /// * `pub fn as_list() -> Vec<&'static str> { /* SNIP */ }`
+    /// * `pub const fn variant_name(&self) -> &'static str { /* SNIP */ }`
+    /// * `pub fn variant_names() -> Vec<&'static str> { /* SNIP */ }`
     pub fn to_enum_with_impl(&self) -> Vec<u8> {
-        let cont_name_camel = convert_case::Casing::to_case(&self.name, convert_case::Case::UpperCamel);
+        let cont_name_camel = gen_type_name(&self.name);
 
         // Output the start of an enum for this entity container
         // #[derive(Copy, Clone, Debug)]↩︎
@@ -77,38 +84,38 @@ impl EntityContainer {
 
         output_impl.append(&mut gen_impl_start(&cont_name_camel));
 
-        // Output the start of the "value" function within the enum implementation
-        //   pub const fn value(&self) -> &'static str {↩︎
-        //       match *self {↩︎
-        let mut fn_value = gen_enum_value_fn_start();
-
         // Output the start of the "iterator" function within the enum implementation
         //   pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {↩︎
         //       match *self {↩︎
         let mut fn_iterator = gen_enum_iter_fn_start(&cont_name_camel);
 
+        // Output the start of the "variant_name" function within the enum implementation
+        //   pub const fn variant_name(&self) -> &'static str {↩︎
+        //       match *self {↩︎
+        let mut fn_variant_name = gen_enum_variant_name_fn_start();
+
         // Create entity set enum
         for ent_set in self.entity_sets.iter() {
-            let ent_set_name_camel = convert_case::Casing::to_case(&ent_set.name, convert_case::Case::UpperCamel);
+            let ent_set_name_camel = gen_type_name(&ent_set.name);
 
-            // Add variant to enum, value and iterator functions
+            // Add variant to enum, iterator, and variant_name functions
             output_enum.append(&mut gen_enum_variant(&ent_set_name_camel));
-            fn_value.append(&mut gen_enum_match_arm(&cont_name_camel, &ent_set_name_camel, &ent_set.name));
+            fn_variant_name.append(&mut gen_enum_match_arm(&cont_name_camel, &ent_set_name_camel, &ent_set.name));
             fn_iterator.append(&mut gen_fq_enum_variant(&cont_name_camel, &ent_set_name_camel));
         }
 
-        output_enum.append(&mut end_block());
-        fn_value.append(&mut end_block());
-        fn_value.append(&mut end_block());
+        output_enum.append(&mut END_BLOCK.to_vec());
+        fn_variant_name.append(&mut END_BLOCK.to_vec());
+        fn_variant_name.append(&mut END_BLOCK.to_vec());
         fn_iterator.append(&mut end_iter_fn());
 
         return [
             output_enum,
             output_impl,
-            fn_value,
             fn_iterator,
-            gen_enum_as_list_fn(&cont_name_camel),
-            end_block(),
+            fn_variant_name,
+            gen_enum_variant_names_fn(&cont_name_camel),
+            END_BLOCK.to_vec(),
         ]
         .concat();
     }

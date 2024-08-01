@@ -1,5 +1,3 @@
-use crate::parser::error::ParseError;
-
 use std::{
     env,
     fs::{File, OpenOptions},
@@ -8,7 +6,7 @@ use std::{
     str::FromStr,
 };
 
-use crate::edmx::Edmx;
+use crate::{edmx::Edmx, parser::error::ParseError};
 
 pub static DEFAULT_INPUT_DIR: &str = "./odata";
 

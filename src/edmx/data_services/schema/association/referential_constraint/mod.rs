@@ -1,5 +1,5 @@
-mod dependent;
-mod principal;
+pub mod dependent;
+pub mod principal;
 
 use dependent::Dependent;
 use principal::Principal;

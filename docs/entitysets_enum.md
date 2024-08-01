@@ -37,36 +37,9 @@ Three convenience functions are then implemented for `enum GwsampleBasicEntities
 
 ```rust
 impl GwsampleBasicEntities {
-    pub const fn value(&self) -> &'static str { /* SNIP */ }
     pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> { /* SNIP */ }
-    pub fn as_list() -> Vec<&'static str> { /* SNIP */ }
-}
-```
-
-## Entitysets Enum `value` function
-
-This function returns the name of the entity set variant as a static string slice:
-
-```rust
-pub const fn value(&self) -> &'static str {
-    match *self {
-        GwsampleBasicEntities::BusinessPartnerSet => "BusinessPartnerSet",
-        GwsampleBasicEntities::ProductSet => "ProductSet",
-        GwsampleBasicEntities::SalesOrderSet => "SalesOrderSet",
-        GwsampleBasicEntities::SalesOrderLineItemSet => "SalesOrderLineItemSet",
-        GwsampleBasicEntities::ContactSet => "ContactSet",
-        GwsampleBasicEntities::VhSexSet => "VH_SexSet",
-        GwsampleBasicEntities::VhCountrySet => "VH_CountrySet",
-        GwsampleBasicEntities::VhAddressTypeSet => "VH_AddressTypeSet",
-        GwsampleBasicEntities::VhCategorySet => "VH_CategorySet",
-        GwsampleBasicEntities::VhCurrencySet => "VH_CurrencySet",
-        GwsampleBasicEntities::VhUnitQuantitySet => "VH_UnitQuantitySet",
-        GwsampleBasicEntities::VhUnitWeightSet => "VH_UnitWeightSet",
-        GwsampleBasicEntities::VhUnitLengthSet => "VH_UnitLengthSet",
-        GwsampleBasicEntities::VhProductTypeCodeSet => "VH_ProductTypeCodeSet",
-        GwsampleBasicEntities::VhBpRoleSet => "VH_BPRoleSet",
-        GwsampleBasicEntities::VhLanguageSet => "VH_LanguageSet",
-    }
+    pub const fn variant_name(&self) -> &'static str { /* SNIP */ }
+    pub fn variant_names() -> Vec<&'static str> { /* SNIP */ }
 }
 ```
 
@@ -103,20 +76,42 @@ pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {
 }
 ```
 
-## Entitysets Enum `as_list` function
+## Entitysets Enum `variant_name` function
 
-By making use of the above `iterator` and `value` functions, the `as_list` function returns the names of the entity sets as a vector of string slices.
+This function returns the name of the entity set variant as a static string slice:
 
 ```rust
-pub fn as_list() -> Vec<&'static str> {
-    let mut list = GwsampleBasicEntities::iterator().fold(
-        Vec::new(),
-        |mut acc: Vec<&'static str>, es| {
-            acc.insert(0, &mut es.value());
-            acc
-        },
-    );
-    list.reverse();
-    list
+pub const fn variant_name(&self) -> &'static str {
+    match *self {
+        GwsampleBasicEntities::BusinessPartnerSet => "BusinessPartnerSet",
+        GwsampleBasicEntities::ProductSet => "ProductSet",
+        GwsampleBasicEntities::SalesOrderSet => "SalesOrderSet",
+        GwsampleBasicEntities::SalesOrderLineItemSet => "SalesOrderLineItemSet",
+        GwsampleBasicEntities::ContactSet => "ContactSet",
+        GwsampleBasicEntities::VhSexSet => "VH_SexSet",
+        GwsampleBasicEntities::VhCountrySet => "VH_CountrySet",
+        GwsampleBasicEntities::VhAddressTypeSet => "VH_AddressTypeSet",
+        GwsampleBasicEntities::VhCategorySet => "VH_CategorySet",
+        GwsampleBasicEntities::VhCurrencySet => "VH_CurrencySet",
+        GwsampleBasicEntities::VhUnitQuantitySet => "VH_UnitQuantitySet",
+        GwsampleBasicEntities::VhUnitWeightSet => "VH_UnitWeightSet",
+        GwsampleBasicEntities::VhUnitLengthSet => "VH_UnitLengthSet",
+        GwsampleBasicEntities::VhProductTypeCodeSet => "VH_ProductTypeCodeSet",
+        GwsampleBasicEntities::VhBpRoleSet => "VH_BPRoleSet",
+        GwsampleBasicEntities::VhLanguageSet => "VH_LanguageSet",
+    }
+}
+```
+
+## Entitysets Enum `variant_names` function
+
+By making use of the above `iterator` and `bvariant_name` functions, the `variant_names` function returns the names of the entity sets as a vector of string slices.
+
+```rust
+pub fn variant_names() -> Vec<&'static str> {
+    GwsampleBasicEntities::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
+        acc.push(&mut es.variant_name());
+        acc
+    })
 }
 ```

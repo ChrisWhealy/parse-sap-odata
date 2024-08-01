@@ -1,5 +1,6 @@
-use crate::sap_annotations::SAPAnnotationsEntitySet;
 use serde::{Deserialize, Serialize};
+
+use crate::sap_annotations::entity_set::SAPAnnotationsEntitySet;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<EntitySet>` tag

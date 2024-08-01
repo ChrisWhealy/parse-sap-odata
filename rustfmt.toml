@@ -13,12 +13,10 @@ attr_fn_like_width = 80                                    # *70, or any integer
 chain_width = 80                                           # *60, or any integer <= max_wdith
 disable_all_formatting = false                             # true, *false
 edition = "2021"                                           # *"2015", "2018", "2021"
-fn_args_layout = "Tall"                                    # "Compressed", *"Tall", "Vertical"
 fn_call_width = 80                                         # *60, or any integer <= max_width
 fn_params_layout = "Tall"                                  # "Compressed", *"Tall", "Vertical"
 force_explicit_abi = true                                  # *true, false
 hard_tabs = false                                          # true, *false
-indent_style = "Visual"                                    # *"Block", "Visual"
 match_arm_leading_pipes = "Preserve"                       # "Always", *"Never", "Preserve"
 match_block_trailing_comma = true                          # true, *false
 max_width = 120                                            # *100

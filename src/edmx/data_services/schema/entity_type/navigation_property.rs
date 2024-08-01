@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::sap_annotations::SAPAnnotationsNavigationProperty;
+use crate::sap_annotations::navigation_property::SAPAnnotationsNavigationProperty;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Represents a `<NavigationProperty>` tag

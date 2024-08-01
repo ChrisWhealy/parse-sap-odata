@@ -1,6 +1,7 @@
+use serde::{Deserialize, Serialize};
+
 use super::annotation::Annotation;
 use crate::xml::default_xml_namespace_oasis;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]

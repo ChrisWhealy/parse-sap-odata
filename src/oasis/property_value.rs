@@ -1,6 +1,7 @@
-use super::collection::Collection;
-use crate::xml::default_false;
 use serde::{Deserialize, Serialize};
+
+use super::collection::Collection;
+use crate::utils::default_false;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]

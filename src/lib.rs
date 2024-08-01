@@ -8,3 +8,5 @@ pub mod xml;
 
 #[cfg(feature = "parser")]
 pub mod parser;
+#[cfg(feature = "parser")]
+pub mod sap_semantics;

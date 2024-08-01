@@ -1,5 +1,6 @@
-use super::record::Record;
 use serde::{Deserialize, Serialize};
+
+use super::record::Record;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]

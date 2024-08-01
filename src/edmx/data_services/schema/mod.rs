@@ -3,22 +3,28 @@ pub mod complex_type;
 pub mod entity_container;
 pub mod entity_type;
 
-#[cfg(feature = "parser")]
-use crate::parser::syntax_fragments::*;
-
-use crate::{
-    atom::AtomLink,
-    oasis::annotations::Annotations,
-    sap_annotations::SAPAnnotationsSchema,
-    xml::{default_xml_language, default_xml_namespace},
-};
+use serde::{Deserialize, Serialize};
 
 use association::Association;
 use complex_type::ComplexType;
 use entity_container::EntityContainer;
 use entity_type::EntityType;
 
-use serde::{Deserialize, Serialize};
+#[cfg(feature = "parser")]
+use crate::{
+    atom::AtomLink,
+    oasis::annotations::Annotations,
+    parser::syntax_fragments::{
+        derive_traits::*,
+        fragment_generators::{
+            gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_enum_variant_name_fn_start, gen_impl_start,
+            gen_type_name,
+        },
+        *,
+    },
+    sap_annotations::schema::SAPAnnotationsSchema,
+    xml::{default_xml_language, default_xml_namespace},
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents a `<Schema>` tag
@@ -80,11 +86,11 @@ impl Schema {
         // Output the start of a "value" function within the enum implementation
         //   pub const fn value(&self) -> &'static str {↩︎
         //       match *self {↩︎
-        let mut fn_value = gen_enum_value_fn_start();
+        let mut fn_value = gen_enum_variant_name_fn_start();
 
         // Create entity type enum
         for ent_type in self.entity_types.iter() {
-            let ent_type_name_camel = convert_case::Casing::to_case(&ent_type.name, convert_case::Case::UpperCamel);
+            let ent_type_name_camel = gen_type_name(&ent_type.name);
 
             // Add variant to enum and value function
             output_enum.append(&mut gen_enum_variant(&ent_type_name_camel));
@@ -95,10 +101,16 @@ impl Schema {
             ));
         }
 
-        output_enum.append(&mut end_block());
-        fn_value.append(&mut end_block());
-        fn_value.append(&mut end_block());
+        output_enum.append(&mut END_BLOCK.to_vec());
+        fn_value.append(&mut END_BLOCK.to_vec());
+        fn_value.append(&mut END_BLOCK.to_vec());
 
-        return [output_enum, gen_impl_start(&pascal_entity_types_name), fn_value, end_block()].concat();
+        return [
+            output_enum,
+            gen_impl_start(&pascal_entity_types_name),
+            fn_value,
+            END_BLOCK.to_vec(),
+        ]
+        .concat();
     }
 }

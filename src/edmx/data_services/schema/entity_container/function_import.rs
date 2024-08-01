@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    sap_annotations::{SAPAnnotationsFunctionImport, SAPAnnotationsFunctionImportParameter},
+    sap_annotations::function_import::*,
     utils::{de_str_to_bool, default_true},
 };
 

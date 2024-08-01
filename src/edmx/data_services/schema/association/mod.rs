@@ -1,8 +1,10 @@
-mod referential_constraint;
+pub mod referential_constraint;
+
+use serde::{Deserialize, Serialize};
+
+use referential_constraint::ReferentialConstraint;
 
 use crate::sap_annotations::default_sap_content_version;
-use referential_constraint::ReferentialConstraint;
-use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<Association>` tag

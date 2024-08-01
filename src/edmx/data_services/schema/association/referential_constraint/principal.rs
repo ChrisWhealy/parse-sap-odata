@@ -1,4 +1,4 @@
-use crate::property::PropertyRef;
+use crate::property::property_ref::PropertyRef;
 use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
