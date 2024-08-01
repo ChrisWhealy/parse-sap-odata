@@ -8,7 +8,7 @@ use crate::{
         syntax_fragments::{
             fragment_generators::{
                 gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
-                gen_struct_field, gen_type_name, gen_vector_of,
+                gen_struct_field, gen_type_name, gen_vector_of_type,
             },
             serde_fragments::*,
             *,
@@ -220,7 +220,7 @@ impl AsRustSrc for Property {
 
                 // Convert EDM type to Rust type
                 match edm_type.as_str() {
-                    "Binary" => self.maybe_optional(&*gen_vector_of(U8)),
+                    "Binary" => self.maybe_optional(&*gen_vector_of_type(U8)),
                     "Boolean" => self.maybe_optional(BOOLEAN),
                     "Byte" => U8.to_vec(),
                     "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),

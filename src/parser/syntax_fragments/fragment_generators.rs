@@ -3,21 +3,13 @@ use super::*;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// `from_str` implementation for each entity set struct
 pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
-    static FN_START: &[u8] = "
-  impl std::str::FromStr for "
-        .as_bytes();
+    static FN_START: &[u8] = "impl std::str::FromStr for ".as_bytes();
     static FN_END: &[u8] = " {
     type Err = quick_xml::DeError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> { quick_xml::de::from_str(s) }
+}".as_bytes();
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        quick_xml::de::from_str(s)
-    }
-}
-
-"
-    .as_bytes();
-
-    [FN_START, struct_name.as_bytes(), FN_END].concat()
+    [LINE_FEED, FN_START, struct_name.as_bytes(), FN_END, LINE_FEED].concat()
 }
 
 pub fn comment_for(something: &str) -> Vec<u8> {
@@ -103,53 +95,16 @@ pub fn gen_enum_match_arm(enum_name: &str, variant_name: &str, variant_value: &s
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// EntityType public trait declaration and implementation
-pub fn gen_entity_type_trait_for(struct_name: &str) -> Vec<u8> {
-    [
-        RUSTC_ALLOW_DEAD_CODE,
-        PUBLIC,
-        SPACE,
-        TRAIT,
-        struct_name.as_bytes(),
-        OPEN_CURLY,
-        &gen_getter_fn_for_property_of_type(KEY, &*gen_vector_of(STATIC_STR.as_bytes())),
-        SEMI_COLON,
-        END_BLOCK,
-    ]
-    .concat()
+fn gen_of_type(t: &[u8]) -> Vec<u8> { [OPEN_ANGLE, t, CLOSE_ANGLE].concat() }
+pub fn gen_option_of_type(t: &[u8]) -> Vec<u8> { [OPTION, &*gen_of_type(t)].concat() }
+pub fn gen_vector_of_type(t: &[u8]) -> Vec<u8> {  [VECTOR, &*gen_of_type(t)].concat()
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_option_of_type(ty: &[u8]) -> Vec<u8> {
-    [OPTION, OPEN_ANGLE, ty, CLOSE_ANGLE].concat()
-}
-
-pub fn gen_owned_string(s: &str) -> Vec<u8> {
-    [DOUBLE_QUOTE, s.as_bytes(), DOUBLE_QUOTE, TO_OWNED].concat()
-}
-
-pub fn gen_bool_string(b: bool) -> Vec<u8> {
-    bool::to_string(&b).into_bytes()
-}
-
-pub fn gen_vector_of(t: &[u8]) -> Vec<u8> {
-    [VECTOR, crate::parser::syntax_fragments::CLOSE_ANGLE, t, CLOSE_ANGLE].concat()
-}
+pub fn gen_owned_string(s: &str) -> Vec<u8> { [DOUBLE_QUOTE, s.as_bytes(), DOUBLE_QUOTE, TO_OWNED].concat() }
+pub fn gen_bool_string(b: bool) -> Vec<u8> { bool::to_string(&b).into_bytes() }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_getter_fn_for_property_of_type(prop_name: &[u8], type_name: &[u8]) -> Vec<u8> {
-    [
-        crate::parser::syntax_fragments::GET_PREFIX,
-        FN,
-        GET_PREFIX,
-        prop_name,
-        UNIT,
-        THIN_ARROW,
-        type_name,
-        OPEN_CURLY,
-        LINE_FEED,
-    ]
-    .concat()
+    [PUBLIC, FN, GET_PREFIX, prop_name, UNIT, THIN_ARROW, type_name, OPEN_CURLY, LINE_FEED].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -162,16 +117,7 @@ pub fn gen_opt_u16_string(int_arg: Option<u16>) -> Vec<u8> {
 }
 pub fn gen_opt_string(s_arg: &Option<String>) -> Vec<u8> {
     if let Some(s) = s_arg {
-        [
-            SOME,
-            OPEN_PAREN,
-            DOUBLE_QUOTE,
-            s.as_bytes(),
-            DOUBLE_QUOTE,
-            TO_OWNED,
-            CLOSE_PAREN,
-        ]
-        .concat()
+        [SOME, OPEN_PAREN, &*gen_owned_string(s), CLOSE_PAREN].concat()
     } else {
         NONE.to_vec()
     }

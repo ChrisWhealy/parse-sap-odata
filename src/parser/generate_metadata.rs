@@ -7,7 +7,7 @@ use crate::{
         syntax_fragments::{
             fragment_generators::{
                 comment_for, gen_getter_fn_for_property_of_type, gen_impl_start, gen_mod_start, gen_struct_field,
-                gen_type_name, gen_vector_of, start_struct,
+                gen_type_name, gen_vector_of_type, start_struct,
             },
             *,
         },
@@ -60,7 +60,7 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
 
     out_buffer.append(&mut RUSTC_ALLOW_DEAD_CODE.to_vec());
     out_buffer.append(&mut start_struct(&struct_name));
-    out_buffer.append(&mut gen_struct_field("key", &gen_vector_of(PROPERTYREF).to_vec()));
+    out_buffer.append(&mut gen_struct_field("key", &gen_vector_of_type(PROPERTYREF).to_vec()));
 
     let mut props = entity.properties.clone();
     props.sort();
@@ -110,7 +110,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     // Add a get_key function
     out_buffer.append(
         &mut [
-            &gen_getter_fn_for_property_of_type(KEY, &*gen_vector_of(PROPERTYREF)),
+            &gen_getter_fn_for_property_of_type(KEY, &*gen_vector_of_type(PROPERTYREF)),
             VEC_BANG,
             keys.into_iter()
                 .map(|pr| format!("{pr}"))
