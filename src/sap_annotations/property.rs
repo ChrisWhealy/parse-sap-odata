@@ -2,6 +2,10 @@ use std::fmt::Formatter;
 
 use serde::{Deserialize, Serialize};
 
+use crate::parser::syntax_fragments::{
+    PATH_TO_SAP_AGGREGATION_PROPERTY, PATH_TO_SAP_DISPLAY_FORMAT_PROPERTY, PATH_TO_SAP_FIELD_CONTROL_PROPERTY,
+    PATH_TO_SAP_FILTER_RESTRICTION_PROPERTY, PATH_TO_SAP_PARAMETER_PROPERTY, PATH_TO_SAP_SEMANTICS_PROPERTY,
+};
 use crate::{
     parser::syntax_fragments::{
         fragment_generators::{gen_bool_string, gen_opt_string},
@@ -279,31 +283,26 @@ pub struct SAPAnnotationsProperty {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl SAPAnnotationsProperty {
     // Check for any used subtypes
-    pub fn used_subtypes(&self) -> Vec<String> {
-        let mut subtypes: Vec<String> = vec![];
+    pub fn used_subtypes(&self) -> Vec<&[u8]> {
+        let mut subtypes: Vec<&[u8]> = vec![];
 
         if self.semantics.is_some() {
-            subtypes.push("parse_sap_odata::sap_semantics::property::SAPSemanticsProperty".to_owned())
+            subtypes.push(PATH_TO_SAP_SEMANTICS_PROPERTY)
         }
-
         if self.filter_restriction.is_some() {
-            subtypes.push("parse_sap_odata::sap_annotations::SAPFilterRestrictionProperty".to_owned())
+            subtypes.push(PATH_TO_SAP_FILTER_RESTRICTION_PROPERTY)
         }
-
         if self.field_control.is_some() {
-            subtypes.push("parse_sap_odata::sap_annotations::SAPFieldControlProperty".to_owned())
+            subtypes.push(PATH_TO_SAP_FIELD_CONTROL_PROPERTY)
         }
-
         if self.display_format.is_some() {
-            subtypes.push("parse_sap_odata::sap_annotations::SAPDisplayFormatProperty".to_owned())
+            subtypes.push(PATH_TO_SAP_DISPLAY_FORMAT_PROPERTY)
         }
-
         if self.aggregation_role.is_some() {
-            subtypes.push("parse_sap_odata::sap_annotations::SAPAggregationProperty".to_owned())
+            subtypes.push(PATH_TO_SAP_AGGREGATION_PROPERTY)
         }
-
         if self.parameter.is_some() {
-            subtypes.push("parse_sap_odata::sap_annotations::SAPParameterProperty".to_owned())
+            subtypes.push(PATH_TO_SAP_PARAMETER_PROPERTY)
         }
 
         subtypes

@@ -19,7 +19,7 @@ use crate::{
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
 fn gen_metadata_entity_types(out_buffer: &mut Vec<u8>, schema: &Schema, skipped_cts: Vec<String>) {
-    let mut used_subtypes: Vec<String> = vec![];
+    let mut used_subtypes: Vec<&[u8]> = vec![];
     let ets: &Vec<EntityType> = &schema.entity_types;
 
     out_buffer.append(&mut comment_for("ENTITY TYPES"));
@@ -42,13 +42,13 @@ fn gen_metadata_entity_types(out_buffer: &mut Vec<u8>, schema: &Schema, skipped_
     let unique_subtypes = used_subtypes
         .clone()
         .into_iter()
-        .collect::<HashSet<String>>()
+        .collect::<HashSet<&[u8]>>()
         .into_iter()
-        .collect::<Vec<String>>();
+        .collect::<Vec<&[u8]>>();
 
     // Declare usage of all subtypes across all the SAPAnnotationsProperty instances
-    for used_subtype in unique_subtypes {
-        out_buffer.append(&mut [USE, used_subtype.as_bytes(), SEMI_COLON].concat());
+    for subtype in unique_subtypes {
+        out_buffer.append(&mut gen_use_path(subtype));
     }
 }
 
@@ -174,12 +174,12 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
 
     // Start module definition
     out_buffer.append(&mut gen_mod_start(&format!("{odata_srv_name}_metadata")));
-    out_buffer.append(&mut USE_ODATA_PROPERTY.to_vec());
-    out_buffer.append(&mut [USE_SAP_ANNOTATIONS, LINE_FEED].concat());
+    out_buffer.append(&mut gen_use_path(PATH_TO_SAP_ODATA_PROPERTIES));
+    out_buffer.append(&mut gen_use_path(PATH_TO_SAP_ANNOTATIONS_PROPERTY));
 
     // Do we need to generate any complex types?
     let skipped_cts = if let Some(cts) = &schema.complex_types {
-        out_buffer.append(&mut [USE_EDMX_COMPLEX_TYPE, LINE_FEED].concat());
+        out_buffer.append(&mut gen_use_path(PATH_TO_EDMX_COMPLEX_TYPE));
         gen_metadata_complex_types(&mut out_buffer, cts)
     } else {
         vec![]

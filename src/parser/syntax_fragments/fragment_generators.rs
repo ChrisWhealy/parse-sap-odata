@@ -7,7 +7,8 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
     static FN_END: &[u8] = " {
     type Err = quick_xml::DeError;
     fn from_str(s: &str) -> Result<Self, Self::Err> { quick_xml::de::from_str(s) }
-}".as_bytes();
+}"
+    .as_bytes();
 
     [LINE_FEED, FN_START, struct_name.as_bytes(), FN_END, LINE_FEED].concat()
 }
@@ -44,12 +45,12 @@ pub fn gen_impl_start(some_name: &str) -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start of an enum declaration
-pub fn gen_enum_start(enum_name: &str) -> Vec<u8> {
-    [PUBLIC, ENUM, enum_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
+fn gen_fq_enum_variant_name(enum_name: &str, variant_name: &str) -> Vec<u8> {
+    [enum_name.as_bytes(), COLON2, variant_name.as_bytes()].concat()
 }
 
-pub fn gen_fq_enum_variant_name(enum_name: &str, variant_name: &str) -> Vec<u8> {
-    [enum_name.as_bytes(), COLON2, variant_name.as_bytes()].concat()
+pub fn gen_enum_start(enum_name: &str) -> Vec<u8> {
+    [PUBLIC, ENUM, enum_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
 
 pub fn gen_enum_variant(variant_name: &str) -> Vec<u8> {
@@ -95,16 +96,28 @@ pub fn gen_enum_match_arm(enum_name: &str, variant_name: &str, variant_value: &s
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn gen_of_type(t: &[u8]) -> Vec<u8> { [OPEN_ANGLE, t, CLOSE_ANGLE].concat() }
-pub fn gen_option_of_type(t: &[u8]) -> Vec<u8> { [OPTION, &*gen_of_type(t)].concat() }
-pub fn gen_vector_of_type(t: &[u8]) -> Vec<u8> {  [VECTOR, &*gen_of_type(t)].concat()
+fn gen_of_type(t: &[u8]) -> Vec<u8> {
+    [OPEN_ANGLE, t, CLOSE_ANGLE].concat()
 }
-pub fn gen_owned_string(s: &str) -> Vec<u8> { [DOUBLE_QUOTE, s.as_bytes(), DOUBLE_QUOTE, TO_OWNED].concat() }
-pub fn gen_bool_string(b: bool) -> Vec<u8> { bool::to_string(&b).into_bytes() }
+pub fn gen_option_of_type(t: &[u8]) -> Vec<u8> {
+    [OPTION, &*gen_of_type(t)].concat()
+}
+pub fn gen_vector_of_type(t: &[u8]) -> Vec<u8> {
+    [VECTOR, &*gen_of_type(t)].concat()
+}
+pub fn gen_owned_string(s: &str) -> Vec<u8> {
+    [DOUBLE_QUOTE, s.as_bytes(), DOUBLE_QUOTE, TO_OWNED].concat()
+}
+pub fn gen_bool_string(b: bool) -> Vec<u8> {
+    bool::to_string(&b).into_bytes()
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_getter_fn_for_property_of_type(prop_name: &[u8], type_name: &[u8]) -> Vec<u8> {
-    [PUBLIC, FN, GET_PREFIX, prop_name, UNIT, THIN_ARROW, type_name, OPEN_CURLY, LINE_FEED].concat()
+    [
+        PUBLIC, FN, GET_PREFIX, prop_name, UNIT, THIN_ARROW, type_name, OPEN_CURLY, LINE_FEED,
+    ]
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
