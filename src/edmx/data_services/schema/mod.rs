@@ -1,8 +1,3 @@
-pub mod association;
-pub mod complex_type;
-pub mod entity_container;
-pub mod entity_type;
-
 use serde::{Deserialize, Serialize};
 
 use association::Association;
@@ -10,21 +5,27 @@ use complex_type::ComplexType;
 use entity_container::EntityContainer;
 use entity_type::EntityType;
 
-#[cfg(feature = "parser")]
 use crate::{
     atom::AtomLink,
     oasis::annotations::Annotations,
-    parser::syntax_fragments::{
-        derive_traits::*,
-        fragment_generators::{
-            gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_enum_variant_name_fn_start, gen_impl_start,
-            gen_type_name,
-        },
-        *,
-    },
     sap_annotations::schema::SAPAnnotationsSchema,
     xml::{default_xml_language, default_xml_namespace},
 };
+
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::{
+    *,
+    derive_traits::*,
+    fragment_generators::{
+        gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_enum_variant_name_fn_start, gen_impl_start,
+        gen_type_name,
+    },
+};
+
+pub mod association;
+pub mod complex_type;
+pub mod entity_container;
+pub mod entity_type;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents a `<Schema>` tag
@@ -111,6 +112,6 @@ impl Schema {
             fn_value,
             END_BLOCK.to_vec(),
         ]
-        .concat();
+            .concat();
     }
 }

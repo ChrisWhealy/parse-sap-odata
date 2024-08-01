@@ -1,16 +1,6 @@
-use std::fmt::Formatter;
-
 use serde::{Deserialize, Serialize};
 
-use crate::parser::syntax_fragments::{
-    PATH_TO_SAP_AGGREGATION_PROPERTY, PATH_TO_SAP_DISPLAY_FORMAT_PROPERTY, PATH_TO_SAP_FIELD_CONTROL_PROPERTY,
-    PATH_TO_SAP_FILTER_RESTRICTION_PROPERTY, PATH_TO_SAP_PARAMETER_PROPERTY, PATH_TO_SAP_SEMANTICS_PROPERTY,
-};
 use crate::{
-    parser::syntax_fragments::{
-        fragment_generators::{gen_bool_string, gen_opt_string},
-        CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY, SAP_ANNOTATIONS_PROPERTY,
-    },
     sap_annotations::{
         de_str_to_bool, default_false, default_true, SAPAggregationRoleProperty, SAPDisplayFormatProperty,
         SAPFieldControlProperty, SAPFilterRestrictionProperty, SAPParameterProperty,
@@ -18,99 +8,17 @@ use crate::{
     sap_semantics::property::SAPSemanticsProperty,
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum SAPAnnotationsPropertyMetadata {
-    Label,
-    Heading,
-    QuickInfo,
-    IsUnicode,
-    Semantics,
-    IsCreatable,
-    IsUpdatable,
-    IsSortable,
-    IsFilterable,
-    IsAddressable,
-    IsRequiredInFilter,
-    FilterRestriction,
-    FilterFor,
-    Text,
-    TextFor,
-    Unit,
-    Precision,
-    IsVisible,
-    FieldControl,
-    ValidationRegexp,
-    DisplayFormat,
-    ValueList,
-    LowerBoundary,
-    UpperBoundary,
-    AggregationRole,
-    SuperOrdinate,
-    AttributeFor,
-    HierarchyNodeFor,
-    HierarchyNodeExternalKeyFor,
-    HierarchyLevelFor,
-    HierarchyParentNodeFor,
-    HierarchyParentNavigationFor,
-    HierarchyDrillStateFor,
-    HierarchyNodeDescendantCountFor,
-    HierarchyPreorderRankFor,
-    HierarchySiblingRankFor,
-    Parameter,
-    IsAnnotation,
-    UpdatablePath,
-    PreserveFlagFor,
-    HasVariableScale,
-}
+#[cfg(feature = "parser")]
+use std::fmt::Formatter;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-impl SAPAnnotationsPropertyMetadata {
-    pub const fn get_field_name(prop_name: SAPAnnotationsPropertyMetadata) -> &'static str {
-        match prop_name {
-            SAPAnnotationsPropertyMetadata::Label => "label",
-            SAPAnnotationsPropertyMetadata::Heading => "heading",
-            SAPAnnotationsPropertyMetadata::QuickInfo => "quick_info",
-            SAPAnnotationsPropertyMetadata::IsUnicode => "is_unicode",
-            SAPAnnotationsPropertyMetadata::Semantics => "semantics",
-            SAPAnnotationsPropertyMetadata::IsCreatable => "is_creatable",
-            SAPAnnotationsPropertyMetadata::IsUpdatable => "is_updatable",
-            SAPAnnotationsPropertyMetadata::IsSortable => "is_sortable",
-            SAPAnnotationsPropertyMetadata::IsFilterable => "is_filterable",
-            SAPAnnotationsPropertyMetadata::IsAddressable => "is_addressable",
-            SAPAnnotationsPropertyMetadata::IsRequiredInFilter => "is_required_in_filter",
-            SAPAnnotationsPropertyMetadata::FilterRestriction => "filter_restriction",
-            SAPAnnotationsPropertyMetadata::FilterFor => "filter_for",
-            SAPAnnotationsPropertyMetadata::Text => "text",
-            SAPAnnotationsPropertyMetadata::TextFor => "text_for",
-            SAPAnnotationsPropertyMetadata::Unit => "unit",
-            SAPAnnotationsPropertyMetadata::Precision => "precision",
-            SAPAnnotationsPropertyMetadata::IsVisible => "is_visible",
-            SAPAnnotationsPropertyMetadata::FieldControl => "field_control",
-            SAPAnnotationsPropertyMetadata::ValidationRegexp => "validation_regexp",
-            SAPAnnotationsPropertyMetadata::DisplayFormat => "display_format",
-            SAPAnnotationsPropertyMetadata::ValueList => "value_list",
-            SAPAnnotationsPropertyMetadata::LowerBoundary => "lower_boundary",
-            SAPAnnotationsPropertyMetadata::UpperBoundary => "upper_boundary",
-            SAPAnnotationsPropertyMetadata::AggregationRole => "aggregation_role",
-            SAPAnnotationsPropertyMetadata::SuperOrdinate => "super_ordinate",
-            SAPAnnotationsPropertyMetadata::AttributeFor => "attribute_for",
-            SAPAnnotationsPropertyMetadata::HierarchyNodeFor => "hierarchy_node_for",
-            SAPAnnotationsPropertyMetadata::HierarchyNodeExternalKeyFor => "hierarchy_node_external_key_for",
-            SAPAnnotationsPropertyMetadata::HierarchyLevelFor => "hierarchy_level_for",
-            SAPAnnotationsPropertyMetadata::HierarchyParentNodeFor => "hierarchy_parent_node_for",
-            SAPAnnotationsPropertyMetadata::HierarchyParentNavigationFor => "hierarchy_parent_navigation_for",
-            SAPAnnotationsPropertyMetadata::HierarchyDrillStateFor => "hierarchy_drill_state_for",
-            SAPAnnotationsPropertyMetadata::HierarchyNodeDescendantCountFor => "hierarchy_node_descendant_count_for",
-            SAPAnnotationsPropertyMetadata::HierarchyPreorderRankFor => "hierarchy_preorder_rank_for",
-            SAPAnnotationsPropertyMetadata::HierarchySiblingRankFor => "hierarchy_sibling_rank_for",
-            SAPAnnotationsPropertyMetadata::Parameter => "parameter",
-            SAPAnnotationsPropertyMetadata::IsAnnotation => "is_annotation",
-            SAPAnnotationsPropertyMetadata::UpdatablePath => "updatable_path",
-            SAPAnnotationsPropertyMetadata::PreserveFlagFor => "preserve_flag_for",
-            SAPAnnotationsPropertyMetadata::HasVariableScale => "has_variable_scale",
-        }
-    }
-}
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::{
+    CLOSE_CURLY, COLON, COMMA,
+    fragment_generators::{gen_bool_string, gen_opt_string}, LINE_FEED, OPEN_CURLY,
+    PATH_TO_SAP_AGGREGATION_PROPERTY,
+    PATH_TO_SAP_DISPLAY_FORMAT_PROPERTY, PATH_TO_SAP_FIELD_CONTROL_PROPERTY, PATH_TO_SAP_FILTER_RESTRICTION_PROPERTY,
+    PATH_TO_SAP_PARAMETER_PROPERTY, PATH_TO_SAP_SEMANTICS_PROPERTY, SAP_ANNOTATIONS_PROPERTY,
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
@@ -281,6 +189,103 @@ pub struct SAPAnnotationsProperty {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
+pub enum SAPAnnotationsPropertyMetadata {
+    Label,
+    Heading,
+    QuickInfo,
+    IsUnicode,
+    Semantics,
+    IsCreatable,
+    IsUpdatable,
+    IsSortable,
+    IsFilterable,
+    IsAddressable,
+    IsRequiredInFilter,
+    FilterRestriction,
+    FilterFor,
+    Text,
+    TextFor,
+    Unit,
+    Precision,
+    IsVisible,
+    FieldControl,
+    ValidationRegexp,
+    DisplayFormat,
+    ValueList,
+    LowerBoundary,
+    UpperBoundary,
+    AggregationRole,
+    SuperOrdinate,
+    AttributeFor,
+    HierarchyNodeFor,
+    HierarchyNodeExternalKeyFor,
+    HierarchyLevelFor,
+    HierarchyParentNodeFor,
+    HierarchyParentNavigationFor,
+    HierarchyDrillStateFor,
+    HierarchyNodeDescendantCountFor,
+    HierarchyPreorderRankFor,
+    HierarchySiblingRankFor,
+    Parameter,
+    IsAnnotation,
+    UpdatablePath,
+    PreserveFlagFor,
+    HasVariableScale,
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
+impl SAPAnnotationsPropertyMetadata {
+    pub const fn get_field_name(prop_name: SAPAnnotationsPropertyMetadata) -> &'static str {
+        match prop_name {
+            SAPAnnotationsPropertyMetadata::Label => "label",
+            SAPAnnotationsPropertyMetadata::Heading => "heading",
+            SAPAnnotationsPropertyMetadata::QuickInfo => "quick_info",
+            SAPAnnotationsPropertyMetadata::IsUnicode => "is_unicode",
+            SAPAnnotationsPropertyMetadata::Semantics => "semantics",
+            SAPAnnotationsPropertyMetadata::IsCreatable => "is_creatable",
+            SAPAnnotationsPropertyMetadata::IsUpdatable => "is_updatable",
+            SAPAnnotationsPropertyMetadata::IsSortable => "is_sortable",
+            SAPAnnotationsPropertyMetadata::IsFilterable => "is_filterable",
+            SAPAnnotationsPropertyMetadata::IsAddressable => "is_addressable",
+            SAPAnnotationsPropertyMetadata::IsRequiredInFilter => "is_required_in_filter",
+            SAPAnnotationsPropertyMetadata::FilterRestriction => "filter_restriction",
+            SAPAnnotationsPropertyMetadata::FilterFor => "filter_for",
+            SAPAnnotationsPropertyMetadata::Text => "text",
+            SAPAnnotationsPropertyMetadata::TextFor => "text_for",
+            SAPAnnotationsPropertyMetadata::Unit => "unit",
+            SAPAnnotationsPropertyMetadata::Precision => "precision",
+            SAPAnnotationsPropertyMetadata::IsVisible => "is_visible",
+            SAPAnnotationsPropertyMetadata::FieldControl => "field_control",
+            SAPAnnotationsPropertyMetadata::ValidationRegexp => "validation_regexp",
+            SAPAnnotationsPropertyMetadata::DisplayFormat => "display_format",
+            SAPAnnotationsPropertyMetadata::ValueList => "value_list",
+            SAPAnnotationsPropertyMetadata::LowerBoundary => "lower_boundary",
+            SAPAnnotationsPropertyMetadata::UpperBoundary => "upper_boundary",
+            SAPAnnotationsPropertyMetadata::AggregationRole => "aggregation_role",
+            SAPAnnotationsPropertyMetadata::SuperOrdinate => "super_ordinate",
+            SAPAnnotationsPropertyMetadata::AttributeFor => "attribute_for",
+            SAPAnnotationsPropertyMetadata::HierarchyNodeFor => "hierarchy_node_for",
+            SAPAnnotationsPropertyMetadata::HierarchyNodeExternalKeyFor => "hierarchy_node_external_key_for",
+            SAPAnnotationsPropertyMetadata::HierarchyLevelFor => "hierarchy_level_for",
+            SAPAnnotationsPropertyMetadata::HierarchyParentNodeFor => "hierarchy_parent_node_for",
+            SAPAnnotationsPropertyMetadata::HierarchyParentNavigationFor => "hierarchy_parent_navigation_for",
+            SAPAnnotationsPropertyMetadata::HierarchyDrillStateFor => "hierarchy_drill_state_for",
+            SAPAnnotationsPropertyMetadata::HierarchyNodeDescendantCountFor => "hierarchy_node_descendant_count_for",
+            SAPAnnotationsPropertyMetadata::HierarchyPreorderRankFor => "hierarchy_preorder_rank_for",
+            SAPAnnotationsPropertyMetadata::HierarchySiblingRankFor => "hierarchy_sibling_rank_for",
+            SAPAnnotationsPropertyMetadata::Parameter => "parameter",
+            SAPAnnotationsPropertyMetadata::IsAnnotation => "is_annotation",
+            SAPAnnotationsPropertyMetadata::UpdatablePath => "updatable_path",
+            SAPAnnotationsPropertyMetadata::PreserveFlagFor => "preserve_flag_for",
+            SAPAnnotationsPropertyMetadata::HasVariableScale => "has_variable_scale",
+        }
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
 impl SAPAnnotationsProperty {
     // Check for any used subtypes
     pub fn used_subtypes(&self) -> Vec<&[u8]> {
@@ -310,6 +315,7 @@ impl SAPAnnotationsProperty {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
 fn line_from(prop_md: SAPAnnotationsPropertyMetadata, val: Vec<u8>) -> Vec<u8> {
     [
         SAPAnnotationsPropertyMetadata::get_field_name(prop_md).as_bytes(),
@@ -318,8 +324,10 @@ fn line_from(prop_md: SAPAnnotationsPropertyMetadata, val: Vec<u8>) -> Vec<u8> {
         COMMA,
         LINE_FEED,
     ]
-    .concat()
+        .concat()
 }
+
+#[cfg(feature = "parser")]
 impl std::fmt::Display for SAPAnnotationsProperty {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut src_str: Vec<u8> = vec![];

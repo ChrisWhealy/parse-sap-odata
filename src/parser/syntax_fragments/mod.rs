@@ -47,7 +47,6 @@ pub static UNIT: &[u8] = "()".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Primitive values and basic types
-pub static ONE: &[u8] = "1".as_bytes();
 pub static OPTION: &[u8] = "Option".as_bytes();
 pub static SOME: &[u8] = "Some".as_bytes();
 pub static NONE: &[u8] = "None".as_bytes();

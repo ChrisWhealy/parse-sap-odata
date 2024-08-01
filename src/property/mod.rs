@@ -1,76 +1,28 @@
+#[cfg(feature = "parser")]
 use std::fmt::Formatter;
-
 use serde::{Deserialize, Serialize};
+
+use crate::{
+    sap_annotations::property::SAPAnnotationsProperty,
+    utils::{de_str_to_bool, default_false, default_true},
+};
 
 #[cfg(feature = "parser")]
 use crate::{
     parser::{
+        AsRustSrc,
         syntax_fragments::{
+            *,
             fragment_generators::{
                 gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
                 gen_struct_field, gen_type_name, gen_vector_of_type,
             },
             serde_fragments::*,
-            *,
         },
-        AsRustSrc,
     },
-    sap_annotations::property::SAPAnnotationsProperty,
-    utils::{de_str_to_bool, default_false, default_true, odata_name_to_rust_safe_name, to_pascal_case},
-};
+    utils::{odata_name_to_rust_safe_name, to_pascal_case}};
 
 pub mod property_ref;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Property type flags
-///
-/// A `<Property>` within an `<EntityType>` can be one of three types:
-/// * **`PropertyType::Edm()`**<br>An entity data model type such as `String`, `DateTime`, `Decimal` etc
-/// * **`PropertyType::Complex()`**<br>A Complex Type defined within the Schema's namespace containing multiple fields
-/// * **`PropertyType::Unqualified`**<br>The type name is missing its namespace qualifier.  Need to decide if this is an error condition
-pub enum PropertyType {
-    Edm(String),
-    Complex(String),
-    Unqualified,
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum PropertyMetadata {
-    ODataName,
-    EdmType,
-    Nullable,
-    MaxLength,
-    Precision,
-    Scale,
-    ConcurrencyMode,
-    FcKeepInContent,
-    FcTargetPath,
-    SAPAnnotations,
-    DeserializerFn,
-    DeserializerModule,
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-impl PropertyMetadata {
-    pub fn get_field_name(prop_name: PropertyMetadata) -> Vec<u8> {
-        let member = match prop_name {
-            PropertyMetadata::ODataName => "odata_name",
-            PropertyMetadata::EdmType => "edm_type",
-            PropertyMetadata::Nullable => "nullable",
-            PropertyMetadata::MaxLength => "max_length",
-            PropertyMetadata::Precision => "precision",
-            PropertyMetadata::Scale => "scale",
-            PropertyMetadata::ConcurrencyMode => "concurrency_mode",
-            PropertyMetadata::FcKeepInContent => "fc_keep_in_content",
-            PropertyMetadata::FcTargetPath => "fc_target_path",
-            PropertyMetadata::SAPAnnotations => "sap_annotations",
-            PropertyMetadata::DeserializerFn => "deserializer_fn",
-            PropertyMetadata::DeserializerModule => "deserializer_module",
-        };
-
-        member.as_bytes().to_vec()
-    }
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `edm:Property` element
@@ -121,6 +73,61 @@ pub struct Property {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Property type flags
+///
+/// A `<Property>` within an `<EntityType>` can be one of three types:
+/// * **`PropertyType::Edm()`**<br>An entity data model type such as `String`, `DateTime`, `Decimal` etc
+/// * **`PropertyType::Complex()`**<br>A Complex Type defined within the Schema's namespace containing multiple fields
+/// * **`PropertyType::Unqualified`**<br>The type name is missing its namespace qualifier.  Need to decide if this is an error condition
+#[cfg(feature = "parser")]
+pub enum PropertyType {
+    Edm(String),
+    Complex(String),
+    Unqualified,
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
+pub enum PropertyMetadata {
+    ODataName,
+    EdmType,
+    Nullable,
+    MaxLength,
+    Precision,
+    Scale,
+    ConcurrencyMode,
+    FcKeepInContent,
+    FcTargetPath,
+    SAPAnnotations,
+    DeserializerFn,
+    DeserializerModule,
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
+impl PropertyMetadata {
+    pub fn get_field_name(prop_name: PropertyMetadata) -> Vec<u8> {
+        let member = match prop_name {
+            PropertyMetadata::ODataName => "odata_name",
+            PropertyMetadata::EdmType => "edm_type",
+            PropertyMetadata::Nullable => "nullable",
+            PropertyMetadata::MaxLength => "max_length",
+            PropertyMetadata::Precision => "precision",
+            PropertyMetadata::Scale => "scale",
+            PropertyMetadata::ConcurrencyMode => "concurrency_mode",
+            PropertyMetadata::FcKeepInContent => "fc_keep_in_content",
+            PropertyMetadata::FcTargetPath => "fc_target_path",
+            PropertyMetadata::SAPAnnotations => "sap_annotations",
+            PropertyMetadata::DeserializerFn => "deserializer_fn",
+            PropertyMetadata::DeserializerModule => "deserializer_module",
+        };
+
+        member.as_bytes().to_vec()
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
 impl Property {
     fn maybe_optional(&self, rust_type: &[u8]) -> Vec<u8> {
         if self.nullable {
@@ -147,10 +154,12 @@ impl Property {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
 fn line_from(prop_md: PropertyMetadata, val: Vec<u8>) -> Vec<u8> {
     [&*PropertyMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
+#[cfg(feature = "parser")]
 impl std::fmt::Display for Property {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut src_str: Vec<u8> = vec![];

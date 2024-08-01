@@ -1,27 +1,28 @@
-pub mod association_set;
-pub mod entity_set;
-pub mod function_import;
-
 use serde::{Deserialize, Serialize};
 
 use association_set::AssociationSet;
 use entity_set::EntitySet;
 use function_import::FunctionImport;
 
-#[cfg(feature = "parser")]
 use crate::{
-    parser::syntax_fragments::{
-        derive_traits::*,
-        fragment_generators::{
-            end_iter_fn, gen_enum_iter_fn_start, gen_enum_match_arm, gen_enum_start, gen_enum_variant,
-            gen_enum_variant_name_fn_start, gen_enum_variant_names_fn, gen_fq_enum_variant, gen_impl_start,
-            gen_type_name,
-        },
-        *,
-    },
     sap_annotations::entity_container::SAPAnnotationsEntityContainer,
     utils::{de_str_to_bool, default_false},
 };
+
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::{
+    *,
+    derive_traits::*,
+    fragment_generators::{
+        end_iter_fn, gen_enum_iter_fn_start, gen_enum_match_arm, gen_enum_start, gen_enum_variant,
+        gen_enum_variant_name_fn_start, gen_enum_variant_names_fn, gen_fq_enum_variant, gen_impl_start,
+        gen_type_name,
+    },
+};
+
+pub mod association_set;
+pub mod entity_set;
+pub mod function_import;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<EntityContainer>` tag
@@ -73,7 +74,7 @@ impl EntityContainer {
             derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]).as_slice(),
             RUSTC_ALLOW_DEAD_CODE,
         ]
-        .concat();
+            .concat();
 
         output_enum.append(&mut gen_enum_start(&cont_name_camel));
 
@@ -117,7 +118,7 @@ impl EntityContainer {
             gen_enum_variant_names_fn(&cont_name_camel),
             END_BLOCK.to_vec(),
         ]
-        .concat();
+            .concat();
     }
 }
 

@@ -1,12 +1,14 @@
-use std::fmt::Formatter;
-
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "parser")]
+use std::fmt::Formatter;
+
+#[cfg(feature = "parser")]
 use crate::{
-    parser::syntax_fragments::{
-        fragment_generators::gen_owned_string, COLON, END_BLOCK, LINE_FEED, OPEN_CURLY, PROPERTYREF,
-    },
     utils::odata_name_to_rust_safe_name,
+    parser::syntax_fragments::{
+        COLON, END_BLOCK, fragment_generators::gen_owned_string, LINE_FEED, OPEN_CURLY, PROPERTYREF
+        }
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18,6 +20,7 @@ pub struct PropertyRef {
     pub name: String,
 }
 
+#[cfg(feature= "parser")]
 impl std::fmt::Display for PropertyRef {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut src_str: Vec<u8> = vec![];
@@ -30,7 +33,7 @@ impl std::fmt::Display for PropertyRef {
                 &*gen_owned_string(&odata_name_to_rust_safe_name(&self.name)),
                 LINE_FEED,
             ]
-            .concat(),
+                .concat(),
         );
         src_str.append(&mut END_BLOCK.to_vec());
 

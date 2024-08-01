@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "parser")]
 use crate::parser::syntax_fragments::{CLOSE_PAREN, COLON2, NONE, OPEN_PAREN, SOME};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,6 +134,7 @@ pub enum SAPSemanticsProperty {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
 impl SAPSemanticsProperty {
     pub fn opt_annotation_type_src(opt_self: &Option<SAPSemanticsProperty>) -> Vec<u8> {
         let own_name: &[u8] = "SAPSemanticsProperty".as_bytes();

@@ -1,11 +1,12 @@
-use std::fmt::Formatter;
-
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    parser::syntax_fragments::{fragment_generators::gen_owned_string, *},
-    property::Property,
-};
+use crate::property::Property;
+
+#[cfg(feature = "parser")]
+use std::fmt::Formatter;
+
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::{fragment_generators::gen_owned_string, *};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub enum ComplexTypeMetadata {
@@ -41,10 +42,12 @@ pub struct ComplexType {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
 fn line_from(prop_md: ComplexTypeMetadata, val: Vec<u8>) -> Vec<u8> {
     [&*ComplexTypeMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
+#[cfg(feature = "parser")]
 // Output a ComplexType instance as its own source code
 impl std::fmt::Display for ComplexType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

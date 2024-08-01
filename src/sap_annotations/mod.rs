@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    parser::syntax_fragments::{CLOSE_PAREN, COLON2, DOUBLE_QUOTE, NONE, ONE, OPEN_PAREN, SOME},
-    utils::{de_str_to_bool, default_false, default_true},
-};
+#[cfg(feature = "parser")]
+use crate::parser::syntax_fragments::{CLOSE_PAREN, COLON2, DOUBLE_QUOTE, NONE, OPEN_PAREN, SOME};
+
+use crate::utils::{de_str_to_bool, default_false, default_true};
 
 pub mod association_set;
 pub mod entity_container;
@@ -15,15 +15,12 @@ pub mod property;
 pub mod schema;
 
 static ATOM: &str = "atom";
+static ONE: &str = "1";
 static JSON: &str = "json";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn default_sap_content_version() -> String {
-    String::from_utf8(ONE.to_vec()).unwrap()
-}
-pub fn default_sap_schema_version() -> String {
-    String::from_utf8(ONE.to_vec()).unwrap()
-}
+pub fn default_sap_content_version() -> String { ONE.to_string() }
+pub fn default_sap_schema_version() -> String { ONE.to_string() }
 pub fn default_entity_container_supported_formats() -> Vec<String> {
     vec![String::from(ATOM), String::from(JSON)]
 }
@@ -41,6 +38,7 @@ pub enum SAPFieldControlProperty {
     Mandatory,
 }
 
+#[cfg(feature = "parser")]
 impl SAPFieldControlProperty {
     pub fn opt_anno_type(opt_self: &Option<SAPFieldControlProperty>) -> Vec<u8> {
         let own_name: &[u8] = "SAPFieldControlProperty".as_bytes();
@@ -85,6 +83,7 @@ pub enum SAPDisplayFormatProperty {
     UpperCase,
 }
 
+#[cfg(feature = "parser")]
 impl SAPDisplayFormatProperty {
     pub fn opt_anno_type(opt_self: &Option<SAPDisplayFormatProperty>) -> Vec<u8> {
         let own_name: &[u8] = "SAPDisplayFormatProperty".as_bytes();
@@ -129,6 +128,7 @@ pub enum SAPFilterRestrictionProperty {
     Interval,
 }
 
+#[cfg(feature = "parser")]
 impl SAPFilterRestrictionProperty {
     pub fn opt_anno_type(opt_self: &Option<SAPFilterRestrictionProperty>) -> Vec<u8> {
         let own_name: &[u8] = "SAPFilterRestrictionProperty".as_bytes();
@@ -173,6 +173,7 @@ pub enum SAPAggregationRoleProperty {
     TotalPropertiesList,
 }
 
+#[cfg(feature = "parser")]
 impl SAPAggregationRoleProperty {
     pub fn opt_anno_type(opt_self: &Option<SAPAggregationRoleProperty>) -> Vec<u8> {
         let own_name: &[u8] = "SAPAggregationRoleProperty".as_bytes();
@@ -214,6 +215,7 @@ pub enum SAPParameterProperty {
     Optional,
 }
 
+#[cfg(feature = "parser")]
 impl SAPParameterProperty {
     pub fn opt_anno_type(opt_self: &Option<SAPParameterProperty>) -> Vec<u8> {
         let own_name: &[u8] = "SAPParameterProperty".as_bytes();
