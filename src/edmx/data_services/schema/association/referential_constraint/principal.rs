@@ -11,7 +11,6 @@ use serde::{Deserialize, Serialize};
 pub struct Principal {
     #[serde(rename = "@Role")]
     pub role: String,
-
     #[serde(rename = "PropertyRef", default)]
     pub property_refs: Vec<PropertyRef>,
 }

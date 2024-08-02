@@ -19,7 +19,6 @@ pub enum DataServiceVersion {
 pub struct DataServices {
     #[serde(rename = "@DataServiceVersion")]
     pub data_service_version: DataServiceVersion,
-
     #[serde(rename = "Schema", default)]
     pub schemas: Vec<Schema>,
 }

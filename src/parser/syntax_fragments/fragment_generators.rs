@@ -25,6 +25,7 @@ pub fn gen_mod_start(mod_name: &str) -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start and end of a struct declaration
+static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 pub fn start_struct(struct_name: &str) -> Vec<u8> {
     [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
@@ -33,6 +34,8 @@ pub fn gen_struct_field(field_name: &str, rust_type: &Vec<u8>) -> Vec<u8> {
     [PUBLIC, field_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat()
 }
 
+static CALL_ITER: &[u8] = ".iter()".as_bytes();
+static CALL_COPIED: &[u8] = ".copied()".as_bytes();
 pub fn end_iter_fn() -> Vec<u8> {
     [CLOSE_SQR, CALL_ITER, CALL_COPIED, LINE_FEED, END_BLOCK].concat()
 }
@@ -49,6 +52,10 @@ fn gen_fq_enum_variant_name(enum_name: &str, variant_name: &str) -> Vec<u8> {
     [enum_name.as_bytes(), COLON2, variant_name.as_bytes()].concat()
 }
 
+pub fn gen_fq_enum_variant(enum_name: &str, variant_name: &str) -> Vec<u8> {
+    [&*gen_fq_enum_variant_name(&enum_name, &variant_name), COMMA, LINE_FEED].concat()
+}
+
 pub fn gen_enum_start(enum_name: &str) -> Vec<u8> {
     [PUBLIC, ENUM, enum_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
@@ -57,23 +64,28 @@ pub fn gen_enum_variant(variant_name: &str) -> Vec<u8> {
     [variant_name.as_bytes(), COMMA, LINE_FEED].concat()
 }
 
-pub fn gen_fq_enum_variant(enum_name: &str, variant_name: &str) -> Vec<u8> {
-    [&*gen_fq_enum_variant_name(&enum_name, &variant_name), COMMA, LINE_FEED].concat()
+static VARIANT_NAMES_FN_START: &[u8] = "
+pub fn variant_names() -> Vec<&'static str> {
+"
+.as_bytes();
+static VARIANT_NAMES_FN_END: &[u8] = "::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
+  acc.push(&mut es.variant_name());
+  acc
+})
 }
-
-pub fn gen_enum_variant_names_fn(enum_name: &str) -> Vec<u8> {
+"
+.as_bytes();
+pub fn gen_enum_fn_variant_names(enum_name: &str) -> Vec<u8> {
     [VARIANT_NAMES_FN_START, enum_name.as_bytes(), VARIANT_NAMES_FN_END].concat()
 }
 
-pub fn gen_enum_variant_name_fn_start() -> Vec<u8> {
-    [FN_VARIANT_NAME_DECL, MATCH_SELF].concat()
-}
-
-pub fn gen_enum_iter_fn_start(type_name: &str) -> Vec<u8> {
+static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
+pub fn gen_enum_fn_iter_start(type_name: &str) -> Vec<u8> {
     [
         FN_ITERATOR_DECL_START,
         type_name.as_bytes(),
-        FN_ITERATOR_DECL_END,
+        CLOSE_ANGLE,
+        OPEN_CURLY,
         OPEN_SQR,
         LINE_FEED,
     ]
@@ -105,6 +117,8 @@ pub fn gen_option_of_type(t: &[u8]) -> Vec<u8> {
 pub fn gen_vector_of_type(t: &[u8]) -> Vec<u8> {
     [VECTOR, &*gen_of_type(t)].concat()
 }
+
+static TO_OWNED: &[u8] = ".to_owned()".as_bytes();
 pub fn gen_owned_string(s: &str) -> Vec<u8> {
     [DOUBLE_QUOTE, s.as_bytes(), DOUBLE_QUOTE, TO_OWNED].concat()
 }

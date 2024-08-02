@@ -19,11 +19,6 @@ pub trait AsRustSrc {
     fn to_rust(&self) -> Vec<u8>;
 }
 
-pub trait AsRustMetadataSrc {
-    fn to_rust_metadata_type<'a>(&self) -> Result<(Vec<u8>, bool), String>;
-    fn to_rust_metadata(&self) -> Vec<u8>;
-}
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate the service document and metadata modules
 pub fn gen_src(odata_srv_name: &str, namespace: &str) {

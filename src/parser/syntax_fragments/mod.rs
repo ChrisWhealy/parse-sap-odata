@@ -85,31 +85,10 @@ pub static SAP_ANNOTATIONS_PROPERTY: &[u8] = "SAPAnnotationsProperty".as_bytes()
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Function calls and larger code fragments
-pub static TO_OWNED: &[u8] = ".to_owned()".as_bytes();
-pub static FN_VARIANT_NAME_DECL: &[u8] = "pub const fn variant_name(&self) -> &'static str {
+pub static FN_VARIANT_NAME_START: &[u8] = "pub const fn variant_name(&self) -> &'static str {
+    match *self {
 "
 .as_bytes();
-pub static FN_ITERATOR_DECL_START: &[u8] = "pub fn iterator() -> impl Iterator<Item = ".as_bytes();
-pub static FN_ITERATOR_DECL_END: &[u8] = "> {
-"
-.as_bytes();
-pub static MATCH_SELF: &[u8] = "match *self {
-"
-.as_bytes();
-pub static CALL_ITER: &[u8] = ".iter()".as_bytes();
-pub static CALL_COPIED: &[u8] = ".copied()".as_bytes();
-pub static VARIANT_NAMES_FN_START: &[u8] = "
-pub fn variant_names() -> Vec<&'static str> {
-"
-.as_bytes();
-pub static VARIANT_NAMES_FN_END: &[u8] = "::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
-  acc.push(&mut es.variant_name());
-  acc
-})
-}
-"
-.as_bytes();
-pub static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes and "use" declarations

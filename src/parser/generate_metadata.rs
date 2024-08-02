@@ -18,7 +18,8 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
-fn gen_metadata_entity_types(out_buffer: &mut Vec<u8>, schema: &Schema, skipped_cts: Vec<String>) {
+fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> Vec<u8> {
+    let mut out_buffer: Vec<u8> = Vec::new();
     let mut used_subtypes: Vec<&[u8]> = vec![];
     let ets: &Vec<EntityType> = &schema.entity_types;
 
@@ -50,6 +51,8 @@ fn gen_metadata_entity_types(out_buffer: &mut Vec<u8>, schema: &Schema, skipped_
     for subtype in unique_subtypes {
         out_buffer.append(&mut gen_use_path(subtype));
     }
+
+    out_buffer
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -180,12 +183,14 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     // Do we need to generate any complex types?
     let skipped_cts = if let Some(cts) = &schema.complex_types {
         out_buffer.append(&mut gen_use_path(PATH_TO_EDMX_COMPLEX_TYPE));
-        gen_metadata_complex_types(&mut out_buffer, cts)
+        let (mut cmplx_type_metadata, skipped_cts) = gen_metadata_complex_types(cts);
+        out_buffer.append(&mut cmplx_type_metadata);
+        skipped_cts
     } else {
-        vec![]
+        Vec::new()
     };
 
-    gen_metadata_entity_types(&mut out_buffer, &schema, skipped_cts);
+    out_buffer.append(&mut gen_metadata_entity_types(&schema, skipped_cts));
 
     // Close module definition
     out_buffer.append(&mut END_BLOCK.to_vec());

@@ -14,13 +14,10 @@ use crate::{
 pub struct AssociationSet {
     #[serde(rename = "@Name")]
     pub name: String,
-
     #[serde(rename = "@Association")]
     pub association: String,
-
     #[serde(flatten)]
     pub sap_annotations: SAPAnnotationsAssociationSet,
-
     #[serde(rename = "End")]
     pub ends: [End; 2],
 }

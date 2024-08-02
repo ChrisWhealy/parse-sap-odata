@@ -14,21 +14,18 @@ use crate::{
 pub struct SAPAnnotationsAssociationSet {
     #[serde(rename = "@content-version", default = "default_sap_content_version")]
     pub content_version: String,
-
     #[serde(
         rename = "@creatable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_creatable: bool,
-
     #[serde(
         rename = "@deletable",
         deserialize_with = "de_str_to_bool",
         default = "default_true"
     )]
     pub is_deletable: bool,
-
     #[serde(
         rename = "@updatable",
         deserialize_with = "de_str_to_bool",

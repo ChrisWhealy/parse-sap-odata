@@ -18,14 +18,12 @@ pub struct SAPAnnotationsEntityContainer {
         default = "default_false"
     )]
     pub message_scope_supported: bool,
-
     #[serde(
         rename = "@use-batch",
         deserialize_with = "de_str_to_bool",
         default = "default_false"
     )]
     pub use_batch: bool,
-
     #[serde(
         rename = "@supported-formats",
         deserialize_with = "de_str_to_list",

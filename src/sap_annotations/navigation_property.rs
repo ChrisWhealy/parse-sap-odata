@@ -15,10 +15,8 @@ pub struct SAPAnnotationsNavigationProperty {
         default = "default_true"
     )]
     pub is_creatable: bool,
-
     #[serde(rename = "@creatable-path")]
     pub creatable_path: Option<String>,
-
     #[serde(
         rename = "@filterable",
         deserialize_with = "de_str_to_bool",

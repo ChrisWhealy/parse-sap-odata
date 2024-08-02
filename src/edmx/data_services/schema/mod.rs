@@ -14,12 +14,9 @@ use crate::{
 
 #[cfg(feature = "parser")]
 use crate::parser::syntax_fragments::{
-    *,
     derive_traits::*,
-    fragment_generators::{
-        gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_enum_variant_name_fn_start, gen_impl_start,
-        gen_type_name,
-    },
+    fragment_generators::{gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start, gen_type_name},
+    *,
 };
 
 pub mod association;
@@ -40,31 +37,22 @@ pub mod entity_type;
 pub struct Schema {
     #[serde(rename = "@xmlns", default = "default_xml_namespace")]
     pub xml_namespace: String,
-
     #[serde(rename = "@Namespace", default)]
     pub namespace: String,
-
     #[serde(rename = "@xml:lang", default = "default_xml_language")]
     pub xml_lang: String,
-
     #[serde(flatten)]
     pub sap_annotations: SAPAnnotationsSchema,
-
     #[serde(rename = "EntityType", default)]
     pub entity_types: Vec<EntityType>,
-
     #[serde(rename = "ComplexType", default)]
     pub complex_types: Option<Vec<ComplexType>>,
-
     #[serde(rename = "Association", default)]
     pub associations: Vec<Association>,
-
     #[serde(rename = "EntityContainer", default)]
     pub entity_container: Option<EntityContainer>,
-
     #[serde(rename = "Annotations", default)]
     pub annotation_list: Option<Vec<Annotations>>,
-
     // Appears in the original XML as the tagname "atom:link"
     #[serde(rename = "link")]
     pub atom_links: Vec<AtomLink>,
@@ -81,13 +69,13 @@ impl Schema {
         // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
-        let mut output_enum = derive_str(vec![DeriveTraits::DEBUG]).as_slice().to_vec();
+        let mut output_enum = derive_str(vec![DeriveTraits::DEBUG]);
         output_enum.append(&mut gen_enum_start(&pascal_entity_types_name));
 
-        // Output the start of a "value" function within the enum implementation
-        //   pub const fn value(&self) -> &'static str {↩︎
+        // Output the start of a "variant_name" function within the enum implementation
+        //   pub const fn variant_name(&self) -> &'static str {↩︎
         //       match *self {↩︎
-        let mut fn_value = gen_enum_variant_name_fn_start();
+        let mut fn_value = FN_VARIANT_NAME_START.to_vec();
 
         // Create entity type enum
         for ent_type in self.entity_types.iter() {
@@ -103,15 +91,14 @@ impl Schema {
         }
 
         output_enum.append(&mut END_BLOCK.to_vec());
-        fn_value.append(&mut END_BLOCK.to_vec());
-        fn_value.append(&mut END_BLOCK.to_vec());
+        fn_value.append(&mut [END_BLOCK, END_BLOCK].concat());
 
         return [
-            output_enum,
-            gen_impl_start(&pascal_entity_types_name),
-            fn_value,
-            END_BLOCK.to_vec(),
+            &*output_enum,
+            &*gen_impl_start(&pascal_entity_types_name),
+            &*fn_value,
+            END_BLOCK,
         ]
-            .concat();
+        .concat();
     }
 }

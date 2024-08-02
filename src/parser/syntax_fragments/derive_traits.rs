@@ -1,4 +1,4 @@
-use super::{COMMA, SPACE};
+use super::{CLOSE_PAREN, CLOSE_SQR, COMMA, LINE_FEED};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Derivable traits.
@@ -20,9 +20,9 @@ pub enum DeriveTraits {
 }
 
 impl DeriveTraits {
-    /// Helper function to return the enum variant name as a static string slice
-    pub const fn value(&self) -> &'static str {
-        match *self {
+    /// Transform Enum variant name to the trait name added to the source code
+    pub fn value(&self) -> Vec<u8> {
+        let trait_name = match *self {
             DeriveTraits::CLONE => "Clone",
             DeriveTraits::COPY => "Copy",
             DeriveTraits::DEBUG => "Debug",
@@ -35,25 +35,23 @@ impl DeriveTraits {
             DeriveTraits::PARTIALEQ => "PartialEq",
             DeriveTraits::PARTIALORD => "PartialOrd",
             DeriveTraits::SERIALIZE => "Serialize",
-        }
+        };
+
+        trait_name.as_bytes().to_vec()
     }
 }
 
 pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
-    let mut d_str = Vec::new();
-    d_str.extend_from_slice(DERIVE_START);
+    let mut out_buffer = "#[derive(".as_bytes().to_vec();
 
     for (idx, d) in traits.iter().enumerate() {
-        d_str.extend_from_slice(d.value().as_bytes());
+        out_buffer.append(&mut d.value());
 
         if idx < traits.len() - 1 {
-            d_str.extend([COMMA, SPACE].concat());
+            out_buffer.append(&mut COMMA.to_vec());
         }
     }
 
-    d_str.extend(DERIVE_END);
-    d_str
+    out_buffer.append(&mut [CLOSE_PAREN, CLOSE_SQR, LINE_FEED].concat());
+    out_buffer
 }
-
-pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
-pub static DERIVE_END: &[u8] = &[0x29, 0x5D, 0x0A];

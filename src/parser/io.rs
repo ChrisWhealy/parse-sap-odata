@@ -11,7 +11,7 @@ use crate::{edmx::Edmx, parser::error::ParseError};
 pub static DEFAULT_INPUT_DIR: &str = "./odata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
+fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
 
@@ -38,7 +38,7 @@ pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Deserialize an SAP OData metadata document
 ///
-/// The metadata file must exist in the `./odata` directory and have the `.xml` extension.
+/// The metadata file must exist in the root level project directory `./odata` and have the `.xml` extension.
 /// For example:
 ///
 /// `odata/`<br>

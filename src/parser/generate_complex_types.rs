@@ -15,7 +15,8 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate complex type structs
-pub fn gen_complex_types(out_buffer: &mut Vec<u8>, cts: &Vec<ComplexType>) {
+pub fn gen_complex_types(cts: &Vec<ComplexType>) -> Vec<u8> {
+    let mut out_buffer: Vec<u8> = Vec::new();
     let mut ignored_cts: usize = 0;
 
     out_buffer.append(&mut comment_for("COMPLEX TYPES"));
@@ -31,6 +32,8 @@ pub fn gen_complex_types(out_buffer: &mut Vec<u8>, cts: &Vec<ComplexType>) {
             ignored_cts += 1;
         }
     }
+
+    out_buffer
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -15,7 +15,9 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate entity type structs
-fn gen_entity_types(out_buffer: &mut Vec<u8>, ets: &Vec<EntityType>) {
+fn gen_entity_types(ets: &Vec<EntityType>) -> Vec<u8> {
+    let mut out_buffer: Vec<u8> = Vec::new();
+
     out_buffer.append(&mut comment_for("ENTITY TYPES"));
 
     for (idx, entity) in ets.into_iter().enumerate() {
@@ -25,6 +27,8 @@ fn gen_entity_types(out_buffer: &mut Vec<u8>, ets: &Vec<EntityType>) {
 
         out_buffer.append(&mut gen_entity_type(entity));
     }
+
+    out_buffer
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -80,8 +84,6 @@ fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
 // ---------------------------------------------------------------------------------------------------------------------
 // PUBLIC API
 // ---------------------------------------------------------------------------------------------------------------------
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     let mut out_buffer: Vec<u8> = Vec::new();
 
@@ -90,10 +92,10 @@ pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     out_buffer.append(&mut USE_SERDE.to_vec());
 
     if let Some(cts) = &schema.complex_types {
-        gen_complex_types(&mut out_buffer, cts);
+        out_buffer.append(&mut gen_complex_types(cts));
     }
 
-    gen_entity_types(&mut out_buffer, &schema.entity_types);
+    out_buffer.append(&mut gen_entity_types(&schema.entity_types));
 
     // Create enum + impl for the entity container element
     // This enum acts as a proxy for the service document
@@ -102,7 +104,7 @@ pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
         out_buffer.append(&mut ent_cont.to_enum_with_impl());
     }
 
-    // Close module definition
+    // End module definition
     out_buffer.append(&mut END_BLOCK.to_vec());
     out_buffer
 }

@@ -11,13 +11,10 @@ use crate::sap_annotations::{de_str_to_bool, default_false};
 pub struct SAPAnnotationsFunctionImport {
     #[serde(rename = "@label")]
     pub label: Option<String>,
-
     #[serde(rename = "@action-for")]
     pub action_for: Option<String>,
-
     #[serde(rename = "@applicable-path")]
     pub creatable_path: Option<String>,
-
     #[serde(rename = "@planning-function")]
     pub planning_function: Option<String>,
 }
@@ -31,7 +28,6 @@ pub struct SAPAnnotationsFunctionImport {
 pub struct SAPAnnotationsFunctionImportParameter {
     #[serde(rename = "@label")]
     pub label: Option<String>,
-
     #[serde(
         rename = "@variable-scale",
         deserialize_with = "de_str_to_bool",

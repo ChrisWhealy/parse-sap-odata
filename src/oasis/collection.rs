@@ -7,7 +7,6 @@ use super::record::Record;
 pub struct Collection {
     #[serde(rename = "Record")]
     pub records: Option<Vec<Record>>,
-
     #[serde(rename = "PropertyPath")]
     pub property_paths: Option<Vec<String>>,
 }

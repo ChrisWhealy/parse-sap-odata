@@ -17,10 +17,8 @@ use crate::xml::default_xml_namespace_oasis;
 pub struct Reference {
     #[serde(rename = "@xmlns:edmx", default = "default_xml_namespace_oasis")]
     pub xml_namespace_edmx: String,
-
     #[serde(rename = "@Uri")]
     pub uri: Option<String>,
-
     pub include: Option<Include>,
 }
 
