@@ -1,42 +1,18 @@
 use serde::{Deserialize, Serialize};
 
+use entity_type_semantics::EntityTypeSAPSemantics;
 use navigation_property::NavigationProperty;
+use key::Key;
 
 use crate::{
-    property::{property_ref::PropertyRef, Property},
+    property::Property,
     sap_annotations::default_sap_content_version,
     utils::{de_str_to_bool, default_false},
 };
 
+pub mod entity_type_semantics;
+pub mod key;
 pub mod navigation_property;
-
-#[derive(Debug, serde::Serialize, Deserialize)]
-pub enum EntityTypeSAPSemantics {
-    #[serde(rename = "vcard")]
-    VCard,
-    #[serde(rename = "vevent")]
-    VEvent,
-    #[serde(rename = "vtodo")]
-    VToDo,
-    #[serde(rename = "parameters")]
-    Paramaters,
-    #[serde(rename = "aggregate")]
-    Aggregate,
-    #[serde(rename = "variant")]
-    Variant,
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Represents a `<Key>` tag
-///
-/// # Child Nodes
-/// `1:n PropertyRef`
-#[derive(Debug, serde::Serialize, Deserialize)]
-#[serde(rename_all = "PascalCase")]
-pub struct Key {
-    #[serde(rename = "PropertyRef")]
-    pub property_refs: Vec<PropertyRef>,
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<EntityType>`

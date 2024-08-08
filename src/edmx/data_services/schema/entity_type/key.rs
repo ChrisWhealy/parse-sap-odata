@@ -1,16 +1,15 @@
+use serde::Deserialize;
 use crate::property::property_ref::PropertyRef;
-use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Represents a `<Dependent>` tag
+/// Represents a `<Key>` tag
 ///
 /// # Child Nodes
 /// `1:n PropertyRef`
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, serde::Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct Dependent {
-    #[serde(rename = "@Role")]
-    pub role: String,
-    #[serde(rename = "PropertyRef", default)]
+pub struct Key {
+    #[serde(rename = "PropertyRef")]
     pub property_refs: Vec<PropertyRef>,
 }
+

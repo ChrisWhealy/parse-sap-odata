@@ -2,12 +2,14 @@ use std::{
     fs::File,
     io::{BufReader, Read},
     path::Path,
-    str::FromStr,
+    str::FromStr
 };
 
-use super::{Association, End};
+use super::{Association, End, metadata::normalise_assoc_name};
 
-impl std::str::FromStr for Association {
+// use crate::edmx::data_services::schema::association::metadata::normalise_assoc_name;
+
+impl FromStr for Association {
     type Err = quick_xml::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -15,7 +17,7 @@ impl std::str::FromStr for Association {
     }
 }
 
-impl std::str::FromStr for End {
+impl FromStr for End {
     type Err = quick_xml::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -65,4 +67,48 @@ pub fn should_parse_association() {
         },
         Err(err) => println!("XML test data was not in UTF8 format: {}", err),
     };
+}
+
+#[test]
+pub fn should_normalise_association_name_prefix_only() {
+    let assoc_name = "Assoc_VH_UnitQuantity_SalesOrderLineItem";
+
+    assert_eq!(normalise_assoc_name(assoc_name), "VH_UnitQuantity_SalesOrderLineItem");
+}
+
+#[test]
+pub fn should_normalise_association_name_suffix_only() {
+    let assoc_name = "VH_UnitQuantity_SalesOrderLineItem_AssocSet";
+
+    assert_eq!(normalise_assoc_name(assoc_name), "VH_UnitQuantity_SalesOrderLineItem");
+}
+
+#[test]
+pub fn should_normalise_association_name_prefix_suffix() {
+    let assoc_name = "Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocSet";
+
+    assert_eq!(normalise_assoc_name(assoc_name), "VH_UnitQuantity_SalesOrderLineItem");
+}
+
+#[test]
+pub fn should_normalise_association_name_partial_suffix() {
+    let assoc_name1 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocSe";
+    let assoc_name2 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocS";
+    let assoc_name3 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_Assoc";
+    let assoc_name4 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_Asso";
+    let assoc_name5 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_Ass";
+    let assoc_name6 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_As";
+    let assoc_name7 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_A";
+    let assoc_name8 = "Assoc_VH_UnitQuantity_SalesOrderLineItem_";
+    let assoc_name9 = "Assoc_VH_UnitQuantity_SalesOrderLineItem";
+
+    assert_eq!(normalise_assoc_name(assoc_name1), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name2), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name3), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name4), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name5), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name6), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name7), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name8), "VH_UnitQuantity_SalesOrderLineItem");
+    assert_eq!(normalise_assoc_name(assoc_name9), "VH_UnitQuantity_SalesOrderLineItem");
 }

@@ -1,14 +1,18 @@
-use crate::property::property_ref::PropertyRef;
+#[cfg(feature = "parser")]
+pub mod metadata;
+
 use serde::{Deserialize, Serialize};
 
+use crate::property::property_ref::PropertyRef;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Represents a `<Principal>` tag
-//
-// # Child Nodes
-// `1:n PropertyRef`
-#[derive(Debug, Serialize, Deserialize)]
+/// Represents a `<Dependent>` tag
+///
+/// # Child Nodes
+/// `1:n PropertyRef`
+#[derive(Clone, Debug, Serialize, Deserialize, Ord, Eq, PartialOrd, PartialEq)]
 #[serde(rename_all = "PascalCase")]
-pub struct Principal {
+pub struct Dependent {
     #[serde(rename = "@Role")]
     pub role: String,
     #[serde(rename = "PropertyRef", default)]

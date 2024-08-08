@@ -1,12 +1,11 @@
-use serde::{Deserialize, Serialize};
-
-use crate::property::Property;
-
 #[cfg(feature = "parser")]
 use std::fmt::Formatter;
 
+use serde::{Deserialize, Serialize};
+
 #[cfg(feature = "parser")]
 use crate::parser::syntax_fragments::{fragment_generators::gen_owned_string, *};
+use crate::property::Property;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub enum ComplexTypeMetadata {
@@ -50,32 +49,25 @@ fn line_from(prop_md: ComplexTypeMetadata, val: Vec<u8>) -> Vec<u8> {
 // Output a ComplexType instance as its own source code
 impl std::fmt::Display for ComplexType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut out_buffer: Vec<u8> = vec![];
-
-        // Start ComplexType declaration
-        out_buffer.append(&mut [COMPLEX_TYPE, OPEN_CURLY].concat());
-        out_buffer.append(&mut line_from(ComplexTypeMetadata::Name, gen_owned_string(&self.name)));
-
-        // Start vector of properties
-        out_buffer.append(
-            &mut [
-                &*ComplexTypeMetadata::get_field_name(ComplexTypeMetadata::Properties),
-                COLON,
-                VEC_BANG,
-                LINE_FEED,
-            ]
-            .concat(),
-        );
+        let mut out_buffer: Vec<u8> = [
+            // Start ComplexType declaration
+            COMPLEX_TYPE,
+            OPEN_CURLY,
+            &*line_from(ComplexTypeMetadata::Name, gen_owned_string(&self.name)),
+            // Start vector of properties
+            &*ComplexTypeMetadata::get_field_name(ComplexTypeMetadata::Properties),
+            COLON,
+            VEC_BANG,
+            LINE_FEED,
+        ]
+        .concat();
 
         for prop in &self.properties {
             out_buffer.append(&mut [format!("{prop}").as_bytes(), COMMA, LINE_FEED].concat());
         }
 
-        // End vector of properties
-        out_buffer.append(&mut CLOSE_SQR.to_vec());
-
-        // End ComplexType declaration
-        out_buffer.append(&mut END_BLOCK.to_vec());
+        // End vector of properties and ComplexType declaration
+        out_buffer.append(&mut [CLOSE_SQR, END_BLOCK].concat());
 
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }

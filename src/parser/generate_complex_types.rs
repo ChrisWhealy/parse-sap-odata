@@ -5,7 +5,7 @@ use crate::{
     parser::{
         syntax_fragments::{
             derive_traits::*,
-            fragment_generators::{comment_for, gen_type_name, impl_from_str_for, start_struct},
+            fragment_generators::{comment_for, gen_start_struct, gen_type_name_upper_camel, impl_from_str_for},
             serde_fragments::*,
             END_BLOCK, SEPARATOR,
         },
@@ -40,7 +40,7 @@ pub fn gen_complex_types(cts: &Vec<ComplexType>) -> Vec<u8> {
 /// EDM Complex Type Instance -> Rust declaration
 fn gen_complex_type_src(ct: &ComplexType) -> Option<Vec<u8>> {
     let mut out_buffer: Vec<u8> = Vec::new();
-    let ct_name = gen_type_name(&ct.name);
+    let ct_name = gen_type_name_upper_camel(&ct.name);
 
     // If the complex type contains only one field and that field's name suffix is a basic Rust type, then it is
     // unnecessary to create a Rust struct as this complex type can be replaced with a single Rust type.
@@ -57,7 +57,7 @@ fn gen_complex_type_src(ct: &ComplexType) -> Option<Vec<u8>> {
             DeriveTraits::DESERIALIZE,
         ]));
         out_buffer.append(&mut SERDE_RENAME_ALL_PASCAL_CASE.to_vec());
-        out_buffer.append(&mut start_struct(&ct_name));
+        out_buffer.append(&mut gen_start_struct(&ct_name));
 
         for prop in props {
             out_buffer.append(&mut prop.to_rust());

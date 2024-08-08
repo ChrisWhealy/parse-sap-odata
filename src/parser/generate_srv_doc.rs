@@ -4,13 +4,15 @@ use crate::{
         generate_complex_types::gen_complex_types,
         syntax_fragments::{
             derive_traits::*,
-            fragment_generators::{comment_for, gen_mod_start, gen_type_name, impl_from_str_for, start_struct},
+            fragment_generators::{
+                comment_for, gen_mod_start, gen_start_struct, gen_type_name_upper_camel, impl_from_str_for,
+            },
             serde_fragments::*,
             END_BLOCK, SEPARATOR,
         },
         AsRustSrc,
     },
-    property::{Property, PropertyType},
+    property::{metadata::PropertyType, Property},
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,7 +37,7 @@ fn gen_entity_types(ets: &Vec<EntityType>) -> Vec<u8> {
 /// EDM EntityType Instance -> Rust declaration
 fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
     let mut out_buffer: Vec<u8> = Vec::new();
-    let struct_name = gen_type_name(&entity.name);
+    let struct_name = gen_type_name_upper_camel(&entity.name);
     out_buffer.append(&mut derive_str(vec![
         DeriveTraits::CLONE,
         DeriveTraits::DEBUG,
@@ -44,7 +46,7 @@ fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
         DeriveTraits::DESERIALIZE,
     ]));
     out_buffer.append(&mut SERDE_RENAME_ALL_PASCAL_CASE.to_vec());
-    out_buffer.append(&mut start_struct(&struct_name));
+    out_buffer.append(&mut gen_start_struct(&struct_name));
 
     let mut props = entity.properties.clone();
     props.sort();

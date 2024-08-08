@@ -66,11 +66,10 @@ fn should_deserialize_optional_decimal() {
 }
 
 #[test]
-#[should_panic]
-fn should_panic_on_empty_decimal() {
+fn should_handle_empty_decimal() {
     let empty_price_xml = "<Test><d:Price /></Test>";
 
-    OptionalDecimalElement::from_str(empty_price_xml).unwrap();
+    assert!(OptionalDecimalElement::from_str(empty_price_xml).unwrap().price.is_none());
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

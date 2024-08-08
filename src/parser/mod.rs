@@ -32,9 +32,11 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         Ok(edmx) => {
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
                 // Generate the source code for the service document module and run it through rustfmt
-                match run_rustfmt(&gen_srv_doc_module(odata_srv_name, &schema), &odata_srv_name) {
+                let mod_name = format!("{}.rs", odata_srv_name);
+
+                match run_rustfmt(&gen_srv_doc_module(odata_srv_name, &schema), &mod_name) {
                     Ok(formatted_bytes) => {
-                        write_buffer_to_file(&format!("{}.rs", odata_srv_name), formatted_bytes);
+                        write_buffer_to_file(&mod_name, formatted_bytes);
 
                         // Tell cargo to watch the input XML file
                         println!(
@@ -45,11 +47,12 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
                     Err(err) => println!("Error: rustfmt for service document module ended with {}", err.to_string()),
                 }
 
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Generate the source code for the metadata document module and run it through rustfmt
-                match run_rustfmt(&gen_metadata_module(odata_srv_name, &schema), &odata_srv_name) {
-                    Ok(formatted_bytes) => {
-                        write_buffer_to_file(&format!("{}_metadata.rs", odata_srv_name), formatted_bytes)
-                    },
+                let mod_name = format!("{}_metadata.rs", odata_srv_name);
+
+                match run_rustfmt(&gen_metadata_module(odata_srv_name, &schema), &mod_name) {
+                    Ok(formatted_bytes) => write_buffer_to_file(&mod_name, formatted_bytes),
                     Err(err) => println!("Error: rustfmt for metadata document module ended with {}", err.to_string()),
                 }
             } else {

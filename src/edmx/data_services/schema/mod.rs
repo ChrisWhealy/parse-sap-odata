@@ -15,7 +15,10 @@ use crate::{
 #[cfg(feature = "parser")]
 use crate::parser::syntax_fragments::{
     derive_traits::*,
-    fragment_generators::{gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start, gen_type_name},
+    fragment_generators::{
+        gen_enum_impl_fn_variant_name, gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start,
+        gen_type_name_upper_camel,
+    },
     *,
 };
 
@@ -61,42 +64,37 @@ pub struct Schema {
 #[cfg(feature = "parser")]
 impl Schema {
     pub fn to_entity_types_enum(&self) -> Vec<u8> {
-        let pascal_entity_types_name = format!(
-            "{}EntityTypes",
-            convert_case::Casing::to_case(&self.namespace, convert_case::Case::Pascal)
-        );
+        let upper_camel_entity_types = format!("{}EntityTypes", gen_type_name_upper_camel(&self.namespace));
 
         // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
         let mut output_enum = derive_str(vec![DeriveTraits::DEBUG]);
-        output_enum.append(&mut gen_enum_start(&pascal_entity_types_name));
+        output_enum.append(&mut gen_enum_start(&upper_camel_entity_types));
 
-        // Output the start of a "variant_name" function within the enum implementation
-        //   pub const fn variant_name(&self) -> &'static str {↩︎
-        //       match *self {↩︎
-        let mut fn_value = FN_VARIANT_NAME_START.to_vec();
+        // Output the start of the "variant_name" function within the enum implementation
+        let mut fn_variant_name = gen_enum_impl_fn_variant_name();
 
         // Create entity type enum
         for ent_type in self.entity_types.iter() {
-            let ent_type_name_camel = gen_type_name(&ent_type.name);
+            let ent_type_name_camel = gen_type_name_upper_camel(&ent_type.name);
 
             // Add variant to enum and value function
             output_enum.append(&mut gen_enum_variant(&ent_type_name_camel));
-            fn_value.append(&mut gen_enum_match_arm(
-                &pascal_entity_types_name,
+            fn_variant_name.append(&mut gen_enum_match_arm(
+                &upper_camel_entity_types,
                 &ent_type_name_camel,
                 &ent_type.name,
             ));
         }
 
         output_enum.append(&mut END_BLOCK.to_vec());
-        fn_value.append(&mut [END_BLOCK, END_BLOCK].concat());
+        fn_variant_name.append(&mut [END_BLOCK, END_BLOCK].concat());
 
         return [
             &*output_enum,
-            &*gen_impl_start(&pascal_entity_types_name),
-            &*fn_value,
+            &*gen_impl_start(&upper_camel_entity_types),
+            &*fn_variant_name,
             END_BLOCK,
         ]
         .concat();

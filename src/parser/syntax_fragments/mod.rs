@@ -46,31 +46,30 @@ pub static U8: &[u8] = "u8".as_bytes();
 pub static UNIT: &[u8] = "()".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Primitive values and basic types
-pub static OPTION: &[u8] = "Option".as_bytes();
-pub static SOME: &[u8] = "Some".as_bytes();
-pub static NONE: &[u8] = "None".as_bytes();
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Composite type names
-pub static STRING: &[u8] = "String".as_bytes();
-pub static VECTOR: &[u8] = "Vec".as_bytes();
-pub static METADATA: &'static str = "Metadata";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Macro calls
-pub static VEC_BANG: &[u8] = "vec![".as_bytes();
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Keywords or keyword fragments
 pub static ENUM: &[u8] = "enum ".as_bytes();
 pub static FN: &[u8] = "fn ".as_bytes();
 pub static IMPL: &[u8] = "impl ".as_bytes();
 pub static MOD: &[u8] = "mod ".as_bytes();
 pub static PUBLIC: &[u8] = "pub ".as_bytes();
+pub static CONST: &[u8] = "const ".as_bytes();
 pub static USE: &[u8] = "use ".as_bytes();
 pub static KEY: &[u8] = "key".as_bytes();
-pub static GET_PREFIX: &[u8] = "get_".as_bytes();
+pub static MATCH_SELF: &[u8] = "match *self ".as_bytes();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Primitive values and basic types
+pub static OPTION: &[u8] = "Option".as_bytes();
+pub static SOME: &[u8] = "Some".as_bytes();
+pub static NONE: &[u8] = "None".as_bytes();
+pub static STRING: &[u8] = "String".as_bytes();
+pub static VECTOR: &[u8] = "Vec".as_bytes();
+pub static SELF_REF: &[u8] = "&self".as_bytes();
+pub static STATIC_STR_REF: &[u8] = "&'static str".as_bytes();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Macro calls
+pub static VEC_BANG: &[u8] = "vec![".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
@@ -81,37 +80,50 @@ pub static UUID: &[u8] = "uuid::Uuid".as_bytes();
 pub static PROPERTY: &[u8] = "Property".as_bytes();
 pub static PROPERTYREF: &[u8] = "PropertyRef".as_bytes();
 pub static COMPLEX_TYPE: &[u8] = "ComplexType".as_bytes();
-pub static SAP_ANNOTATIONS_PROPERTY: &[u8] = "SAPAnnotationsProperty".as_bytes();
+pub static METADATA: &'static str = "Metadata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Function calls and larger code fragments
+// Function names used in enum implementations
+pub static FN_NAME_VARIANT_NAME: &[u8] = "variant_name".as_bytes();
+pub static FN_NAME_VARIANT_NAMES: &[u8] = "variant_names".as_bytes();
 pub static FN_VARIANT_NAME_START: &[u8] = "pub const fn variant_name(&self) -> &'static str {
     match *self {
 "
 .as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Compiler attributes and "use" declarations
+/// Compiler attributes and paths to used types
 pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]
 "
 .as_bytes();
 pub fn gen_use_path(path: &[u8]) -> Vec<u8> {
     [USE, path, SEMI_COLON, LINE_FEED].concat()
 }
-pub static PATH_TO_SAP_ODATA_PROPERTIES: &[u8] =
-    "parse_sap_odata::property::{Property, property_ref::PropertyRef}".as_bytes();
-pub static PATH_TO_SAP_ANNOTATIONS_PROPERTY: &[u8] =
-    "parse_sap_odata::sap_annotations::property::SAPAnnotationsProperty".as_bytes();
 pub static PATH_TO_EDMX_COMPLEX_TYPE: &[u8] =
     "parse_sap_odata::edmx::data_services::schema::complex_type::ComplexType".as_bytes();
-pub static PATH_TO_SAP_SEMANTICS_PROPERTY: &[u8] =
-    "parse_sap_odata::sap_semantics::property::SAPSemanticsProperty".as_bytes();
-pub static PATH_TO_SAP_FILTER_RESTRICTION_PROPERTY: &[u8] =
-    "parse_sap_odata::sap_annotations::SAPFilterRestrictionProperty".as_bytes();
-pub static PATH_TO_SAP_FIELD_CONTROL_PROPERTY: &[u8] =
-    "parse_sap_odata::sap_annotations::SAPFieldControlProperty".as_bytes();
-pub static PATH_TO_SAP_DISPLAY_FORMAT_PROPERTY: &[u8] =
-    "parse_sap_odata::sap_annotations::SAPDisplayFormatProperty".as_bytes();
+pub static PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS: &[u8] =
+    "parse_sap_odata::edmx::data_services::schema::entity_container::association_set::AssociationSet".as_bytes();
+pub static PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES: &[u8] = "parse_sap_odata::edmx::data_services::schema::association::{
+    end::End,
+    referential_constraint::{ReferentialConstraint, principal::Principal, dependent::Dependent},
+    Association,
+}"
+.as_bytes();
 pub static PATH_TO_SAP_AGGREGATION_PROPERTY: &[u8] =
     "parse_sap_odata::sap_annotations::SAPAggregationProperty".as_bytes();
-pub static PATH_TO_SAP_PARAMETER_PROPERTY: &[u8] = "parse_sap_odata::sap_annotations::SAPParameterProperty".as_bytes();
+pub static PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET: &[u8] =
+    "parse_sap_odata::sap_annotations::association_set::SAPAnnotationsAssociationSet".as_bytes();
+pub static PATH_TO_SAP_ANNOTATIONS_DISPLAY_FORMAT_PROPERTY: &[u8] =
+    "parse_sap_odata::sap_annotations::display_format::SAPDisplayFormatProperty".as_bytes();
+pub static PATH_TO_SAP_ANNOTATIONS_FIELD_CONTROL_PROPERTY: &[u8] =
+    "parse_sap_odata::sap_annotations::field_control::SAPFieldControlProperty".as_bytes();
+pub static PATH_TO_SAP_ANNOTATIONS_FILTER_RESTRICTION_PROPERTY: &[u8] =
+    "parse_sap_odata::sap_annotations::filter_restriction::SAPFilterRestrictionProperty".as_bytes();
+pub static PATH_TO_SAP_ANNOTATIONS_PARAMETER_PROPERTY: &[u8] =
+    "parse_sap_odata::sap_annotations::property::SAPParameterProperty".as_bytes();
+pub static PATH_TO_SAP_ANNOTATIONS_PROPERTY: &[u8] =
+    "parse_sap_odata::sap_annotations::property::SAPAnnotationsProperty".as_bytes();
+pub static PATH_TO_SAP_ODATA_PROPERTIES: &[u8] =
+    "parse_sap_odata::property::{Property, property_ref::PropertyRef}".as_bytes();
+pub static PATH_TO_SAP_SEMANTICS_PROPERTY: &[u8] =
+    "parse_sap_odata::sap_semantics::property::SAPSemanticsProperty".as_bytes();

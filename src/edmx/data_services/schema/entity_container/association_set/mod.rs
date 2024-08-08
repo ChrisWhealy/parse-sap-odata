@@ -1,7 +1,10 @@
+#[cfg(feature = "parser")]
+pub mod metadata;
+
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    edmx::data_services::schema::association::End, sap_annotations::association_set::SAPAnnotationsAssociationSet,
+    edmx::data_services::schema::association::end::End, sap_annotations::association_set::SAPAnnotationsAssociationSet,
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9,7 +12,7 @@ use crate::{
 ///
 /// # Child Nodes
 /// `2:2 End`
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Ord, Eq, PartialEq, PartialOrd)]
 #[serde(rename_all = "PascalCase")]
 pub struct AssociationSet {
     #[serde(rename = "@Name")]

@@ -14,7 +14,7 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
 }
 
 pub fn comment_for(something: &str) -> Vec<u8> {
-    [SEPARATOR, COMMMENT_LINE, something.as_bytes(), LINE_FEED, SEPARATOR].concat()
+    [LINE_FEED, SEPARATOR, COMMMENT_LINE, something.as_bytes(), LINE_FEED, SEPARATOR].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,7 +26,7 @@ pub fn gen_mod_start(mod_name: &str) -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start and end of a struct declaration
 static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
-pub fn start_struct(struct_name: &str) -> Vec<u8> {
+pub fn gen_start_struct(struct_name: &str) -> Vec<u8> {
     [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
 
@@ -47,21 +47,85 @@ pub fn gen_impl_start(some_name: &str) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate function signature
+pub fn gen_fn_sig(
+    fn_name: &Vec<u8>,
+    is_pub: bool,
+    is_const: bool,
+    arg_list: Option<Vec<&[u8]>>,
+    return_type: Option<&[u8]>,
+) -> Vec<u8> {
+    let public = if is_pub { PUBLIC } else { &[] };
+    let constant = if is_const { CONST } else { &[] };
+
+    let args = if let Some(args) = arg_list {
+        if args.len() > 1 {
+            args.iter()
+                .map(|arg| format!("{},", String::from_utf8((*arg).to_vec()).unwrap()))
+                .collect::<String>()
+        } else {
+            format!("{},", String::from_utf8((args[0]).to_vec()).unwrap())
+        }
+    } else {
+        String::from("")
+    };
+
+    let ret_type = if let Some(ret_type) = return_type {
+        &*[THIN_ARROW, ret_type].concat()
+    } else {
+        &[]
+    };
+
+    [
+        public,
+        constant,
+        FN,
+        fn_name,
+        OPEN_PAREN,
+        args.as_bytes(),
+        CLOSE_PAREN,
+        ret_type,
+    ]
+    .concat()
+}
+
+// Output the start of the "variant_name" function within an enum implementation
+//   pub const fn variant_name(&self) -> &'static str {↩︎
+//       match *self {↩︎
+pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
+    [
+        &*gen_fn_sig(
+            &FN_NAME_VARIANT_NAME.to_vec(),
+            true,
+            true,
+            Some(vec![&SELF_REF.to_vec()]),
+            Some(&STATIC_STR_REF.to_vec()),
+        ),
+        OPEN_CURLY,
+        LINE_FEED,
+        MATCH_SELF,
+        OPEN_CURLY,
+        LINE_FEED,
+    ]
+    .concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start of an enum declaration
-fn gen_fq_enum_variant_name(enum_name: &str, variant_name: &str) -> Vec<u8> {
-    [enum_name.as_bytes(), COLON2, variant_name.as_bytes()].concat()
-}
-
-pub fn gen_fq_enum_variant(enum_name: &str, variant_name: &str) -> Vec<u8> {
-    [&*gen_fq_enum_variant_name(&enum_name, &variant_name), COMMA, LINE_FEED].concat()
-}
-
 pub fn gen_enum_start(enum_name: &str) -> Vec<u8> {
     [PUBLIC, ENUM, enum_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
 
 pub fn gen_enum_variant(variant_name: &str) -> Vec<u8> {
     [variant_name.as_bytes(), COMMA, LINE_FEED].concat()
+}
+
+fn gen_fq_enum_variant_name(enum_name: &str, variant_name: &str) -> Vec<u8> {
+    [enum_name.as_bytes(), COLON2, variant_name.as_bytes()].concat()
+}
+
+pub fn gen_fq_enum_variant(enum_name: &str, variant_name: &str) -> Vec<u8> {
+    [&*gen_fq_enum_variant_name(&enum_name, &variant_name), COMMA, LINE_FEED].concat()
 }
 
 static VARIANT_NAMES_FN_START: &[u8] = "
@@ -127,14 +191,6 @@ pub fn gen_bool_string(b: bool) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_getter_fn_for_property_of_type(prop_name: &[u8], type_name: &[u8]) -> Vec<u8> {
-    [
-        PUBLIC, FN, GET_PREFIX, prop_name, UNIT, THIN_ARROW, type_name, OPEN_CURLY, LINE_FEED,
-    ]
-    .concat()
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_opt_u16_string(int_arg: Option<u16>) -> Vec<u8> {
     if let Some(int) = int_arg {
         [SOME, OPEN_PAREN, int.to_string().as_bytes(), CLOSE_PAREN].concat()
@@ -151,6 +207,10 @@ pub fn gen_opt_string(s_arg: &Option<String>) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_type_name(odata_type_name: &str) -> String {
+pub fn gen_type_name_upper_camel(odata_type_name: &str) -> String {
     convert_case::Casing::to_case(&odata_type_name, convert_case::Case::UpperCamel)
+}
+
+pub fn gen_type_name_snake(odata_type_name: &str) -> String {
+    convert_case::Casing::to_case(&odata_type_name, convert_case::Case::Snake)
 }

@@ -1,3 +1,6 @@
+#[cfg(feature = "parser")]
+pub mod metadata;
+
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -9,7 +12,7 @@ use crate::{
 /// SAP Annotations applicable to `edm:AssociationSet`
 ///
 /// See https://sap.github.io/odata-vocabularies/docs/v2-annotations.html#element-edmassociationset
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Ord, Eq, PartialOrd, PartialEq, )]
 #[serde(rename_all = "PascalCase")]
 pub struct SAPAnnotationsAssociationSet {
     #[serde(rename = "@content-version", default = "default_sap_content_version")]

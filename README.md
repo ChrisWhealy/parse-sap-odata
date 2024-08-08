@@ -32,6 +32,7 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 | Version | Description
 |--:|---
+1.3.2 | Generate metadata for `Association`s and `AssociationSet`s
 1.3.1 | Internal optimisation and refactoring.  No changes to functionality
 1.3.0 | Generate a metadata module
 1.2.5 | Update `Cargo.toml` dependency versions

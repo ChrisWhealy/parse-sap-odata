@@ -81,7 +81,7 @@ pub fn odata_name_to_rust_safe_name(odata_name: &str) -> String {
 ///
 /// If `rustfmt` finds any errors, the source code is still written to `OUT_DIR`, but with `failed_` prefixed to the
 /// filename
-pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>, anyhow::Error> {
+pub fn run_rustfmt(buffer: &Vec<u8>, file_name: &str) -> Result<Vec<u8>, anyhow::Error> {
     let rustfmt_path = which("rustfmt").with_context(|| "Cannot find `rustfmt` in the path.  Is it installed?")?;
 
     let mut fmt_proc = Command::new(rustfmt_path)
@@ -104,7 +104,7 @@ pub fn run_rustfmt(buffer: &Vec<u8>, metadata_file_name: &str) -> Result<Vec<u8>
         // For diagnostic purposes during development, write the failed source code to $OUT_DIR as file
         // "failed_<metadata_file_name>.rs"
         let out_dir = env::var_os("OUT_DIR").unwrap();
-        let failed_file_name = format!("failed_{}.rs", metadata_file_name);
+        let failed_file_name = format!("failed_{}", file_name);
         let gen_failed_path = Path::new(&out_dir).join(failed_file_name);
 
         let _dont_care = OpenOptions::new()

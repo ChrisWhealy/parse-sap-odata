@@ -3,7 +3,7 @@ use check_keyword::CheckKeyword;
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
     parser::syntax_fragments::{
-        fragment_generators::{comment_for, gen_type_name, start_struct},
+        fragment_generators::{comment_for, gen_start_struct, gen_type_name_upper_camel},
         COLON, COMMA, END_BLOCK, METADATA, PROPERTY, PUBLIC, RUSTC_ALLOW_DEAD_CODE, SEPARATOR,
     },
     property::Property,
@@ -27,10 +27,10 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
         // If the complex type contains only one field and that field's name suffix is a basic Rust type, then it is
         // unnecessary to represent the complex type as a Rust struct as it can be replaced with a single Rust type.
         // This happens with SAP complex types such as `CT_String` which just contains a single field called `String`.
-        let ct_name = gen_type_name(&ct.name);
+        let ct_name = gen_type_name_upper_camel(&ct.name);
 
         if ct.properties.len() > 1 && !ct_name.is_keyword() {
-            let ct_name = format!("{}{}", gen_type_name(&ct.name), METADATA);
+            let ct_name = format!("{}{}", gen_type_name_upper_camel(&ct.name), METADATA);
             let mut ct_props = ct.properties.clone();
             ct_props.sort();
 
@@ -51,7 +51,7 @@ fn gen_metadata_complex_type(ct_name: &str, ct_props: &Vec<Property>) -> Vec<u8>
     let mut out_buffer: Vec<u8> = Vec::new();
 
     out_buffer.append(&mut RUSTC_ALLOW_DEAD_CODE.to_vec());
-    out_buffer.append(&mut start_struct(&ct_name));
+    out_buffer.append(&mut gen_start_struct(&ct_name));
 
     for ct_prop in ct_props {
         out_buffer.append(
