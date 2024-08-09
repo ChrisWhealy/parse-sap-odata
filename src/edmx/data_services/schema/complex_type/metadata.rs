@@ -42,7 +42,7 @@ impl std::fmt::Display for ComplexType {
             VEC_BANG,
             LINE_FEED,
         ]
-            .concat();
+        .concat();
 
         for prop in &self.properties {
             out_buffer.append(&mut [format!("{prop}").as_bytes(), COMMA, LINE_FEED].concat());

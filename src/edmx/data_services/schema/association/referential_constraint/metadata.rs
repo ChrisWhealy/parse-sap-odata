@@ -26,14 +26,7 @@ impl ReferentialConstraintFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_ref_con(prop_md: ReferentialConstraintFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [
-        &*ReferentialConstraintFieldNames::value(prop_md),
-        COLON,
-        &val,
-        COMMA,
-        LINE_FEED,
-    ]
-    .concat()
+    [&*ReferentialConstraintFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for ReferentialConstraint {

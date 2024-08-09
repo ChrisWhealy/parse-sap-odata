@@ -10,12 +10,8 @@ use crate::{
         PATH_TO_SAP_ANNOTATIONS_FILTER_RESTRICTION_PROPERTY, PATH_TO_SAP_ANNOTATIONS_PARAMETER_PROPERTY,
         PATH_TO_SAP_SEMANTICS_PROPERTY,
     },
-    sap_annotations::{
-        aggregation_role::SAPAggregationRoleProperty, display_format::SAPDisplayFormatProperty,
-        field_control::SAPFieldControlProperty, filter_restriction::SAPFilterRestrictionProperty,
-        parameter::SAPParameterProperty,
-    },
-    sap_semantics::property::SAPSemanticsProperty,
+    sap_annotations::OptionalAnnotationType,
+    sap_semantics::OptionalSemanticType,
 };
 
 static MY_NAME: &[u8] = "SAPAnnotationsProperty".as_bytes();
@@ -154,7 +150,7 @@ fn line_from(prop_md: SAPAnnotationsPropertyFieldNames, val: Vec<u8>) -> Vec<u8>
         COMMA.to_vec(),
         LINE_FEED.to_vec(),
     ]
-    .concat()
+        .concat()
 }
 
 impl std::fmt::Display for SAPAnnotationsProperty {
@@ -168,7 +164,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             &*line_from(SAPAnnotationsPropertyFieldNames::IsUnicode, gen_bool_string(self.is_unicode)),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::Semantics,
-                SAPSemanticsProperty::opt_annotation_type_src(&self.semantics),
+                self.semantics.opt_sem_type(&self.semantics),
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::IsCreatable,
@@ -193,7 +189,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::FilterRestriction,
-                SAPFilterRestrictionProperty::opt_anno_type(&self.filter_restriction),
+                self.filter_restriction.opt_anno_type(&self.filter_restriction),
             ),
             &*line_from(SAPAnnotationsPropertyFieldNames::FilterFor, gen_opt_string(&self.filter_for)),
             &*line_from(SAPAnnotationsPropertyFieldNames::Text, gen_opt_string(&self.text)),
@@ -203,7 +199,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             &*line_from(SAPAnnotationsPropertyFieldNames::IsVisible, gen_bool_string(self.is_visible)),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::FieldControl,
-                SAPFieldControlProperty::opt_fc_prop(&self.field_control),
+                self.field_control.opt_anno_type(&self.field_control),
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::ValidationRegexp,
@@ -211,7 +207,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::DisplayFormat,
-                SAPDisplayFormatProperty::opt_anno_type(&self.display_format),
+                self.display_format.opt_anno_type(&self.display_format),
             ),
             &*line_from(SAPAnnotationsPropertyFieldNames::ValueList, gen_opt_string(&self.value_list)),
             &*line_from(
@@ -224,7 +220,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::AggregationRole,
-                SAPAggregationRoleProperty::opt_anno_type(&self.aggregation_role),
+                self.aggregation_role.opt_anno_type(&self.aggregation_role),
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::SuperOrdinate,
@@ -272,7 +268,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::Parameter,
-                SAPParameterProperty::opt_anno_type(&self.parameter),
+                self.parameter.opt_anno_type(&self.parameter),
             ),
             &*line_from(
                 SAPAnnotationsPropertyFieldNames::IsAnnotation,
@@ -292,7 +288,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             ),
             CLOSE_CURLY,
         ]
-        .concat();
+            .concat();
 
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }

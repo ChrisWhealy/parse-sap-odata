@@ -15,6 +15,15 @@ pub mod property;
 pub mod schema;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub trait AnnotationType {
+    fn member_name(&self) -> Vec<u8>;
+}
+
+pub trait OptionalAnnotationType {
+    fn opt_anno_type<T: AnnotationType>(&self, opt_self: &Option<T>) -> Vec<u8>;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 static ATOM: &str = "atom";
 static ONE: &str = "1";
 static JSON: &str = "json";

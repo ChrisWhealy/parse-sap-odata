@@ -30,14 +30,7 @@ impl AssociationSetFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(prop_md: AssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [
-        &*AssociationSetFieldNames::value(prop_md),
-        COLON,
-        &val,
-        COMMA,
-        LINE_FEED,
-    ]
-    .concat()
+    [&*AssociationSetFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for AssociationSet {

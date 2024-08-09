@@ -191,16 +191,19 @@ pub fn gen_bool_string(b: bool) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn gen_some_value(val: Vec<u8>) -> Vec<u8> {
+    [SOME, OPEN_PAREN, &*val, CLOSE_PAREN].concat()
+}
 pub fn gen_opt_u16_string(int_arg: Option<u16>) -> Vec<u8> {
     if let Some(int) = int_arg {
-        [SOME, OPEN_PAREN, int.to_string().as_bytes(), CLOSE_PAREN].concat()
+        gen_some_value(int.to_string().into_bytes())
     } else {
         NONE.to_vec()
     }
 }
 pub fn gen_opt_string(s_arg: &Option<String>) -> Vec<u8> {
     if let Some(s) = s_arg {
-        [SOME, OPEN_PAREN, &*gen_owned_string(s), CLOSE_PAREN].concat()
+        gen_some_value(gen_owned_string(s))
     } else {
         NONE.to_vec()
     }
