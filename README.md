@@ -18,18 +18,21 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
    The metadata XML tags are mapped as follows:
 
-   | XML | Rust Declaration
-   |---|---
-   | `<ComplexType Name="CT_Blah">` | `pub struct CtBlahMetadata {`&hellip;`}`
-   | `<EntityType Name="Blah">` | `pub struct BlahMetadata {`&hellip;`}`
-   | `<Association Name="Assoc_ThisOne_ThatOne">` | Creates an `enum` member `ThisOneThatOne`
-   | `<AssociationSet Name="Assoc_VH_Language_Contacts_AssocSet" `&hellip;`>`
+   | XML                                                                 | Rust Declaration
+   |---------------------------------------------------------------------|---
+   | `<ComplexType Name="CT_Blah">`                                      | `pub struct CtBlahMetadata {`&hellip;`}`
+   | `<EntityType Name="Blah">`                                          | `pub struct BlahMetadata {`&hellip;`}`
+   | `<Association Name="Assoc_ThisOne_ThatOne">`                        | Creates an Association `enum` member `ThisOneThatOne`
+   | `<AssociationSet Name="Assoc_ThisOne_ThatOne_AssocSet" `&hellip;`>` | Creates an AssociationSet `enum` member `ThisOneThatOne`
 
    For each `EntityType` metadata `struct`, there is an implementation containing a `key()` function and getter function for each `struct` property.
    Each property getter functions returns an instance of a `Property` struct that includes SAP annotations.
 
-   The `Name` property of each `<Association>` metadata tag is stripped of the `Assoc_` prefix and added as `enum` member.
+   The `Name` property of each `<Association>` metadata tag is stripped of the `Assoc_` prefix and added as a member to the Associations `enum`.
    This `enum` has an implementation containing a getter function for each association.
+
+   The `Name` property of each `<AssociationSet>` metadata tag is stripped of the `Assoc_` prefix and the `_AssocSet` suffix and added as a member to the AssociationSets `enum`.
+   This `enum` has an implementation containing a getter function for each association set.
 
 ## Table of Contents
 
