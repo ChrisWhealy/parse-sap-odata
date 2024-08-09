@@ -16,9 +16,20 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 1. Creates a module representing the OData `$metadata` document.
 
-   This contains a set of `structs` that hold the `<ComplexType>` and `<EntityType>` metadata.
+   The metadata XML tags are mapped as follows:
 
-   Each metadata `struct` has an `impl` containing a getter function for each `struct` property that returns an instance of that property's metadata, including any SAP annotations.
+   | XML | Rust Declaration
+   |---|---
+   | `<ComplexType Name="CT_Blah">` | `pub struct CtBlahMetadata {`&hellip;`}`
+   | `<EntityType Name="Blah">` | `pub struct BlahMetadata {`&hellip;`}`
+   | `<Association Name="Assoc_ThisOne_ThatOne">` | Creates an `enum` member `ThisOneThatOne`
+   | `<AssociationSet Name="Assoc_VH_Language_Contacts_AssocSet" `&hellip;`>`
+
+   For each `EntityType` metadata `struct`, there is an implementation containing a `key()` function and getter function for each `struct` property.
+   Each property getter functions returns an instance of a `Property` struct that includes SAP annotations.
+
+   The `Name` property of each `<Association>` metadata tag is stripped of the `Assoc_` prefix and added as `enum` member.
+   This `enum` has an implementation containing a getter function for each association.
 
 ## Table of Contents
 
@@ -32,8 +43,9 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 | Version | Description
 |--:|---
+1.3.3 | Internal refactoring to improve architectural consistency<br>No changes to functionality
 1.3.2 | Generate metadata for `Association`s and `AssociationSet`s
-1.3.1 | Internal optimisation and refactoring.  No changes to functionality
+1.3.1 | Internal optimisation and refactoring.<br>No changes to functionality
 1.3.0 | Generate a metadata module
 1.2.5 | Update `Cargo.toml` dependency versions
 1.2.4 | Add `get_key()` function to `EntityType` trait

@@ -263,10 +263,10 @@ fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM EntityType Instance -> Rust declaration
 fn gen_metadata_association_getter_fn(enum_variant: &str, assoc: &Association) -> Vec<u8> {
-    let fn_name = gen_type_name_snake(&enum_variant);
+    let fn_name = ["get_".as_bytes(), gen_type_name_snake(&enum_variant).as_bytes()].concat();
 
     [
-        &*gen_fn_sig(&fn_name.into_bytes(), true, false, None, Some("Association".as_bytes())),
+        &*gen_fn_sig(&fn_name, true, false, None, Some("Association".as_bytes())),
         OPEN_CURLY,
         LINE_FEED,
         format!("{}", assoc).as_bytes(),
