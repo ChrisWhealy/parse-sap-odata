@@ -32,7 +32,7 @@ pub enum PropertyType {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum PropertyMetadata {
+enum PropertyFieldNames {
     ODataName,
     EdmType,
     Nullable,
@@ -48,21 +48,21 @@ pub enum PropertyMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-impl PropertyMetadata {
-    pub fn get_field_name(prop_name: PropertyMetadata) -> Vec<u8> {
+impl PropertyFieldNames {
+    pub fn value(prop_name: PropertyFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            PropertyMetadata::ODataName => "odata_name",
-            PropertyMetadata::EdmType => "edm_type",
-            PropertyMetadata::Nullable => "nullable",
-            PropertyMetadata::MaxLength => "max_length",
-            PropertyMetadata::Precision => "precision",
-            PropertyMetadata::Scale => "scale",
-            PropertyMetadata::ConcurrencyMode => "concurrency_mode",
-            PropertyMetadata::FcKeepInContent => "fc_keep_in_content",
-            PropertyMetadata::FcTargetPath => "fc_target_path",
-            PropertyMetadata::SAPAnnotations => "sap_annotations",
-            PropertyMetadata::DeserializerFn => "deserializer_fn",
-            PropertyMetadata::DeserializerModule => "deserializer_module",
+            PropertyFieldNames::ODataName => "odata_name",
+            PropertyFieldNames::EdmType => "edm_type",
+            PropertyFieldNames::Nullable => "nullable",
+            PropertyFieldNames::MaxLength => "max_length",
+            PropertyFieldNames::Precision => "precision",
+            PropertyFieldNames::Scale => "scale",
+            PropertyFieldNames::ConcurrencyMode => "concurrency_mode",
+            PropertyFieldNames::FcKeepInContent => "fc_keep_in_content",
+            PropertyFieldNames::FcTargetPath => "fc_target_path",
+            PropertyFieldNames::SAPAnnotations => "sap_annotations",
+            PropertyFieldNames::DeserializerFn => "deserializer_fn",
+            PropertyFieldNames::DeserializerModule => "deserializer_module",
         };
 
         member.as_bytes().to_vec()
@@ -97,8 +97,8 @@ impl Property {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from(prop_md: PropertyMetadata, val: Vec<u8>) -> Vec<u8> {
-    [&*PropertyMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from(prop_md: PropertyFieldNames, val: Vec<u8>) -> Vec<u8> {
+    [&*PropertyFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Property {
@@ -110,21 +110,21 @@ impl std::fmt::Display for Property {
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
-            &*line_from(PropertyMetadata::ODataName, gen_owned_string(&self.odata_name.clone())),
-            &*line_from(PropertyMetadata::EdmType, gen_owned_string(&self.edm_type.clone())),
-            &*line_from(PropertyMetadata::Nullable, gen_bool_string(self.nullable)),
-            &*line_from(PropertyMetadata::MaxLength, gen_opt_u16_string(self.max_length)),
-            &*line_from(PropertyMetadata::Precision, gen_opt_u16_string(self.precision)),
-            &*line_from(PropertyMetadata::Scale, gen_opt_u16_string(self.scale)),
-            &*line_from(PropertyMetadata::ConcurrencyMode, gen_opt_string(&self.concurrency_mode)),
-            &*line_from(PropertyMetadata::FcKeepInContent, gen_bool_string(self.fc_keep_in_content)),
-            &*line_from(PropertyMetadata::FcTargetPath, gen_opt_string(&self.fc_target_path)),
+            &*line_from(PropertyFieldNames::ODataName, gen_owned_string(&self.odata_name.clone())),
+            &*line_from(PropertyFieldNames::EdmType, gen_owned_string(&self.edm_type.clone())),
+            &*line_from(PropertyFieldNames::Nullable, gen_bool_string(self.nullable)),
+            &*line_from(PropertyFieldNames::MaxLength, gen_opt_u16_string(self.max_length)),
+            &*line_from(PropertyFieldNames::Precision, gen_opt_u16_string(self.precision)),
+            &*line_from(PropertyFieldNames::Scale, gen_opt_u16_string(self.scale)),
+            &*line_from(PropertyFieldNames::ConcurrencyMode, gen_opt_string(&self.concurrency_mode)),
+            &*line_from(PropertyFieldNames::FcKeepInContent, gen_bool_string(self.fc_keep_in_content)),
+            &*line_from(PropertyFieldNames::FcTargetPath, gen_opt_string(&self.fc_target_path)),
             &*line_from(
-                PropertyMetadata::SAPAnnotations,
+                PropertyFieldNames::SAPAnnotations,
                 format!("{}", self.sap_annotations).as_bytes().to_vec(),
             ),
-            &*line_from(PropertyMetadata::DeserializerFn, deser_fn),
-            &*line_from(PropertyMetadata::DeserializerModule, deser_mod),
+            &*line_from(PropertyFieldNames::DeserializerFn, deser_fn),
+            &*line_from(PropertyFieldNames::DeserializerModule, deser_mod),
             CLOSE_CURLY,
         ]
         .concat();

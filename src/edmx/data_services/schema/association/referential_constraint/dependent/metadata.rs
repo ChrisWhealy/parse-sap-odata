@@ -10,13 +10,13 @@ use crate::{
 static MY_NAME: &[u8] = "Dependent".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum DependentFieldNames {
+enum DependentFieldNames {
     Role,
     PropertyRefs,
 }
 
 impl DependentFieldNames {
-    fn get_field_name(prop_name: DependentFieldNames) -> Vec<u8> {
+    fn value(prop_name: DependentFieldNames) -> Vec<u8> {
         let member = match prop_name {
             DependentFieldNames::Role => "role",
             DependentFieldNames::PropertyRefs => "property_refs",
@@ -28,7 +28,7 @@ impl DependentFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_dependent(prop_md: DependentFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*DependentFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [&*DependentFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Dependent {

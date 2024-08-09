@@ -10,7 +10,7 @@ use super::End;
 static MY_NAME: &[u8] = "End".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum EndFieldNames {
+enum EndFieldNames {
     Role,
     EntitySet,
     EndType,
@@ -18,7 +18,7 @@ pub enum EndFieldNames {
 }
 
 impl EndFieldNames {
-    pub fn get_field_name(prop_name: EndFieldNames) -> Vec<u8> {
+    pub fn value(prop_name: EndFieldNames) -> Vec<u8> {
         let member = match prop_name {
             EndFieldNames::Role => "role",
             EndFieldNames::EntitySet => "entity_set",
@@ -32,7 +32,7 @@ impl EndFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(prop_md: EndFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*EndFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [&*EndFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for End {

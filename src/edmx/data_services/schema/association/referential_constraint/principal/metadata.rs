@@ -10,13 +10,13 @@ use crate::{
 static MY_NAME: &[u8] = "Principal".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum PrincipalFieldNames {
+enum PrincipalFieldNames {
     Role,
     PropertyRefs,
 }
 
 impl PrincipalFieldNames {
-    fn get_field_name(prop_name: PrincipalFieldNames) -> Vec<u8> {
+    fn value(prop_name: PrincipalFieldNames) -> Vec<u8> {
         let member = match prop_name {
             PrincipalFieldNames::Role => "role",
             PrincipalFieldNames::PropertyRefs => "property_refs",
@@ -28,7 +28,7 @@ impl PrincipalFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_dependent(prop_md: PrincipalFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*PrincipalFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [&*PrincipalFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Principal {

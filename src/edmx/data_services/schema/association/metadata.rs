@@ -39,7 +39,7 @@ pub fn normalise_assoc_name(assoc_name: &str) -> String {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum AssociationFieldNames {
+enum AssociationFieldNames {
     Name,
     SapContentVersion,
     Ends,
@@ -47,7 +47,7 @@ pub enum AssociationFieldNames {
 }
 
 impl AssociationFieldNames {
-    pub fn get_field_name(prop_name: AssociationFieldNames) -> Vec<u8> {
+    pub fn value(prop_name: AssociationFieldNames) -> Vec<u8> {
         let member = match prop_name {
             AssociationFieldNames::Name => "name",
             AssociationFieldNames::SapContentVersion => "sap_content_version",
@@ -61,7 +61,7 @@ impl AssociationFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_association(prop_md: AssociationFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*AssociationFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [&*AssociationFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Association {

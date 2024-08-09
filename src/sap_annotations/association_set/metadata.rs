@@ -19,7 +19,7 @@ pub enum SAPAnnotationsAssociationSetFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl SAPAnnotationsAssociationSetFieldNames {
-    pub fn get_field_name(prop_name: SAPAnnotationsAssociationSetFieldNames) -> Vec<u8> {
+    pub fn value(prop_name: SAPAnnotationsAssociationSetFieldNames) -> Vec<u8> {
         let member = match prop_name {
             SAPAnnotationsAssociationSetFieldNames::ContentVersion => "content_version",
             SAPAnnotationsAssociationSetFieldNames::IsCreatable => "is_creatable",
@@ -34,7 +34,7 @@ impl SAPAnnotationsAssociationSetFieldNames {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from(prop_md: SAPAnnotationsAssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
     [
-        SAPAnnotationsAssociationSetFieldNames::get_field_name(prop_md),
+        SAPAnnotationsAssociationSetFieldNames::value(prop_md),
         COLON.to_vec(),
         val,
         COMMA.to_vec(),

@@ -21,7 +21,7 @@ use crate::{
 static MY_NAME: &[u8] = "SAPAnnotationsProperty".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum SAPAnnotationsPropertyFieldNames {
+enum SAPAnnotationsPropertyFieldNames {
     Label,
     Heading,
     QuickInfo,
@@ -67,7 +67,7 @@ pub enum SAPAnnotationsPropertyFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl SAPAnnotationsPropertyFieldNames {
-    pub fn get_field_name(prop_name: SAPAnnotationsPropertyFieldNames) -> Vec<u8> {
+    pub fn value(prop_name: SAPAnnotationsPropertyFieldNames) -> Vec<u8> {
         let member = match prop_name {
             SAPAnnotationsPropertyFieldNames::Label => "label",
             SAPAnnotationsPropertyFieldNames::Heading => "heading",
@@ -148,7 +148,7 @@ impl SAPAnnotationsProperty {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from(prop_md: SAPAnnotationsPropertyFieldNames, val: Vec<u8>) -> Vec<u8> {
     [
-        SAPAnnotationsPropertyFieldNames::get_field_name(prop_md),
+        SAPAnnotationsPropertyFieldNames::value(prop_md),
         COLON.to_vec(),
         val,
         COMMA.to_vec(),

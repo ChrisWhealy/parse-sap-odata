@@ -55,7 +55,7 @@ impl EntityContainer {
         enum_fn_iterator.append(&mut end_iter_fn());
         enum_fn_variant_name.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
 
-        return [
+        [
             // EntityContainer enum
             &*entities_enum,
             // Output the start of an enum implementation
@@ -68,6 +68,6 @@ impl EntityContainer {
             &*gen_enum_fn_variant_names(&cont_name_camel),
             END_BLOCK,
         ]
-        .concat();
+        .concat()
     }
 }

@@ -8,7 +8,7 @@ use crate::parser::syntax_fragments::{
 static MY_NAME: &[u8] = "AssociationSet".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum AssociationSetFieldNames {
+enum AssociationSetFieldNames {
     Name,
     Association,
     SapAnnotations,
@@ -16,7 +16,7 @@ pub enum AssociationSetFieldNames {
 }
 
 impl AssociationSetFieldNames {
-    pub fn get_field_name(prop_name: AssociationSetFieldNames) -> Vec<u8> {
+    pub fn value(prop_name: AssociationSetFieldNames) -> Vec<u8> {
         let member = match prop_name {
             AssociationSetFieldNames::Name => "name",
             AssociationSetFieldNames::Association => "association",
@@ -31,7 +31,7 @@ impl AssociationSetFieldNames {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(prop_md: AssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
     [
-        &*AssociationSetFieldNames::get_field_name(prop_md),
+        &*AssociationSetFieldNames::value(prop_md),
         COLON,
         &val,
         COMMA,

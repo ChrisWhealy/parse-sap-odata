@@ -8,13 +8,13 @@ use crate::{
 static MY_NAME: &[u8] = "ReferentialConstraint".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum ReferentialConstraintFieldNames {
+enum ReferentialConstraintFieldNames {
     Principal,
     Dependent,
 }
 
 impl ReferentialConstraintFieldNames {
-    pub fn get_field_name(prop_name: ReferentialConstraintFieldNames) -> Vec<u8> {
+    pub fn value(prop_name: ReferentialConstraintFieldNames) -> Vec<u8> {
         let member = match prop_name {
             ReferentialConstraintFieldNames::Principal => "principal",
             ReferentialConstraintFieldNames::Dependent => "dependent",
@@ -27,7 +27,7 @@ impl ReferentialConstraintFieldNames {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_ref_con(prop_md: ReferentialConstraintFieldNames, val: Vec<u8>) -> Vec<u8> {
     [
-        &*ReferentialConstraintFieldNames::get_field_name(prop_md),
+        &*ReferentialConstraintFieldNames::value(prop_md),
         COLON,
         &val,
         COMMA,
