@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{sap_annotations::default_sap_content_version, sap_semantics::SAPSemanticsEntityType};
+use crate::{sap_annotations::default_sap_content_version, sap_semantics::entity_type::SAPSemanticsEntityType};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Debug, Serialize, Deserialize)]

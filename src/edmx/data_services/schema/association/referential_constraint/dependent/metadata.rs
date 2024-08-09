@@ -10,16 +10,16 @@ use crate::{
 static MY_NAME: &[u8] = "Dependent".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum DependentMetadata {
+pub enum DependentFieldNames {
     Role,
     PropertyRefs,
 }
 
-impl DependentMetadata {
-    fn get_field_name(prop_name: DependentMetadata) -> Vec<u8> {
+impl DependentFieldNames {
+    fn get_field_name(prop_name: DependentFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            DependentMetadata::Role => "role",
-            DependentMetadata::PropertyRefs => "property_refs",
+            DependentFieldNames::Role => "role",
+            DependentFieldNames::PropertyRefs => "property_refs",
         };
 
         member.as_bytes().to_vec()
@@ -27,8 +27,8 @@ impl DependentMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_dependent(prop_md: DependentMetadata, val: Vec<u8>) -> Vec<u8> {
-    [&*DependentMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_dependent(prop_md: DependentFieldNames, val: Vec<u8>) -> Vec<u8> {
+    [&*DependentFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Dependent {
@@ -44,8 +44,11 @@ impl std::fmt::Display for Dependent {
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
-            &*line_from_dependent(DependentMetadata::Role, gen_owned_string(&self.role)),
-            &*line_from_dependent(DependentMetadata::PropertyRefs, [VEC_BANG, &*prop_refs_str, CLOSE_SQR].concat()),
+            &*line_from_dependent(DependentFieldNames::Role, gen_owned_string(&self.role)),
+            &*line_from_dependent(
+                DependentFieldNames::PropertyRefs,
+                [VEC_BANG, &*prop_refs_str, CLOSE_SQR].concat(),
+            ),
             CLOSE_CURLY,
         ]
         .concat();

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     sap_annotations::{de_str_to_bool, default_false, default_sap_content_version, default_true},
-    sap_semantics::SAPSemanticsEntitySet,
+    sap_semantics::entity_set::SAPSemanticsEntitySet,
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

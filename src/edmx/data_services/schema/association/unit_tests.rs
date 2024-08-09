@@ -2,10 +2,10 @@ use std::{
     fs::File,
     io::{BufReader, Read},
     path::Path,
-    str::FromStr
+    str::FromStr,
 };
 
-use super::{Association, End, metadata::normalise_assoc_name};
+use super::{metadata::normalise_assoc_name, Association, End};
 
 // use crate::edmx::data_services::schema::association::metadata::normalise_assoc_name;
 

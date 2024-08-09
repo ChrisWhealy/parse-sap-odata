@@ -10,7 +10,7 @@ use super::SAPAnnotationsAssociationSet;
 static MY_NAME: &[u8] = "SAPAnnotationsAssociationSet".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum SAPAnnotationsAssociationSetMetadata {
+pub enum SAPAnnotationsAssociationSetFieldNames {
     ContentVersion,
     IsCreatable,
     IsUpdatable,
@@ -18,13 +18,13 @@ pub enum SAPAnnotationsAssociationSetMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-impl SAPAnnotationsAssociationSetMetadata {
-    pub fn get_field_name(prop_name: SAPAnnotationsAssociationSetMetadata) -> Vec<u8> {
+impl SAPAnnotationsAssociationSetFieldNames {
+    pub fn get_field_name(prop_name: SAPAnnotationsAssociationSetFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            SAPAnnotationsAssociationSetMetadata::ContentVersion => "content_version",
-            SAPAnnotationsAssociationSetMetadata::IsCreatable => "is_creatable",
-            SAPAnnotationsAssociationSetMetadata::IsUpdatable => "is_updatable",
-            SAPAnnotationsAssociationSetMetadata::IsDeletable => "is_deletable",
+            SAPAnnotationsAssociationSetFieldNames::ContentVersion => "content_version",
+            SAPAnnotationsAssociationSetFieldNames::IsCreatable => "is_creatable",
+            SAPAnnotationsAssociationSetFieldNames::IsUpdatable => "is_updatable",
+            SAPAnnotationsAssociationSetFieldNames::IsDeletable => "is_deletable",
         };
 
         member.as_bytes().to_vec()
@@ -32,9 +32,9 @@ impl SAPAnnotationsAssociationSetMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from(prop_md: SAPAnnotationsAssociationSetMetadata, val: Vec<u8>) -> Vec<u8> {
+fn line_from(prop_md: SAPAnnotationsAssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
     [
-        SAPAnnotationsAssociationSetMetadata::get_field_name(prop_md),
+        SAPAnnotationsAssociationSetFieldNames::get_field_name(prop_md),
         COLON.to_vec(),
         val,
         COMMA.to_vec(),
@@ -49,19 +49,19 @@ impl std::fmt::Display for SAPAnnotationsAssociationSet {
             MY_NAME,
             OPEN_CURLY,
             &*line_from(
-                SAPAnnotationsAssociationSetMetadata::ContentVersion,
+                SAPAnnotationsAssociationSetFieldNames::ContentVersion,
                 gen_owned_string(&self.content_version),
             ),
             &*line_from(
-                SAPAnnotationsAssociationSetMetadata::IsCreatable,
+                SAPAnnotationsAssociationSetFieldNames::IsCreatable,
                 gen_bool_string(self.is_creatable),
             ),
             &*line_from(
-                SAPAnnotationsAssociationSetMetadata::IsUpdatable,
+                SAPAnnotationsAssociationSetFieldNames::IsUpdatable,
                 gen_bool_string(self.is_updatable),
             ),
             &*line_from(
-                SAPAnnotationsAssociationSetMetadata::IsDeletable,
+                SAPAnnotationsAssociationSetFieldNames::IsDeletable,
                 gen_bool_string(self.is_deletable),
             ),
             CLOSE_CURLY,

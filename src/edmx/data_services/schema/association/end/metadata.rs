@@ -10,20 +10,20 @@ use super::End;
 static MY_NAME: &[u8] = "End".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum EndMetadata {
+pub enum EndFieldNames {
     Role,
     EntitySet,
     EndType,
     Multiplicity,
 }
 
-impl EndMetadata {
-    pub fn get_field_name(prop_name: EndMetadata) -> Vec<u8> {
+impl EndFieldNames {
+    pub fn get_field_name(prop_name: EndFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            EndMetadata::Role => "role",
-            EndMetadata::EntitySet => "entity_set",
-            EndMetadata::EndType => "end_type",
-            EndMetadata::Multiplicity => "multiplicity",
+            EndFieldNames::Role => "role",
+            EndFieldNames::EntitySet => "entity_set",
+            EndFieldNames::EndType => "end_type",
+            EndFieldNames::Multiplicity => "multiplicity",
         };
 
         member.as_bytes().to_vec()
@@ -31,8 +31,8 @@ impl EndMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_end(prop_md: EndMetadata, val: Vec<u8>) -> Vec<u8> {
-    [&*EndMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_end(prop_md: EndFieldNames, val: Vec<u8>) -> Vec<u8> {
+    [&*EndFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for End {
@@ -59,10 +59,10 @@ impl std::fmt::Display for End {
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
-            &*line_from_end(EndMetadata::Role, gen_owned_string(&self.role)),
-            &*line_from_end(EndMetadata::EntitySet, gen_opt_string(&entity_set)),
-            &*line_from_end(EndMetadata::EndType, gen_opt_string(&end_type)),
-            &*line_from_end(EndMetadata::Multiplicity, gen_opt_string(&self.multiplicity)),
+            &*line_from_end(EndFieldNames::Role, gen_owned_string(&self.role)),
+            &*line_from_end(EndFieldNames::EntitySet, gen_opt_string(&entity_set)),
+            &*line_from_end(EndFieldNames::EndType, gen_opt_string(&end_type)),
+            &*line_from_end(EndFieldNames::Multiplicity, gen_opt_string(&self.multiplicity)),
             CLOSE_CURLY,
         ]
         .concat();

@@ -8,16 +8,16 @@ use crate::{
 static MY_NAME: &[u8] = "ReferentialConstraint".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum ReferentialConstraintMetadata {
+pub enum ReferentialConstraintFieldNames {
     Principal,
     Dependent,
 }
 
-impl ReferentialConstraintMetadata {
-    pub fn get_field_name(prop_name: ReferentialConstraintMetadata) -> Vec<u8> {
+impl ReferentialConstraintFieldNames {
+    pub fn get_field_name(prop_name: ReferentialConstraintFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            ReferentialConstraintMetadata::Principal => "principal",
-            ReferentialConstraintMetadata::Dependent => "dependent",
+            ReferentialConstraintFieldNames::Principal => "principal",
+            ReferentialConstraintFieldNames::Dependent => "dependent",
         };
 
         member.as_bytes().to_vec()
@@ -25,9 +25,9 @@ impl ReferentialConstraintMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_ref_con(prop_md: ReferentialConstraintMetadata, val: Vec<u8>) -> Vec<u8> {
+fn line_from_ref_con(prop_md: ReferentialConstraintFieldNames, val: Vec<u8>) -> Vec<u8> {
     [
-        &*ReferentialConstraintMetadata::get_field_name(prop_md),
+        &*ReferentialConstraintFieldNames::get_field_name(prop_md),
         COLON,
         &val,
         COMMA,
@@ -42,11 +42,11 @@ impl std::fmt::Display for ReferentialConstraint {
             MY_NAME,
             OPEN_CURLY,
             &*line_from_ref_con(
-                ReferentialConstraintMetadata::Principal,
+                ReferentialConstraintFieldNames::Principal,
                 format!("{}", &self.principal).into_bytes(),
             ),
             &*line_from_ref_con(
-                ReferentialConstraintMetadata::Dependent,
+                ReferentialConstraintFieldNames::Dependent,
                 format!("{}", &self.dependent).into_bytes(),
             ),
             CLOSE_CURLY,

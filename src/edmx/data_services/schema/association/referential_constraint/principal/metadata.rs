@@ -10,16 +10,16 @@ use crate::{
 static MY_NAME: &[u8] = "Principal".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum PrincipalMetadata {
+pub enum PrincipalFieldNames {
     Role,
     PropertyRefs,
 }
 
-impl PrincipalMetadata {
-    fn get_field_name(prop_name: PrincipalMetadata) -> Vec<u8> {
+impl PrincipalFieldNames {
+    fn get_field_name(prop_name: PrincipalFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            PrincipalMetadata::Role => "role",
-            PrincipalMetadata::PropertyRefs => "property_refs",
+            PrincipalFieldNames::Role => "role",
+            PrincipalFieldNames::PropertyRefs => "property_refs",
         };
 
         member.as_bytes().to_vec()
@@ -27,8 +27,8 @@ impl PrincipalMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_dependent(prop_md: PrincipalMetadata, val: Vec<u8>) -> Vec<u8> {
-    [&*PrincipalMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_dependent(prop_md: PrincipalFieldNames, val: Vec<u8>) -> Vec<u8> {
+    [&*PrincipalFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Principal {
@@ -44,8 +44,11 @@ impl std::fmt::Display for Principal {
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
-            &*line_from_dependent(PrincipalMetadata::Role, gen_owned_string(&self.role)),
-            &*line_from_dependent(PrincipalMetadata::PropertyRefs, [VEC_BANG, &*prop_refs_str, CLOSE_SQR].concat()),
+            &*line_from_dependent(PrincipalFieldNames::Role, gen_owned_string(&self.role)),
+            &*line_from_dependent(
+                PrincipalFieldNames::PropertyRefs,
+                [VEC_BANG, &*prop_refs_str, CLOSE_SQR].concat(),
+            ),
             CLOSE_CURLY,
         ]
         .concat();

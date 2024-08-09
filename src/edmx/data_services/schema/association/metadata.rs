@@ -31,27 +31,28 @@ pub fn normalise_assoc_name(assoc_name: &str) -> String {
     };
 
     // Rebuild Association name using underscore as the separator
-    assoc_name_parts.iter().enumerate().map(
-        |(idx, name_part)|
-        format!("{}{}", if idx == 0 { "" } else { UNDERSCORE }, name_part)
-    ).collect::<String>()
+    assoc_name_parts
+        .iter()
+        .enumerate()
+        .map(|(idx, name_part)| format!("{}{}", if idx == 0 { "" } else { UNDERSCORE }, name_part))
+        .collect::<String>()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum AssociationMetadata {
+pub enum AssociationFieldNames {
     Name,
     SapContentVersion,
     Ends,
     ReferentialConstraint,
 }
 
-impl AssociationMetadata {
-    pub fn get_field_name(prop_name: AssociationMetadata) -> Vec<u8> {
+impl AssociationFieldNames {
+    pub fn get_field_name(prop_name: AssociationFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            AssociationMetadata::Name => "name",
-            AssociationMetadata::SapContentVersion => "sap_content_version",
-            AssociationMetadata::Ends => "ends",
-            AssociationMetadata::ReferentialConstraint => "referential_constraint",
+            AssociationFieldNames::Name => "name",
+            AssociationFieldNames::SapContentVersion => "sap_content_version",
+            AssociationFieldNames::Ends => "ends",
+            AssociationFieldNames::ReferentialConstraint => "referential_constraint",
         };
 
         member.as_bytes().to_vec()
@@ -59,8 +60,8 @@ impl AssociationMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_association(prop_md: AssociationMetadata, val: Vec<u8>) -> Vec<u8> {
-    [&*AssociationMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_association(prop_md: AssociationFieldNames, val: Vec<u8>) -> Vec<u8> {
+    [&*AssociationFieldNames::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Association {
@@ -82,13 +83,13 @@ impl std::fmt::Display for Association {
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
-            &*line_from_association(AssociationMetadata::Name, gen_owned_string(&self.name)),
+            &*line_from_association(AssociationFieldNames::Name, gen_owned_string(&self.name)),
             &*line_from_association(
-                AssociationMetadata::SapContentVersion,
+                AssociationFieldNames::SapContentVersion,
                 gen_owned_string(&self.sap_content_version),
             ),
-            &*line_from_association(AssociationMetadata::Ends, ends),
-            &*line_from_association(AssociationMetadata::ReferentialConstraint, ref_con),
+            &*line_from_association(AssociationFieldNames::Ends, ends),
+            &*line_from_association(AssociationFieldNames::ReferentialConstraint, ref_con),
             END_BLOCK,
         ]
         .concat();

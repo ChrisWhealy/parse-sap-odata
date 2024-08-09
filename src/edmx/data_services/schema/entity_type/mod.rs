@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 use entity_type_semantics::EntityTypeSAPSemantics;
-use navigation_property::NavigationProperty;
 use key::Key;
+use navigation_property::NavigationProperty;
 
 use crate::{
     property::Property,

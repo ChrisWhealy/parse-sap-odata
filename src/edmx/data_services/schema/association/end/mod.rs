@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents an `<End>` tag
-#[derive(Clone, Debug, Serialize, Deserialize, Ord, Eq,PartialOrd, PartialEq, )]
+#[derive(Clone, Debug, Serialize, Deserialize, Ord, Eq, PartialOrd, PartialEq)]
 #[serde(rename_all = "PascalCase")]
 pub struct End {
     #[serde(rename = "@Role")]

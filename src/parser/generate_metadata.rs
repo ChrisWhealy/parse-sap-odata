@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crate::{
     edmx::data_services::schema::{
-        association::{Association, metadata::normalise_assoc_name},
+        association::{metadata::normalise_assoc_name, Association},
         complex_type::ComplexType,
         entity_container::association_set::AssociationSet,
         entity_type::EntityType,
@@ -11,9 +11,9 @@ use crate::{
     parser::{
         generate_metadata_complex_types::*,
         syntax_fragments::{
-            *,
             derive_traits::{derive_str, DeriveTraits},
             fragment_generators::*,
+            *,
         },
     },
     property::metadata::PropertyType,
@@ -66,8 +66,9 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
     let mut out_buffer: Vec<u8> = [
         RUSTC_ALLOW_DEAD_CODE,
         &*gen_start_struct(&struct_name),
-        &*gen_struct_field("key", &gen_vector_of_type(PROPERTYREF).to_vec())
-    ].concat();
+        &*gen_struct_field("key", &gen_vector_of_type(PROPERTYREF).to_vec()),
+    ]
+    .concat();
 
     let mut props = entity.properties.clone();
     props.sort();
@@ -129,7 +130,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
             CLOSE_CURLY,
             LINE_FEED,
         ]
-            .concat(),
+        .concat(),
     );
 
     let mut props = entity.properties.clone();
@@ -150,7 +151,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
                         &*format!("{prop}").into_bytes(),
                         END_BLOCK,
                     ]
-                        .concat(),
+                    .concat(),
                 );
             },
 
@@ -167,7 +168,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
                                 &*format!("{ct}").into_bytes(),
                                 END_BLOCK,
                             ]
-                                .concat(),
+                            .concat(),
                         );
                     } else {
                         let ct_names = cts.iter().fold(vec![], |mut acc, ct| {
@@ -209,7 +210,8 @@ fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
         LINE_FEED,
         &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
-    ].concat();
+    ]
+    .concat();
 
     // Start block containing Association impl functions related to enum iterator
     let mut association_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -254,7 +256,8 @@ fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
         LINE_FEED,
         &*association_impl_getter_fns,
         END_BLOCK,
-    ].concat()
+    ]
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -269,7 +272,8 @@ fn gen_metadata_association_getter_fn(enum_variant: &str, assoc: &Association) -
         format!("{}", assoc).as_bytes(),
         END_BLOCK,
         LINE_FEED,
-    ].concat()
+    ]
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -285,7 +289,7 @@ fn gen_metadata_association_set_getter_fn(enum_variant: &str, assoc_set: &Associ
         END_BLOCK,
         LINE_FEED,
     ]
-        .concat()
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,7 +319,8 @@ fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> Vec<u
         LINE_FEED,
         &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
-    ].concat();
+    ]
+    .concat();
 
     // Start block containing AssociationSets impl functions related to enum iterator
     let mut association_sets_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -359,7 +364,7 @@ fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*association_sets_impl_getter_fns,
         END_BLOCK,
     ]
-        .concat()
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -374,7 +379,7 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
             &*gen_use_path(PATH_TO_SAP_ODATA_PROPERTIES),
             &*gen_use_path(PATH_TO_SAP_ANNOTATIONS_PROPERTY),
         ]
-            .concat(),
+        .concat(),
     );
 
     // Do we need to generate any complex types?
@@ -395,7 +400,7 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
             // Close module definition
             END_BLOCK,
         ]
-            .concat(),
+        .concat(),
     );
 
     out_buffer

@@ -1,5 +1,5 @@
-use serde::Deserialize;
 use crate::property::property_ref::PropertyRef;
+use serde::Deserialize;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Represents a `<Key>` tag
@@ -12,4 +12,3 @@ pub struct Key {
     #[serde(rename = "PropertyRef")]
     pub property_refs: Vec<PropertyRef>,
 }
-

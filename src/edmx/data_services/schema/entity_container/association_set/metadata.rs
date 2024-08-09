@@ -8,20 +8,20 @@ use crate::parser::syntax_fragments::{
 static MY_NAME: &[u8] = "AssociationSet".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub enum AssociationSetMetadata {
+pub enum AssociationSetFieldNames {
     Name,
     Association,
     SapAnnotations,
     Ends,
 }
 
-impl AssociationSetMetadata {
-    pub fn get_field_name(prop_name: AssociationSetMetadata) -> Vec<u8> {
+impl AssociationSetFieldNames {
+    pub fn get_field_name(prop_name: AssociationSetFieldNames) -> Vec<u8> {
         let member = match prop_name {
-            AssociationSetMetadata::Name => "name",
-            AssociationSetMetadata::Association => "association",
-            AssociationSetMetadata::SapAnnotations => "sap_annotations",
-            AssociationSetMetadata::Ends => "ends",
+            AssociationSetFieldNames::Name => "name",
+            AssociationSetFieldNames::Association => "association",
+            AssociationSetFieldNames::SapAnnotations => "sap_annotations",
+            AssociationSetFieldNames::Ends => "ends",
         };
 
         member.as_bytes().to_vec()
@@ -29,8 +29,15 @@ impl AssociationSetMetadata {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_end(prop_md: AssociationSetMetadata, val: Vec<u8>) -> Vec<u8> {
-    [&*AssociationSetMetadata::get_field_name(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_end(prop_md: AssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
+    [
+        &*AssociationSetFieldNames::get_field_name(prop_md),
+        COLON,
+        &val,
+        COMMA,
+        LINE_FEED,
+    ]
+    .concat()
 }
 
 impl std::fmt::Display for AssociationSet {
@@ -47,11 +54,11 @@ impl std::fmt::Display for AssociationSet {
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
-            &*line_from_end(AssociationSetMetadata::Name, gen_owned_string(&self.name)),
-            &*line_from_end(AssociationSetMetadata::Association, gen_owned_string(&self.association)),
-            &*line_from_end(AssociationSetMetadata::Ends, ends),
+            &*line_from_end(AssociationSetFieldNames::Name, gen_owned_string(&self.name)),
+            &*line_from_end(AssociationSetFieldNames::Association, gen_owned_string(&self.association)),
+            &*line_from_end(AssociationSetFieldNames::Ends, ends),
             &*line_from_end(
-                AssociationSetMetadata::SapAnnotations,
+                AssociationSetFieldNames::SapAnnotations,
                 format!("{}", &self.sap_annotations).as_bytes().to_vec(),
             ),
             CLOSE_CURLY,
