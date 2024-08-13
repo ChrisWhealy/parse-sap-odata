@@ -13,15 +13,16 @@ use crate::{
 };
 
 #[cfg(feature = "parser")]
-use crate::parser::syntax_fragments::{
-    derive_traits::*,
-    fragment_generators::{
-        gen_enum_impl_fn_variant_name, gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start
+use crate::{
+    parser::syntax_fragments::{
+        derive_traits::*,
+        fragment_generators::{
+            gen_enum_impl_fn_variant_name, gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start,
+        },
+        *,
     },
-    *,
+    utils::to_upper_camel_case,
 };
-use crate::utils::to_upper_camel_case;
-
 pub mod association;
 pub mod complex_type;
 pub mod entity_container;

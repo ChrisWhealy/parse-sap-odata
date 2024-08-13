@@ -41,6 +41,7 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 | Version | Description
 |--:|---
+1.3.5 | Correct use declaration for feature
 1.3.4 | Improve and expand tests<br>No changes to functionality
 1.3.3 | Internal refactoring to improve architectural consistency<br>No changes to functionality
 1.3.2 | Generate metadata for `Association`s and `AssociationSet`s
