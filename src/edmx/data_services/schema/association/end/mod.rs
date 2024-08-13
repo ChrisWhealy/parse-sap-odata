@@ -17,3 +17,8 @@ pub struct End {
     #[serde(rename = "@Multiplicity")]
     pub multiplicity: Option<String>,
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[cfg(feature = "parser")]
+#[cfg(test)]
+pub mod unit_tests;

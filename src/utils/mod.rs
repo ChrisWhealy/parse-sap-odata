@@ -1,8 +1,5 @@
 use std::{
-    cmp::max,
-    collections::HashMap,
     env,
-    fmt::Debug,
     fs::OpenOptions,
     io::Write,
     path::Path,
@@ -21,28 +18,6 @@ pub fn default_true() -> bool {
 }
 pub fn default_false() -> bool {
     false
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Find longest keyname in `hashmap` of `<&str, &str>`
-pub fn longest(m: &HashMap<&str, &str>) -> usize {
-    m.iter().fold(0, |max_len, e| max(max_len, e.0.len()))
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Append entity definition to output buffer
-pub fn write_entity<T: Debug>(out_buf: &mut Vec<u8>, maybe_entity: Option<&Vec<T>>) {
-    match maybe_entity {
-        Some(entity) => {
-            if entity.len() > 0 {
-                for e in entity {
-                    out_buf.append(&mut format!("{:#?}\n", e).as_bytes().to_vec());
-                }
-                out_buf.append(&mut vec![10]); // Add line feed
-            }
-        },
-        None => {},
-    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,15 +40,22 @@ where
     Ok(s.split(" ").map(|fmt| String::from(fmt)).collect())
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Case conversion
 pub fn to_pascal_case(odata_name: &str) -> String {
-    convert_case::Casing::to_case(&String::from_utf8(odata_name.as_bytes().to_vec()).unwrap(), Case::Pascal)
+    convert_case::Casing::to_case(&odata_name, Case::Pascal)
+}
+
+pub fn to_upper_camel_case(odata_type_name: &str) -> String {
+    convert_case::Casing::to_case(&odata_type_name, Case::UpperCamel)
+}
+
+pub fn to_snake_case(odata_type_name: &str) -> String {
+    convert_case::Casing::to_case(&odata_type_name, Case::Snake)
 }
 
 pub fn odata_name_to_rust_safe_name(odata_name: &str) -> String {
-    CheckKeyword::into_safe(convert_case::Casing::to_case(
-        &String::from_utf8(odata_name.as_bytes().to_vec()).unwrap(),
-        Case::Snake,
-    ))
+    CheckKeyword::into_safe(to_snake_case(odata_name))
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -111,11 +93,10 @@ pub fn run_rustfmt(buffer: &Vec<u8>, file_name: &str) -> Result<Vec<u8>, anyhow:
             .create(true)
             .write(true)
             .truncate(true)
-            .open(&gen_failed_path)
-            .unwrap()
+            .open(&gen_failed_path)?
             .write_all(&buffer);
 
-        let rustfmt_err_out = std::str::from_utf8(&rustfmt_output.stderr).unwrap();
+        let rustfmt_err_out = std::str::from_utf8(&rustfmt_output.stderr)?;
 
         Err(anyhow!("Syntax error in generated source code:\n{}", rustfmt_err_out))
     }

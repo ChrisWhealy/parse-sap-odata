@@ -1,4 +1,4 @@
-use super::{CLOSE_PAREN, CLOSE_SQR, COMMA, LINE_FEED};
+use super::{CLOSE_PAREN, CLOSE_SQR, COMMA, DERIVE_START, LINE_FEED};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Derivable traits.
@@ -42,7 +42,7 @@ impl DeriveTraits {
 }
 
 pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
-    let mut out_buffer = "#[derive(".as_bytes().to_vec();
+    let mut out_buffer = DERIVE_START.to_vec();
 
     for (idx, d) in traits.iter().enumerate() {
         out_buffer.append(&mut d.value());

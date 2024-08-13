@@ -14,7 +14,7 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
 }
 
 pub fn comment_for(something: &str) -> Vec<u8> {
-    [LINE_FEED, SEPARATOR, COMMMENT_LINE, something.as_bytes(), LINE_FEED, SEPARATOR].concat()
+    [LINE_FEED, SEPARATOR, COMMMENT_LINE, something.as_bytes(), SEPARATOR].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27,7 +27,7 @@ pub fn gen_mod_start(mod_name: &str) -> Vec<u8> {
 /// Start and end of a struct declaration
 static START_PUB_STRUCT: &[u8] = &"pub struct ".as_bytes();
 pub fn gen_start_struct(struct_name: &str) -> Vec<u8> {
-    [START_PUB_STRUCT, SPACE, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
+    [START_PUB_STRUCT, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
 
 pub fn gen_struct_field(field_name: &str, rust_type: &Vec<u8>) -> Vec<u8> {
@@ -89,6 +89,7 @@ pub fn gen_fn_sig(
     .concat()
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Output the start of the "variant_name" function within an enum implementation
 //   pub const fn variant_name(&self) -> &'static str {↩︎
 //       match *self {↩︎
@@ -105,6 +106,24 @@ pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
         LINE_FEED,
         MATCH_SELF,
         OPEN_CURLY,
+        LINE_FEED,
+    ]
+    .concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generate a function that returns an instance of some type
+pub fn gen_pub_fn_getter_of_type<T: std::fmt::Display>(
+    fn_name: Vec<u8>,
+    return_type: &'static str,
+    some_type: T,
+) -> Vec<u8> {
+    [
+        &*gen_fn_sig(&fn_name, true, false, None, Some(return_type.as_bytes())),
+        OPEN_CURLY,
+        LINE_FEED,
+        format!("{some_type}").as_bytes(),
+        END_BLOCK,
         LINE_FEED,
     ]
     .concat()
@@ -207,13 +226,4 @@ pub fn gen_opt_string(s_arg: &Option<String>) -> Vec<u8> {
     } else {
         NONE.to_vec()
     }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_type_name_upper_camel(odata_type_name: &str) -> String {
-    convert_case::Casing::to_case(&odata_type_name, convert_case::Case::UpperCamel)
-}
-
-pub fn gen_type_name_snake(odata_type_name: &str) -> String {
-    convert_case::Casing::to_case(&odata_type_name, convert_case::Case::Snake)
 }

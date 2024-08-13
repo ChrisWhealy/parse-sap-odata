@@ -9,3 +9,6 @@ pub mod xml;
 
 #[cfg(feature = "parser")]
 pub mod parser;
+#[cfg(feature = "parser")]
+#[cfg(test)]
+mod test_utils;

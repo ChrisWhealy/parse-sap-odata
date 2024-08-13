@@ -5,7 +5,7 @@ use crate::{
         syntax_fragments::{
             fragment_generators::{
                 gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
-                gen_struct_field, gen_type_name_upper_camel, gen_vector_of_type,
+                gen_struct_field, gen_vector_of_type,
             },
             serde_fragments::*,
             *,
@@ -15,6 +15,7 @@ use crate::{
     property::Property,
     utils::{odata_name_to_rust_safe_name, to_pascal_case},
 };
+use crate::utils::to_upper_camel_case;
 
 static MY_NAME: &[u8] = "Property".as_bytes();
 
@@ -140,20 +141,21 @@ impl AsRustSrc for Property {
 
         let resolved_prop_type: Vec<u8> = match Self::get_property_type(&self) {
             PropertyType::Edm(edm_type) => {
-                // Since SAP does not use strict PascalCase formatting for abbreviations such as "ID", we need to catch
-                // those cases here and issue a serde_rename attribute.
-                // E.G. SAP outputs fields called "BusinessPartnerID" when you would expect "BusinessPartnerId"
+                // Since the field names coming out of SAP do not always use strict PascalCase formatting.
+                // The abbreviation "ID" is often used when you would expect "Id"
+                // E.G. SAP outputs a field called "BusinessPartnerID" when you would expect "BusinessPartnerId"
+                // It is assumed that the OData field name always starts with a capital letter
                 if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
-                    out_buffer.extend(gen_serde_rename(&self.odata_name))
+                    out_buffer.append(&mut gen_serde_rename(&self.odata_name))
                 }
 
                 // Add an attribute pointing either to a custom deserializer function or a deserializer module.
                 // Only one of these deserializers should ever be populated at any one time!
                 if !self.deserializer_fn.is_empty() {
-                    out_buffer.extend(deserialize_with(self.deserializer_fn, true))
+                    out_buffer.append(&mut deserialize_with(self.deserializer_fn, true))
                 }
                 if !self.deserializer_module.is_empty() {
-                    out_buffer.extend(deserialize_with(self.deserializer_module, false))
+                    out_buffer.append(&mut deserialize_with(self.deserializer_module, false))
                 }
 
                 // Convert EDM type to Rust type
@@ -162,7 +164,7 @@ impl AsRustSrc for Property {
                     "Boolean" => self.maybe_optional(BOOLEAN),
                     "Byte" => U8.to_vec(),
                     "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
-                    "Decimal" => self.maybe_optional(DECIMAL),
+                    "Decimal" => self.maybe_optional(RUST_DECIMAL),
                     "Double" => F64.to_vec(),
                     "Guid" => UUID.to_vec(),
                     "Int16" => self.maybe_optional(I16),
@@ -179,14 +181,14 @@ impl AsRustSrc for Property {
                 }
             },
 
-            PropertyType::Complex(cmplx_type) => gen_type_name_upper_camel(&cmplx_type).into_bytes(),
+            PropertyType::Complex(cmplx_type) => to_upper_camel_case(&cmplx_type).into_bytes(),
 
             // TODO Need to decide what to do with an unqualified property type
             // Simply writing it out in the hope that the source code compiles is probably not a good idea...
             PropertyType::Unqualified => self.edm_type.clone().into_bytes(),
         };
 
-        out_buffer.extend(gen_struct_field(
+        out_buffer.append(&mut gen_struct_field(
             &odata_name_to_rust_safe_name(&self.odata_name),
             &resolved_prop_type,
         ));

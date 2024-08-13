@@ -1,10 +1,10 @@
 use std::fmt::Formatter;
 
 use crate::parser::syntax_fragments::{
-    fragment_generators::{gen_opt_string, gen_owned_string, gen_type_name_upper_camel},
+    fragment_generators::{gen_opt_string, gen_owned_string},
     CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY,
 };
-
+use crate::utils::to_upper_camel_case;
 use super::End;
 
 static MY_NAME: &[u8] = "End".as_bytes();
@@ -38,7 +38,7 @@ fn line_from_end(prop_md: EndFieldNames, val: Vec<u8>) -> Vec<u8> {
 impl std::fmt::Display for End {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let entity_set = if let Some(es) = &self.entity_set {
-            Some(gen_type_name_upper_camel(es)) // Convert to struct name
+            Some(to_upper_camel_case(es)) // Convert to struct name
         } else {
             None
         };
@@ -47,7 +47,7 @@ impl std::fmt::Display for End {
             let et_parts = et.split(".").collect::<Vec<&str>>();
 
             Some(if et_parts.len() == 2 {
-                format!("{}", gen_type_name_upper_camel(et_parts[1]))
+                format!("{}", to_upper_camel_case(et_parts[1]))
             } else {
                 // This branch should never be used because SAP should always generate a fully qualified name...
                 et.to_owned()

@@ -6,24 +6,19 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 ## Available Functionality
 
-1. Creates a module representing the OData service document.
+1. **Module representing the OData service document.**
 
-   This contains a set of `struct`s for holding `<ComplexType>` and `<EntityType>` data returned from the OData service.
-
+   The metadata description of the OData service is used to declare for all the `struct`s needed to interact with your chosen OData service.
+   
+   For each OData Collection, a Rust `struct` is generated to represent a row of that collection, then the entire collection is represented as a `Vec` of that generated `struct`.
+   
    `Edm.DateTime` fields are transformed into `chrono::NaiveDateTime` using a custom deserializer.
 
-   `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this offers only partial support
+   `Edm.Decimal` fields are handled using the `Decimal` deserializer in crate `rust_decimal`; however, this can only support some of properties used by SAP.
 
-1. Creates a module representing the OData `$metadata` document.
+1. **Module representing the OData `$metadata` document.**
 
-   The metadata XML tags are mapped as follows:
-
-   | XML                                                                 | Rust Declaration
-   |---------------------------------------------------------------------|---
-   | `<ComplexType Name="CT_Blah">`                                      | `pub struct CtBlahMetadata {`&hellip;`}`
-   | `<EntityType Name="Blah">`                                          | `pub struct BlahMetadata {`&hellip;`}`
-   | `<Association Name="Assoc_ThisOne_ThatOne">`                        | Creates an Association `enum` member `ThisOneThatOne`
-   | `<AssociationSet Name="Assoc_ThisOne_ThatOne_AssocSet" `&hellip;`>` | Creates an AssociationSet `enum` member `ThisOneThatOne`
+   The metadata description of the OData service is also used to declare the `struct`s that describe the service's metadata.
 
    For each `EntityType` metadata `struct`, there is an implementation containing a `key()` function and getter function for each `struct` property.
    Each property getter functions returns an instance of a `Property` struct that includes SAP annotations.
@@ -46,6 +41,7 @@ Parses the metadata XML describing an SAP OData V2 service and generates two Rus
 
 | Version | Description
 |--:|---
+1.3.4 | Improve and expand tests<br>No changes to functionality
 1.3.3 | Internal refactoring to improve architectural consistency<br>No changes to functionality
 1.3.2 | Generate metadata for `Association`s and `AssociationSet`s
 1.3.1 | Internal optimisation and refactoring.<br>No changes to functionality

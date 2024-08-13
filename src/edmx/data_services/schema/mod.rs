@@ -16,11 +16,11 @@ use crate::{
 use crate::parser::syntax_fragments::{
     derive_traits::*,
     fragment_generators::{
-        gen_enum_impl_fn_variant_name, gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start,
-        gen_type_name_upper_camel,
+        gen_enum_impl_fn_variant_name, gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_impl_start
     },
     *,
 };
+use crate::utils::to_upper_camel_case;
 
 pub mod association;
 pub mod complex_type;
@@ -64,7 +64,7 @@ pub struct Schema {
 #[cfg(feature = "parser")]
 impl Schema {
     pub fn to_entity_types_enum(&self) -> Vec<u8> {
-        let upper_camel_entity_types = format!("{}EntityTypes", gen_type_name_upper_camel(&self.namespace));
+        let upper_camel_entity_types = format!("{}EntityTypes", to_upper_camel_case(&self.namespace));
 
         // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
@@ -77,7 +77,7 @@ impl Schema {
 
         // Create entity type enum
         for ent_type in self.entity_types.iter() {
-            let ent_type_name_camel = gen_type_name_upper_camel(&ent_type.name);
+            let ent_type_name_camel = to_upper_camel_case(&ent_type.name);
 
             // Add variant to enum and value function
             output_enum.append(&mut gen_enum_variant(&ent_type_name_camel));
@@ -91,12 +91,12 @@ impl Schema {
         output_enum.append(&mut END_BLOCK.to_vec());
         fn_variant_name.append(&mut [END_BLOCK, END_BLOCK].concat());
 
-        return [
+        [
             &*output_enum,
             &*gen_impl_start(&upper_camel_entity_types),
             &*fn_variant_name,
             END_BLOCK,
         ]
-        .concat();
+        .concat()
     }
 }

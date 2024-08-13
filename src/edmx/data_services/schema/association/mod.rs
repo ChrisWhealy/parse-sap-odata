@@ -14,7 +14,7 @@ pub mod referential_constraint;
 /// Represents an `<Association>` tag
 ///
 /// # Child Nodes
-/// `2:2 End`<br>
+/// Exactly 2 `1:1 End` relationships<br>
 /// `0:1 ReferentialConstraint`
 #[derive(Clone, Debug, Serialize, Ord, Eq, PartialOrd, PartialEq, Deserialize)]
 #[serde(rename_all = "PascalCase")]

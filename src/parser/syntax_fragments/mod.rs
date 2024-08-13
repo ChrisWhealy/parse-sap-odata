@@ -22,7 +22,8 @@ pub static CLOSE_CURLY: &[u8] = &[0x7D];
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Comment separators
 pub static COMMMENT_LINE: &[u8] = "// ".as_bytes();
-pub static SEPARATOR: &[u8] = "// -----------------------------------------------------------------------------
+pub static SEPARATOR: &[u8] = "
+// -----------------------------------------------------------------------------
 "
 .as_bytes();
 
@@ -73,7 +74,10 @@ pub static VEC_BANG: &[u8] = "vec![".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External types
-pub static DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
+pub static EDMX_DATE_TIME: &'static str = "DateTime";
+pub static EDMX_DATE_TIME_OFFSET: &'static str = "DateTimeOffset";
+pub static EDMX_DECIMAL: &'static str = "Decimal";
+pub static RUST_DECIMAL: &[u8] = "rust_decimal::Decimal".as_bytes();
 pub static NAIVE_DATE_TIME: &[u8] = "chrono::NaiveDateTime".as_bytes();
 pub static STD_TIME_SYSTEMTIME: &[u8] = "std::time::SystemTime".as_bytes();
 pub static UUID: &[u8] = "uuid::Uuid".as_bytes();
@@ -81,6 +85,15 @@ pub static PROPERTY: &[u8] = "Property".as_bytes();
 pub static PROPERTYREF: &[u8] = "PropertyRef".as_bytes();
 pub static COMPLEX_TYPE: &[u8] = "ComplexType".as_bytes();
 pub static METADATA: &'static str = "Metadata";
+pub static ASSOCIATION_SETS: &'static str = "AssociationSets";
+pub static ASSOCIATION_SET: &'static str = "AssociationSet";
+pub static ASSOCIATIONS: &'static str = "Associations";
+pub static ASSOCIATION: &'static str = "Association";
+pub static COMPLEX_TYPES: &'static str = "ComplexTypes";
+pub static ENTITY_TYPES: &'static str = "EntityTypes";
+pub static SUFFIX_SNAKE_METADATA: &'static str = "_metadata";
+pub static PREFIX_SNAKE_GET: &'static str = "get_";
+pub static FIELD_NAME_KEY: &'static str = "key";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Function names used in enum implementations
@@ -93,9 +106,10 @@ pub static FN_VARIANT_NAME_START: &[u8] = "pub const fn variant_name(&self) -> &
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes and paths to used types
-pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]
-"
-.as_bytes();
+pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
+pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]".as_bytes();
+
+/// Paths to used types
 pub fn gen_use_path(path: &[u8]) -> Vec<u8> {
     [USE, path, SEMI_COLON, LINE_FEED].concat()
 }

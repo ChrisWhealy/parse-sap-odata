@@ -4,7 +4,7 @@ use std::{
     path::Path,
     str::FromStr,
 };
-
+use crate::test_utils::*;
 use super::{AssociationSet, EntityContainer};
 
 impl std::str::FromStr for EntityContainer {
@@ -23,9 +23,12 @@ impl std::str::FromStr for AssociationSet {
     }
 }
 
+static TRUE_STR: &str = "true";
+static FALSE_STR: &str = "false";
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
-pub fn should_parse_entity_container() {
+pub fn should_parse_entity_container() -> Result<(), String>{
     let mut xml_buffer: Vec<u8> = Vec::new();
     let test_data = File::open(Path::new("./test_data/entity_container.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
@@ -34,20 +37,22 @@ pub fn should_parse_entity_container() {
         Ok(xml) => {
             let ent_cont = EntityContainer::from_str(&xml).unwrap();
 
-            assert_eq!(ent_cont.name, "GWSAMPLE_BASIC_Entities");
-            assert_eq!(ent_cont.sap_annotations.message_scope_supported, false);
-            assert_eq!(ent_cont.sap_annotations.supported_formats[0], "atom");
-            assert_eq!(ent_cont.sap_annotations.supported_formats[1], "json");
-            assert_eq!(ent_cont.sap_annotations.supported_formats[2], "xlsx");
-            assert_eq!(ent_cont.is_default_entity_container, true);
+            handle_test_comparison(&ent_cont.name, &"GWSAMPLE_BASIC_Entities".to_string())?;
+            handle_test_comparison(&ent_cont.sap_annotations.message_scope_supported.to_string(), &"false".to_string())?;
+            handle_test_comparison(&ent_cont.sap_annotations.supported_formats[0], &"atom".to_string())?;
+            handle_test_comparison(&ent_cont.sap_annotations.supported_formats[1], &"json".to_string())?;
+            handle_test_comparison(&ent_cont.sap_annotations.supported_formats[2], &"xlsx".to_string())?;
+            handle_test_comparison(&ent_cont.is_default_entity_container.to_string(), &TRUE_STR.to_string())?;
+
+            Ok(())
         },
-        Err(err) => println!("XML test data was not in UTF8 format: {}", err),
-    };
+        Err(err) => Err(format!("XML test data was not in UTF8 format: {}", err)),
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
-pub fn should_parse_entity_set() {
+pub fn should_parse_entity_set() -> Result<(), String> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let test_data = File::open(Path::new("./test_data/entity_container.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
@@ -55,31 +60,32 @@ pub fn should_parse_entity_set() {
     match String::from_utf8(xml_buffer) {
         Ok(xml) => {
             let ent_cont = EntityContainer::from_str(&xml).unwrap();
-            assert_eq!(ent_cont.entity_sets.len(), 2);
 
-            assert_eq!(ent_cont.entity_sets[0].name, "BusinessPartnerSet");
-            assert_eq!(ent_cont.entity_sets[0].entity_type, "GWSAMPLE_BASIC.BusinessPartner");
-            assert_eq!(ent_cont.entity_sets[0].sap_annotations.content_version, "1");
-            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_creatable, true);
-            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_deletable, true);
-            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_updatable, true);
-            assert_eq!(ent_cont.entity_sets[0].sap_annotations.is_pageable, true);
+            handle_test_comparison(&ent_cont.entity_sets.len().to_string(), &"2".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].name, &"BusinessPartnerSet".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].entity_type, &"GWSAMPLE_BASIC.BusinessPartner".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].sap_annotations.content_version, &"1".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].sap_annotations.is_creatable.to_string(), &TRUE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].sap_annotations.is_deletable.to_string(), &TRUE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].sap_annotations.is_updatable.to_string(), &TRUE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[0].sap_annotations.is_pageable.to_string(), &TRUE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].name, &"VH_CategorySet".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].entity_type, &"GWSAMPLE_BASIC.VH_Category".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].sap_annotations.content_version, &"1".to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].sap_annotations.is_creatable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].sap_annotations.is_deletable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].sap_annotations.is_updatable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(&ent_cont.entity_sets[1].sap_annotations.is_pageable.to_string(), &FALSE_STR.to_string())?;
 
-            assert_eq!(ent_cont.entity_sets[1].name, "VH_CategorySet");
-            assert_eq!(ent_cont.entity_sets[1].entity_type, "GWSAMPLE_BASIC.VH_Category");
-            assert_eq!(ent_cont.entity_sets[1].sap_annotations.content_version, "1");
-            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_creatable, false);
-            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_deletable, false);
-            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_updatable, false);
-            assert_eq!(ent_cont.entity_sets[1].sap_annotations.is_pageable, false);
+            Ok(())
         },
-        Err(err) => println!("XML test data was not in UTF8 format: {}", err),
-    };
+        Err(err) => Err(format!("XML test data was not in UTF8 format: {}", err)),
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
-pub fn should_parse_association_set() {
+pub fn should_parse_association_set() -> Result<(), String> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let test_data = File::open(Path::new("./test_data/association_set.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
@@ -87,18 +93,19 @@ pub fn should_parse_association_set() {
     match String::from_utf8(xml_buffer) {
         Ok(xml) => {
             let assoc_set = AssociationSet::from_str(&xml).unwrap();
-            assert_eq!(assoc_set.name, "Assoc_VH_UnitQuantity_SalesOrderLineItem");
-            assert_eq!(assoc_set.association, "GWSAMPLE_BASIC.Assoc_VH_UnitQuantity_SalesOrderLineItem");
-            assert_eq!(assoc_set.sap_annotations.content_version, "1");
-            assert_eq!(assoc_set.sap_annotations.is_creatable, false);
-            assert_eq!(assoc_set.sap_annotations.is_deletable, false);
-            assert_eq!(assoc_set.sap_annotations.is_updatable, false);
 
-            assert_eq!(assoc_set.ends.len(), 2);
+            handle_test_comparison(&assoc_set.name, &"Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string())?;
+            handle_test_comparison(&assoc_set.association, &"GWSAMPLE_BASIC.Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string())?;
+            handle_test_comparison(&assoc_set.sap_annotations.content_version, &"1".to_string())?;
+            handle_test_comparison(&assoc_set.sap_annotations.is_creatable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(&assoc_set.sap_annotations.is_deletable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(&assoc_set.sap_annotations.is_updatable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(&assoc_set.ends.len().to_string(), &"2".to_string())?;
+            handle_test_comparison_opt(&assoc_set.ends[0].entity_set, &Some(String::from("VH_UnitQuantitySet")))?;
+            handle_test_comparison(&assoc_set.ends[0].role, &"FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string())?;
 
-            assert_eq!(assoc_set.ends[0].entity_set, Some(String::from("VH_UnitQuantitySet")));
-            assert_eq!(assoc_set.ends[0].role, "FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem");
+            Ok(())
         },
-        Err(err) => println!("XML test data was not in UTF8 format: {}", err),
-    };
+        Err(err) => Err(format!("XML test data was not in UTF8 format: {}", err)),
+    }
 }

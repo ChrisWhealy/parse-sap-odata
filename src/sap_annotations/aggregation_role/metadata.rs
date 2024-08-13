@@ -1,8 +1,7 @@
 use super::SAPAggregationRoleProperty;
 use crate::{
     parser::syntax_fragments::{fragment_generators::gen_some_value, COLON2, DOUBLE_QUOTE, NONE},
-    sap_annotations::{AnnotationType, OptionalAnnotationType
-    }
+    sap_annotations::{AnnotationType, OptionalAnnotationType},
 };
 
 static MY_NAME: &[u8] = "SAPAggregationRoleProperty".as_bytes();

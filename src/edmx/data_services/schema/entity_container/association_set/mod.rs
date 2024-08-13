@@ -11,7 +11,7 @@ use crate::{
 /// Represents an `<AssociationSet>` tag
 ///
 /// # Child Nodes
-/// `2:2 End`
+/// Exactly 2 `1:1 End` relationships
 #[derive(Clone, Debug, Serialize, Deserialize, Ord, Eq, PartialEq, PartialOrd)]
 #[serde(rename_all = "PascalCase")]
 pub struct AssociationSet {

@@ -1,6 +1,6 @@
 use crate::{
     parser::syntax_fragments::{CLOSE_PAREN, COLON2, NONE, OPEN_PAREN, SOME},
-    sap_semantics::{property::SAPSemanticsProperty, OptionalSemanticType, SemanticType}
+    sap_semantics::{property::SAPSemanticsProperty, OptionalSemanticType, SemanticType},
 };
 
 static MY_NAME: &[u8] = "SAPSemanticsProperty".as_bytes();

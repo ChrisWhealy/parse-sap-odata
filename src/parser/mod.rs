@@ -1,16 +1,15 @@
 pub mod syntax_fragments;
 
 mod error;
-mod generate_complex_types;
 mod generate_metadata;
-mod generate_metadata_complex_types;
-mod generate_srv_doc;
+mod generate_srv;
 mod io;
 
-use crate::{
-    parser::{generate_metadata::gen_metadata_module, generate_srv_doc::gen_srv_doc_module},
-    utils::run_rustfmt,
-};
+use generate_metadata::gen_metadata_module;
+use generate_srv::gen_srv_doc_module;
+use syntax_fragments::SUFFIX_SNAKE_METADATA;
+
+use crate::utils::run_rustfmt;
 
 use io::*;
 
@@ -49,7 +48,7 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Generate the source code for the metadata document module and run it through rustfmt
-                let mod_name = format!("{}_metadata.rs", odata_srv_name);
+                let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs", );
 
                 match run_rustfmt(&gen_metadata_module(odata_srv_name, &schema), &mod_name) {
                     Ok(formatted_bytes) => write_buffer_to_file(&mod_name, formatted_bytes),
