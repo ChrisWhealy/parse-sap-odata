@@ -1,4 +1,4 @@
-use crate::parser::syntax_fragments::{CLOSE_PAREN, CLOSE_SQR, DOUBLE_QUOTE, LINE_FEED};
+use super::{CLOSE_PAREN, CLOSE_SQR, DOUBLE_QUOTE, LINE_FEED};
 
 pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};
 "

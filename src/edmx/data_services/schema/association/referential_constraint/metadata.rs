@@ -1,9 +1,7 @@
 use std::fmt::Formatter;
 
-use crate::{
-    edmx::data_services::schema::association::referential_constraint::ReferentialConstraint,
-    parser::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY},
-};
+use crate::edmx::data_services::schema::association::referential_constraint::ReferentialConstraint;
+use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY};
 
 static MY_NAME: &[u8] = "ReferentialConstraint".as_bytes();
 

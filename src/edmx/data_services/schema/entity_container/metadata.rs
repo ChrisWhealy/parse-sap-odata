@@ -1,15 +1,9 @@
 use crate::{
     edmx::data_services::schema::entity_container::EntityContainer,
-    parser::syntax_fragments::{
-        derive_traits::*,
-        fragment_generators::{
-            end_iter_fn, gen_enum_fn_iter_start, gen_enum_fn_variant_names, gen_enum_impl_fn_variant_name,
-            gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_fq_enum_variant, gen_impl_start,
-        },
-        *,
-    },
+    parser::generate::*,
+    utils::to_upper_camel_case,
 };
-use crate::utils::to_upper_camel_case;
+use crate::parser::generate::syntax_fragments::{derive_traits::*, *};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl EntityContainer {
@@ -53,7 +47,7 @@ impl EntityContainer {
 
         // End enum and function blocks
         entities_enum.append(&mut END_BLOCK.to_vec());
-        enum_fn_iterator.append(&mut end_iter_fn());
+        enum_fn_iterator.append(&mut gen_end_iter_fn());
         enum_fn_variant_name.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
 
         [
@@ -64,7 +58,7 @@ impl EntityContainer {
             // impl <entity_container_name> {↩︎
             RUSTC_ALLOW_DEAD_CODE,
             LINE_FEED,
-            &*gen_impl_start(&cont_name_camel),
+            &*gen_impl_start_for(&cont_name_camel),
             &*enum_fn_iterator,
             &*enum_fn_variant_name,
             &*gen_enum_fn_variant_names(&cont_name_camel),

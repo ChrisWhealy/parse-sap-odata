@@ -1,18 +1,16 @@
+mod associations;
 mod complex_types;
 mod entity_types;
-mod associations;
 
 use crate::{
     edmx::data_services::schema::Schema,
-    parser::syntax_fragments::{
-        fragment_generators::*,
-        *,
-    },
+    parser::generate::*
 };
 
 use associations::*;
 use complex_types::*;
 use entity_types::*;
+use crate::parser::generate::syntax_fragments::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate a module containing the metadata structs and their respective instances
@@ -21,11 +19,11 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
 
     // Start module definition
     let mut out_buffer: Vec<u8> = [
-        &*gen_mod_start(&mod_name),
+        &*gen_module_start(&mod_name),
         &*gen_use_path(PATH_TO_SAP_ODATA_PROPERTIES),
         &*gen_use_path(PATH_TO_SAP_ANNOTATIONS_PROPERTY),
     ]
-        .concat();
+    .concat();
 
     // Do we need to generate any complex types?
     let skipped_cts = if let Some(cts) = &schema.complex_types {
@@ -45,7 +43,7 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
             // Close module definition
             END_BLOCK,
         ]
-            .concat(),
+        .concat(),
     );
 
     out_buffer

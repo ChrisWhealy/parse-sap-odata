@@ -2,13 +2,10 @@ use std::{
     fs::File,
     io::{BufReader, Read},
     path::Path,
-    str::FromStr
+    str::FromStr,
 };
 
-use crate::{
-    edmx::data_services::schema::association::end::End,
-    test_utils::*
-};
+use crate::{edmx::data_services::schema::association::end::End, test_utils::*};
 
 impl FromStr for End {
     type Err = quick_xml::DeError;

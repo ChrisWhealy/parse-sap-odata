@@ -1,12 +1,12 @@
-use super::AtomLink;
-use crate::{test_utils::*, xml::default_xml_namespace_atom};
-
 use std::{
     fs::File,
     io::{BufReader, Read},
     path::Path,
     str::FromStr,
 };
+
+use crate::{test_utils::*, xml::default_xml_namespace_atom};
+use super::AtomLink;
 
 impl std::str::FromStr for AtomLink {
     type Err = quick_xml::DeError;
@@ -24,7 +24,8 @@ pub fn should_parse_atom_link() -> Result<(), String> {
 
     match String::from_utf8(xml_buffer) {
         Ok(xml) => {
-            let base_url = &"https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata".to_string();
+            let base_url =
+                &"https://SAPES5.SAPDEVCENTER.COM:443/sap/opu/odata/iwbep/GWSAMPLE_BASIC/$metadata".to_string();
             let atom_link = AtomLink::from_str(&xml).unwrap();
             let expected_ns = default_xml_namespace_atom().unwrap();
 

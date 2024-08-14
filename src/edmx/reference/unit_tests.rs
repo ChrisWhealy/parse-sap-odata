@@ -4,10 +4,11 @@ use std::{
     path::Path,
     str::FromStr,
 };
-use crate::{test_utils::*, xml::default_xml_namespace_oasis};
-use super::Reference;
 
-impl std::str::FromStr for Reference {
+use super::Reference;
+use crate::{test_utils::*, xml::default_xml_namespace_oasis};
+
+impl FromStr for Reference {
     type Err = quick_xml::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -16,7 +17,7 @@ impl std::str::FromStr for Reference {
 }
 
 #[test]
-pub fn should_parse_edmx_reference() -> Result<(), String>{
+pub fn should_parse_edmx_reference() -> Result<(), String> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let test_data = File::open(Path::new("./test_data/edmx_reference.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);

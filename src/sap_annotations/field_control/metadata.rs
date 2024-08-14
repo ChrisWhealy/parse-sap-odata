@@ -1,6 +1,10 @@
 use super::SAPFieldControlProperty;
+
 use crate::{
-    parser::syntax_fragments::{fragment_generators::gen_some_value, COLON2, DOUBLE_QUOTE, NONE},
+    parser::generate::{
+        gen_some_value,
+        syntax_fragments::{COLON2, DOUBLE_QUOTE, NONE}
+    },
     sap_annotations::{AnnotationType, OptionalAnnotationType},
 };
 

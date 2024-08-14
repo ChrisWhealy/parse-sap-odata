@@ -2,24 +2,21 @@ use std::collections::HashSet;
 
 use crate::{
     edmx::data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
-    parser::syntax_fragments::{
-        fragment_generators::{
-            comment_for, gen_fn_sig, gen_impl_start, gen_start_struct, gen_struct_field, gen_vector_of_type,
-        },
-        gen_use_path, CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, ENTITY_TYPES, FIELD_NAME_KEY, KEY,
-        LINE_FEED, METADATA, OPEN_CURLY, PROPERTY, PROPERTYREF, PUBLIC, RUSTC_ALLOW_DEAD_CODE, SEPARATOR, VEC_BANG,
-        PREFIX_SNAKE_GET
-    },
+    parser::generate::*,
     property::metadata::PropertyType,
-    utils::odata_name_to_rust_safe_name,
+    utils::{odata_name_to_rust_safe_name, to_upper_camel_case},
 };
-use crate::utils::to_upper_camel_case;
+use crate::parser::generate::syntax_fragments::{
+    gen_use_path, CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, ENTITY_TYPES, FIELD_NAME_KEY,
+    KEY, LINE_FEED, METADATA, OPEN_CURLY, PREFIX_SNAKE_GET, PROPERTY, PROPERTYREF, PUBLIC,
+    RUSTC_ALLOW_DEAD_CODE, SEPARATOR, VEC_BANG,
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
 pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> Vec<u8> {
     let mut used_subtypes: Vec<&[u8]> = vec![];
-    let mut out_buffer: Vec<u8> = comment_for(ENTITY_TYPES);
+    let mut out_buffer: Vec<u8> = gen_comment_separator_for(ENTITY_TYPES);
     let ets: &Vec<EntityType> = &schema.entity_types;
 
     for (idx, entity) in ets.into_iter().enumerate() {
@@ -105,13 +102,13 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
 /// Generates the metadata getter functions for each property in the impl of an EntityType
 fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<ComplexType>>) -> Vec<u8> {
     let struct_name = format!("{}{METADATA}", to_upper_camel_case(&entity.name));
-    let mut out_buffer: Vec<u8> = gen_impl_start(&struct_name);
+    let mut out_buffer: Vec<u8> = gen_impl_start_for(&struct_name);
     let keys = &entity.key.property_refs;
 
     // Add a get_key function
     out_buffer.append(
         &mut [
-            &gen_fn_sig(&KEY.to_vec(), true, false, None, Some(&gen_vector_of_type(PROPERTYREF))),
+            &gen_fn_signature(&KEY.to_vec(), true, false, None, Some(&gen_vector_of_type(PROPERTYREF))),
             OPEN_CURLY,
             LINE_FEED,
             VEC_BANG,
@@ -138,7 +135,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
             PropertyType::Edm(_) => {
                 out_buffer.append(
                     &mut [
-                        &*gen_fn_sig(&fn_name, true, false, None, Some(PROPERTY)),
+                        &*gen_fn_signature(&fn_name, true, false, None, Some(PROPERTY)),
                         OPEN_CURLY,
                         LINE_FEED,
                         &*format!("{prop}").into_bytes(),
@@ -155,7 +152,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
                     if let Some(ct) = cts.iter().find(|ct| ct.name.eq(&cmplx_type)) {
                         out_buffer.append(
                             &mut [
-                                &*gen_fn_sig(&fn_name, true, false, None, Some(COMPLEX_TYPE)),
+                                &*gen_fn_signature(&fn_name, true, false, None, Some(COMPLEX_TYPE)),
                                 OPEN_CURLY,
                                 LINE_FEED,
                                 &*format!("{ct}").into_bytes(),

@@ -2,10 +2,9 @@ use std::fmt::Formatter;
 
 use crate::{
     edmx::data_services::schema::association::referential_constraint::dependent::Dependent,
-    parser::syntax_fragments::{
-        fragment_generators::gen_owned_string, CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, VEC_BANG,
-    },
+    parser::generate::gen_owned_string,
 };
+use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, VEC_BANG};
 
 static MY_NAME: &[u8] = "Dependent".as_bytes();
 

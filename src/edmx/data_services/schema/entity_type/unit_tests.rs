@@ -5,13 +5,13 @@ use std::{
     str::FromStr,
 };
 
-use crate::test_utils::*;
 use super::EntityType;
+use crate::test_utils::*;
 
 static TRUE_STR: &str = "true";
 static FALSE_STR: &str = "false";
 
-impl std::str::FromStr for EntityType {
+impl FromStr for EntityType {
     type Err = quick_xml::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -43,14 +43,32 @@ pub fn should_parse_entity_type_business_partner() -> Result<(), String> {
             handle_test_comparison(&ent_type.properties[1].edm_type, &"Edm.String".to_string())?;
             handle_test_comparison(&ent_type.properties[1].nullable.to_string(), &FALSE_STR.to_string())?;
             handle_test_comparison_opt(&ent_type.properties[1].max_length, &Some(10))?;
-            handle_test_comparison(&ent_type.properties[1].sap_annotations.is_unicode.to_string(), &FALSE_STR.to_string())?;
-            handle_test_comparison_opt(&ent_type.properties[1].sap_annotations.label, &Some(String::from("Bus. Part. ID")))?;
-            handle_test_comparison(&ent_type.properties[1].sap_annotations.is_creatable.to_string(), &FALSE_STR.to_string())?;
-            handle_test_comparison(&ent_type.properties[1].sap_annotations.is_updatable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(
+                &ent_type.properties[1].sap_annotations.is_unicode.to_string(),
+                &FALSE_STR.to_string(),
+            )?;
+            handle_test_comparison_opt(
+                &ent_type.properties[1].sap_annotations.label,
+                &Some(String::from("Bus. Part. ID")),
+            )?;
+            handle_test_comparison(
+                &ent_type.properties[1].sap_annotations.is_creatable.to_string(),
+                &FALSE_STR.to_string(),
+            )?;
+            handle_test_comparison(
+                &ent_type.properties[1].sap_annotations.is_updatable.to_string(),
+                &FALSE_STR.to_string(),
+            )?;
             handle_test_comparison(&ent_type.navigations.len().to_string(), &"3".to_string())?;
             handle_test_comparison(&ent_type.navigations[0].name, &"ToSalesOrders".to_string())?;
-            handle_test_comparison(&ent_type.navigations[0].relationship, &"GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders".to_string())?;
-            handle_test_comparison(&ent_type.navigations[0].to_role, &"ToRole_Assoc_BusinessPartner_SalesOrders".to_string())?;
+            handle_test_comparison(
+                &ent_type.navigations[0].relationship,
+                &"GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders".to_string(),
+            )?;
+            handle_test_comparison(
+                &ent_type.navigations[0].to_role,
+                &"ToRole_Assoc_BusinessPartner_SalesOrders".to_string(),
+            )?;
 
             Ok(())
         },
@@ -60,7 +78,7 @@ pub fn should_parse_entity_type_business_partner() -> Result<(), String> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
-pub fn should_parse_entity_type_product() -> Result<(), String>{
+pub fn should_parse_entity_type_product() -> Result<(), String> {
     let mut xml_buffer: Vec<u8> = Vec::new();
     let test_data = File::open(Path::new("./test_data/entity_type_product.xml")).unwrap();
     let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
@@ -99,20 +117,50 @@ pub fn should_parse_entity_type_product() -> Result<(), String>{
             handle_test_comparison_opt(&property_changed_at.scale, &None)?;
             handle_test_comparison_opt(&property_changed_at.concurrency_mode, &Some(String::from("Fixed")))?;
             handle_test_comparison_opt(&property_changed_at.sap_annotations.label, &Some(String::from("Time Stamp")))?;
-            handle_test_comparison(&property_changed_at.sap_annotations.is_unicode.to_string(), &FALSE_STR.to_string())?;
-            handle_test_comparison(&property_changed_at.sap_annotations.is_creatable.to_string(), &FALSE_STR.to_string())?;
-            handle_test_comparison(&property_changed_at.sap_annotations.is_updatable.to_string(), &FALSE_STR.to_string())?;
+            handle_test_comparison(
+                &property_changed_at.sap_annotations.is_unicode.to_string(),
+                &FALSE_STR.to_string(),
+            )?;
+            handle_test_comparison(
+                &property_changed_at.sap_annotations.is_creatable.to_string(),
+                &FALSE_STR.to_string(),
+            )?;
+            handle_test_comparison(
+                &property_changed_at.sap_annotations.is_updatable.to_string(),
+                &FALSE_STR.to_string(),
+            )?;
             handle_test_comparison(&ent_type.navigations.len().to_string(), &"2".to_string())?;
             handle_test_comparison(&ent_type.navigations[0].name, &"ToSupplier".to_string())?;
-            handle_test_comparison(&ent_type.navigations[0].relationship, &"GWSAMPLE_BASIC.Assoc_BusinessPartner_Products".to_string())?;
+            handle_test_comparison(
+                &ent_type.navigations[0].relationship,
+                &"GWSAMPLE_BASIC.Assoc_BusinessPartner_Products".to_string(),
+            )?;
             handle_test_comparison(&ent_type.navigations[0].name, &"ToSupplier".to_string())?;
-            handle_test_comparison(&ent_type.navigations[0].relationship, &"GWSAMPLE_BASIC.Assoc_BusinessPartner_Products".to_string())?;
-            handle_test_comparison(&ent_type.navigations[0].from_role, &"FromRole_Assoc_BusinessPartner_Products".to_string())?;
-            handle_test_comparison(&ent_type.navigations[0].to_role, &"ToRole_Assoc_BusinessPartner_Products".to_string())?;
+            handle_test_comparison(
+                &ent_type.navigations[0].relationship,
+                &"GWSAMPLE_BASIC.Assoc_BusinessPartner_Products".to_string(),
+            )?;
+            handle_test_comparison(
+                &ent_type.navigations[0].from_role,
+                &"FromRole_Assoc_BusinessPartner_Products".to_string(),
+            )?;
+            handle_test_comparison(
+                &ent_type.navigations[0].to_role,
+                &"ToRole_Assoc_BusinessPartner_Products".to_string(),
+            )?;
             handle_test_comparison(&ent_type.navigations[1].name, &"ToSalesOrderLineItems".to_string())?;
-            handle_test_comparison(&ent_type.navigations[1].relationship, &"GWSAMPLE_BASIC.Assoc_Product_SalesOrderLineItems".to_string())?;
-            handle_test_comparison(&ent_type.navigations[1].from_role, &"FromRole_Assoc_Product_SalesOrderLineItems".to_string())?;
-            handle_test_comparison(&ent_type.navigations[1].to_role, &"ToRole_Assoc_Product_SalesOrderLineItems".to_string())?;
+            handle_test_comparison(
+                &ent_type.navigations[1].relationship,
+                &"GWSAMPLE_BASIC.Assoc_Product_SalesOrderLineItems".to_string(),
+            )?;
+            handle_test_comparison(
+                &ent_type.navigations[1].from_role,
+                &"FromRole_Assoc_Product_SalesOrderLineItems".to_string(),
+            )?;
+            handle_test_comparison(
+                &ent_type.navigations[1].to_role,
+                &"ToRole_Assoc_Product_SalesOrderLineItems".to_string(),
+            )?;
 
             Ok(())
         },

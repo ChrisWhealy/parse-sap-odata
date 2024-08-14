@@ -2,20 +2,16 @@ use std::fmt::Formatter;
 
 use crate::{
     parser::{
-        syntax_fragments::{
-            fragment_generators::{
-                gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
-                gen_struct_field, gen_vector_of_type,
-            },
-            serde_fragments::*,
-            *,
+        generate::{
+            gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
+            gen_struct_field, gen_vector_of_type,
+            syntax_fragments::{serde_fragments::*, *},
         },
         AsRustSrc,
     },
     property::Property,
-    utils::{odata_name_to_rust_safe_name, to_pascal_case},
+    utils::{odata_name_to_rust_safe_name, to_pascal_case, to_upper_camel_case},
 };
-use crate::utils::to_upper_camel_case;
 
 static MY_NAME: &[u8] = "Property".as_bytes();
 

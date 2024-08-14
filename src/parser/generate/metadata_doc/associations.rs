@@ -1,17 +1,12 @@
 use crate::{
-    edmx::data_services::schema::association::metadata::normalise_assoc_name,
-    edmx::data_services::schema::Schema,
-    parser::syntax_fragments::{
-        derive_traits::{derive_str, DeriveTraits},
-        fragment_generators::{
-            comment_for, end_iter_fn, gen_enum_fn_iter_start, gen_enum_fn_variant_names, gen_enum_impl_fn_variant_name,
-            gen_enum_match_arm, gen_enum_start, gen_enum_variant, gen_fq_enum_variant, gen_impl_start,
-            gen_pub_fn_getter_of_type,
-        },
-        *,
+    edmx::data_services::schema::{
+        association::metadata::normalise_assoc_name,
+        Schema,
     },
+    parser::generate::*,
+    utils::{to_snake_case, to_upper_camel_case},
 };
-use crate::utils::{to_snake_case, to_upper_camel_case};
+use crate::parser::generate::syntax_fragments::derive_traits::{derive_str, DeriveTraits};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate association structs
@@ -27,13 +22,13 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
     // Start Association enum block
     let mut association_enum: Vec<u8> = [
         LINE_FEED,
-        &*comment_for(ASSOCIATIONS),
+        &*gen_comment_separator_for(ASSOCIATIONS),
         &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES),
         LINE_FEED,
         &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
-    .concat();
+        .concat();
 
     // Start block containing Association impl functions related to enum iterator
     let mut association_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -49,30 +44,30 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
 
     for (idx, assoc) in assocs.into_iter().enumerate() {
         let stripped_name = normalise_assoc_name(&assoc.name);
-        let enum_variant = to_upper_camel_case(&stripped_name);
+        let enum_variant_name = to_upper_camel_case(&stripped_name);
 
-        association_enum.append(&mut gen_enum_variant(&enum_variant));
-        association_impl_iter_fn.append(&mut gen_fq_enum_variant(enum_name, &enum_variant));
-        association_impl_variant_name_fn.append(&mut gen_enum_match_arm(&enum_name, &enum_variant, &assoc.name));
+        association_enum.append(&mut gen_enum_variant(&enum_variant_name));
+        association_impl_iter_fn.append(&mut gen_fq_enum_variant(enum_name, &enum_variant_name));
+        association_impl_variant_name_fn.append(&mut gen_enum_match_arm(&enum_name, &enum_variant_name, &assoc.name));
 
         if idx > 0 {
             association_impl_getter_fns.append(&mut SEPARATOR.to_vec());
         }
 
-        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant).as_bytes()].concat();
-        association_impl_getter_fns.append(&mut gen_pub_fn_getter_of_type(fn_name, ASSOCIATION, assoc));
+        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant_name).as_bytes()].concat();
+        association_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(fn_name, ASSOCIATION, assoc));
     }
 
     // End Association enum block and function blocks
     association_enum.append(&mut END_BLOCK.to_vec());
-    association_impl_iter_fn.append(&mut end_iter_fn());
+    association_impl_iter_fn.append(&mut gen_end_iter_fn());
     association_impl_variant_name_fn.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
 
     [
         &*association_enum,
         // Output the start of an enum implementation
         // impl <schema_name>Associations {↩︎
-        &*gen_impl_start(enum_name),
+        &*gen_impl_start_for(enum_name),
         &*association_impl_iter_fn,
         &*association_impl_variant_name_fn,
         &*gen_enum_fn_variant_names(&enum_name),
@@ -80,7 +75,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*association_impl_getter_fns,
         END_BLOCK,
     ]
-    .concat()
+        .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,14 +99,14 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
     // Start Association enum block
     let mut association_set_enum: Vec<u8> = [
         LINE_FEED,
-        &*comment_for(ASSOCIATION_SETS),
+        &*gen_comment_separator_for(ASSOCIATION_SETS),
         &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS),
         &*gen_use_path(PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET),
         LINE_FEED,
         &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
-    .concat();
+        .concat();
 
     // Start block containing AssociationSets impl functions related to enum iterator
     let mut association_sets_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -135,7 +130,7 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
             association_sets_impl_getter_fns.append(&mut SEPARATOR.to_vec());
         }
 
-        association_sets_impl_getter_fns.append(&mut gen_pub_fn_getter_of_type(
+        association_sets_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(
             to_snake_case(&enum_variant).into_bytes(),
             ASSOCIATION_SET,
             assoc_set,
@@ -144,14 +139,14 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
 
     // End AssociationSet enum block and function blocks
     association_set_enum.append(&mut END_BLOCK.to_vec());
-    association_sets_impl_iter_fn.append(&mut end_iter_fn());
+    association_sets_impl_iter_fn.append(&mut gen_end_iter_fn());
     association_sets_impl_variant_name_fn.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
 
     [
         &*association_set_enum,
         // Output the start of an enum implementation
         // impl <schema_name>AssociationSets {↩︎
-        &*gen_impl_start(enum_name),
+        &*gen_impl_start_for(enum_name),
         &*association_sets_impl_iter_fn,
         &*association_sets_impl_variant_name_fn,
         &*gen_enum_fn_variant_names(&enum_name),
@@ -159,5 +154,5 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         &*association_sets_impl_getter_fns,
         END_BLOCK,
     ]
-    .concat()
+        .concat()
 }

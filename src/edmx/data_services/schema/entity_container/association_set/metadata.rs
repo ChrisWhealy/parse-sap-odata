@@ -1,9 +1,8 @@
+use super::AssociationSet;
 use std::fmt::Formatter;
 
-use super::AssociationSet;
-use crate::parser::syntax_fragments::{
-    fragment_generators::gen_owned_string, CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, OPEN_SQR,
-};
+use crate::parser::generate::gen_owned_string;
+use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, OPEN_SQR};
 
 static MY_NAME: &[u8] = "AssociationSet".as_bytes();
 

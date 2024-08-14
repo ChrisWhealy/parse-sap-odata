@@ -1,8 +1,8 @@
 use std::fmt::Formatter;
 
-use crate::parser::syntax_fragments::{
-    fragment_generators::{gen_bool_string, gen_owned_string},
-    CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY,
+use crate::parser::generate::{
+    gen_bool_string, gen_owned_string,
+    syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY},
 };
 
 use super::SAPAnnotationsAssociationSet;

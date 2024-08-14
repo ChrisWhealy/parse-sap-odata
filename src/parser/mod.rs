@@ -1,17 +1,16 @@
-pub mod syntax_fragments;
+pub mod generate;
 
 mod error;
-mod generate_metadata;
-mod generate_srv;
 mod io;
 
-use generate_metadata::gen_metadata_module;
-use generate_srv::gen_srv_doc_module;
-use syntax_fragments::SUFFIX_SNAKE_METADATA;
+use generate::{
+    metadata_doc::*,
+    srvc_doc::*,
+};
+use io::*;
+use generate::syntax_fragments::SUFFIX_SNAKE_METADATA;
 
 use crate::utils::run_rustfmt;
-
-use io::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AsRustSrc {

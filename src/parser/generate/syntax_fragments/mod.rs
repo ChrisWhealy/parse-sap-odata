@@ -1,10 +1,9 @@
 pub mod derive_traits;
-pub mod fragment_generators;
 pub mod serde_fragments;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Single characters
-pub static LINE_FEED: &[u8] = &[0x0a];
+pub static LINE_FEED: &[u8] = &[0x0A];
 pub static SPACE: &[u8] = &[0x20];
 pub static DOUBLE_QUOTE: &[u8] = &[0x22];
 pub static OPEN_PAREN: &[u8] = &[0x28];
@@ -21,7 +20,7 @@ pub static CLOSE_CURLY: &[u8] = &[0x7D];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Comment separators
-pub static COMMMENT_LINE: &[u8] = "// ".as_bytes();
+pub static COMMENT_LINE: &[u8] = "// ".as_bytes();
 pub static SEPARATOR: &[u8] = "
 // -----------------------------------------------------------------------------
 "
@@ -47,7 +46,7 @@ pub static U8: &[u8] = "u8".as_bytes();
 pub static UNIT: &[u8] = "()".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Keywords or keyword fragments
+// Keywords
 pub static ENUM: &[u8] = "enum ".as_bytes();
 pub static FN: &[u8] = "fn ".as_bytes();
 pub static IMPL: &[u8] = "impl ".as_bytes();

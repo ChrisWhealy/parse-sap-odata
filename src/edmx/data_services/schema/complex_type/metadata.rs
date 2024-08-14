@@ -1,9 +1,8 @@
-use super::ComplexType;
-use crate::parser::syntax_fragments::{
-    fragment_generators::gen_owned_string, CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, LINE_FEED, OPEN_CURLY,
-    VEC_BANG,
-};
 use std::fmt::Formatter;
+
+use super::ComplexType;
+use crate::parser::generate::gen_owned_string;
+use crate::parser::generate::syntax_fragments::{CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, LINE_FEED, OPEN_CURLY, VEC_BANG};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub enum ComplexTypeFieldNames {

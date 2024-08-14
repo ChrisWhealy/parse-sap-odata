@@ -1,7 +1,8 @@
 use crate::{
-    parser::AsRustSrc, property::Property,
+    parser::AsRustSrc,
+    property::Property,
     sap_annotations::property::SAPAnnotationsProperty,
-    test_utils::*,
+    test_utils::*
 };
 
 use rust_decimal::{serde::str, Decimal};
@@ -16,7 +17,7 @@ struct DecimalElement {
     price: Decimal,
 }
 
-impl std::str::FromStr for DecimalElement {
+impl FromStr for DecimalElement {
     type Err = quick_xml::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -32,7 +33,7 @@ struct OptionalDecimalElement {
     price: Option<Decimal>,
 }
 
-impl std::str::FromStr for OptionalDecimalElement {
+impl FromStr for OptionalDecimalElement {
     type Err = quick_xml::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -168,7 +169,10 @@ fn gen_property_of_type(prop_name: &str, prop_type: &str, is_nullable: bool) -> 
 fn should_convert_edm_property_types() -> Result<(), String> {
     let prop = gen_property_of_type("BusinessPartnerID", "Edm.String", false);
     let src_lines = to_rust_src(prop.to_rust());
-    handle_test_comparison(&src_lines[0].to_string(), &r#"#[serde(rename = "BusinessPartnerID")]"#.to_string())?;
+    handle_test_comparison(
+        &src_lines[0].to_string(),
+        &r#"#[serde(rename = "BusinessPartnerID")]"#.to_string(),
+    )?;
     handle_test_comparison(&src_lines[1].to_string(), &"pub business_partner_id:String,".to_string())?;
 
     let prop = gen_property_of_type("SomeBinaryStuff", "Edm.Binary", false);
@@ -179,17 +183,23 @@ fn should_convert_edm_property_types() -> Result<(), String> {
     let src_lines = to_rust_src(prop.to_rust());
     handle_test_comparison(&src_lines[0].to_string(), &"pub is_over_misunderestimatable:bool,".to_string())?;
 
-    let prop =  gen_property_of_type("ASingleByte", "Edm.Byte", true);
+    let prop = gen_property_of_type("ASingleByte", "Edm.Byte", true);
     let src_lines = to_rust_src(prop.to_rust());
     handle_test_comparison(&src_lines[0].to_string(), &"pub a_single_byte:u8,".to_string())?;
 
     let prop = gen_property_of_type("OnceUponAWednesday", "Edm.DateTime", true);
     let src_lines = to_rust_src(prop.to_rust());
-    handle_test_comparison(&src_lines[0].to_string(), &"pub once_upon_a_wednesday:Option<chrono::NaiveDateTime>,".to_string())?;
+    handle_test_comparison(
+        &src_lines[0].to_string(),
+        &"pub once_upon_a_wednesday:Option<chrono::NaiveDateTime>,".to_string(),
+    )?;
 
     let prop = gen_property_of_type("SomeDecimalNumber", "Edm.Decimal", false);
     let src_lines = to_rust_src(prop.to_rust());
-    handle_test_comparison(&src_lines[0].to_string(), &"pub some_decimal_number:rust_decimal::Decimal,".to_string())?;
+    handle_test_comparison(
+        &src_lines[0].to_string(),
+        &"pub some_decimal_number:rust_decimal::Decimal,".to_string(),
+    )?;
 
     let prop = gen_property_of_type("DoubleTrouble", "Edm.Double", false);
     let src_lines = to_rust_src(prop.to_rust());
@@ -225,7 +235,10 @@ fn should_convert_edm_property_types() -> Result<(), String> {
 
     let prop = gen_property_of_type("WhatsTheTimeEccles", "Edm.Time", false);
     let src_lines = to_rust_src(prop.to_rust());
-    handle_test_comparison(&src_lines[0].to_string(), &"pub whats_the_time_eccles:std::time::SystemTime,".to_string())?;
+    handle_test_comparison(
+        &src_lines[0].to_string(),
+        &"pub whats_the_time_eccles:std::time::SystemTime,".to_string(),
+    )?;
 
     // Unknown EDM type
     let prop = gen_property_of_type("WhatIsIt", "Edm.NonsenseTypeValue", false);

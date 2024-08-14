@@ -34,5 +34,8 @@ where
 }
 
 pub fn to_rust_src(raw_src: Vec<u8>) -> Vec<String> {
-    raw_src.split(|c| *c == 0x0A).map(|c| String::from_utf8(c.to_vec()).unwrap()).collect()
+    raw_src
+        .split(|c| *c == 0x0A)  // *NIX line feed
+        .map(|c| String::from_utf8(c.to_vec()).unwrap())
+        .collect()
 }

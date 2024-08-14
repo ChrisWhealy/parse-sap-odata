@@ -1,25 +1,25 @@
 use crate::{
     edmx::data_services::schema::entity_type::EntityType,
     parser::{
-        syntax_fragments::{
-            derive_traits::{derive_str, DeriveTraits},
-            fragment_generators::{comment_for, gen_start_struct, impl_from_str_for},
-            serde_fragments::{
-                SERDE_DE_DATETIME, SERDE_DE_DATETIME_OPT, SERDE_DE_DECIMAL, SERDE_DE_DECIMAL_OPT,
-                SERDE_RENAME_ALL_PASCAL_CASE,
-            },
-            EDMX_DATE_TIME, EDMX_DATE_TIME_OFFSET, EDMX_DECIMAL, END_BLOCK, ENTITY_TYPES, SEPARATOR,
-        },
+        generate::{gen_comment_separator_for, gen_impl_from_str_for, gen_start_struct},
         AsRustSrc,
     },
     property::{metadata::PropertyType, Property},
+    utils::to_upper_camel_case,
 };
-use crate::utils::to_upper_camel_case;
+use crate::parser::generate::syntax_fragments::{
+    derive_traits::{derive_str, DeriveTraits},
+    serde_fragments::{
+        SERDE_DE_DATETIME, SERDE_DE_DATETIME_OPT, SERDE_DE_DECIMAL, SERDE_DE_DECIMAL_OPT,
+        SERDE_RENAME_ALL_PASCAL_CASE,
+    },
+    EDMX_DATE_TIME, EDMX_DATE_TIME_OFFSET, EDMX_DECIMAL, END_BLOCK, ENTITY_TYPES, SEPARATOR,
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate entity type structs
 pub fn gen_entity_types(ets: &Vec<EntityType>) -> Vec<u8> {
-    let mut out_buffer: Vec<u8> = comment_for(ENTITY_TYPES);
+    let mut out_buffer: Vec<u8> = gen_comment_separator_for(ENTITY_TYPES);
 
     for (idx, entity) in ets.into_iter().enumerate() {
         if idx > 0 {
@@ -70,7 +70,7 @@ fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
             PropertyType::Unqualified => {
                 // TODO This is probably an error condition.  Need to decide how to handle it
                 println!(
-                    "Malformed property type. Expected <namespace>.<type> or Edm.<type>.  Got {}",
+                    "Malformed property type. Expected pattern of <namespace>.<type> or Edm.<type>.  Instead got '{}'",
                     prop.edm_type
                 );
             },
@@ -83,7 +83,7 @@ fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
         &mut [
             END_BLOCK,
             // Implement `from_str` for this struct
-            &*impl_from_str_for(&struct_name),
+            &*gen_impl_from_str_for(&struct_name),
         ]
         .concat(),
     );

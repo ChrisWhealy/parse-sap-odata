@@ -1,8 +1,12 @@
-use super::*;
+pub mod metadata_doc;
+pub mod srvc_doc;
+pub mod syntax_fragments;
+
+use syntax_fragments::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// `from_str` implementation for each entity set struct
-pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
+pub fn gen_impl_from_str_for(struct_name: &str) -> Vec<u8> {
     static FN_START: &[u8] = "impl std::str::FromStr for ".as_bytes();
     static FN_END: &[u8] = " {
     type Err = quick_xml::DeError;
@@ -13,13 +17,13 @@ pub fn impl_from_str_for(struct_name: &str) -> Vec<u8> {
     [LINE_FEED, FN_START, struct_name.as_bytes(), FN_END, LINE_FEED].concat()
 }
 
-pub fn comment_for(something: &str) -> Vec<u8> {
-    [LINE_FEED, SEPARATOR, COMMMENT_LINE, something.as_bytes(), SEPARATOR].concat()
+pub fn gen_comment_separator_for(something: &str) -> Vec<u8> {
+    [LINE_FEED, SEPARATOR, COMMENT_LINE, something.as_bytes(), SEPARATOR].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start a module declaration
-pub fn gen_mod_start(mod_name: &str) -> Vec<u8> {
+pub fn gen_module_start(mod_name: &str) -> Vec<u8> {
     [PUBLIC, MOD, mod_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
 
@@ -36,19 +40,19 @@ pub fn gen_struct_field(field_name: &str, rust_type: &Vec<u8>) -> Vec<u8> {
 
 static CALL_ITER: &[u8] = ".iter()".as_bytes();
 static CALL_COPIED: &[u8] = ".copied()".as_bytes();
-pub fn end_iter_fn() -> Vec<u8> {
+pub fn gen_end_iter_fn() -> Vec<u8> {
     [CLOSE_SQR, CALL_ITER, CALL_COPIED, LINE_FEED, END_BLOCK].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start of an implementation
-pub fn gen_impl_start(some_name: &str) -> Vec<u8> {
+pub fn gen_impl_start_for(some_name: &str) -> Vec<u8> {
     [IMPL, some_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate function signature
-pub fn gen_fn_sig(
+pub fn gen_fn_signature(
     fn_name: &Vec<u8>,
     is_pub: bool,
     is_const: bool,
@@ -64,7 +68,7 @@ pub fn gen_fn_sig(
                 .map(|arg| format!("{},", String::from_utf8((*arg).to_vec()).unwrap()))
                 .collect::<String>()
         } else {
-            format!("{},", String::from_utf8((args[0]).to_vec()).unwrap())
+            format!("{},", String::from_utf8(args[0].to_vec()).unwrap())
         }
     } else {
         String::from("")
@@ -95,7 +99,7 @@ pub fn gen_fn_sig(
 //       match *self {↩︎
 pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
     [
-        &*gen_fn_sig(
+        &*gen_fn_signature(
             &FN_NAME_VARIANT_NAME.to_vec(),
             true,
             true,
@@ -113,13 +117,13 @@ pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate a function that returns an instance of some type
-pub fn gen_pub_fn_getter_of_type<T: std::fmt::Display>(
+pub fn gen_pub_getter_fn_of_type<T: std::fmt::Display>(
     fn_name: Vec<u8>,
     return_type: &'static str,
     some_type: T,
 ) -> Vec<u8> {
     [
-        &*gen_fn_sig(&fn_name, true, false, None, Some(return_type.as_bytes())),
+        &*gen_fn_signature(&fn_name, true, false, None, Some(return_type.as_bytes())),
         OPEN_CURLY,
         LINE_FEED,
         format!("{some_type}").as_bytes(),

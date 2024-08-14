@@ -5,8 +5,8 @@ use std::{
     str::FromStr,
 };
 
-use crate::test_utils::*;
 use super::{metadata::normalise_assoc_name, Association};
+use crate::test_utils::*;
 
 impl FromStr for Association {
     type Err = quick_xml::DeError;
@@ -38,11 +38,20 @@ pub fn should_parse_association() -> Result<(), String> {
             handle_test_comparison(&assoc.ends.len().to_string(), &"2".to_string())?;
             handle_test_comparison_opt(&assoc.ends[0].end_type, &Some("GWSAMPLE_BASIC.VH_UnitQuantity".to_string()))?;
             handle_test_comparison_opt(&assoc.ends[0].multiplicity, &Some("1".to_string()))?;
-            handle_test_comparison(&assoc.ends[0].role, &"FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string())?;
+            handle_test_comparison(
+                &assoc.ends[0].role,
+                &"FromRole_Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string(),
+            )?;
 
-            handle_test_comparison_opt(&assoc.ends[1].end_type, &Some("GWSAMPLE_BASIC.SalesOrderLineItem".to_string()))?;
+            handle_test_comparison_opt(
+                &assoc.ends[1].end_type,
+                &Some("GWSAMPLE_BASIC.SalesOrderLineItem".to_string()),
+            )?;
             handle_test_comparison_opt(&assoc.ends[1].multiplicity, &Some("*".to_string()))?;
-            handle_test_comparison(&assoc.ends[1].role, &"ToRole_Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string())?;
+            handle_test_comparison(
+                &assoc.ends[1].role,
+                &"ToRole_Assoc_VH_UnitQuantity_SalesOrderLineItem".to_string(),
+            )?;
 
             Ok(())
         },
@@ -54,16 +63,46 @@ pub fn should_parse_association() -> Result<(), String> {
 #[test]
 pub fn should_normalise_association_name_variations() -> Result<(), String> {
     handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("VH_UnitQuantity_SalesOrderLineItem_AssocSet", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocSet", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocSe", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocS", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_Assoc", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_Asso", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_Ass", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_As", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_A", "VH_UnitQuantity_SalesOrderLineItem")?;
-    handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem_", "VH_UnitQuantity_SalesOrderLineItem")?;
+    handle_normalise_call(
+        "VH_UnitQuantity_SalesOrderLineItem_AssocSet",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocSet",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocSe",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_AssocS",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_Assoc",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_Asso",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_Ass",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_As",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_A",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
+    handle_normalise_call(
+        "Assoc_VH_UnitQuantity_SalesOrderLineItem_",
+        "VH_UnitQuantity_SalesOrderLineItem",
+    )?;
     handle_normalise_call("Assoc_VH_UnitQuantity_SalesOrderLineItem", "VH_UnitQuantity_SalesOrderLineItem")?;
 
     Ok(())
