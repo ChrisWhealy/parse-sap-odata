@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     sap_annotations::property::SAPAnnotationsProperty,
-    utils::{de_str_to_bool, default_false, default_true},
+    utils::{de_str_to_bool, default_false, default_true}
 };
 
 #[cfg(feature = "parser")]
@@ -42,9 +42,7 @@ pub struct Property {
     #[serde(flatten)]
     pub sap_annotations: SAPAnnotationsProperty,
     #[serde(skip, default)]
-    pub deserializer_fn: &'static str,
-    #[serde(skip, default)]
-    pub deserializer_module: &'static str,
+    pub deserializer_fn: String,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

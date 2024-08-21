@@ -2,42 +2,54 @@ use super::{CLOSE_PAREN, CLOSE_SQR, DOUBLE_QUOTE, LINE_FEED};
 
 pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};
 "
-.as_bytes();
+    .as_bytes();
 pub static SERDE_RENAME_ALL_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]
 "
-.as_bytes();
-pub static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
+    .as_bytes();
 
-// Deserializers supplied by the rust_decimal crate
-// The consuming application needs to declare 'rust_decimal = { version = "1.nn", features = ["serde-with-str"]}'
-pub static SERDE_DE_DECIMAL: &str = "rust_decimal::serde::str";
-pub static SERDE_DE_DECIMAL_OPT: &str = "rust_decimal::serde::str_option";
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Reference the custom DateTime deserializer functions that exist in the parse-odata-atom-feed crate
+static DESER_EDM_DATETIME_TO_NAIVE_DATETIME: &str =
+    "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time";
+static DESER_EDM_DATETIME_TO_NAIVE_DATETIME_OPT: &str =
+    "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time_opt";
 
-// These declarations make forward references to custom deserializers that exist in the parse-odata-atom-feed crate
-pub static SERDE_DE_DATETIME_OPT: &str = "parse_sap_atom_feed::deserializers::de_date_to_optional_naive_date_time";
-pub static SERDE_DE_DATETIME: &str = "parse_sap_atom_feed::deserializers::de_date_to_naive_date_time";
-
-pub fn deserialize_with(de: &'static str, de_is_function: bool) -> Vec<u8> {
-    String::from_utf8(
-        [
-            (if de_is_function {
-                "#[serde(deserialize_with = \""
-            } else {
-                "#[serde(with = \""
-            })
-            .as_bytes(),
-            de.as_bytes(),
-            DOUBLE_QUOTE,
-            CLOSE_PAREN,
-            CLOSE_SQR,
-            LINE_FEED,
-        ]
-        .concat(),
-    )
-    .unwrap()
-    .into()
+pub fn gen_datetime_deserializer_ref(is_nullable: bool) -> String {
+    (if is_nullable {
+        DESER_EDM_DATETIME_TO_NAIVE_DATETIME_OPT
+    } else {
+        DESER_EDM_DATETIME_TO_NAIVE_DATETIME
+    }).to_string()
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Reference the custom decimal deserializer functions that exist in the parse-odata-atom-feed crate
+static DESER_EDM_DECIMAL_TO_RUST_DECIMAL_PREFIX: &str =
+    "parse_sap_atom_feed::deserializers::edm_decimal::to_rust_decimal_";
+
+pub fn gen_decimal_deserializer_ref(is_nullable: bool, scale: Option<u16>) -> String {
+    format!(
+        "{DESER_EDM_DECIMAL_TO_RUST_DECIMAL_PREFIX}{}dp{}",
+        scale.unwrap_or(0),
+        if is_nullable { "_opt" } else { "" }
+    )
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+static SERDE_DESERIALIZE_WITH: &[u8] = "#[serde(deserialize_with = \"".as_bytes();
+pub fn deserialize_with(fn_name: &str) -> Vec<u8> {
+    [
+        SERDE_DESERIALIZE_WITH,
+        fn_name.as_bytes(),
+        DOUBLE_QUOTE,
+        CLOSE_PAREN,
+        CLOSE_SQR,
+        LINE_FEED,
+    ]
+        .concat()
+}
+
+static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
 pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
     [
         SERDE_RENAME,
@@ -47,5 +59,5 @@ pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
         CLOSE_SQR,
         LINE_FEED,
     ]
-    .concat()
+        .concat()
 }

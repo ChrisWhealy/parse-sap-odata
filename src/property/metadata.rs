@@ -5,7 +5,8 @@ use crate::{
         generate::{
             gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
             gen_struct_field, gen_vector_of_type,
-            syntax_fragments::{serde_fragments::*, *},
+            syntax_fragments::serde_fragments::{deserialize_with, gen_serde_rename},
+            syntax_fragments::*,
         },
         AsRustSrc,
     },
@@ -41,7 +42,6 @@ enum PropertyFieldNames {
     FcTargetPath,
     SAPAnnotations,
     DeserializerFn,
-    DeserializerModule,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,7 +59,6 @@ impl PropertyFieldNames {
             PropertyFieldNames::FcTargetPath => "fc_target_path",
             PropertyFieldNames::SAPAnnotations => "sap_annotations",
             PropertyFieldNames::DeserializerFn => "deserializer_fn",
-            PropertyFieldNames::DeserializerModule => "deserializer_module",
         };
 
         member.as_bytes().to_vec()
@@ -98,12 +97,11 @@ fn line_from(prop_md: PropertyFieldNames, val: Vec<u8>) -> Vec<u8> {
     [&*PropertyFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Metadata Module Generation
+/// Generate the source code that declares an instance of this Property
 impl std::fmt::Display for Property {
-    // Output the source code to declare this Property instance
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let deser_fn = [DOUBLE_QUOTE, self.deserializer_fn.as_bytes(), DOUBLE_QUOTE].concat();
-        let deser_mod = [DOUBLE_QUOTE, self.deserializer_module.as_bytes(), DOUBLE_QUOTE].concat();
-
         let out_buffer: Vec<u8> = [
             MY_NAME,
             OPEN_CURLY,
@@ -120,8 +118,7 @@ impl std::fmt::Display for Property {
                 PropertyFieldNames::SAPAnnotations,
                 format!("{}", self.sap_annotations).as_bytes().to_vec(),
             ),
-            &*line_from(PropertyFieldNames::DeserializerFn, deser_fn),
-            &*line_from(PropertyFieldNames::DeserializerModule, deser_mod),
+            &*line_from(PropertyFieldNames::DeserializerFn, gen_owned_string(&self.deserializer_fn)),
             CLOSE_CURLY,
         ]
         .concat();
@@ -131,6 +128,8 @@ impl std::fmt::Display for Property {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Service Document Module Generation
+/// Generate the source code that declares an instance of the runtime data stored in this Property
 impl AsRustSrc for Property {
     fn to_rust(&self) -> Vec<u8> {
         let mut out_buffer: Vec<u8> = Vec::new();
@@ -145,13 +144,9 @@ impl AsRustSrc for Property {
                     out_buffer.append(&mut gen_serde_rename(&self.odata_name))
                 }
 
-                // Add an attribute pointing either to a custom deserializer function or a deserializer module.
-                // Only one of these deserializers should ever be populated at any one time!
+                // Output the serde attribute for a custom deserializer
                 if !self.deserializer_fn.is_empty() {
-                    out_buffer.append(&mut deserialize_with(self.deserializer_fn, true))
-                }
-                if !self.deserializer_module.is_empty() {
-                    out_buffer.append(&mut deserialize_with(self.deserializer_module, false))
+                    out_buffer.append(&mut deserialize_with(&self.deserializer_fn))
                 }
 
                 // Convert EDM type to Rust type
@@ -160,6 +155,8 @@ impl AsRustSrc for Property {
                     "Boolean" => self.maybe_optional(BOOLEAN),
                     "Byte" => U8.to_vec(),
                     "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
+                    // Edm.Decimal converts to a rust_decimal::Decimal but also needs a custom deserializer in order to
+                    // account for the Scale attribute
                     "Decimal" => self.maybe_optional(RUST_DECIMAL),
                     "Double" => F64.to_vec(),
                     "Guid" => UUID.to_vec(),

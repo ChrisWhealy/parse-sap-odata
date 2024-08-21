@@ -1,19 +1,18 @@
 use crate::{
     edmx::data_services::schema::entity_type::EntityType,
     parser::{
-        generate::{gen_comment_separator_for, gen_impl_from_str_for, gen_start_struct},
+        generate::{
+            gen_comment_separator_for,
+            gen_impl_from_str_for, gen_start_struct, syntax_fragments::{
+                derive_traits::{derive_str, DeriveTraits},
+                serde_fragments::*,
+                EDMX_DATE_TIME, EDMX_DATE_TIME_OFFSET, EDMX_DECIMAL, END_BLOCK, ENTITY_TYPES, SEPARATOR,
+            },
+        },
         AsRustSrc,
     },
     property::{metadata::PropertyType, Property},
     utils::to_upper_camel_case,
-};
-use crate::parser::generate::syntax_fragments::{
-    derive_traits::{derive_str, DeriveTraits},
-    serde_fragments::{
-        SERDE_DE_DATETIME, SERDE_DE_DATETIME_OPT, SERDE_DE_DECIMAL, SERDE_DE_DECIMAL_OPT,
-        SERDE_RENAME_ALL_PASCAL_CASE,
-    },
-    EDMX_DATE_TIME, EDMX_DATE_TIME_OFFSET, EDMX_DECIMAL, END_BLOCK, ENTITY_TYPES, SEPARATOR,
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -47,21 +46,22 @@ fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
         SERDE_RENAME_ALL_PASCAL_CASE,
         &*gen_start_struct(&struct_name),
     ]
-    .concat();
+        .concat();
 
     let mut props = entity.properties.clone();
     props.sort();
 
     for mut prop in props {
-        // Check whether this property needs a custom deserializer module/function
+        // Check whether this property needs a custom deserializer
         match Property::get_property_type(&prop) {
             PropertyType::Edm(edm_type) => {
                 let edm_type_str = edm_type.as_str();
 
+                // Do we need to make a forward reference to a custom deserializer in the parse-sap-atom-feed crate?
                 if edm_type_str.eq(EDMX_DATE_TIME) || edm_type_str.eq(EDMX_DATE_TIME_OFFSET) {
-                    prop.deserializer_fn = if prop.nullable { SERDE_DE_DATETIME_OPT } else { SERDE_DE_DATETIME }
+                    prop.deserializer_fn = gen_datetime_deserializer_ref(prop.nullable);
                 } else if edm_type_str.eq(EDMX_DECIMAL) {
-                    prop.deserializer_module = if prop.nullable { SERDE_DE_DECIMAL_OPT } else { SERDE_DE_DECIMAL }
+                    prop.deserializer_fn = gen_decimal_deserializer_ref(prop.nullable, prop.scale);
                 }
             },
 
@@ -85,7 +85,7 @@ fn gen_entity_type(entity: &EntityType) -> Vec<u8> {
             // Implement `from_str` for this struct
             &*gen_impl_from_str_for(&struct_name),
         ]
-        .concat(),
+            .concat(),
     );
 
     out_buffer

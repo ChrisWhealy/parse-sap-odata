@@ -159,8 +159,8 @@ fn gen_property_of_type(prop_name: &str, prop_type: &str, is_nullable: bool) -> 
         fc_keep_in_content: true,
         fc_target_path: None,
         sap_annotations: dummy_annotations,
-        deserializer_fn: "",
-        deserializer_module: "",
+        deserializer_fn: "".to_string(),
+        // deserializer_module: "".to_string(),
     }
 }
 

@@ -11,6 +11,7 @@ use crate::parser::generate::syntax_fragments::{
     KEY, LINE_FEED, METADATA, OPEN_CURLY, PREFIX_SNAKE_GET, PROPERTY, PROPERTYREF, PUBLIC,
     RUSTC_ALLOW_DEAD_CODE, SEPARATOR, VEC_BANG,
 };
+use crate::parser::generate::syntax_fragments::serde_fragments::{gen_datetime_deserializer_ref, gen_decimal_deserializer_ref};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
@@ -128,11 +129,19 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     props.sort();
 
     // One getter function per property
-    for prop in props {
+    for mut prop in props {
         let fn_name = format!("{PREFIX_SNAKE_GET}{}", odata_name_to_rust_safe_name(&prop.odata_name)).into_bytes();
 
         match prop.get_property_type() {
-            PropertyType::Edm(_) => {
+            PropertyType::Edm(edm_type) => {
+                let edm_type_str = edm_type.as_str();
+
+                if edm_type_str.eq(EDMX_DATE_TIME) || edm_type_str.eq(EDMX_DATE_TIME_OFFSET) {
+                    prop.deserializer_fn = gen_datetime_deserializer_ref(prop.nullable);
+                } else if edm_type_str.eq(EDMX_DECIMAL) {
+                    prop.deserializer_fn = gen_decimal_deserializer_ref(prop.nullable, prop.scale);
+                }
+
                 out_buffer.append(
                     &mut [
                         &*gen_fn_signature(&fn_name, true, false, None, Some(PROPERTY)),
