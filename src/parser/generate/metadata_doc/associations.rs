@@ -1,12 +1,11 @@
 use crate::{
-    edmx::data_services::schema::{
-        association::metadata::normalise_assoc_name,
-        Schema,
+    edmx::data_services::schema::{association::metadata::normalise_assoc_name, Schema},
+    parser::generate::{
+        syntax_fragments::derive_traits::{derive_str, DeriveTraits},
+        *,
     },
-    parser::generate::*,
     utils::{to_snake_case, to_upper_camel_case},
 };
-use crate::parser::generate::syntax_fragments::derive_traits::{derive_str, DeriveTraits};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate association structs
@@ -28,7 +27,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
-        .concat();
+    .concat();
 
     // Start block containing Association impl functions related to enum iterator
     let mut association_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -75,7 +74,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*association_impl_getter_fns,
         END_BLOCK,
     ]
-        .concat()
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -106,7 +105,7 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
-        .concat();
+    .concat();
 
     // Start block containing AssociationSets impl functions related to enum iterator
     let mut association_sets_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -154,5 +153,5 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         &*association_sets_impl_getter_fns,
         END_BLOCK,
     ]
-        .concat()
+    .concat()
 }

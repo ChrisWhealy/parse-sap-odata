@@ -3,12 +3,8 @@ pub mod generate;
 mod error;
 mod io;
 
-use generate::{
-    metadata_doc::*,
-    srvc_doc::*,
-};
+use generate::{metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA};
 use io::*;
-use generate::syntax_fragments::SUFFIX_SNAKE_METADATA;
 
 use crate::utils::run_rustfmt;
 
@@ -47,7 +43,7 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Generate the source code for the metadata document module and run it through rustfmt
-                let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs", );
+                let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs",);
 
                 match run_rustfmt(&gen_metadata_module(odata_srv_name, &schema), &mod_name) {
                     Ok(formatted_bytes) => write_buffer_to_file(&mod_name, formatted_bytes),

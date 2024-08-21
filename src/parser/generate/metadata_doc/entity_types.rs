@@ -2,37 +2,35 @@ use std::collections::HashSet;
 
 use crate::{
     edmx::data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
-    parser::generate::*,
+    parser::generate::{syntax_fragments::*, *},
     property::metadata::PropertyType,
     utils::{odata_name_to_rust_safe_name, to_upper_camel_case},
 };
-use crate::parser::generate::syntax_fragments::{
-    gen_use_path, CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, ENTITY_TYPES, FIELD_NAME_KEY,
-    KEY, LINE_FEED, METADATA, OPEN_CURLY, PREFIX_SNAKE_GET, PROPERTY, PROPERTYREF, PUBLIC,
-    RUSTC_ALLOW_DEAD_CODE, SEPARATOR, VEC_BANG,
-};
-use crate::parser::generate::syntax_fragments::serde_fragments::{gen_datetime_deserializer_ref, gen_decimal_deserializer_ref};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
 pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> Vec<u8> {
     let mut used_subtypes: Vec<&[u8]> = vec![];
-    let mut out_buffer: Vec<u8> = gen_comment_separator_for(ENTITY_TYPES);
     let ets: &Vec<EntityType> = &schema.entity_types;
 
-    for (idx, entity) in ets.into_iter().enumerate() {
-        if idx > 0 {
-            out_buffer.append(&mut SEPARATOR.to_vec());
-        }
+    let mut out_buffer: Vec<u8> =
+        ets.into_iter()
+            .enumerate()
+            .fold(gen_comment_separator_for(ENTITY_TYPES), |mut acc, (idx, entity)| {
+                if idx > 0 {
+                    acc.append(&mut SEPARATOR.to_vec());
+                }
 
-        // Accumulate a list of subtypes used within the SAP Annotations field of each property
-        for prop in &entity.properties {
-            used_subtypes.append(&mut prop.sap_annotations.used_subtypes());
-        }
+                // Accumulate a list of subtypes used within the SAP Annotations field of each property
+                for prop in &entity.properties {
+                    used_subtypes.append(&mut prop.sap_annotations.used_subtypes());
+                }
 
-        out_buffer.append(&mut gen_metadata_entity_type(entity, &skipped_cts));
-        out_buffer.append(&mut gen_metadata_entity_type_impl(entity, &schema.complex_types));
-    }
+                acc.append(&mut gen_metadata_entity_type(entity, &skipped_cts));
+                acc.append(&mut gen_metadata_entity_type_impl(entity, &schema.complex_types));
+
+                acc
+            });
 
     // De-dup the list of used subtypes
     let unique_subtypes = used_subtypes
@@ -131,17 +129,10 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     // One getter function per property
     for mut prop in props {
         let fn_name = format!("{PREFIX_SNAKE_GET}{}", odata_name_to_rust_safe_name(&prop.odata_name)).into_bytes();
+        prop.deserializer_fn = gen_serde_custom_deserializer_attrib(&prop);
 
         match prop.get_property_type() {
-            PropertyType::Edm(edm_type) => {
-                let edm_type_str = edm_type.as_str();
-
-                if edm_type_str.eq(EDMX_DATE_TIME) || edm_type_str.eq(EDMX_DATE_TIME_OFFSET) {
-                    prop.deserializer_fn = gen_datetime_deserializer_ref(prop.nullable);
-                } else if edm_type_str.eq(EDMX_DECIMAL) {
-                    prop.deserializer_fn = gen_decimal_deserializer_ref(prop.nullable, prop.scale);
-                }
-
+            PropertyType::Edm(_) => {
                 out_buffer.append(
                     &mut [
                         &*gen_fn_signature(&fn_name, true, false, None, Some(PROPERTY)),

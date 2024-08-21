@@ -42,15 +42,15 @@ impl DeriveTraits {
 }
 
 pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
-    let mut out_buffer = DERIVE_START.to_vec();
-
-    for (idx, d) in traits.iter().enumerate() {
-        out_buffer.append(&mut d.value());
+    let mut out_buffer = traits.iter().enumerate().fold(DERIVE_START.to_vec(), |mut acc, (idx, d)| {
+        acc.append(&mut d.value());
 
         if idx < traits.len() - 1 {
-            out_buffer.append(&mut COMMA.to_vec());
+            acc.append(&mut COMMA.to_vec());
         }
-    }
+
+        acc
+    });
 
     out_buffer.append(&mut [CLOSE_PAREN, CLOSE_SQR, LINE_FEED].concat());
     out_buffer

@@ -4,13 +4,12 @@ mod entity_types;
 
 use crate::{
     edmx::data_services::schema::Schema,
-    parser::generate::*
+    parser::generate::{syntax_fragments::*, *},
 };
 
 use associations::*;
 use complex_types::*;
 use entity_types::*;
-use crate::parser::generate::syntax_fragments::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate a module containing the metadata structs and their respective instances

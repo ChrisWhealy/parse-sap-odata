@@ -1,11 +1,16 @@
-use super::{CLOSE_PAREN, CLOSE_SQR, DOUBLE_QUOTE, LINE_FEED};
+use crate::parser::generate::gen_start_struct;
+
+use super::{
+    derive_traits::{derive_str, DeriveTraits},
+    CLOSE_PAREN, CLOSE_SQR, DOUBLE_QUOTE, LINE_FEED,
+};
 
 pub static USE_SERDE: &[u8] = "use serde::{Deserialize, Serialize};
 "
-    .as_bytes();
+.as_bytes();
 pub static SERDE_RENAME_ALL_PASCAL_CASE: &[u8] = "#[serde(rename_all = \"PascalCase\")]
 "
-    .as_bytes();
+.as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Reference the custom DateTime deserializer functions that exist in the parse-odata-atom-feed crate
@@ -14,12 +19,13 @@ static DESER_EDM_DATETIME_TO_NAIVE_DATETIME: &str =
 static DESER_EDM_DATETIME_TO_NAIVE_DATETIME_OPT: &str =
     "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time_opt";
 
-pub fn gen_datetime_deserializer_ref(is_nullable: bool) -> String {
+pub fn gen_datetime_deserializer_fn(is_nullable: bool) -> String {
     (if is_nullable {
         DESER_EDM_DATETIME_TO_NAIVE_DATETIME_OPT
     } else {
         DESER_EDM_DATETIME_TO_NAIVE_DATETIME
-    }).to_string()
+    })
+    .to_string()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,7 +52,7 @@ pub fn deserialize_with(fn_name: &str) -> Vec<u8> {
         CLOSE_SQR,
         LINE_FEED,
     ]
-        .concat()
+    .concat()
 }
 
 static SERDE_RENAME: &[u8] = "#[serde(rename = \"".as_bytes();
@@ -59,5 +65,21 @@ pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
         CLOSE_SQR,
         LINE_FEED,
     ]
-        .concat()
+    .concat()
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn gen_deserializable_struct(struct_name: &str) -> Vec<u8> {
+    [
+        &*derive_str(vec![
+            DeriveTraits::CLONE,
+            DeriveTraits::DEBUG,
+            DeriveTraits::DEFAULT,
+            DeriveTraits::SERIALIZE,
+            DeriveTraits::DESERIALIZE,
+        ]),
+        SERDE_RENAME_ALL_PASCAL_CASE,
+        &*gen_start_struct(struct_name),
+    ]
+    .concat()
 }

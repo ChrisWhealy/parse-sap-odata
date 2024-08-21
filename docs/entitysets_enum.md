@@ -1,11 +1,9 @@
 # Entitysets Enum
 
-On the basis that a single OData service exposes a static list of entity sets, and that within the scope of any single request, you will only ever be interacting with a single entity set, it makes sense to treat each entity set name as an `enum` variant.
-
 Under the `<Schema>` element in the OData service document, there is an `<EntityContainer>` element.
-All entity sets available through this OData service are identified here with their own `<EntitySet Name="<some_name>">` tag.
+All entity sets available through this OData service are identified here with their own `<EntitySet Name="...">` tag.
 
-The following naming convention is used: `<odata_service_name>Entities`.
+All the `<EntitySet>` elements are listed in an `enum` called `<odata_service_name>Entities`.
 
 For example, the entity sets belonging to the OData service `GWSAMPLE_BASIC` become the following `enum`:
 
@@ -45,8 +43,7 @@ impl GwsampleBasicEntities {
 
 ## Entitysets Enum `iterator` function
 
-The entity set names within an OData service form an immutable, type-safe list.
-Therefore, on the basis of this guarantee, the entity set names are placed into an `enum` that implements an `iterator` over its variants.
+An `iterator` over the `enum` variants has been implemented.
 
 ```rust
 pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {

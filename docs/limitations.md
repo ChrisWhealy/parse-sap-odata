@@ -7,12 +7,4 @@
 
    If you encounter such errors, the raw XML string must first be sanitised before attempting to parse it.
 
-   This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/lighthouse-no/parse-sap-odata-demo).
-
-1. The `rust_decimal::serde::str` deserializer can offer only partial support for fields of `Edm.Decimal` because it knows nothing about the attributes `Precision` and `Scale`:
-
-   ```xml
-   <Property Name="Price" Type="Edm.Decimal" Precision="16" Scale="3" sap:unicode="false" sap:unit="CurrencyCode" sap:label="Unit Price"/>
-   ```
-
-   Consequently, these attribute values are not considered when extracting a decimal value.
+   This functionality is described in the [README of `parse-sap-odata-demo`](https://github.com/ChrisWhealy/parse-sap-odata-demo).

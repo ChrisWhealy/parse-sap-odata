@@ -3,12 +3,14 @@ mod entity_types;
 
 use crate::{
     edmx::data_services::schema::Schema,
-    parser::generate::{gen_comment_separator_for, gen_module_start},
+    parser::generate::{
+        gen_comment_separator_for, gen_module_start,
+        syntax_fragments::{serde_fragments::*, END_BLOCK},
+    },
 };
 
 use complex_types::gen_complex_types;
 use entity_types::gen_entity_types;
-use crate::parser::generate::syntax_fragments::{serde_fragments::*, END_BLOCK};
 
 // ---------------------------------------------------------------------------------------------------------------------
 // PUBLIC API

@@ -47,5 +47,5 @@ pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseE
     let xml = fetch_xml_as_string(metadata_file_name)?;
     let edmx = Edmx::from_str(&xml)?;
 
-    return Ok(edmx);
+    Ok(edmx)
 }
