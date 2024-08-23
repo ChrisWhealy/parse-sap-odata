@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     sap_annotations::property::SAPAnnotationsProperty,
-    utils::{de_str_to_bool, default_false, default_true}
+    utils::{de_str_to_bool, default_false, default_true},
 };
 
 #[cfg(feature = "parser")]

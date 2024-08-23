@@ -1,10 +1,12 @@
 use std::fmt::Formatter;
 
+use crate::parser::generate::syntax_fragments::{
+    CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, VEC_BANG,
+};
 use crate::{
     edmx::data_services::schema::association::referential_constraint::principal::Principal,
     parser::generate::gen_owned_string,
 };
-use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, VEC_BANG};
 
 static MY_NAME: &[u8] = "Principal".as_bytes();
 

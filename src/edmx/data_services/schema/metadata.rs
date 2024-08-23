@@ -1,10 +1,7 @@
 use super::Schema;
 
-use crate::{
-    parser::generate::*,
-    utils::to_upper_camel_case,
-};
 use crate::parser::generate::syntax_fragments::{derive_traits::*, *};
+use crate::{parser::generate::*, utils::to_upper_camel_case};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl Schema {

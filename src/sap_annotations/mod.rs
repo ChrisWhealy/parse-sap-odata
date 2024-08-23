@@ -29,7 +29,9 @@ static ONE: &str = "1";
 static JSON: &str = "json";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn default_sap_content_version() -> String { ONE.to_string() }
+pub fn default_sap_content_version() -> String {
+    ONE.to_string()
+}
 pub fn default_sap_schema_version() -> String {
     ONE.to_string()
 }

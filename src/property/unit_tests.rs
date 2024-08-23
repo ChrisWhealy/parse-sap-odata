@@ -1,9 +1,4 @@
-use crate::{
-    parser::AsRustSrc,
-    property::Property,
-    sap_annotations::property::SAPAnnotationsProperty,
-    test_utils::*
-};
+use crate::{parser::AsRustSrc, property::Property, sap_annotations::property::SAPAnnotationsProperty, test_utils::*};
 
 use rust_decimal::{serde::str, Decimal};
 use serde::Deserialize;

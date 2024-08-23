@@ -1,3 +1,4 @@
+use parse_sap_atom_feed::atom::AtomLink;
 use serde::{Deserialize, Serialize};
 
 use association::Association;
@@ -6,7 +7,6 @@ use entity_container::EntityContainer;
 use entity_type::EntityType;
 
 use crate::{
-    atom::AtomLink,
     oasis::annotations::Annotations,
     sap_annotations::schema::SAPAnnotationsSchema,
     xml::{default_xml_language, default_xml_namespace},

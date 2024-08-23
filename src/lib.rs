@@ -1,4 +1,3 @@
-pub mod atom;
 pub mod edmx;
 pub mod oasis;
 pub mod property;

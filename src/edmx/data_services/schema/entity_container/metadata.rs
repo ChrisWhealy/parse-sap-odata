@@ -1,9 +1,7 @@
-use crate::{
-    edmx::data_services::schema::entity_container::EntityContainer,
-    parser::generate::*,
-    utils::to_upper_camel_case,
-};
 use crate::parser::generate::syntax_fragments::{derive_traits::*, *};
+use crate::{
+    edmx::data_services::schema::entity_container::EntityContainer, parser::generate::*, utils::to_upper_camel_case,
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl EntityContainer {

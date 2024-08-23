@@ -3,10 +3,9 @@ pub mod generate;
 mod error;
 mod io;
 
+use crate::utils::rust_tools::run_rustfmt;
 use generate::{metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA};
 use io::*;
-
-use crate::utils::run_rustfmt;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AsRustSrc {

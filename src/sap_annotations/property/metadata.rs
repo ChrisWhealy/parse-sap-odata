@@ -3,10 +3,7 @@ use std::fmt::Formatter;
 use super::SAPAnnotationsProperty;
 
 use crate::{
-    parser::generate::{
-        gen_bool_string, gen_opt_string,
-        syntax_fragments::*
-    },
+    parser::generate::{gen_bool_string, gen_opt_string, syntax_fragments::*},
     sap_annotations::OptionalAnnotationType,
     sap_semantics::OptionalSemanticType,
 };
@@ -147,7 +144,7 @@ fn line_from(prop_md: SAPAnnotationsPropertyFieldNames, val: Vec<u8>) -> Vec<u8>
         COMMA.to_vec(),
         LINE_FEED.to_vec(),
     ]
-        .concat()
+    .concat()
 }
 
 impl std::fmt::Display for SAPAnnotationsProperty {
@@ -285,7 +282,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
             ),
             CLOSE_CURLY,
         ]
-            .concat();
+        .concat();
 
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }

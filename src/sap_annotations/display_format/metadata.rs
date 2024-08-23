@@ -3,7 +3,7 @@ use super::SAPDisplayFormatProperty;
 use crate::{
     parser::generate::{
         gen_some_value,
-        syntax_fragments::{COLON2, DOUBLE_QUOTE, NONE}
+        syntax_fragments::{COLON2, DOUBLE_QUOTE, NONE},
     },
     sap_annotations::{AnnotationType, OptionalAnnotationType},
 };

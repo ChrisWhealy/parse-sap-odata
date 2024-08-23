@@ -1,11 +1,11 @@
 use super::End;
 use std::fmt::Formatter;
 
+use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY};
 use crate::{
     parser::generate::{gen_opt_string, gen_owned_string},
     utils::to_upper_camel_case,
 };
-use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY};
 
 static MY_NAME: &[u8] = "End".as_bytes();
 

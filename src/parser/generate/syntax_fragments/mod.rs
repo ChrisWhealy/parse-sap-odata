@@ -140,3 +140,4 @@ pub static PATH_TO_SAP_ODATA_PROPERTIES: &[u8] =
     "parse_sap_odata::property::{Property, property_ref::PropertyRef}".as_bytes();
 pub static PATH_TO_SAP_SEMANTICS_PROPERTY: &[u8] =
     "parse_sap_odata::sap_semantics::property::SAPSemanticsProperty".as_bytes();
+pub static PATH_TO_SERDE_SERIALIZE_DESERIALIZE: &[u8] = "serde::{Deserialize, Serialize}".as_bytes();
