@@ -11,11 +11,17 @@ use crate::{
 
 use complex_types::gen_complex_types;
 use entity_types::gen_entity_types;
+use crate::parser::generate::gen_extern_crate;
+use crate::parser::generate::syntax_fragments::{CRATE_CHRONO, CRATE_QUICK_XML, CRATE_RUST_DECIMAL, CRATE_SERDE};
 
 // ---------------------------------------------------------------------------------------------------------------------
 pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     // Start module definition
     let mut out_buffer: Vec<u8> = [
+        &*gen_extern_crate(CRATE_CHRONO),
+        &*gen_extern_crate(CRATE_QUICK_XML),
+        &*gen_extern_crate(CRATE_RUST_DECIMAL),
+        &*gen_extern_crate(CRATE_SERDE),
         &*gen_module_start(odata_srv_name),
         &*gen_use_path(PATH_TO_SERDE_SERIALIZE_DESERIALIZE),
     ]

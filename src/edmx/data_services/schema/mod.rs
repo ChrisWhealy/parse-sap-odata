@@ -1,4 +1,4 @@
-use parse_sap_atom_feed::atom::AtomLink;
+use parse_sap_atom_feed::atom::link::AtomLink;
 use serde::{Deserialize, Serialize};
 
 use association::Association;

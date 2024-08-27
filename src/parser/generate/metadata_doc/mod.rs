@@ -7,6 +7,8 @@ use crate::{
     parser::generate::{syntax_fragments::*, *},
 };
 
+use super::CRATE_PARSE_SAP_ATOM_FEED;
+
 use associations::*;
 use complex_types::*;
 use entity_types::*;
@@ -18,6 +20,7 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
 
     // Start module definition
     let mut out_buffer: Vec<u8> = [
+        &*gen_extern_crate(CRATE_PARSE_SAP_ATOM_FEED),
         &*gen_module_start(&mod_name),
         &*gen_use_path(PATH_TO_SAP_ODATA_PROPERTIES),
         &*gen_use_path(PATH_TO_SAP_ANNOTATIONS_PROPERTY),

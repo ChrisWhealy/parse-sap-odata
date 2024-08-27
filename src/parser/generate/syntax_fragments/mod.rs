@@ -48,6 +48,7 @@ pub static UNIT: &[u8] = "()".as_bytes();
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Keywords
 pub static ENUM: &[u8] = "enum ".as_bytes();
+pub static EXTERN_CRATE: &[u8] = "extern crate ".as_bytes();
 pub static FN: &[u8] = "fn ".as_bytes();
 pub static IMPL: &[u8] = "impl ".as_bytes();
 pub static MOD: &[u8] = "mod ".as_bytes();
@@ -102,6 +103,14 @@ pub static FN_VARIANT_NAME_START: &[u8] = "pub const fn variant_name(&self) -> &
     match *self {
 "
 .as_bytes();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// External crate dependencies
+pub static CRATE_PARSE_SAP_ATOM_FEED: &[u8] = "parse_sap_atom_feed".as_bytes();
+pub static CRATE_CHRONO: &[u8] = "chrono".as_bytes();
+pub static CRATE_QUICK_XML: &[u8] = "quick_xml".as_bytes();
+pub static CRATE_RUST_DECIMAL: &[u8] = "rust_decimal".as_bytes();
+pub static CRATE_SERDE: &[u8] = "serde".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes and paths to used types

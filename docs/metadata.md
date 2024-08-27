@@ -11,8 +11,6 @@ The metadata information for the following entities is parsed, but not yet writt
 
 * `<FunctionImport>`
 * `<NavigationProperty>`
-* `<Association>`
-* `<AssociationSet>` 
 
 ## Metadata for Complex Type `struct`s
 

@@ -27,6 +27,10 @@ pub fn gen_comment_separator_for(something: &str) -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start a module declaration
+pub fn gen_extern_crate(crate_name: &[u8]) -> Vec<u8> {
+    [EXTERN_CRATE, crate_name, SEMI_COLON, LINE_FEED].concat()
+}
+
 pub fn gen_module_start(mod_name: &str) -> Vec<u8> {
     [PUBLIC, MOD, mod_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
 }
