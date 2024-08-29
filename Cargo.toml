@@ -14,16 +14,16 @@ parser = []
 [dev-dependencies]
 chrono = "0.4"
 rust_decimal = { version ="1", features = ["serde-with-str"]}
-#parse-sap-atom-feed = "1.1"
-parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
+parse-sap-atom-feed = "1.1"
+#parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
 
 [dependencies]
 anyhow = "1.0"
 check_keyword = "0.3"
 convert_case = "0.6"
 
-#parse-sap-atom-feed = "1.1"
-parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
+parse-sap-atom-feed = "1.1"
+#parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
 
 quick-xml = { version = "0.36.0", features = ["serialize"] }
 regex = "1.10"
