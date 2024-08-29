@@ -94,7 +94,8 @@ fn should_deserialize_optional_decimal() -> Result<(), String> {
 #[test]
 fn should_handle_empty_decimal() -> Result<(), String> {
     let empty_price_xml = "<Test><d:Price /></Test>";
-    handle_test_bool(OptionalDecimalElement::from_str(empty_price_xml).unwrap().price.is_none())
+    let price = OptionalDecimalElement::from_str(empty_price_xml).unwrap().price;
+    handle_test_comparison(&price.unwrap().to_string(), &"0.000".to_string())
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

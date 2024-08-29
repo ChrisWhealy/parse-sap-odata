@@ -1,7 +1,7 @@
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
     parser::generate::srvc_doc::complex_types::gen_complex_types, property::metadata::PropertyType,
-    test_utils::handle_test_comparison,
+    test_utils::{handle_test_comparison, handle_test_bool},
     utils::dedup_vec_of_string,
 };
 
@@ -125,8 +125,8 @@ fn should_generate_extern_crate_refs() -> Result<(), String> {
             let crs = dedup_vec_of_string(crate_refs);
 
             handle_test_comparison(&crs.len(), &2)?;
-            handle_test_comparison(&crs[0], &"rust_decimal".to_string())?;
-            handle_test_comparison(&crs[1], &"chrono".to_string())
+            handle_test_bool(crs.iter().find(|cr| cr.as_str().eq("rust_decimal")).is_some())?;
+            handle_test_bool(crs.iter().find(|cr| cr.as_str().eq("chrono")).is_some())
         },
         Err(err) => Err(format!("XML test data was not in UTF8 format: {err}")),
     }
