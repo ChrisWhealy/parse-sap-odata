@@ -4,12 +4,15 @@ mod error;
 mod io;
 
 use crate::utils::rust_tools::run_rustfmt;
-use generate::{metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA};
+use generate::{
+    metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA,
+};
 use io::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AsRustSrc {
-    fn to_rust(&self) -> Vec<u8>;
+    type CrateRef;
+    fn to_rust(&self) -> (Vec<u8>, Self::CrateRef);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -24,9 +27,9 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         Err(err) => println!("Error: {}", err.msg),
         Ok(edmx) => {
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                // Generate the source code for the service document module and run it through rustfmt
                 let mod_name = format!("{}.rs", odata_srv_name);
 
+                // Generate the source code for the service document module and run it through rustfmt
                 match run_rustfmt(&gen_srv_doc_module(odata_srv_name, &schema), &mod_name) {
                     Ok(formatted_bytes) => {
                         write_buffer_to_file(&mod_name, formatted_bytes);

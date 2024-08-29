@@ -41,7 +41,7 @@ impl DeriveTraits {
     }
 }
 
-pub fn derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
+pub fn gen_derive_str(traits: Vec<DeriveTraits>) -> Vec<u8> {
     let mut out_buffer = traits.iter().enumerate().fold(DERIVE_START.to_vec(), |mut acc, (idx, d)| {
         acc.append(&mut d.value());
 

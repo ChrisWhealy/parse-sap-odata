@@ -1,7 +1,7 @@
 use check_keyword::CheckKeyword;
 
 use crate::parser::generate::syntax_fragments::{
-    COLON, COMMA, END_BLOCK, LINE_FEED, METADATA, PROPERTY, PUBLIC, RUSTC_ALLOW_DEAD_CODE, SEPARATOR,
+    COLON, COMMA, END_BLOCK, METADATA, PROPERTY, PUBLIC, RUSTC_ALLOW_DEAD_CODE, SEPARATOR,
 };
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
@@ -51,7 +51,7 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
 /// ComplexType -> Rust metadata declaration
 fn gen_metadata_complex_type(ct_name: &str, ct_props: &Vec<Property>) -> Vec<u8> {
     let mut out_buffer: Vec<u8> = ct_props.into_iter().fold(
-        [RUSTC_ALLOW_DEAD_CODE, LINE_FEED, &*gen_start_struct(&ct_name)].concat(),
+        [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(&ct_name)].concat(),
         |mut acc, ct_prop| {
             acc.append(
                 &mut [

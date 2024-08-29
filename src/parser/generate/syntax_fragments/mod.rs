@@ -106,16 +106,17 @@ pub static FN_VARIANT_NAME_START: &[u8] = "pub const fn variant_name(&self) -> &
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External crate dependencies
-pub static CRATE_PARSE_SAP_ATOM_FEED: &[u8] = "parse_sap_atom_feed".as_bytes();
-pub static CRATE_CHRONO: &[u8] = "chrono".as_bytes();
-pub static CRATE_QUICK_XML: &[u8] = "quick_xml".as_bytes();
-pub static CRATE_RUST_DECIMAL: &[u8] = "rust_decimal".as_bytes();
-pub static CRATE_SERDE: &[u8] = "serde".as_bytes();
+pub static CRATE_PARSE_SAP_ATOM_FEED: &str = "parse_sap_atom_feed";
+pub static CRATE_SERDE: &str = "serde";
+pub static CRATE_QUICK_XML: &str = "quick_xml";
+pub static CRATE_CHRONO: &str = "chrono";
+pub static CRATE_RUST_DECIMAL: &str = "rust_decimal";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes and paths to used types
 pub static DERIVE_START: &[u8] = "#[derive(".as_bytes();
-pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]".as_bytes();
+pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]\
+".as_bytes();
 
 /// Paths to used types
 pub fn gen_use_path(path: &[u8]) -> Vec<u8> {

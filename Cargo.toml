@@ -1,6 +1,6 @@
 [package]
 name = "parse-sap-odata"
-version = "1.4.3"
+version = "1.4.4"
 authors = ["Chris Whealy <chris@whealy.com>"]
 edition = "2021"
 description = "Generate a pair of Rust modules from SAP V2 OData metadata"
@@ -12,7 +12,10 @@ license = "MIT"
 parser = []
 
 [dev-dependencies]
+chrono = "0.4"
 rust_decimal = { version ="1", features = ["serde-with-str"]}
+parse-sap-atom-feed = "1.1"
+#parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
 
 [dependencies]
 anyhow = "1.0"

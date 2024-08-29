@@ -14,48 +14,60 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate complex type structs
-pub fn gen_complex_types(cts: &Vec<ComplexType>) -> Vec<u8> {
+pub fn gen_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<String>) {
     let mut ignored_cts: usize = 0;
 
-    cts.into_iter()
-        .enumerate()
-        .fold(gen_comment_separator_for(COMPLEX_TYPES), |mut acc, (idx, ct)| {
+    cts.into_iter().enumerate().fold(
+        // Accumulator's initial value is a comment separator
+        (gen_comment_separator_for(COMPLEX_TYPES), vec![]),
+        |(mut acc_src, mut acc_crate_refs), (idx, ct)| {
             if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                acc.append(&mut SEPARATOR.to_vec());
+                acc_src.append(&mut SEPARATOR.to_vec());
             }
 
-            if let Some(mut ct_src) = gen_complex_type_src(ct) {
-                acc.append(&mut ct_src);
+            if let (Some(mut ct_src), mut crs) = gen_complex_type_src(ct) {
+                acc_crate_refs.append(&mut crs);
+                acc_src.append(&mut ct_src);
             } else {
                 ignored_cts += 1;
             }
 
-            acc
-        })
+            (acc_src, acc_crate_refs)
+        },
+    )
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM Complex Type Instance -> Rust declaration
-fn gen_complex_type_src(ct: &ComplexType) -> Option<Vec<u8>> {
+fn gen_complex_type_src(ct: &ComplexType) -> (Option<Vec<u8>>, Vec<String>) {
     let ct_name = to_upper_camel_case(&ct.name);
 
-    // If the complex type contains only one field and that field's name suffix is a basic Rust type, then the
-    // complex type can be replaced with a single variable of the Rust type.
-    // This happens with SAP complex types such as `CT_String` which just contains a single field called `String`.
+    // If the complex type contains only one field and that field's name suffix is a basic Rust type, then this complex
+    // type can be replaced with a single variable of the corresponding Rust type.
+    // This happens with SAP complex types such as `CT_String` which contains a single field called `String`.
+    // A consequence of this approach is that any SAP annotations that might exist for this "simple" complex type will
+    // not be captured by the corresponding Rust type
     if ct.properties.len() > 1 && !ct_name.is_keyword() {
-        let mut out_buffer: Vec<u8> = gen_deserializable_struct(&ct_name);
+        let mut crate_refs: Vec<String> = vec![];
         let mut props = ct.properties.clone();
-
         props.sort();
-        let _ = props.into_iter().map(|prop| out_buffer.append(&mut prop.to_rust()));
 
-        out_buffer.append(&mut END_BLOCK.to_vec());
+        let mut out_buffer: Vec<u8> = props.into_iter().fold(
+            // The accumulator's initial value is the derive and serde attributes, plus the struct declaration
+            gen_deserializable_struct(&ct_name),
+            |mut acc, prop| {
+                let (mut src, cr) = prop.to_rust();
+                if !cr.is_empty() { crate_refs.push(cr); }
+                acc.append(&mut src);
+                acc
+            },
+        );
 
-        // Implement `from_str` for this struct
-        out_buffer.append(&mut gen_impl_from_str_for(&ct_name));
-        Some(out_buffer)
+        out_buffer.append(&mut [END_BLOCK, &*gen_impl_from_str_for(&ct_name)].concat());
+
+        (Some(out_buffer), crate_refs)
     } else {
-        // This is just a simple type pretending to have a complex
-        None
+        // This is just a simple type with a complex
+        (None, vec![])
     }
 }

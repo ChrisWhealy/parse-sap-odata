@@ -1,10 +1,8 @@
-use std::collections::HashSet;
-
 use crate::{
     edmx::data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
     parser::generate::{syntax_fragments::*, *},
     property::metadata::PropertyType,
-    utils::{odata_name_to_rust_safe_name, to_upper_camel_case},
+    utils::{odata_name_to_rust_safe_name, to_upper_camel_case, dedup_vec_of_u8_array},
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13,35 +11,28 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> V
     let mut used_subtypes: Vec<&[u8]> = vec![];
     let ets: &Vec<EntityType> = &schema.entity_types;
 
-    let mut out_buffer: Vec<u8> =
-        ets.into_iter()
-            .enumerate()
-            .fold(gen_comment_separator_for(ENTITY_TYPES), |mut acc, (idx, entity)| {
-                if idx > 0 {
-                    acc.append(&mut SEPARATOR.to_vec());
-                }
+    let mut out_buffer: Vec<u8> = ets.into_iter().enumerate().fold(
+        // Accumulator's initial value is an EntityType comment separator
+        gen_comment_separator_for(ENTITY_TYPES),
+        |mut acc, (idx, entity)| {
+            if idx > 0 {
+                acc.append(&mut SEPARATOR.to_vec());
+            }
 
-                // Accumulate a list of subtypes used within the SAP Annotations field of each property
-                for prop in &entity.properties {
-                    used_subtypes.append(&mut prop.sap_annotations.used_subtypes());
-                }
+            // Accumulate a list of subtypes used within the SAP Annotations field of each property
+            for prop in &entity.properties {
+                used_subtypes.append(&mut prop.sap_annotations.used_subtypes());
+            }
 
-                acc.append(&mut gen_metadata_entity_type(entity, &skipped_cts));
-                acc.append(&mut gen_metadata_entity_type_impl(entity, &schema.complex_types));
+            acc.append(&mut gen_metadata_entity_type(entity, &skipped_cts));
+            acc.append(&mut gen_metadata_entity_type_impl(entity, &schema.complex_types));
 
-                acc
-            });
-
-    // De-dup the list of used subtypes
-    let unique_subtypes = used_subtypes
-        .clone()
-        .into_iter()
-        .collect::<HashSet<&[u8]>>()
-        .into_iter()
-        .collect::<Vec<&[u8]>>();
+            acc
+        },
+    );
 
     // Add usage declaration(s) for all subtypes across all the SAPAnnotationsProperty instances
-    for subtype in unique_subtypes {
+    for subtype in dedup_vec_of_u8_array(used_subtypes) {
         out_buffer.append(&mut gen_use_path(subtype));
     }
 
@@ -54,7 +45,6 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
     let mut out_buffer: Vec<u8> = [
         RUSTC_ALLOW_DEAD_CODE,
-        LINE_FEED,
         &*gen_start_struct(&struct_name),
         &*gen_struct_field(FIELD_NAME_KEY, &gen_vector_of_type(PROPERTYREF).to_vec()),
     ]
@@ -68,14 +58,14 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
         let prop_name = odata_name_to_rust_safe_name(&prop.odata_name);
 
         match prop.get_property_type() {
-            PropertyType::Edm(_) => {
+            PropertyType::Edm(_, _) => {
                 out_buffer.append(&mut [PUBLIC, prop_name.as_bytes(), COLON, PROPERTY, COMMA, LINE_FEED].concat())
             },
 
             PropertyType::Complex(cmplx_type) => {
-                // Is the current property type really complex or just a simple Rust type?
+                // Is the current property really a complex type or just a wrapper around a basic Rust type?
                 if skipped_cts.contains(&cmplx_type) {
-                    // Its a simple type pretending to be complex, so its metadata is a Property instance
+                    // A basic Rust type's metadata is a Property instance
                     out_buffer.append(&mut [PUBLIC, prop_name.as_bytes(), COLON, PROPERTY, COMMA, LINE_FEED].concat());
                 } else {
                     // This really is a complex type
@@ -129,10 +119,10 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     // One getter function per property
     for mut prop in props {
         let fn_name = format!("{PREFIX_SNAKE_GET}{}", odata_name_to_rust_safe_name(&prop.odata_name)).into_bytes();
-        prop.deserializer_fn = gen_serde_custom_deserializer_attrib(&prop);
+        prop.deserializer_fn = gen_custom_deserializer_info(&prop);
 
         match prop.get_property_type() {
-            PropertyType::Edm(_) => {
+            PropertyType::Edm(_, _) => {
                 out_buffer.append(
                     &mut [
                         &*gen_fn_signature(&fn_name, true, false, None, Some(PROPERTY)),

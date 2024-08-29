@@ -1,7 +1,7 @@
 use crate::parser::generate::gen_start_struct;
 
 use super::{
-    derive_traits::{derive_str, DeriveTraits},
+    derive_traits::{gen_derive_str, DeriveTraits},
     CLOSE_PAREN, CLOSE_SQR, DOUBLE_QUOTE, LINE_FEED,
 };
 
@@ -25,7 +25,7 @@ pub fn gen_decimal_deserializer_ref(is_nullable: bool, scale: Option<u16>) -> St
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn deserialize_with(fn_name: &str) -> Vec<u8> {
+pub fn gen_deserialize_with(fn_name: &str) -> Vec<u8> {
     [
         "#[serde(deserialize_with = ".as_bytes(),
         DOUBLE_QUOTE,
@@ -54,7 +54,7 @@ pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_deserializable_struct(struct_name: &str) -> Vec<u8> {
     [
-        &*derive_str(vec![
+        &*gen_derive_str(vec![
             DeriveTraits::CLONE,
             DeriveTraits::DEBUG,
             DeriveTraits::DEFAULT,

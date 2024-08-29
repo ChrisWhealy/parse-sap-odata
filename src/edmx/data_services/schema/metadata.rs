@@ -11,7 +11,7 @@ impl Schema {
         // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
-        let mut output_enum = derive_str(vec![DeriveTraits::DEBUG]);
+        let mut output_enum = gen_derive_str(vec![DeriveTraits::DEBUG]);
         output_enum.append(&mut gen_enum_start(&upper_camel_entity_types));
 
         // Output the start of the "variant_name" function within the enum implementation

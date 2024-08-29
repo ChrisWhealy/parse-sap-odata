@@ -27,8 +27,8 @@ pub fn gen_comment_separator_for(something: &str) -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start a module declaration
-pub fn gen_extern_crate(crate_name: &[u8]) -> Vec<u8> {
-    [EXTERN_CRATE, crate_name, SEMI_COLON, LINE_FEED].concat()
+pub fn gen_extern_crate(crate_name: &str) -> Vec<u8> {
+    [EXTERN_CRATE, crate_name.as_bytes(), SEMI_COLON, LINE_FEED].concat()
 }
 
 pub fn gen_module_start(mod_name: &str) -> Vec<u8> {
@@ -242,16 +242,18 @@ pub fn gen_opt_string(s_arg: &Option<String>) -> Vec<u8> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Returns possible forward reference to a custom deserializer function in the parse-sap-atom-feed crate
-pub fn gen_serde_custom_deserializer_attrib(prop: &Property) -> String {
-    if let PropertyType::Edm(edm_type) = Property::get_property_type(&prop) {
+pub fn gen_custom_deserializer_info(prop: &Property) -> String {
+    let empty_str = "".to_string();
+
+    if let PropertyType::Edm(edm_type, _) = Property::get_property_type(&prop) {
         if edm_type.eq(EDMX_DATE_TIME) || edm_type.eq(EDMX_DATE_TIME_OFFSET) {
             gen_datetime_deserializer_fn(prop.nullable)
         } else if edm_type.eq(EDMX_DECIMAL) {
             gen_decimal_deserializer_ref(prop.nullable, prop.scale)
         } else {
-            "".to_string()
+            empty_str
         }
     } else {
-        "".to_string()
+        empty_str
     }
 }

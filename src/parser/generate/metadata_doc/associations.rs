@@ -1,7 +1,7 @@
 use crate::{
     edmx::data_services::schema::{association::metadata::normalise_assoc_name, Schema},
     parser::generate::{
-        syntax_fragments::derive_traits::{derive_str, DeriveTraits},
+        syntax_fragments::derive_traits::{gen_derive_str, DeriveTraits},
         *,
     },
     utils::{to_snake_case, to_upper_camel_case},
@@ -24,7 +24,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*gen_comment_separator_for(ASSOCIATIONS),
         &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES),
         LINE_FEED,
-        &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
+        &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
     .concat();
@@ -102,7 +102,7 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS),
         &*gen_use_path(PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET),
         LINE_FEED,
-        &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
+        &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
     .concat();

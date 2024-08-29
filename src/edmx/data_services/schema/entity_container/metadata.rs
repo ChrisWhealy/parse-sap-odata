@@ -13,18 +13,6 @@ impl EntityContainer {
     pub fn to_enum_with_impl(&self) -> Vec<u8> {
         let cont_name_camel = to_upper_camel_case(&self.name);
 
-        // Output the start of an enum for this entity container
-        // #[derive(Copy, Clone, Debug)]↩︎
-        // #[allow(dead_code)]↩︎
-        // pub enum <entity_container_name> {↩︎
-        let mut entities_enum = [
-            &*derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
-            RUSTC_ALLOW_DEAD_CODE,
-            LINE_FEED,
-            &*gen_enum_start(&cont_name_camel),
-        ]
-        .concat();
-
         // Output the start of the "iterator" function within the enum implementation
         //   pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {↩︎
         //       match *self {↩︎
@@ -34,14 +22,32 @@ impl EntityContainer {
         let mut enum_fn_variant_name = gen_enum_impl_fn_variant_name();
 
         // Create entity set enum
-        for ent_set in self.entity_sets.iter() {
-            let ent_set_name_camel = to_upper_camel_case(&ent_set.name);
+        let mut entities_enum = self.entity_sets.iter().fold(
+            // Initial accumulator value is the start of an enum for this entity container
+            // #[derive(Copy, Clone, Debug)]↩︎
+            // #[allow(dead_code)]↩︎
+            // pub enum <entity_container_name> {↩︎
+            [
+                &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
+                RUSTC_ALLOW_DEAD_CODE,
+                &*gen_enum_start(&cont_name_camel),
+            ]
+            .concat(),
+            |mut acc, ent_set| {
+                let ent_set_name_camel = to_upper_camel_case(&ent_set.name);
 
-            // Add variant to enum, iterator, and variant_name functions
-            entities_enum.append(&mut gen_enum_variant(&ent_set_name_camel));
-            enum_fn_variant_name.append(&mut gen_enum_match_arm(&cont_name_camel, &ent_set_name_camel, &ent_set.name));
-            enum_fn_iterator.append(&mut gen_fq_enum_variant(&cont_name_camel, &ent_set_name_camel));
-        }
+                // Add variant to enum, iterator, and variant_name functions
+                acc.append(&mut gen_enum_variant(&ent_set_name_camel));
+                enum_fn_variant_name.append(&mut gen_enum_match_arm(
+                    &cont_name_camel,
+                    &ent_set_name_camel,
+                    &ent_set.name,
+                ));
+                enum_fn_iterator.append(&mut gen_fq_enum_variant(&cont_name_camel, &ent_set_name_camel));
+
+                acc
+            },
+        );
 
         // End enum and function blocks
         entities_enum.append(&mut END_BLOCK.to_vec());
@@ -55,7 +61,6 @@ impl EntityContainer {
             // #[allow(dead_code)]↩︎
             // impl <entity_container_name> {↩︎
             RUSTC_ALLOW_DEAD_CODE,
-            LINE_FEED,
             &*gen_impl_start_for(&cont_name_camel),
             &*enum_fn_iterator,
             &*enum_fn_variant_name,

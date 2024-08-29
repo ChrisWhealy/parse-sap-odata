@@ -5,7 +5,7 @@ use crate::{
         generate::{
             gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
             gen_struct_field, gen_vector_of_type,
-            syntax_fragments::serde_fragments::{deserialize_with, gen_serde_rename},
+            syntax_fragments::serde_fragments::{gen_deserialize_with, gen_serde_rename},
             syntax_fragments::*,
         },
         AsRustSrc,
@@ -20,13 +20,30 @@ static MY_NAME: &[u8] = "Property".as_bytes();
 /// Property type flags
 ///
 /// A `<Property>` within an `<EntityType>` can be one of three types:
-/// * **`PropertyType::Edm()`**<br>An entity data model type such as `String`, `DateTime`, `Decimal` etc
-/// * **`PropertyType::Complex()`**<br>A Complex Type defined within the Schema's namespace containing multiple fields
-/// * **`PropertyType::Unqualified`**<br>The type name is missing its namespace qualifier.  Need to decide if this is an error condition
+/// * **`PropertyType::Edm(String, String)`**
+///
+///    An entity data model type such as `String`, `DateTime` or `Decimal` followed by a possible external crate reference
+/// * **`PropertyType::Complex(String)`**
+///
+///   A Complex Type defined within the Schema's namespace containing multiple fields
+/// * **`PropertyType::Unqualified`**
+///
+///    The type name is missing its namespace qualifier.  Need to decide if this is an error condition
+#[derive(Clone, Debug, PartialEq)]
 pub enum PropertyType {
-    Edm(String),
+    Edm(String, String),
     Complex(String),
     Unqualified,
+}
+
+impl std::fmt::Display for PropertyType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            PropertyType::Edm(t, cr) => write!(f, "Edm({t}, {cr})"),
+            PropertyType::Complex(ct) => write!(f, "Complex({ct})"),
+            PropertyType::Unqualified => write!(f, "Unqualified")
+        }
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,7 +98,13 @@ impl Property {
         // The type name should contain exactly two parts
         if type_name_parts.len() == 2 {
             if type_name_parts[0].eq("Edm") {
-                PropertyType::Edm(type_name_parts[1].to_owned())
+                let crate_ref = match type_name_parts[1] {
+                    "DateTime" | "DateTimeOffset" => CRATE_CHRONO.to_string(),
+                    "Decimal" => CRATE_RUST_DECIMAL.to_string(),
+                    _ => "".to_string()
+                };
+
+                PropertyType::Edm(type_name_parts[1].to_owned(), crate_ref)
             } else {
                 PropertyType::Complex(type_name_parts[1].to_owned())
             }
@@ -121,7 +144,7 @@ impl std::fmt::Display for Property {
             &*line_from(PropertyFieldNames::DeserializerFn, gen_owned_string(&self.deserializer_fn)),
             CLOSE_CURLY,
         ]
-        .concat();
+            .concat();
 
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }
@@ -131,11 +154,14 @@ impl std::fmt::Display for Property {
 /// Service Document Module Generation
 /// Generate the source code that declares an instance of the runtime data stored in this Property
 impl AsRustSrc for Property {
-    fn to_rust(&self) -> Vec<u8> {
+    type CrateRef = String;
+
+    fn to_rust(&self) -> (Vec<u8>, Self::CrateRef) {
         let mut out_buffer: Vec<u8> = Vec::new();
+        let mut crate_ref: Self::CrateRef = "".to_string();
 
         let resolved_prop_type: Vec<u8> = match Self::get_property_type(&self) {
-            PropertyType::Edm(edm_type) => {
+            PropertyType::Edm(edm_type, cr) => {
                 // Since the field names coming out of SAP do not always use strict PascalCase formatting.
                 // The abbreviation "ID" is often used when you would expect "Id"
                 // E.G. SAP outputs a field called "BusinessPartnerID" when you would expect "BusinessPartnerId"
@@ -146,18 +172,24 @@ impl AsRustSrc for Property {
 
                 // Output the serde attribute for a custom deserializer
                 if !self.deserializer_fn.is_empty() {
-                    out_buffer.append(&mut deserialize_with(&self.deserializer_fn))
+                    out_buffer.append(&mut gen_deserialize_with(&self.deserializer_fn))
                 }
 
-                // Convert EDM type to Rust type
+                // Generate source code for Rust type
                 match edm_type.as_str() {
                     "Binary" => self.maybe_optional(&*gen_vector_of_type(U8)),
                     "Boolean" => self.maybe_optional(BOOLEAN),
                     "Byte" => U8.to_vec(),
-                    "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
+                    "DateTime" | "DateTimeOffset" => {
+                        crate_ref = cr;
+                        self.maybe_optional(NAIVE_DATE_TIME)
+                    },
                     // Edm.Decimal converts to a rust_decimal::Decimal but also needs a custom deserializer in order to
                     // account for the Scale attribute
-                    "Decimal" => self.maybe_optional(RUST_DECIMAL),
+                    "Decimal" => {
+                        crate_ref = cr;
+                        self.maybe_optional(RUST_DECIMAL)
+                    }
                     "Double" => F64.to_vec(),
                     "Guid" => UUID.to_vec(),
                     "Int16" => self.maybe_optional(I16),
@@ -186,6 +218,6 @@ impl AsRustSrc for Property {
             &resolved_prop_type,
         ));
 
-        out_buffer
+        (out_buffer, crate_ref)
     }
 }

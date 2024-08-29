@@ -1,7 +1,7 @@
 #[cfg(feature = "parser")]
 pub mod rust_tools;
 
-use std::str::FromStr;
+use std::{collections::HashSet, str::FromStr};
 
 use check_keyword::CheckKeyword;
 use convert_case::{Case, Casing};
@@ -48,4 +48,23 @@ pub fn to_snake_case(odata_name: &str) -> String {
 
 pub fn odata_name_to_rust_safe_name(odata_name: &str) -> String {
     CheckKeyword::into_safe(to_snake_case(odata_name))
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn dedup_vec_of_string(str_vec: Vec<String>) -> Vec<String> {
+    str_vec
+        .clone()
+        .into_iter()
+        .collect::<HashSet<String>>()
+        .into_iter()
+        .collect::<Vec<String>>()
+}
+
+pub fn dedup_vec_of_u8_array(u8_vec: Vec<&[u8]>) -> Vec<&[u8]> {
+    u8_vec
+        .clone()
+        .into_iter()
+        .collect::<HashSet<&[u8]>>()
+        .into_iter()
+        .collect::<Vec<&[u8]>>()
 }

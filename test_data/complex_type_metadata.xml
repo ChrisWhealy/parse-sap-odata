@@ -1,0 +1,9 @@
+<ComplexType Name="CT_Pallet">
+    <Property Name="MaxWeight" Type="Edm.Decimal" Precision="12" Scale="2" sap:label="Max. Weight"/>
+    <Property Name="Width" Type="Edm.Decimal" Precision="12" Scale="2" sap:label="Width"/>
+    <Property Name="Depth" Type="Edm.Decimal" Precision="12" Scale="2" sap:label="Depth"/>
+    <Property Name="Height" Type="Edm.Decimal" Precision="12" Scale="2" sap:label="Height"/>
+    <Property Name="ShippingID" Type="Edm.String" MaxLength="15" sap:label="Shipping ID"/>
+    <Property Name="LoadedAt" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Loaded At (Date/Time)"
+              sap:creatable="false" sap:updatable="false"/>
+</ComplexType>
