@@ -1,10 +1,11 @@
 [package]
 name = "parse-sap-odata"
-version = "1.4.6"
+version = "1.4.7"
 authors = ["Chris Whealy <chris@whealy.com>"]
 edition = "2021"
 description = "Generate a pair of Rust modules from SAP V2 OData metadata"
 keywords = ["odata", "sap", "parser", "opendata"]
+categories = ["development-tools::build-utils", "parser-implementations"]
 repository = "https://github.com/ChrisWhealy/parse-sap-odata"
 license = "MIT"
 
@@ -25,7 +26,7 @@ convert_case = "0.6"
 parse-sap-atom-feed = "1.2"
 #parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
 
-quick-xml = { version = "0.36.0", features = ["serialize"] }
+quick-xml = { version = "0.36", features = ["serialize"] }
 regex = "1.10"
 serde = { version = "1.0", features = ["derive"] }
 which = "6.0"
