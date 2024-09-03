@@ -2,7 +2,7 @@
 
 In the event an Entity Type definition uses a complex type, then the complex type is first created as a Rust `struct`.
 
-The naming convention for a complex type is the Schema namespace followed by a dot `.` then complex type name to the prefix `CT_` has been added.
+The naming convention for a complex type is the Schema namespace followed by a dot `.` then the complex type name to which the prefix `CT_` has been added.
 
 E.G. In the `BusinessPartner` entity type, the `Address` property is the complex type `GWSAMPLE_BASIC.CT_Address`.
 
