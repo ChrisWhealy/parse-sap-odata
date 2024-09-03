@@ -59,7 +59,7 @@ pub struct BusinessPartner {
 
 ## OData "Simple" Complex Types
 
-The metadata for the `GWSAMPLE_BASIC` OData service contains the following complex type:
+The metadata for the `GWSAMPLE_BASIC` OData service also contains the following complex type:
 
 ```xml
 <ComplexType Name="CT_String">
@@ -67,7 +67,7 @@ The metadata for the `GWSAMPLE_BASIC` OData service contains the following compl
 </ComplexType>
 ```
 
-This particular type turns out not to be complex at all because it contains a single field whose Entity Data Model `Edm.String` type is equivalent to a standard Rust `String`.
-In such cases, it would be redundant to create an entire Rust `struct` for a single field.
+This particular type turns out not to be complex at all because it contains a single field of type `Edm.String`.
+Since this is directly equivalent to a standard Rust `String`, it would be redundant to wrap a single Rust `String` inside a `struct`.
 
-Therefore, these "simple" complex types are ignored, and the corresponding `<EntityType>` field is declared simply as the standard Rust type.
+Therefore, these "simple" complex types are ignored, and the corresponding `<EntityType>` field is declared simply as the equivalent Rust type.
