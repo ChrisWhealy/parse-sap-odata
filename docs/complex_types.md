@@ -2,8 +2,6 @@
 
 In the event an Entity Type definition uses a complex type, then the complex type is first created as a Rust `struct`.
 
-Entity Type `struct`s are then declared in which each field is either the Rust equivalent of the Entity Data Model type, or some complex type declared early.
-
 The naming convention for a complex type is the Schema namespace followed by a dot `.` then complex type name to the prefix `CT_` has been added.
 
 E.G. In the `BusinessPartner` entity type, the `Address` property is the complex type `GWSAMPLE_BASIC.CT_Address`.
