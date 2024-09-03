@@ -41,7 +41,7 @@ impl std::fmt::Display for PropertyType {
         match self {
             PropertyType::Edm(t, cr) => write!(f, "Edm({t}, {cr})"),
             PropertyType::Complex(ct) => write!(f, "Complex({ct})"),
-            PropertyType::Unqualified => write!(f, "Unqualified")
+            PropertyType::Unqualified => write!(f, "Unqualified"),
         }
     }
 }
@@ -101,7 +101,8 @@ impl Property {
                 let crate_ref = match type_name_parts[1] {
                     "DateTime" | "DateTimeOffset" => CRATE_CHRONO.to_string(),
                     "Decimal" => CRATE_RUST_DECIMAL.to_string(),
-                    _ => "".to_string()
+                    "Guid" => CRATE_GUID.to_string(),
+                    _ => "".to_string(),
                 };
 
                 PropertyType::Edm(type_name_parts[1].to_owned(), crate_ref)
@@ -144,7 +145,7 @@ impl std::fmt::Display for Property {
             &*line_from(PropertyFieldNames::DeserializerFn, gen_owned_string(&self.deserializer_fn)),
             CLOSE_CURLY,
         ]
-            .concat();
+        .concat();
 
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }
@@ -158,14 +159,14 @@ impl AsRustSrc for Property {
 
     fn to_rust(&self) -> (Vec<u8>, Self::CrateRef) {
         let mut out_buffer: Vec<u8> = Vec::new();
-        let mut crate_ref: Self::CrateRef = "".to_string();
 
-        let resolved_prop_type: Vec<u8> = match Self::get_property_type(&self) {
-            PropertyType::Edm(edm_type, cr) => {
-                // Since the field names coming out of SAP do not always use strict PascalCase formatting.
-                // The abbreviation "ID" is often used when you would expect "Id"
-                // E.G. SAP outputs a field called "BusinessPartnerID" when you would expect "BusinessPartnerId"
+        let (resolved_prop_type, crate_ref) = match Self::get_property_type(&self) {
+            PropertyType::Edm(edm_type, crate_ref) => {
                 // It is assumed that the OData field name always starts with a capital letter
+                //
+                // WARNING: Field names coming out of SAP do not always use strict PascalCase formatting.
+                // For example, you will often see field names containing the abbreviation "ID" when you would expect
+                // "Id" as in "BusinessPartnerID" instead of "BusinessPartnerId"
                 if !to_pascal_case(&self.odata_name).eq(&self.odata_name) {
                     out_buffer.append(&mut gen_serde_rename(&self.odata_name))
                 }
@@ -176,20 +177,12 @@ impl AsRustSrc for Property {
                 }
 
                 // Generate source code for Rust type
-                match edm_type.as_str() {
+                let src = match edm_type.as_str() {
                     "Binary" => self.maybe_optional(&*gen_vector_of_type(U8)),
                     "Boolean" => self.maybe_optional(BOOLEAN),
                     "Byte" => U8.to_vec(),
-                    "DateTime" | "DateTimeOffset" => {
-                        crate_ref = cr;
-                        self.maybe_optional(NAIVE_DATE_TIME)
-                    },
-                    // Edm.Decimal converts to a rust_decimal::Decimal but also needs a custom deserializer in order to
-                    // account for the Scale attribute
-                    "Decimal" => {
-                        crate_ref = cr;
-                        self.maybe_optional(RUST_DECIMAL)
-                    }
+                    "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
+                    "Decimal" => self.maybe_optional(RUST_DECIMAL),
                     "Double" => F64.to_vec(),
                     "Guid" => UUID.to_vec(),
                     "Int16" => self.maybe_optional(I16),
@@ -203,14 +196,16 @@ impl AsRustSrc for Property {
 
                     // Use String as the catch-all case
                     _ => self.maybe_optional(STRING),
-                }
+                };
+
+                (src, crate_ref)
             },
 
-            PropertyType::Complex(cmplx_type) => to_upper_camel_case(&cmplx_type).into_bytes(),
+            PropertyType::Complex(cmplx_type) => (to_upper_camel_case(&cmplx_type).into_bytes(), "".to_string()),
 
             // TODO Need to decide what to do with an unqualified property type
             // Simply writing it out in the hope that the source code compiles is probably not a good idea...
-            PropertyType::Unqualified => self.edm_type.clone().into_bytes(),
+            PropertyType::Unqualified => (self.edm_type.clone().into_bytes(), "".to_string()),
         };
 
         out_buffer.append(&mut gen_struct_field(

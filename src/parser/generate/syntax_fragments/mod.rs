@@ -111,6 +111,7 @@ pub static CRATE_SERDE: &str = "serde";
 pub static CRATE_QUICK_XML: &str = "quick_xml";
 pub static CRATE_CHRONO: &str = "chrono";
 pub static CRATE_RUST_DECIMAL: &str = "rust_decimal";
+pub static CRATE_GUID: &str = "uuid";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Compiler attributes and paths to used types
