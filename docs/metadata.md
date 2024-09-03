@@ -1,7 +1,7 @@
 # Metadata Module
 
 Most of the metadata captured from the OData `$metadata` HTTP request is output to a separate module.
-That is, all Schema `<EntityType>` and `<ComplexType>` entities are transformed to Rust `struct`s and `enum`s.
+That is, all `<EntityType>` and `<ComplexType>` entities are transformed to Rust `struct`s and `enum`s.
 
 The metadata information for the following entities is parsed, but not yet written to the generated metadata module:
 
