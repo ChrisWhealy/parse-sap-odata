@@ -1,9 +1,5 @@
 # Metadata Module
 
-> ***CAVEAT***<br>
-> Since Rust does not allow for the dynamic allocation of types at runtime, it remains to be seen how useful this `Association` and `AssociationSet` information is in practice.
-
-
 Most of the metadata captured from the OData `$metadata` HTTP request is output to a separate module.
 That is, all Schema `<EntityType>` and `<ComplexType>` entities are transformed to Rust `struct`s and `enum`s.
 
