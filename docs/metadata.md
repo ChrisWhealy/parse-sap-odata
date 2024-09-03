@@ -25,7 +25,7 @@ E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for the complex type `CT_
 </ComplexType>
 ```
 
-This is then translated to Rust `struct` whose name ends with `Metadata`:
+This is then translated to a Rust `struct` whose name ends with `Metadata`:
  
 ```rust   
 pub struct CtAddressMetadata {
@@ -38,12 +38,12 @@ pub struct CtAddressMetadata {
 }
 ```
     
-All fields within a complex type metadata `struct` are of type `Property`.
+All fields within a complex type metadata `struct` are of type `parse_sap_odata::property::Property`.
 
     
 ## Metadata for Entity Type `struct`s
 
-One or more `struct`s are created for each metadata `<EntityType>`.
+One or more `struct`s are created for each `<EntityType>` listed in the metadata.
 
 E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for `BusinessPartner` is the following:
 
@@ -70,7 +70,7 @@ E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for `BusinessPartner` is 
 </EntityType>
 ```
 
-This is translated into the following Rust `struct`:
+This XML is transformed into the following Rust `struct`:
 
 ```rust
 pub struct BusinessPartnerMetadata {
@@ -92,7 +92,7 @@ pub struct BusinessPartnerMetadata {
 
 All `<EntityType>` metadata `struct`s have an additional `key` field of type `Vec<PropertyRef>`
     
-The fields in this `struct` will only ever be of type `Property` or of a previously declared complex type `struct`.
+All fields in a metadata `struct` will either be of type `Property` or of a previously declared complex type `struct`.
 
 ## Implementation of Metadata Entity Type `struct`s
 

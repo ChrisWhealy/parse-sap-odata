@@ -2,9 +2,11 @@
 
 In the event an Entity Type definition uses a complex type, then the complex type is first created as a Rust `struct`.
 
-Entity Type `struct`s are then declared in which each field is either the Rust type equivalent to the Entity Data Model type, or some complex type declared early.
+Entity Type `struct`s are then declared in which each field is either the Rust equivalent of the Entity Data Model type, or some complex type declared early.
 
-An example of this is the `Address` property in the `BusinessPartner` Entity Type.
+The naming convention for a complex type is the Schema namespace followed by a dot `.` then complex type name to the prefix `CT_` has been added.
+
+E.G. In the `BusinessPartner` entity type, the `Address` property is the complex type `GWSAMPLE_BASIC.CT_Address`.
 
 ```xml
 <EntityType Name="BusinessPartner" sap:content-version="1">
@@ -17,9 +19,6 @@ An example of this is the `Address` property in the `BusinessPartner` Entity Typ
 
 </EntityType>
 ```
-
-The type name of the `Address` `<Property>` is the Schema namespace, followed by the complex type name.  
-E.G `GWSAMPLE_BASIC.CT_Address`.
 
 This refers to the `<ComplexType>` definition:
 
@@ -34,7 +33,7 @@ This refers to the `<ComplexType>` definition:
 </ComplexType>
 ```
 
-So the above XML definition is translated into the following Rust `struct`:
+So the above XML complex type definition is transformed into the following Rust `struct`:
 
 ```rust
 #[derive(Clone, Debug, Default)]
