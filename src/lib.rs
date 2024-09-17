@@ -1,4 +1,5 @@
 pub mod edmx;
+pub mod macros;
 pub mod oasis;
 pub mod property;
 pub mod sap_annotations;

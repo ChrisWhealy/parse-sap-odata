@@ -51,9 +51,9 @@ This crate contains the functionality to build two Rust modules from the metadat
 1. In the source code of your application, use the `include!()` and `env!()` macros to pull in the generated modules, then bring them into scope with a `use` command:
 
    ```rust
-   // Include the generated code
-   include!(concat!(env!("OUT_DIR"), "/gwsample_basic.rs"));
-   include!(concat!(env!("OUT_DIR"), "/gwsample_basic_metadata.rs"));
+   // Include the generated modules
+   parse_sap_odata::include_mod!("gwsample_basic");
+   parse_sap_odata::include_mod!("gwsample_basic_metadata");
 
    use gwsample_basic::*;
    use gwsample_basic_metadata::*;
