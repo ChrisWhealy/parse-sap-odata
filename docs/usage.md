@@ -48,7 +48,7 @@ This crate contains the functionality to build two Rust modules from the metadat
    parse-sap-atom-feed = "1.1"
    ```
 
-1. In the source code of your application, use the `include!()` and `env!()` macros to pull in the generated modules, then bring them into scope with a `use` command:
+1. In the source code of your application, use the `include_mod!()` macro to bring the generated modules into scope:
 
    ```rust
    // Include the generated modules
