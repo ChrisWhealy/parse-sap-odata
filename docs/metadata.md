@@ -29,7 +29,7 @@ E.G. In the demo service `GWSAMPLE_BASIC`, the metadata XML for the complex type
 </ComplexType>
 ```
 
-This upper snake-case name used in the XML is translated to a Rust `struct` with the suffix `Metadata`:
+This upper snake-case name used in the XML is translated to a Rust `struct` name with the suffix `Metadata`:
  
 ```rust   
 pub struct CtAddressMetadata {
