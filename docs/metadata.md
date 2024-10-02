@@ -1,9 +1,13 @@
 # Metadata Module
 
-Most of the metadata captured from the OData `$metadata` HTTP request is output to a separate module.
-That is, all `<EntityType>` and `<ComplexType>` entities are transformed to Rust `struct`s and `enum`s.
+The entire metadata document is parsed, but only the following entities are transformed into Rust source code and written to the generated metadata module:
 
-The metadata information for the following entities is parsed, but not yet written to the generated metadata module:
+* `<EntityType>`
+* `<ComplexType>`
+* `<Association>`
+* `<AssociationSet>`
+
+The following entities are not transformed into Rust source code:
 
 * `<FunctionImport>`
 * `<NavigationProperty>`
@@ -12,7 +16,7 @@ The metadata information for the following entities is parsed, but not yet writt
 
 For each metadata `<ComplexType>` containing more than one `<Property>`, a corresponding metadata `struct` is created.
 
-E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for the complex type `CT_Address`is:
+E.G. In the demo service `GWSAMPLE_BASIC`, the metadata XML for the complex type `CT_Address` is:
 
 ```xml
 <ComplexType Name="CT_Address">
@@ -25,7 +29,7 @@ E.G. In the `GWSAMPLE_BASIC` service, the metadata XML for the complex type `CT_
 </ComplexType>
 ```
 
-This is then translated to a Rust `struct` whose name ends with `Metadata`:
+This upper snake-case name used in the XML is translated to a Rust `struct` with the suffix `Metadata`:
  
 ```rust   
 pub struct CtAddressMetadata {
@@ -38,8 +42,7 @@ pub struct CtAddressMetadata {
 }
 ```
     
-All fields within a complex type metadata `struct` are of type `parse_sap_odata::property::Property`.
-
+All fields within a metadata complex type `struct` are of type `parse_sap_odata::property::Property`.
     
 ## Metadata for Entity Type `struct`s
 
@@ -99,7 +102,7 @@ All fields in a metadata `struct` will either be of type `Property` or of a prev
 Each metadata `struct` for an `<EntityType>` has an implementation containing a getter function for the `key` and a getter function for each `struct` field.
 
 * The `get_key()` function returns a vector of `PropertyRef`
-* The field getter functions return either an instance of a `Property` or an instance of `ComplexType`.
+* The field getter functions return either an instance of a `Property` or an instance of some `ComplexType`.
 
 E.G. The implementation of the `BusinessPartnerMetadata` `struct` shown above starts as follows:
 
