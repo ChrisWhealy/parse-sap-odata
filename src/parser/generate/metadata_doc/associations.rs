@@ -54,7 +54,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         }
 
         let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant_name).as_bytes()].concat();
-        association_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(fn_name, ASSOCIATION, assoc));
+        association_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(&*fn_name, ASSOCIATION, assoc));
     }
 
     // End Association enum block and function blocks
@@ -130,7 +130,7 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         }
 
         association_sets_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(
-            to_snake_case(&enum_variant).into_bytes(),
+            &*to_snake_case(&enum_variant).into_bytes(),
             ASSOCIATION_SET,
             assoc_set,
         ));

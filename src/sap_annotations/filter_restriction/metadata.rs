@@ -28,7 +28,7 @@ impl OptionalAnnotationType for Option<SAPFilterRestrictionProperty> {
     fn opt_anno_type<T: AnnotationType>(&self, opt_self: &Option<T>) -> Vec<u8> {
         if let Some(anno_type) = opt_self {
             let fq_name = [DOUBLE_QUOTE, MY_NAME, COLON2, &*anno_type.member_name(), DOUBLE_QUOTE].concat();
-            gen_some_value(fq_name)
+            gen_some_value(&fq_name)
         } else {
             NONE.to_vec()
         }

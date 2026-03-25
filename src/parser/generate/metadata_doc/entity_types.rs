@@ -43,10 +43,11 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> V
 /// EDM EntityType -> Rust metadata instance
 fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> Vec<u8> {
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
+    let key_type = gen_vector_of_type(PROPERTYREF);
     let mut out_buffer: Vec<u8> = [
         RUSTC_ALLOW_DEAD_CODE,
         &*gen_start_struct(&struct_name),
-        &*gen_struct_field(FIELD_NAME_KEY, &gen_vector_of_type(PROPERTYREF).to_vec()),
+        &*gen_struct_field(FIELD_NAME_KEY, &key_type),
     ]
     .concat();
 

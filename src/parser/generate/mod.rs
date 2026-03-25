@@ -42,7 +42,7 @@ pub fn gen_start_struct(struct_name: &str) -> Vec<u8> {
     [START_PUB_STRUCT, struct_name.as_bytes(), OPEN_CURLY, LINE_FEED].concat()
 }
 
-pub fn gen_struct_field(field_name: &str, rust_type: &Vec<u8>) -> Vec<u8> {
+pub fn gen_struct_field(field_name: &str, rust_type: &[u8]) -> Vec<u8> {
     [PUBLIC, field_name.as_bytes(), COLON, rust_type, COMMA, LINE_FEED].concat()
 }
 
@@ -61,44 +61,38 @@ pub fn gen_impl_start_for(some_name: &str) -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate function signature
 pub fn gen_fn_signature(
-    fn_name: &Vec<u8>,
+    fn_name: &[u8],
     is_pub: bool,
     is_const: bool,
-    arg_list: Option<Vec<&[u8]>>,
+    arg_list: Option<&[&[u8]]>,
     return_type: Option<&[u8]>,
 ) -> Vec<u8> {
     let public = if is_pub { PUBLIC } else { &[] };
     let constant = if is_const { CONST } else { &[] };
 
-    let args = if let Some(args) = arg_list {
-        if args.len() > 1 {
-            args.iter()
-                .map(|arg| format!("{},", String::from_utf8((*arg).to_vec()).unwrap()))
-                .collect::<String>()
-        } else {
-            format!("{},", String::from_utf8(args[0].to_vec()).unwrap())
+    let mut out = Vec::new();
+
+    out.extend_from_slice(public);
+    out.extend_from_slice(constant);
+    out.extend_from_slice(FN);
+    out.extend_from_slice(fn_name);
+    out.extend_from_slice(OPEN_PAREN);
+
+    if let Some(args) = arg_list {
+        for arg in args {
+            out.extend_from_slice(arg);
+            out.extend_from_slice(COMMA);
         }
-    } else {
-        String::from("")
-    };
+    }
 
-    let ret_type = if let Some(ret_type) = return_type {
-        &*[THIN_ARROW, ret_type].concat()
-    } else {
-        &[]
-    };
+    out.extend_from_slice(CLOSE_PAREN);
 
-    [
-        public,
-        constant,
-        FN,
-        fn_name,
-        OPEN_PAREN,
-        args.as_bytes(),
-        CLOSE_PAREN,
-        ret_type,
-    ]
-    .concat()
+    if let Some(ret_type) = return_type {
+        out.extend_from_slice(THIN_ARROW);
+        out.extend_from_slice(ret_type);
+    }
+
+    out
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,11 +102,11 @@ pub fn gen_fn_signature(
 pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
     [
         &*gen_fn_signature(
-            &FN_NAME_VARIANT_NAME.to_vec(),
+            &FN_NAME_VARIANT_NAME,
             true,
             true,
-            Some(vec![&SELF_REF.to_vec()]),
-            Some(&STATIC_STR_REF.to_vec()),
+            Some(&[SELF_REF]),
+            Some(STATIC_STR_REF),
         ),
         OPEN_CURLY,
         LINE_FEED,
@@ -126,19 +120,19 @@ pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate a function that returns an instance of some type
 pub fn gen_pub_getter_fn_of_type<T: std::fmt::Display>(
-    fn_name: Vec<u8>,
+    fn_name: &[u8],
     return_type: &'static str,
     some_type: T,
 ) -> Vec<u8> {
     [
-        &*gen_fn_signature(&fn_name, true, false, None, Some(return_type.as_bytes())),
+        &*gen_fn_signature(fn_name, true, false, None, Some(return_type.as_bytes())),
         OPEN_CURLY,
         LINE_FEED,
         format!("{some_type}").as_bytes(),
         END_BLOCK,
         LINE_FEED,
     ]
-    .concat()
+        .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -222,19 +216,21 @@ pub fn gen_bool_string(b: bool) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_some_value(val: Vec<u8>) -> Vec<u8> {
+pub fn gen_some_value(val: &[u8]) -> Vec<u8> {
     [SOME, OPEN_PAREN, &*val, CLOSE_PAREN].concat()
 }
 pub fn gen_opt_u16_string(int_arg: Option<u16>) -> Vec<u8> {
     if let Some(int) = int_arg {
-        gen_some_value(int.to_string().into_bytes())
+        let s = int.to_string();
+        gen_some_value(s.as_bytes())
     } else {
         NONE.to_vec()
     }
 }
 pub fn gen_opt_string(s_arg: &Option<String>) -> Vec<u8> {
     if let Some(s) = s_arg {
-        gen_some_value(gen_owned_string(s))
+        let owned = gen_owned_string(s);
+        gen_some_value(&owned)
     } else {
         NONE.to_vec()
     }
