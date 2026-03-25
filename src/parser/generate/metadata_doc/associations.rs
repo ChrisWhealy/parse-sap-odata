@@ -27,7 +27,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
-    .concat();
+        .concat();
 
     // Start block containing Association impl functions related to enum iterator
     let mut association_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -38,7 +38,8 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
     // Start block containing Association impl getter functions
     let mut association_impl_getter_fns: Vec<u8> = Vec::new();
 
-    let mut assocs = schema.associations.clone();
+    // Sort references, not owned Association values
+    let mut assocs: Vec<_> = schema.associations.iter().collect();
     assocs.sort();
 
     for (idx, assoc) in assocs.into_iter().enumerate() {
@@ -47,14 +48,24 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
 
         association_enum.append(&mut gen_enum_variant(&enum_variant_name));
         association_impl_iter_fn.append(&mut gen_fq_enum_variant(enum_name, &enum_variant_name));
-        association_impl_variant_name_fn.append(&mut gen_enum_match_arm(&enum_name, &enum_variant_name, &assoc.name));
+        association_impl_variant_name_fn.append(&mut gen_enum_match_arm(
+            &enum_name,
+            &enum_variant_name,
+            &assoc.name,
+        ));
 
         if idx > 0 {
             association_impl_getter_fns.append(&mut SEPARATOR.to_vec());
         }
 
-        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant_name).as_bytes()].concat();
-        association_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(&*fn_name, ASSOCIATION, assoc));
+        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant_name).as_bytes()]
+            .concat();
+
+        association_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(
+            &fn_name,
+            ASSOCIATION,
+            assoc,
+        ));
     }
 
     // End Association enum block and function blocks
@@ -65,7 +76,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
     [
         &*association_enum,
         // Output the start of an enum implementation
-        // impl <schema_name>Associations {↩︎
+        // impl Associations {
         &*gen_impl_start_for(enum_name),
         &*association_impl_iter_fn,
         &*association_impl_variant_name_fn,
@@ -74,7 +85,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*association_impl_getter_fns,
         END_BLOCK,
     ]
-    .concat()
+        .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

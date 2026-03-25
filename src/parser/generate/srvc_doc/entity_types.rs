@@ -36,18 +36,21 @@ pub fn gen_entity_types(ets: &Vec<EntityType>) -> (Vec<u8>, Vec<String>) {
 fn gen_entity_type(entity: &EntityType) -> (Vec<u8>, Vec<String>) {
     let struct_name = to_upper_camel_case(&entity.name);
     let mut crate_refs: Vec<String> = vec![];
-    let mut props = entity.properties.clone();
+    let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
 
     let mut out_buffer: Vec<u8> = props.into_iter().fold(
         // Accumulator's initial value is the derive and serde attributes plus the struct declaration
         gen_deserializable_struct(&struct_name),
-        |mut acc, mut prop| {
+        |mut acc, prop| {
+            let mut prop = prop.clone();
             prop.deserializer_fn = gen_custom_deserializer_info(&prop);
+
             let (mut prop_src, cr) = prop.to_rust();
             if !cr.is_empty() {
                 crate_refs.push(cr)
             }
+
             acc.append(&mut prop_src);
             acc
         },
@@ -55,5 +58,6 @@ fn gen_entity_type(entity: &EntityType) -> (Vec<u8>, Vec<String>) {
 
     // End the struct declaration then generate from_str implementation
     out_buffer.append(&mut [END_BLOCK, &*gen_impl_from_str_for(&struct_name)].concat());
+
     (out_buffer, crate_refs)
 }

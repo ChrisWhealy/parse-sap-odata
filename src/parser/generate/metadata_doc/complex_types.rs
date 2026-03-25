@@ -15,6 +15,7 @@ use crate::{
 pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<String>) {
     let mut skipped_cts: Vec<String> = vec![];
     let mut ignored_cts: usize = 0;
+
     let out_buffer: Vec<u8> =
         cts.into_iter()
             .enumerate()
@@ -31,7 +32,7 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
 
                 if ct.properties.len() > 1 && !ct_name.is_keyword() {
                     let ct_name = format!("{}{}", to_upper_camel_case(&ct.name), METADATA);
-                    let mut ct_props = ct.properties.clone();
+                    let mut ct_props: Vec<_> = ct.properties.iter().collect();
                     ct_props.sort();
 
                     acc.append(&mut gen_metadata_complex_type(&ct_name, &ct_props));
@@ -49,7 +50,7 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// ComplexType -> Rust metadata declaration
-fn gen_metadata_complex_type(ct_name: &str, ct_props: &Vec<Property>) -> Vec<u8> {
+fn gen_metadata_complex_type(ct_name: &str, ct_props: &Vec<&Property>) -> Vec<u8> {
     let mut out_buffer: Vec<u8> = ct_props.into_iter().fold(
         [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(&ct_name)].concat(),
         |mut acc, ct_prop| {

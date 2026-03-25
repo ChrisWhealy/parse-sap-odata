@@ -49,7 +49,7 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<Vec<u8>>, Vec<String>) {
     // not be captured by the corresponding Rust type
     if ct.properties.len() > 1 && !ct_name.is_keyword() {
         let mut crate_refs: Vec<String> = vec![];
-        let mut props = ct.properties.clone();
+        let mut props: Vec<_> = ct.properties.iter().collect();
         props.sort();
 
         let mut out_buffer: Vec<u8> = props.into_iter().fold(
@@ -57,14 +57,16 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<Vec<u8>>, Vec<String>) {
             gen_deserializable_struct(&ct_name),
             |mut acc, prop| {
                 let (mut src, cr) = prop.to_rust();
-                if !cr.is_empty() { crate_refs.push(cr); }
+                if !cr.is_empty() {
+                    crate_refs.push(cr);
+                }
+
                 acc.append(&mut src);
                 acc
             },
         );
 
         out_buffer.append(&mut [END_BLOCK, &*gen_impl_from_str_for(&ct_name)].concat());
-
         (Some(out_buffer), crate_refs)
     } else {
         // This is just a simple type with a complex
