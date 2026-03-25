@@ -1,10 +1,4 @@
-use std::{
-    env,
-    fs::{File, OpenOptions},
-    io::{BufReader, Read, Write},
-    path::Path,
-    str::FromStr,
-};
+use std::{env, fs::OpenOptions, io::Write, path::Path, str::FromStr};
 
 use crate::{edmx::Edmx, parser::error::ParseError};
 
@@ -12,13 +6,8 @@ pub static DEFAULT_INPUT_DIR: &str = "./odata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
-    let mut xml_buffer: Vec<u8> = Vec::new();
     let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
-
-    let f_xml = File::open(Path::new(&xml_input_pathname))?;
-    let _file_size = BufReader::new(f_xml).read_to_end(&mut xml_buffer);
-
-    Ok(String::from_utf8(xml_buffer)?)
+    Ok(std::fs::read_to_string(&xml_input_pathname)?)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
