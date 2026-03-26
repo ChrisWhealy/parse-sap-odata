@@ -1,7 +1,7 @@
 use check_keyword::CheckKeyword;
 
 use crate::parser::generate::syntax_fragments::{
-    COLON, COMMA, END_BLOCK, METADATA, PROPERTY, PUBLIC, RUSTC_ALLOW_DEAD_CODE, SEPARATOR,
+    END_BLOCK, METADATA, PROPERTY, RUSTC_ALLOW_DEAD_CODE, SEPARATOR,
 };
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
@@ -51,23 +51,12 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// ComplexType -> Rust metadata declaration
 fn gen_metadata_complex_type(ct_name: &str, ct_props: &Vec<&Property>) -> Vec<u8> {
-    let mut out_buffer: Vec<u8> = ct_props.into_iter().fold(
-        [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(&ct_name)].concat(),
-        |mut acc, ct_prop| {
-            acc.append(
-                &mut [
-                    PUBLIC,
-                    odata_name_to_rust_safe_name(&ct_prop.odata_name).as_bytes(),
-                    COLON,
-                    PROPERTY,
-                    COMMA,
-                ]
-                .concat(),
-            );
-            acc
-        },
-    );
+    let mut out_buffer: Vec<u8> = [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(ct_name)].concat();
 
-    out_buffer.append(&mut END_BLOCK.to_vec());
+    for ct_prop in ct_props {
+        gen_struct_field_into(&mut out_buffer, &odata_name_to_rust_safe_name(&ct_prop.odata_name), PROPERTY);
+    }
+
+    out_buffer.extend_from_slice(END_BLOCK);
     out_buffer
 }

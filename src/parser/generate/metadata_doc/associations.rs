@@ -27,7 +27,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
-        .concat();
+    .concat();
 
     // Start block containing Association impl functions related to enum iterator
     let mut association_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -46,26 +46,22 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         let stripped_name = normalise_assoc_name(&assoc.name);
         let enum_variant_name = to_upper_camel_case(&stripped_name);
 
-        association_enum.append(&mut gen_enum_variant(&enum_variant_name));
-        association_impl_iter_fn.append(&mut gen_fq_enum_variant(enum_name, &enum_variant_name));
-        association_impl_variant_name_fn.append(&mut gen_enum_match_arm(
-            &enum_name,
+        gen_enum_variant_into(&mut association_enum, &enum_variant_name);
+        gen_fq_enum_variant_into(&mut association_impl_iter_fn, enum_name, &enum_variant_name);
+        gen_enum_match_arm_into(
+            &mut association_impl_variant_name_fn,
+            enum_name,
             &enum_variant_name,
             &assoc.name,
-        ));
+        );
 
         if idx > 0 {
-            association_impl_getter_fns.append(&mut SEPARATOR.to_vec());
+            association_impl_getter_fns.extend_from_slice(SEPARATOR);
         }
 
-        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant_name).as_bytes()]
-            .concat();
+        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), to_snake_case(&enum_variant_name).as_bytes()].concat();
 
-        association_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(
-            &fn_name,
-            ASSOCIATION,
-            assoc,
-        ));
+        gen_pub_getter_fn_of_type_into(&mut association_impl_getter_fns, &fn_name, ASSOCIATION.as_ref(), assoc);
     }
 
     // End Association enum block and function blocks
@@ -85,7 +81,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*association_impl_getter_fns,
         END_BLOCK,
     ]
-        .concat()
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -142,7 +138,7 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
 
         association_sets_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(
             &*to_snake_case(&enum_variant).into_bytes(),
-            ASSOCIATION_SET,
+            ASSOCIATION_SET.as_ref(),
             assoc_set,
         ));
     }

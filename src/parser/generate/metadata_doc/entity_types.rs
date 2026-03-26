@@ -45,12 +45,8 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
     let key_type = gen_vector_of_type(PROPERTYREF);
 
-    let mut out_buffer: Vec<u8> = [
-        RUSTC_ALLOW_DEAD_CODE,
-        &*gen_start_struct(&struct_name),
-        &*gen_struct_field(FIELD_NAME_KEY, &key_type),
-    ]
-    .concat();
+    let mut out_buffer: Vec<u8> = [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(&struct_name)].concat();
+    gen_struct_field_into(&mut out_buffer, FIELD_NAME_KEY, &key_type);
 
     let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
@@ -126,18 +122,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
         prop.deserializer_fn = gen_custom_deserializer_info(&prop);
 
         match prop.get_property_type() {
-            PropertyType::Edm(_, _) => {
-                out_buffer.append(
-                    &mut [
-                        &*gen_fn_signature(&fn_name, true, false, None, Some(PROPERTY)),
-                        OPEN_CURLY,
-                        LINE_FEED,
-                        &*format!("{prop}").into_bytes(),
-                        END_BLOCK,
-                    ]
-                    .concat(),
-                );
-            },
+            PropertyType::Edm(_, _) => gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, PROPERTY, &prop),
 
             PropertyType::Complex(cmplx_type) => {
                 let err_msg = format!(
@@ -146,16 +131,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
 
                 if let Some(cts) = opt_cts {
                     if let Some(ct) = cts.iter().find(|ct| ct.name.eq(&cmplx_type)) {
-                        out_buffer.append(
-                            &mut [
-                                &*gen_fn_signature(&fn_name, true, false, None, Some(COMPLEX_TYPE)),
-                                OPEN_CURLY,
-                                LINE_FEED,
-                                &*format!("{ct}").into_bytes(),
-                                END_BLOCK,
-                            ]
-                            .concat(),
-                        );
+                        gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, COMPLEX_TYPE, ct);
                     } else {
                         let ct_names = cts.iter().fold(vec![], |mut acc, ct| {
                             acc.push(ct.name.clone());

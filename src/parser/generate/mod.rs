@@ -9,6 +9,63 @@ use syntax_fragments::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn gen_struct_field_into(out: &mut Vec<u8>, field_name: &str, rust_type: &[u8]) {
+    out.extend_from_slice(PUBLIC);
+    out.extend_from_slice(field_name.as_bytes());
+    out.extend_from_slice(COLON);
+    out.extend_from_slice(rust_type);
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
+}
+
+pub fn gen_enum_variant_into(out: &mut Vec<u8>, variant_name: &str) {
+    out.extend_from_slice(variant_name.as_bytes());
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
+}
+
+fn gen_fq_enum_variant_name_into(out: &mut Vec<u8>, enum_name: &str, variant_name: &str) {
+    out.extend_from_slice(enum_name.as_bytes());
+    out.extend_from_slice(COLON2);
+    out.extend_from_slice(variant_name.as_bytes());
+}
+
+pub fn gen_fq_enum_variant_into(out: &mut Vec<u8>, enum_name: &str, variant_name: &str) {
+    gen_fq_enum_variant_name_into(out, enum_name, variant_name);
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
+}
+
+pub fn gen_enum_match_arm_into(out: &mut Vec<u8>, enum_name: &str, variant_name: &str, variant_value: &str) {
+    gen_fq_enum_variant_name_into(out, enum_name, variant_name);
+    out.extend_from_slice(SPACE);
+    out.extend_from_slice(FAT_ARROW);
+    out.extend_from_slice(SPACE);
+    out.extend_from_slice(DOUBLE_QUOTE);
+    out.extend_from_slice(variant_value.as_bytes());
+    out.extend_from_slice(DOUBLE_QUOTE);
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
+}
+
+pub fn gen_pub_getter_fn_of_type_into<T: std::fmt::Display>(
+    out: &mut Vec<u8>,
+    fn_name: &[u8],
+    return_type: &[u8],
+    some_type: T,
+) {
+    out.extend_from_slice(&gen_fn_signature(fn_name, true, false, None, Some(return_type)));
+    out.extend_from_slice(OPEN_CURLY);
+    out.extend_from_slice(LINE_FEED);
+
+    let rendered = format!("{some_type}");
+    out.extend_from_slice(rendered.as_bytes());
+
+    out.extend_from_slice(END_BLOCK);
+    out.extend_from_slice(LINE_FEED);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// `from_str` implementation for each entity set struct
 pub fn gen_impl_from_str_for(struct_name: &str) -> Vec<u8> {
     static FN_START: &[u8] = "impl std::str::FromStr for ".as_bytes();
@@ -101,13 +158,7 @@ pub fn gen_fn_signature(
 //       match *self {↩︎
 pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
     [
-        &*gen_fn_signature(
-            &FN_NAME_VARIANT_NAME,
-            true,
-            true,
-            Some(&[SELF_REF]),
-            Some(STATIC_STR_REF),
-        ),
+        &*gen_fn_signature(&FN_NAME_VARIANT_NAME, true, true, Some(&[SELF_REF]), Some(STATIC_STR_REF)),
         OPEN_CURLY,
         LINE_FEED,
         MATCH_SELF,
@@ -121,18 +172,18 @@ pub fn gen_enum_impl_fn_variant_name() -> Vec<u8> {
 /// Generate a function that returns an instance of some type
 pub fn gen_pub_getter_fn_of_type<T: std::fmt::Display>(
     fn_name: &[u8],
-    return_type: &'static str,
+    return_type: &[u8],
     some_type: T,
 ) -> Vec<u8> {
     [
-        &*gen_fn_signature(fn_name, true, false, None, Some(return_type.as_bytes())),
+        &*gen_fn_signature(fn_name, true, false, None, Some(return_type)),
         OPEN_CURLY,
         LINE_FEED,
         format!("{some_type}").as_bytes(),
         END_BLOCK,
         LINE_FEED,
     ]
-        .concat()
+    .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
