@@ -3,9 +3,7 @@ pub mod generate;
 mod io;
 
 use crate::utils::rust_tools::run_rustfmt;
-use generate::{
-    metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA,
-};
+use generate::{metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA};
 use io::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -25,16 +23,19 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         // contain `<entry>` elements whose `m:etag` attribute contains such an incorrectly quoted value
         Err(err) => println!("Error: {}", err),
         Ok(edmx) => {
+            // Write cargo build script directive as soon as the input path is known to be valid
+            println!(
+                "cargo:rerun-if-changed={}",
+                format!("{}/{}.xml", DEFAULT_INPUT_DIR, odata_srv_name)
+            );
+
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
                 let mod_name = format!("{}.rs", odata_srv_name);
 
                 // Generate the source code for the service document module and run it through rustfmt
                 match run_rustfmt(&gen_srv_doc_module(odata_srv_name, &schema), &mod_name) {
                     Ok(formatted_bytes) => match write_buffer_to_file(&mod_name, formatted_bytes) {
-                        Ok(()) => println!(
-                            "cargo:rerun-if-changed={}",
-                            format!("{}/{}.xml", DEFAULT_INPUT_DIR, odata_srv_name)
-                        ),
+                        Ok(()) => {},
                         Err(err) => println!("Error: writing service document module failed: {}", err),
                     },
                     Err(err) => println!("Error: rustfmt for service document module ended with {}", err.to_string()),
