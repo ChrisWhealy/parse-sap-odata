@@ -13,6 +13,19 @@ pub trait AsRustSrc {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Format `buf` with rustfmt and write the result to `mod_name` in `$OUT_DIR`
+fn emit_module(mod_name: &str, buf: &Vec<u8>) {
+    match run_rustfmt(buf, mod_name) {
+        Ok(formatted_bytes) => {
+            if let Err(err) = write_buffer_to_file(mod_name, formatted_bytes) {
+                println!("Error: writing module '{}' failed: {}", mod_name, err);
+            }
+        },
+        Err(err) => println!("Error: rustfmt for module '{}' ended with {}", mod_name, err),
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate the service document and metadata modules
 pub fn gen_src(odata_srv_name: &str, namespace: &str) {
     match deserialize_sap_metadata(odata_srv_name) {
@@ -30,29 +43,11 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
             );
 
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                let mod_name = format!("{}.rs", odata_srv_name);
-
-                // Generate the source code for the service document module and run it through rustfmt
-                match run_rustfmt(&gen_srv_doc_module(odata_srv_name, &schema), &mod_name) {
-                    Ok(formatted_bytes) => match write_buffer_to_file(&mod_name, formatted_bytes) {
-                        Ok(()) => {},
-                        Err(err) => println!("Error: writing service document module failed: {}", err),
-                    },
-                    Err(err) => println!("Error: rustfmt for service document module ended with {}", err.to_string()),
-                }
-
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // Generate the source code for the metadata document module and run it through rustfmt
-                let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs",);
-
-                match run_rustfmt(&gen_metadata_module(odata_srv_name, &schema), &mod_name) {
-                    Ok(formatted_bytes) => {
-                        if let Err(err) = write_buffer_to_file(&mod_name, formatted_bytes) {
-                            println!("Error: writing metadata document module failed: {}", err);
-                        }
-                    },
-                    Err(err) => println!("Error: rustfmt for metadata document module ended with {}", err.to_string()),
-                }
+                emit_module(&format!("{}.rs", odata_srv_name), &gen_srv_doc_module(odata_srv_name, &schema));
+                emit_module(
+                    &format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs"),
+                    &gen_metadata_module(odata_srv_name, &schema),
+                );
             } else {
                 println!(
                     "Error: OData schema for namespace '{}' cannot be found or this is not OData V2 XML",
