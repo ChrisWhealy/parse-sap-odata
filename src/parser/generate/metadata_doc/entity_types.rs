@@ -1,14 +1,16 @@
+use std::collections::BTreeSet;
+
 use crate::{
     edmx::data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
     parser::generate::{syntax_fragments::*, *},
     property::metadata::PropertyType,
-    utils::{dedup_vec_of_u8_array, odata_name_to_rust_safe_name, to_upper_camel_case},
+    utils::{odata_name_to_rust_safe_name, to_upper_camel_case},
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
 pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec<u8> {
-    let mut used_subtypes: Vec<&[u8]> = vec![];
+    let mut used_subtypes: BTreeSet<&[u8]> = BTreeSet::new();
     let ets: &Vec<EntityType> = &schema.entity_types;
 
     let mut out_buffer: Vec<u8> = ets.into_iter().enumerate().fold(
@@ -19,9 +21,9 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec
                 acc.extend_from_slice(SEPARATOR);
             }
 
-            // Accumulate a list of subtypes used within the SAP Annotations field of each property
+            // Accumulate a set of subtypes used within the SAP Annotations field of each property
             for prop in &entity.properties {
-                used_subtypes.append(&mut prop.sap_annotations.used_subtypes());
+                used_subtypes.extend(prop.sap_annotations.used_subtypes());
             }
 
             acc.append(&mut gen_metadata_entity_type(entity, &skipped_cts));
@@ -32,7 +34,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec
     );
 
     // Add usage declaration(s) for all subtypes across all the SAPAnnotationsProperty instances
-    for subtype in dedup_vec_of_u8_array(used_subtypes) {
+    for subtype in used_subtypes {
         out_buffer.append(&mut gen_use_path(subtype));
     }
 

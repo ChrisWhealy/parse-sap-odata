@@ -1,8 +1,9 @@
+use std::collections::BTreeSet;
+
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
     parser::generate::srvc_doc::complex_types::gen_complex_types, property::metadata::PropertyType,
     test_utils::{handle_test_comparison, handle_test_bool},
-    utils::dedup_vec_of_string,
 };
 
 use chrono;
@@ -122,7 +123,7 @@ fn should_generate_extern_crate_refs() -> Result<(), String> {
         Ok(xml) => {
             let result = ComplexType::from_str(&xml).unwrap();
             let (_src_code, crate_refs) = gen_complex_types(&vec![result]);
-            let crs = dedup_vec_of_string(crate_refs);
+            let crs: BTreeSet<String> = crate_refs.into_iter().collect();
 
             handle_test_comparison(&crs.len(), &2)?;
             handle_test_bool(crs.iter().find(|cr| cr.as_str().eq("rust_decimal")).is_some())?;
