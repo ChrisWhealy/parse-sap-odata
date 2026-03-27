@@ -1,19 +1,20 @@
+use anyhow::Result;
 use std::{env, fs::OpenOptions, io::Write, path::Path, str::FromStr};
 
-use crate::{edmx::Edmx, parser::error::ParseError};
+use crate::edmx::Edmx;
 
 pub static DEFAULT_INPUT_DIR: &str = "./odata";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
+fn fetch_xml_as_string(filename: &str) -> Result<String> {
     let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
     Ok(std::fs::read_to_string(&xml_input_pathname)?)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Write buffer to $OUT_DIR
-pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) -> Result<(), ParseError> {
-    let out_dir = env::var("OUT_DIR").map_err(|e| ParseError { msg: e.to_string() })?;
+pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) -> Result<()> {
+    let out_dir = env::var("OUT_DIR")?;
     let mut output_file = OpenOptions::new()
         .create(true)
         .write(true)
@@ -32,7 +33,7 @@ pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) -> Result<(), ParseErr
 ///
 /// `odata/`<br>
 /// `└── gwsample_basic.xml`
-pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx, ParseError> {
+pub fn deserialize_sap_metadata(metadata_file_name: &str) -> Result<Edmx> {
     let xml = fetch_xml_as_string(metadata_file_name)?;
     let edmx = Edmx::from_str(&xml)?;
 

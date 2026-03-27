@@ -1,6 +1,5 @@
 pub mod generate;
 
-mod error;
 mod io;
 
 use crate::utils::rust_tools::run_rustfmt;
@@ -24,7 +23,7 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         //
         // The Atom `<feed>` document returned from the entity sets of certain SAP OData services has been known to
         // contain `<entry>` elements whose `m:etag` attribute contains such an incorrectly quoted value
-        Err(err) => println!("Error: {}", err.msg),
+        Err(err) => println!("Error: {}", err),
         Ok(edmx) => {
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
                 let mod_name = format!("{}.rs", odata_srv_name);
