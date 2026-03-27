@@ -7,7 +7,7 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs
-pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> Vec<u8> {
+pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec<u8> {
     let mut used_subtypes: Vec<&[u8]> = vec![];
     let ets: &Vec<EntityType> = &schema.entity_types;
 
@@ -41,7 +41,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> V
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM EntityType -> Rust metadata instance
-fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> Vec<u8> {
+fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Vec<u8> {
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
     let key_type = gen_vector_of_type(PROPERTYREF);
 

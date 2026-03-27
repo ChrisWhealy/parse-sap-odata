@@ -50,7 +50,7 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// ComplexType -> Rust metadata declaration
-fn gen_metadata_complex_type(ct_name: &str, ct_props: &Vec<&Property>) -> Vec<u8> {
+fn gen_metadata_complex_type(ct_name: &str, ct_props: &[&Property]) -> Vec<u8> {
     let mut out_buffer: Vec<u8> = [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(ct_name)].concat();
 
     for ct_prop in ct_props {

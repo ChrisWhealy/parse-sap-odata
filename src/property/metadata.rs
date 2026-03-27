@@ -3,8 +3,8 @@ use std::fmt::Formatter;
 use crate::{
     parser::{
         generate::{
-            gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
-            gen_struct_field_into, gen_vector_of_type,
+            gen_bool_string, gen_custom_deserializer_info, gen_opt_string, gen_opt_u16_string, gen_option_of_type,
+            gen_owned_string, gen_struct_field_into, gen_vector_of_type,
             syntax_fragments::serde_fragments::{gen_deserialize_with, gen_serde_rename},
             syntax_fragments::*,
         },
@@ -168,8 +168,9 @@ impl AsRustSrc for Property {
                 }
 
                 // Output the serde attribute for a custom deserializer
-                if !self.deserializer_fn.is_empty() {
-                    out_buffer.append(&mut gen_deserialize_with(&self.deserializer_fn))
+                let deserializer_fn = gen_custom_deserializer_info(self);
+                if !deserializer_fn.is_empty() {
+                    out_buffer.append(&mut gen_deserialize_with(&deserializer_fn))
                 }
 
                 // Generate source code for Rust type

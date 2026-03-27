@@ -2,7 +2,7 @@ use crate::{
     edmx::data_services::schema::entity_type::EntityType,
     parser::{
         generate::{
-            gen_comment_separator_for, gen_custom_deserializer_info, gen_impl_from_str_for,
+            gen_comment_separator_for, gen_impl_from_str_for,
             syntax_fragments::{serde_fragments::*, END_BLOCK, ENTITY_TYPES, SEPARATOR},
         },
         AsRustSrc,
@@ -43,9 +43,6 @@ fn gen_entity_type(entity: &EntityType) -> (Vec<u8>, Vec<String>) {
         // Accumulator's initial value is the derive and serde attributes plus the struct declaration
         gen_deserializable_struct(&struct_name),
         |mut acc, prop| {
-            let mut prop = prop.clone();
-            prop.deserializer_fn = gen_custom_deserializer_info(&prop);
-
             let (mut prop_src, cr) = prop.to_rust();
             if !cr.is_empty() {
                 crate_refs.push(cr)

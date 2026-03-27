@@ -227,6 +227,10 @@ fn should_convert_edm_datetime() -> Result<(), String> {
     let src_lines = to_rust_src(src);
     handle_test_comparison(
         &src_lines[0].to_string(),
+        &r#"#[serde(deserialize_with = "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time_opt")]"#.to_string(),
+    )?;
+    handle_test_comparison(
+        &src_lines[1].to_string(),
         &"pub once_upon_a_wednesday:Option<chrono::NaiveDateTime>,".to_string(),
     )?;
     handle_test_comparison(&cr, &CRATE_CHRONO.to_string())
@@ -234,11 +238,15 @@ fn should_convert_edm_datetime() -> Result<(), String> {
 
 #[test]
 fn should_convert_edm_datetime_offset() -> Result<(), String> {
-    let prop = gen_property_of_type("OnceUponAWednesday", "Edm.DateTime", true);
+    let prop = gen_property_of_type("OnceUponAWednesday", "Edm.DateTimeOffset", true);
     let (src, cr) = prop.to_rust();
     let src_lines = to_rust_src(src);
     handle_test_comparison(
         &src_lines[0].to_string(),
+        &r#"#[serde(deserialize_with = "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time_opt")]"#.to_string(),
+    )?;
+    handle_test_comparison(
+        &src_lines[1].to_string(),
         &"pub once_upon_a_wednesday:Option<chrono::NaiveDateTime>,".to_string(),
     )?;
     handle_test_comparison(&cr, &CRATE_CHRONO.to_string())
@@ -251,6 +259,10 @@ fn should_convert_edm_decimal() -> Result<(), String> {
     let src_lines = to_rust_src(src);
     handle_test_comparison(
         &src_lines[0].to_string(),
+        &r#"#[serde(deserialize_with = "parse_sap_atom_feed::deserializers::edm_decimal::to_rust_decimal_0dp")]"#.to_string(),
+    )?;
+    handle_test_comparison(
+        &src_lines[1].to_string(),
         &"pub some_decimal_number:rust_decimal::Decimal,".to_string(),
     )?;
     handle_test_comparison(&cr, &CRATE_RUST_DECIMAL.to_string())

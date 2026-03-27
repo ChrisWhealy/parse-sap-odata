@@ -123,6 +123,13 @@ pub static RUSTC_ALLOW_DEAD_CODE: &[u8] = "#[allow(dead_code)]\
 pub fn gen_use_path(path: &[u8]) -> Vec<u8> {
     [USE, path, SEMI_COLON, LINE_FEED].concat()
 }
+
+pub fn gen_use_path_into(out: &mut Vec<u8>, path: &[u8]) {
+    out.extend_from_slice(USE);
+    out.extend_from_slice(path);
+    out.extend_from_slice(SEMI_COLON);
+    out.extend_from_slice(LINE_FEED);
+}
 pub static PATH_TO_EDMX_COMPLEX_TYPE: &[u8] =
     "parse_sap_odata::edmx::data_services::schema::complex_type::ComplexType".as_bytes();
 pub static PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS: &[u8] =

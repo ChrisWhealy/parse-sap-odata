@@ -88,8 +88,24 @@ pub fn gen_extern_crate(crate_name: &str) -> Vec<u8> {
     [EXTERN_CRATE, crate_name.as_bytes(), SEMI_COLON, LINE_FEED].concat()
 }
 
+pub fn gen_extern_crate_into(out: &mut Vec<u8>, crate_name: &str) {
+    out.extend_from_slice(EXTERN_CRATE);
+    out.extend_from_slice(crate_name.as_bytes());
+    out.extend_from_slice(SEMI_COLON);
+    out.extend_from_slice(LINE_FEED);
+}
+
 pub fn gen_module_start(mod_name: &str) -> Vec<u8> {
     [PUBLIC, MOD, mod_name.as_bytes(), SPACE, OPEN_CURLY, LINE_FEED].concat()
+}
+
+pub fn gen_module_start_into(out: &mut Vec<u8>, mod_name: &str) {
+    out.extend_from_slice(PUBLIC);
+    out.extend_from_slice(MOD);
+    out.extend_from_slice(mod_name.as_bytes());
+    out.extend_from_slice(SPACE);
+    out.extend_from_slice(OPEN_CURLY);
+    out.extend_from_slice(LINE_FEED);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
