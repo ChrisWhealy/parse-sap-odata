@@ -17,27 +17,24 @@ enum DependentFieldNames {
 }
 
 impl DependentFieldNames {
-    fn value(prop_name: DependentFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            DependentFieldNames::Role => "role",
-            DependentFieldNames::PropertyRefs => "property_refs",
-        };
-
-        member.as_bytes().to_vec()
+    fn value(prop_name: DependentFieldNames) -> &'static [u8] {
+        match prop_name {
+            DependentFieldNames::Role => b"role",
+            DependentFieldNames::PropertyRefs => b"property_refs",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_dependent(prop_md: DependentFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*DependentFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [DependentFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Dependent {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let prop_refs_str = self
             .property_refs
-            .clone()
-            .into_iter()
+            .iter()
             .map(|pr| format!("{},", pr))
             .collect::<String>()
             .into_bytes();

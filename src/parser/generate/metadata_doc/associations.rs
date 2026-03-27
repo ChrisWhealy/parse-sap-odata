@@ -24,7 +24,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
         &*gen_comment_separator_for(ASSOCIATIONS),
         &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES),
         LINE_FEED,
-        &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
+        &*gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
     .concat();
@@ -65,9 +65,10 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
     }
 
     // End Association enum block and function blocks
-    association_enum.append(&mut END_BLOCK.to_vec());
+    association_enum.extend_from_slice(END_BLOCK);
     association_impl_iter_fn.append(&mut gen_end_iter_fn());
-    association_impl_variant_name_fn.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
+    association_impl_variant_name_fn.extend_from_slice(CLOSE_CURLY);
+    association_impl_variant_name_fn.extend_from_slice(END_BLOCK);
 
     [
         &*association_enum,
@@ -89,12 +90,12 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
 pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     // In a very small number of cases, it is possible for an OData service to contain zero association sets
     // E.G. If the service contains only one entity set
-    let mut assoc_sets = if let Some(ent_cont) = &schema.entity_container {
-        if ent_cont.association_sets.len() == 0 {
+    let mut assoc_sets: Vec<_> = if let Some(ent_cont) = &schema.entity_container {
+        if ent_cont.association_sets.is_empty() {
             return Vec::new();
         }
 
-        ent_cont.association_sets.clone()
+        ent_cont.association_sets.iter().collect()
     } else {
         return Vec::new();
     };
@@ -109,7 +110,7 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS),
         &*gen_use_path(PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET),
         LINE_FEED,
-        &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
+        &*gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
         &*gen_enum_start(enum_name),
     ]
     .concat();
@@ -127,26 +128,32 @@ pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> V
         let stripped_name = normalise_assoc_name(&assoc_set.name);
         let enum_variant = to_upper_camel_case(&stripped_name);
 
-        association_set_enum.append(&mut gen_enum_variant(&enum_variant));
-        association_sets_impl_iter_fn.append(&mut gen_fq_enum_variant(enum_name, &enum_variant));
-        association_sets_impl_variant_name_fn
-            .append(&mut gen_enum_match_arm(&enum_name, &enum_variant, &assoc_set.name));
+        gen_enum_variant_into(&mut association_set_enum, &enum_variant);
+        gen_fq_enum_variant_into(&mut association_sets_impl_iter_fn, enum_name, &enum_variant);
+        gen_enum_match_arm_into(
+            &mut association_sets_impl_variant_name_fn,
+            &enum_name,
+            &enum_variant,
+            &assoc_set.name,
+        );
 
         if idx > 0 {
-            association_sets_impl_getter_fns.append(&mut SEPARATOR.to_vec());
+            association_sets_impl_getter_fns.extend_from_slice(SEPARATOR);
         }
 
-        association_sets_impl_getter_fns.append(&mut gen_pub_getter_fn_of_type(
+        gen_pub_getter_fn_of_type_into(
+            &mut association_sets_impl_getter_fns,
             &*to_snake_case(&enum_variant).into_bytes(),
             ASSOCIATION_SET.as_ref(),
             assoc_set,
-        ));
+        );
     }
 
     // End AssociationSet enum block and function blocks
-    association_set_enum.append(&mut END_BLOCK.to_vec());
+    association_set_enum.extend_from_slice(END_BLOCK);
     association_sets_impl_iter_fn.append(&mut gen_end_iter_fn());
-    association_sets_impl_variant_name_fn.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
+    association_sets_impl_variant_name_fn.extend_from_slice(CLOSE_CURLY);
+    association_sets_impl_variant_name_fn.extend_from_slice(END_BLOCK);
 
     [
         &*association_set_enum,

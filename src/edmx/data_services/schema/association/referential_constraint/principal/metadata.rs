@@ -17,27 +17,24 @@ enum PrincipalFieldNames {
 }
 
 impl PrincipalFieldNames {
-    fn value(prop_name: PrincipalFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            PrincipalFieldNames::Role => "role",
-            PrincipalFieldNames::PropertyRefs => "property_refs",
-        };
-
-        member.as_bytes().to_vec()
+    fn value(prop_name: PrincipalFieldNames) -> &'static [u8] {
+        match prop_name {
+            PrincipalFieldNames::Role => b"role",
+            PrincipalFieldNames::PropertyRefs => b"property_refs",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_dependent(prop_md: PrincipalFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*PrincipalFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [PrincipalFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for Principal {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let prop_refs_str = self
             .property_refs
-            .clone()
-            .into_iter()
+            .iter()
             .map(|pr| format!("{},", pr))
             .collect::<String>()
             .into_bytes();

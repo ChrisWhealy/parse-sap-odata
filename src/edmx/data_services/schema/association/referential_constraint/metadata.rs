@@ -12,19 +12,17 @@ enum ReferentialConstraintFieldNames {
 }
 
 impl ReferentialConstraintFieldNames {
-    pub fn value(prop_name: ReferentialConstraintFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            ReferentialConstraintFieldNames::Principal => "principal",
-            ReferentialConstraintFieldNames::Dependent => "dependent",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: ReferentialConstraintFieldNames) -> &'static [u8] {
+        match prop_name {
+            ReferentialConstraintFieldNames::Principal => b"principal",
+            ReferentialConstraintFieldNames::Dependent => b"dependent",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_ref_con(prop_md: ReferentialConstraintFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*ReferentialConstraintFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [ReferentialConstraintFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for ReferentialConstraint {

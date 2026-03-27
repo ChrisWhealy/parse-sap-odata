@@ -12,14 +12,12 @@ static MY_NAME: &[u8] = "SAPAggregationRoleProperty".as_bytes();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl AnnotationType for SAPAggregationRoleProperty {
-    fn member_name(&self) -> Vec<u8> {
-        let member = match self {
-            SAPAggregationRoleProperty::Dimension => "Dimension",
-            SAPAggregationRoleProperty::Measure => "Measure",
-            SAPAggregationRoleProperty::TotalPropertiesList => "TotalPropertiesList",
-        };
-
-        member.as_bytes().to_vec()
+    fn member_name(&self) -> &'static [u8] {
+        match self {
+            SAPAggregationRoleProperty::Dimension => b"Dimension",
+            SAPAggregationRoleProperty::Measure => b"Measure",
+            SAPAggregationRoleProperty::TotalPropertiesList => b"TotalPropertiesList",
+        }
     }
 }
 
@@ -27,7 +25,7 @@ impl AnnotationType for SAPAggregationRoleProperty {
 impl OptionalAnnotationType for Option<SAPAggregationRoleProperty> {
     fn opt_anno_type<T: AnnotationType>(&self, opt_self: &Option<T>) -> Vec<u8> {
         if let Some(anno_type) = opt_self {
-            let fq_name = [DOUBLE_QUOTE, MY_NAME, COLON2, &*anno_type.member_name(), DOUBLE_QUOTE].concat();
+            let fq_name = [DOUBLE_QUOTE, MY_NAME, COLON2, anno_type.member_name(), DOUBLE_QUOTE].concat();
             gen_some_value(&fq_name)
         } else {
             NONE.to_vec()

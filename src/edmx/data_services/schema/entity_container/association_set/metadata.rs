@@ -17,21 +17,19 @@ enum AssociationSetFieldNames {
 }
 
 impl AssociationSetFieldNames {
-    pub fn value(prop_name: AssociationSetFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            AssociationSetFieldNames::Name => "name",
-            AssociationSetFieldNames::Association => "association",
-            AssociationSetFieldNames::SapAnnotations => "sap_annotations",
-            AssociationSetFieldNames::Ends => "ends",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: AssociationSetFieldNames) -> &'static [u8] {
+        match prop_name {
+            AssociationSetFieldNames::Name => b"name",
+            AssociationSetFieldNames::Association => b"association",
+            AssociationSetFieldNames::SapAnnotations => b"sap_annotations",
+            AssociationSetFieldNames::Ends => b"ends",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(prop_md: AssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*AssociationSetFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [AssociationSetFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for AssociationSet {
@@ -51,10 +49,7 @@ impl std::fmt::Display for AssociationSet {
             &*line_from_end(AssociationSetFieldNames::Name, gen_owned_string(&self.name)),
             &*line_from_end(AssociationSetFieldNames::Association, gen_owned_string(&self.association)),
             &*line_from_end(AssociationSetFieldNames::Ends, ends),
-            &*line_from_end(
-                AssociationSetFieldNames::SapAnnotations,
-                format!("{}", &self.sap_annotations).as_bytes().to_vec(),
-            ),
+            &*line_from_end(AssociationSetFieldNames::SapAnnotations, self.sap_annotations.to_string().into_bytes()),
             CLOSE_CURLY,
         ]
         .concat();

@@ -28,7 +28,7 @@ impl EntityContainer {
             // #[allow(dead_code)]↩︎
             // pub enum <entity_container_name> {↩︎
             [
-                &*gen_derive_str(vec![DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
+                &*gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
                 RUSTC_ALLOW_DEAD_CODE,
                 &*gen_enum_start(&cont_name_camel),
             ]
@@ -37,22 +37,24 @@ impl EntityContainer {
                 let ent_set_name_camel = to_upper_camel_case(&ent_set.name);
 
                 // Add variant to enum, iterator, and variant_name functions
-                acc.append(&mut gen_enum_variant(&ent_set_name_camel));
-                enum_fn_variant_name.append(&mut gen_enum_match_arm(
+                gen_enum_variant_into(&mut acc, &ent_set_name_camel);
+                gen_enum_match_arm_into(
+                    &mut enum_fn_variant_name,
                     &cont_name_camel,
                     &ent_set_name_camel,
                     &ent_set.name,
-                ));
-                enum_fn_iterator.append(&mut gen_fq_enum_variant(&cont_name_camel, &ent_set_name_camel));
+                );
+                gen_fq_enum_variant_into(&mut enum_fn_iterator, &cont_name_camel, &ent_set_name_camel);
 
                 acc
             },
         );
 
         // End enum and function blocks
-        entities_enum.append(&mut END_BLOCK.to_vec());
+        entities_enum.extend_from_slice(END_BLOCK);
         enum_fn_iterator.append(&mut gen_end_iter_fn());
-        enum_fn_variant_name.append(&mut [CLOSE_CURLY, END_BLOCK].concat());
+        enum_fn_variant_name.extend_from_slice(CLOSE_CURLY);
+        enum_fn_variant_name.extend_from_slice(END_BLOCK);
 
         [
             // EntityContainer enum

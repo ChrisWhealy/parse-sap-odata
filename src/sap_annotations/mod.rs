@@ -16,7 +16,7 @@ pub mod schema;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AnnotationType {
-    fn member_name(&self) -> Vec<u8>;
+    fn member_name(&self) -> &'static [u8];
 }
 
 pub trait OptionalAnnotationType {

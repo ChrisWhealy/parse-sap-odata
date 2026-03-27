@@ -19,55 +19,35 @@ pub enum SAPAnnotationsAssociationSetFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl SAPAnnotationsAssociationSetFieldNames {
-    pub fn value(prop_name: SAPAnnotationsAssociationSetFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            SAPAnnotationsAssociationSetFieldNames::ContentVersion => "content_version",
-            SAPAnnotationsAssociationSetFieldNames::IsCreatable => "is_creatable",
-            SAPAnnotationsAssociationSetFieldNames::IsUpdatable => "is_updatable",
-            SAPAnnotationsAssociationSetFieldNames::IsDeletable => "is_deletable",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: SAPAnnotationsAssociationSetFieldNames) -> &'static [u8] {
+        match prop_name {
+            SAPAnnotationsAssociationSetFieldNames::ContentVersion => b"content_version",
+            SAPAnnotationsAssociationSetFieldNames::IsCreatable => b"is_creatable",
+            SAPAnnotationsAssociationSetFieldNames::IsUpdatable => b"is_updatable",
+            SAPAnnotationsAssociationSetFieldNames::IsDeletable => b"is_deletable",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from(prop_md: SAPAnnotationsAssociationSetFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [
-        SAPAnnotationsAssociationSetFieldNames::value(prop_md),
-        COLON.to_vec(),
-        val,
-        COMMA.to_vec(),
-        LINE_FEED.to_vec(),
-    ]
-    .concat()
+fn line_into(out: &mut Vec<u8>, prop_md: SAPAnnotationsAssociationSetFieldNames, val: Vec<u8>) {
+    out.extend_from_slice(SAPAnnotationsAssociationSetFieldNames::value(prop_md));
+    out.extend_from_slice(COLON);
+    out.extend_from_slice(&val);
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
 }
 
 impl std::fmt::Display for SAPAnnotationsAssociationSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let out_buffer: Vec<u8> = [
-            MY_NAME,
-            OPEN_CURLY,
-            &*line_from(
-                SAPAnnotationsAssociationSetFieldNames::ContentVersion,
-                gen_owned_string(&self.content_version),
-            ),
-            &*line_from(
-                SAPAnnotationsAssociationSetFieldNames::IsCreatable,
-                gen_bool_string(self.is_creatable),
-            ),
-            &*line_from(
-                SAPAnnotationsAssociationSetFieldNames::IsUpdatable,
-                gen_bool_string(self.is_updatable),
-            ),
-            &*line_from(
-                SAPAnnotationsAssociationSetFieldNames::IsDeletable,
-                gen_bool_string(self.is_deletable),
-            ),
-            CLOSE_CURLY,
-        ]
-        .concat();
-
+        let mut out_buffer: Vec<u8> = Vec::new();
+        out_buffer.extend_from_slice(MY_NAME);
+        out_buffer.extend_from_slice(OPEN_CURLY);
+        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::ContentVersion, gen_owned_string(&self.content_version));
+        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::IsCreatable, gen_bool_string(self.is_creatable));
+        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::IsUpdatable, gen_bool_string(self.is_updatable));
+        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::IsDeletable, gen_bool_string(self.is_deletable));
+        out_buffer.extend_from_slice(CLOSE_CURLY);
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }
 }

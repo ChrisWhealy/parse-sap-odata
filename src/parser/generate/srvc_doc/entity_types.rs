@@ -18,7 +18,7 @@ pub fn gen_entity_types(ets: &Vec<EntityType>) -> (Vec<u8>, Vec<String>) {
         (gen_comment_separator_for(ENTITY_TYPES), vec![]),
         |(mut acc_src, mut acc_crs), (idx, entity)| {
             if idx > 0 {
-                acc_src.append(&mut SEPARATOR.to_vec());
+                acc_src.extend_from_slice(SEPARATOR);
             }
 
             let (mut et_src, mut crs) = gen_entity_type(entity);
@@ -57,7 +57,8 @@ fn gen_entity_type(entity: &EntityType) -> (Vec<u8>, Vec<String>) {
     );
 
     // End the struct declaration then generate from_str implementation
-    out_buffer.append(&mut [END_BLOCK, &*gen_impl_from_str_for(&struct_name)].concat());
+    out_buffer.extend_from_slice(END_BLOCK);
+    out_buffer.append(&mut gen_impl_from_str_for(&struct_name));
 
     (out_buffer, crate_refs)
 }

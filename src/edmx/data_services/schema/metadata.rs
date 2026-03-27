@@ -11,7 +11,7 @@ impl Schema {
         // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
-        let mut output_enum = gen_derive_str(vec![DeriveTraits::DEBUG]);
+        let mut output_enum = gen_derive_str(&[DeriveTraits::DEBUG]);
         output_enum.append(&mut gen_enum_start(&upper_camel_entity_types));
 
         // Output the start of the "variant_name" function within the enum implementation
@@ -22,16 +22,18 @@ impl Schema {
             let ent_type_name_camel = to_upper_camel_case(&ent_type.name);
 
             // Add variant to enum and value function
-            output_enum.append(&mut gen_enum_variant(&ent_type_name_camel));
-            fn_variant_name.append(&mut gen_enum_match_arm(
+            gen_enum_variant_into(&mut output_enum, &ent_type_name_camel);
+            gen_enum_match_arm_into(
+                &mut fn_variant_name,
                 &upper_camel_entity_types,
                 &ent_type_name_camel,
                 &ent_type.name,
-            ));
+            );
         }
 
-        output_enum.append(&mut END_BLOCK.to_vec());
-        fn_variant_name.append(&mut [END_BLOCK, END_BLOCK].concat());
+        output_enum.extend_from_slice(END_BLOCK);
+        fn_variant_name.extend_from_slice(END_BLOCK);
+        fn_variant_name.extend_from_slice(END_BLOCK);
 
         [
             &*output_enum,

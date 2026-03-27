@@ -18,6 +18,6 @@ pub struct EntitySet {
 impl EntitySet {
     pub fn to_enum_entry(&self) -> &[u8] {
         // This is safe because an EntitySet type name always follows the pattern <Schema>.<EntityType>
-        self.entity_type.split(".").collect::<Vec<&str>>()[1].as_bytes()
+        self.entity_type.split('.').nth(1).unwrap().as_bytes()
     }
 }

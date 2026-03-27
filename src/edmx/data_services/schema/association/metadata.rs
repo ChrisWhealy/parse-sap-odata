@@ -43,21 +43,23 @@ enum AssociationFieldNames {
 }
 
 impl AssociationFieldNames {
-    pub fn value(prop_name: AssociationFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            AssociationFieldNames::Name => "name",
-            AssociationFieldNames::SapContentVersion => "sap_content_version",
-            AssociationFieldNames::Ends => "ends",
-            AssociationFieldNames::ReferentialConstraint => "referential_constraint",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: AssociationFieldNames) -> &'static [u8] {
+        match prop_name {
+            AssociationFieldNames::Name => b"name",
+            AssociationFieldNames::SapContentVersion => b"sap_content_version",
+            AssociationFieldNames::Ends => b"ends",
+            AssociationFieldNames::ReferentialConstraint => b"referential_constraint",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_association(prop_md: AssociationFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*AssociationFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_into_association(out: &mut Vec<u8>, prop_md: AssociationFieldNames, val: Vec<u8>) {
+    out.extend_from_slice(AssociationFieldNames::value(prop_md));
+    out.extend_from_slice(COLON);
+    out.extend_from_slice(&val);
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
 }
 
 impl std::fmt::Display for Association {
@@ -76,20 +78,14 @@ impl std::fmt::Display for Association {
             NONE.to_vec()
         };
 
-        let out_buffer: Vec<u8> = [
-            MY_NAME,
-            OPEN_CURLY,
-            &*line_from_association(AssociationFieldNames::Name, gen_owned_string(&self.name)),
-            &*line_from_association(
-                AssociationFieldNames::SapContentVersion,
-                gen_owned_string(&self.sap_content_version),
-            ),
-            &*line_from_association(AssociationFieldNames::Ends, ends),
-            &*line_from_association(AssociationFieldNames::ReferentialConstraint, ref_con),
-            END_BLOCK,
-        ]
-        .concat();
-
+        let mut out_buffer: Vec<u8> = Vec::new();
+        out_buffer.extend_from_slice(MY_NAME);
+        out_buffer.extend_from_slice(OPEN_CURLY);
+        line_into_association(&mut out_buffer, AssociationFieldNames::Name, gen_owned_string(&self.name));
+        line_into_association(&mut out_buffer, AssociationFieldNames::SapContentVersion, gen_owned_string(&self.sap_content_version));
+        line_into_association(&mut out_buffer, AssociationFieldNames::Ends, ends);
+        line_into_association(&mut out_buffer, AssociationFieldNames::ReferentialConstraint, ref_con);
+        out_buffer.extend_from_slice(END_BLOCK);
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }
 }

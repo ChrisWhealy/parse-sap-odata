@@ -21,7 +21,7 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
             .enumerate()
             .fold(gen_comment_separator_for("COMPLEX TYPES"), |mut acc, (idx, ct)| {
                 if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                    acc.append(&mut SEPARATOR.to_vec());
+                    acc.extend_from_slice(SEPARATOR);
                 }
 
                 // If the complex type contains only one field and that field's name suffix is a basic Rust type, then

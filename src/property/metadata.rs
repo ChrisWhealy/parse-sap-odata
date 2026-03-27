@@ -4,7 +4,7 @@ use crate::{
     parser::{
         generate::{
             gen_bool_string, gen_opt_string, gen_opt_u16_string, gen_option_of_type, gen_owned_string,
-            gen_struct_field, gen_vector_of_type,
+            gen_struct_field_into, gen_vector_of_type,
             syntax_fragments::serde_fragments::{gen_deserialize_with, gen_serde_rename},
             syntax_fragments::*,
         },
@@ -63,22 +63,20 @@ enum PropertyFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl PropertyFieldNames {
-    pub fn value(prop_name: PropertyFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            PropertyFieldNames::ODataName => "odata_name",
-            PropertyFieldNames::EdmType => "edm_type",
-            PropertyFieldNames::Nullable => "nullable",
-            PropertyFieldNames::MaxLength => "max_length",
-            PropertyFieldNames::Precision => "precision",
-            PropertyFieldNames::Scale => "scale",
-            PropertyFieldNames::ConcurrencyMode => "concurrency_mode",
-            PropertyFieldNames::FcKeepInContent => "fc_keep_in_content",
-            PropertyFieldNames::FcTargetPath => "fc_target_path",
-            PropertyFieldNames::SAPAnnotations => "sap_annotations",
-            PropertyFieldNames::DeserializerFn => "deserializer_fn",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: PropertyFieldNames) -> &'static [u8] {
+        match prop_name {
+            PropertyFieldNames::ODataName => b"odata_name",
+            PropertyFieldNames::EdmType => b"edm_type",
+            PropertyFieldNames::Nullable => b"nullable",
+            PropertyFieldNames::MaxLength => b"max_length",
+            PropertyFieldNames::Precision => b"precision",
+            PropertyFieldNames::Scale => b"scale",
+            PropertyFieldNames::ConcurrencyMode => b"concurrency_mode",
+            PropertyFieldNames::FcKeepInContent => b"fc_keep_in_content",
+            PropertyFieldNames::FcTargetPath => b"fc_target_path",
+            PropertyFieldNames::SAPAnnotations => b"sap_annotations",
+            PropertyFieldNames::DeserializerFn => b"deserializer_fn",
+        }
     }
 }
 
@@ -117,8 +115,12 @@ impl Property {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from(prop_md: PropertyFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*PropertyFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_into(out: &mut Vec<u8>, prop_md: PropertyFieldNames, val: Vec<u8>) {
+    out.extend_from_slice(PropertyFieldNames::value(prop_md));
+    out.extend_from_slice(COLON);
+    out.extend_from_slice(&val);
+    out.extend_from_slice(COMMA);
+    out.extend_from_slice(LINE_FEED);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,27 +128,21 @@ fn line_from(prop_md: PropertyFieldNames, val: Vec<u8>) -> Vec<u8> {
 /// Generate the source code that declares an instance of this Property
 impl std::fmt::Display for Property {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let out_buffer: Vec<u8> = [
-            MY_NAME,
-            OPEN_CURLY,
-            &*line_from(PropertyFieldNames::ODataName, gen_owned_string(&self.odata_name.clone())),
-            &*line_from(PropertyFieldNames::EdmType, gen_owned_string(&self.edm_type.clone())),
-            &*line_from(PropertyFieldNames::Nullable, gen_bool_string(self.nullable)),
-            &*line_from(PropertyFieldNames::MaxLength, gen_opt_u16_string(self.max_length)),
-            &*line_from(PropertyFieldNames::Precision, gen_opt_u16_string(self.precision)),
-            &*line_from(PropertyFieldNames::Scale, gen_opt_u16_string(self.scale)),
-            &*line_from(PropertyFieldNames::ConcurrencyMode, gen_opt_string(&self.concurrency_mode)),
-            &*line_from(PropertyFieldNames::FcKeepInContent, gen_bool_string(self.fc_keep_in_content)),
-            &*line_from(PropertyFieldNames::FcTargetPath, gen_opt_string(&self.fc_target_path)),
-            &*line_from(
-                PropertyFieldNames::SAPAnnotations,
-                format!("{}", self.sap_annotations).as_bytes().to_vec(),
-            ),
-            &*line_from(PropertyFieldNames::DeserializerFn, gen_owned_string(&self.deserializer_fn)),
-            CLOSE_CURLY,
-        ]
-        .concat();
-
+        let mut out_buffer: Vec<u8> = Vec::new();
+        out_buffer.extend_from_slice(MY_NAME);
+        out_buffer.extend_from_slice(OPEN_CURLY);
+        line_into(&mut out_buffer, PropertyFieldNames::ODataName, gen_owned_string(&self.odata_name));
+        line_into(&mut out_buffer, PropertyFieldNames::EdmType, gen_owned_string(&self.edm_type));
+        line_into(&mut out_buffer, PropertyFieldNames::Nullable, gen_bool_string(self.nullable));
+        line_into(&mut out_buffer, PropertyFieldNames::MaxLength, gen_opt_u16_string(self.max_length));
+        line_into(&mut out_buffer, PropertyFieldNames::Precision, gen_opt_u16_string(self.precision));
+        line_into(&mut out_buffer, PropertyFieldNames::Scale, gen_opt_u16_string(self.scale));
+        line_into(&mut out_buffer, PropertyFieldNames::ConcurrencyMode, gen_opt_string(&self.concurrency_mode));
+        line_into(&mut out_buffer, PropertyFieldNames::FcKeepInContent, gen_bool_string(self.fc_keep_in_content));
+        line_into(&mut out_buffer, PropertyFieldNames::FcTargetPath, gen_opt_string(&self.fc_target_path));
+        line_into(&mut out_buffer, PropertyFieldNames::SAPAnnotations, format!("{}", self.sap_annotations).into_bytes());
+        line_into(&mut out_buffer, PropertyFieldNames::DeserializerFn, gen_owned_string(&self.deserializer_fn));
+        out_buffer.extend_from_slice(CLOSE_CURLY);
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }
 }
@@ -208,10 +204,11 @@ impl AsRustSrc for Property {
             PropertyType::Unqualified => (self.edm_type.clone().into_bytes(), "".to_string()),
         };
 
-        out_buffer.append(&mut gen_struct_field(
+        gen_struct_field_into(
+            &mut out_buffer,
             &odata_name_to_rust_safe_name(&self.odata_name),
             &resolved_prop_type,
-        ));
+        );
 
         (out_buffer, crate_ref)
     }

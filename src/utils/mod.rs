@@ -31,7 +31,7 @@ where
     D: Deserializer<'de>,
 {
     let s = String::deserialize(deserializer)?;
-    Ok(s.split(" ").map(|fmt| String::from(fmt)).collect())
+    Ok(s.split(" ").map(str::to_owned).collect())
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,7 +53,6 @@ pub fn odata_name_to_rust_safe_name(odata_name: &str) -> String {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn dedup_vec_of_string(str_vec: Vec<String>) -> Vec<String> {
     str_vec
-        .clone()
         .into_iter()
         .collect::<HashSet<String>>()
         .into_iter()
@@ -62,7 +61,6 @@ pub fn dedup_vec_of_string(str_vec: Vec<String>) -> Vec<String> {
 
 pub fn dedup_vec_of_u8_array(u8_vec: Vec<&[u8]>) -> Vec<&[u8]> {
     u8_vec
-        .clone()
         .into_iter()
         .collect::<HashSet<&[u8]>>()
         .into_iter()

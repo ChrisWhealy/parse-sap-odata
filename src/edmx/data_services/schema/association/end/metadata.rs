@@ -18,21 +18,19 @@ enum EndFieldNames {
 }
 
 impl EndFieldNames {
-    pub fn value(prop_name: EndFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            EndFieldNames::Role => "role",
-            EndFieldNames::EntitySet => "entity_set",
-            EndFieldNames::EndType => "end_type",
-            EndFieldNames::Multiplicity => "multiplicity",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: EndFieldNames) -> &'static [u8] {
+        match prop_name {
+            EndFieldNames::Role => b"role",
+            EndFieldNames::EntitySet => b"entity_set",
+            EndFieldNames::EndType => b"end_type",
+            EndFieldNames::Multiplicity => b"multiplicity",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(prop_md: EndFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*EndFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [EndFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 impl std::fmt::Display for End {
@@ -47,7 +45,7 @@ impl std::fmt::Display for End {
             let et_parts = et.split(".").collect::<Vec<&str>>();
 
             Some(if et_parts.len() == 2 {
-                format!("{}", to_upper_camel_case(et_parts[1]))
+                to_upper_camel_case(et_parts[1])
             } else {
                 // This branch should never be used because SAP should always generate a fully qualified name...
                 et.to_owned()

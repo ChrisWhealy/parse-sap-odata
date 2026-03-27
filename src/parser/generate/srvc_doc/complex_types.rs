@@ -22,7 +22,7 @@ pub fn gen_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<String>) {
         (gen_comment_separator_for(COMPLEX_TYPES), vec![]),
         |(mut acc_src, mut acc_crate_refs), (idx, ct)| {
             if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                acc_src.append(&mut SEPARATOR.to_vec());
+                acc_src.extend_from_slice(SEPARATOR);
             }
 
             if let (Some(mut ct_src), mut crs) = gen_complex_type_src(ct) {
@@ -66,7 +66,8 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<Vec<u8>>, Vec<String>) {
             },
         );
 
-        out_buffer.append(&mut [END_BLOCK, &*gen_impl_from_str_for(&ct_name)].concat());
+        out_buffer.extend_from_slice(END_BLOCK);
+        out_buffer.append(&mut gen_impl_from_str_for(&ct_name));
         (Some(out_buffer), crate_refs)
     } else {
         // This is just a simple type with a complex

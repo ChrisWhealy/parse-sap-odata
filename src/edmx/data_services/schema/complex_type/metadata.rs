@@ -14,19 +14,17 @@ pub enum ComplexTypeFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl ComplexTypeFieldNames {
-    pub fn value(prop_name: ComplexTypeFieldNames) -> Vec<u8> {
-        let member = match prop_name {
-            ComplexTypeFieldNames::Name => "name",
-            ComplexTypeFieldNames::Properties => "properties",
-        };
-
-        member.as_bytes().to_vec()
+    pub fn value(prop_name: ComplexTypeFieldNames) -> &'static [u8] {
+        match prop_name {
+            ComplexTypeFieldNames::Name => b"name",
+            ComplexTypeFieldNames::Properties => b"properties",
+        }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from(prop_md: ComplexTypeFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [&*ComplexTypeFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    [ComplexTypeFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
 }
 
 // Output a ComplexType instance as its own source code
@@ -38,7 +36,7 @@ impl std::fmt::Display for ComplexType {
             OPEN_CURLY,
             &*line_from(ComplexTypeFieldNames::Name, gen_owned_string(&self.name)),
             // Start vector of properties
-            &*ComplexTypeFieldNames::value(ComplexTypeFieldNames::Properties),
+            ComplexTypeFieldNames::value(ComplexTypeFieldNames::Properties),
             COLON,
             VEC_BANG,
             LINE_FEED,
@@ -46,7 +44,9 @@ impl std::fmt::Display for ComplexType {
         .concat();
 
         for prop in &self.properties {
-            out_buffer.append(&mut [format!("{prop}").as_bytes(), COMMA, LINE_FEED].concat());
+            out_buffer.append(&mut prop.to_string().into_bytes());
+            out_buffer.extend_from_slice(COMMA);
+            out_buffer.extend_from_slice(LINE_FEED);
         }
 
         // End vector of properties and ComplexType declaration

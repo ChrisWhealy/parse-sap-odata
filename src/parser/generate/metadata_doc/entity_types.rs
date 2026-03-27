@@ -16,7 +16,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: Vec<String>) -> V
         gen_comment_separator_for(ENTITY_TYPES),
         |mut acc, (idx, entity)| {
             if idx > 0 {
-                acc.append(&mut SEPARATOR.to_vec());
+                acc.extend_from_slice(SEPARATOR);
             }
 
             // Accumulate a list of subtypes used within the SAP Annotations field of each property
@@ -57,22 +57,20 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
 
         match prop.get_property_type() {
             PropertyType::Edm(_, _) => {
-                out_buffer.append(&mut [PUBLIC, prop_name.as_bytes(), COLON, PROPERTY, COMMA, LINE_FEED].concat());
+                gen_struct_field_into(&mut out_buffer, &prop_name, PROPERTY);
             },
 
             PropertyType::Complex(cmplx_type) => {
                 // Is the current property really a complex type or just a wrapper around a basic Rust type?
                 if skipped_cts.contains(&cmplx_type) {
                     // A basic Rust type's metadata is a Property instance
-                    out_buffer.append(&mut [PUBLIC, prop_name.as_bytes(), COLON, PROPERTY, COMMA, LINE_FEED].concat());
+                    gen_struct_field_into(&mut out_buffer, &prop_name, PROPERTY);
                 } else {
                     // This really is a complex type
                     let metadata_type_name =
                         [to_upper_camel_case(&cmplx_type).as_bytes(), METADATA.as_bytes()].concat();
 
-                    out_buffer.append(
-                        &mut [PUBLIC, prop_name.as_bytes(), COLON, &*metadata_type_name, COMMA, LINE_FEED].concat(),
-                    );
+                    gen_struct_field_into(&mut out_buffer, &prop_name, &metadata_type_name);
                 }
             },
 
@@ -81,7 +79,7 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &Vec<String>) -> V
         }
     }
 
-    out_buffer.append(&mut END_BLOCK.to_vec());
+    out_buffer.extend_from_slice(END_BLOCK);
     out_buffer
 }
 
@@ -93,30 +91,28 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     let keys = &entity.key.property_refs;
 
     // Add a get_key function
-    out_buffer.append(
-        &mut [
-            &gen_fn_signature(&KEY.to_vec(), true, false, None, Some(&gen_vector_of_type(PROPERTYREF))),
-            OPEN_CURLY,
-            LINE_FEED,
-            VEC_BANG,
-            keys.into_iter()
-                .map(|pr| format!("{pr}"))
-                .collect::<Vec<_>>()
-                .join(",")
-                .as_bytes(),
-            CLOSE_SQR,
-            CLOSE_CURLY,
-            LINE_FEED,
-        ]
-        .concat(),
+    out_buffer.extend_from_slice(&gen_fn_signature(KEY, true, false, None, Some(&gen_vector_of_type(PROPERTYREF))));
+    out_buffer.extend_from_slice(OPEN_CURLY);
+    out_buffer.extend_from_slice(LINE_FEED);
+    out_buffer.extend_from_slice(VEC_BANG);
+    out_buffer.extend_from_slice(
+        keys.into_iter()
+            .map(|pr| format!("{pr}"))
+            .collect::<Vec<_>>()
+            .join(",")
+            .as_bytes(),
     );
+    out_buffer.extend_from_slice(CLOSE_SQR);
+    out_buffer.extend_from_slice(CLOSE_CURLY);
+    out_buffer.extend_from_slice(LINE_FEED);
 
     let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
 
     // One getter function per property
     for prop in props {
-        let fn_name = format!("{PREFIX_SNAKE_GET}{}", odata_name_to_rust_safe_name(&prop.odata_name)).into_bytes();
+        let safe_name = odata_name_to_rust_safe_name(&prop.odata_name);
+        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), safe_name.as_bytes()].concat();
 
         let mut prop = prop.clone();
         prop.deserializer_fn = gen_custom_deserializer_info(&prop);
@@ -133,13 +129,8 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
                     if let Some(ct) = cts.iter().find(|ct| ct.name.eq(&cmplx_type)) {
                         gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, COMPLEX_TYPE, ct);
                     } else {
-                        let ct_names = cts.iter().fold(vec![], |mut acc, ct| {
-                            acc.push(ct.name.clone());
-                            acc
-                        });
-
                         println!("{err_msg}");
-                        println!("Found complex types {}", ct_names.join(","));
+                        println!("Found complex types {}", cts.iter().map(|ct| ct.name.as_str()).collect::<Vec<_>>().join(","));
                     }
                 } else {
                     println!("{err_msg}");
@@ -150,6 +141,6 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
         }
     }
 
-    out_buffer.append(&mut END_BLOCK.to_vec());
+    out_buffer.extend_from_slice(END_BLOCK);
     out_buffer
 }

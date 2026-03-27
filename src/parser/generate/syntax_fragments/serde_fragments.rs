@@ -54,7 +54,7 @@ pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_deserializable_struct(struct_name: &str) -> Vec<u8> {
     [
-        &*gen_derive_str(vec![
+        &*gen_derive_str(&[
             DeriveTraits::CLONE,
             DeriveTraits::DEBUG,
             DeriveTraits::DEFAULT,
