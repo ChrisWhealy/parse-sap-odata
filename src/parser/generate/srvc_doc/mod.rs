@@ -1,15 +1,15 @@
 mod complex_types;
 mod entity_types;
 
-use complex_types::gen_complex_types;
-use entity_types::gen_entity_types;
+use complex_types::gen_complex_types_into;
+use entity_types::gen_entity_types_into;
 
 use std::collections::BTreeSet;
 
 use crate::{
     edmx::data_services::schema::Schema,
     parser::generate::{
-        gen_comment_separator_for, gen_extern_crate_into, gen_module_start_into,
+        gen_comment_separator_for_into, gen_extern_crate_into, gen_module_start_into,
         syntax_fragments::{
             gen_use_path_into, CRATE_QUICK_XML, CRATE_SERDE, END_BLOCK, PATH_TO_SERDE_SERIALIZE_DESERIALIZE,
         },
@@ -28,20 +28,16 @@ pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     gen_use_path_into(&mut out_buffer, PATH_TO_SERDE_SERIALIZE_DESERIALIZE);
 
     if let Some(cts) = &schema.complex_types {
-        let (mut src, crs) = gen_complex_types(cts);
-        crate_refs.extend(crs);
-        out_buffer.append(&mut src);
+        crate_refs.extend(gen_complex_types_into(&mut out_buffer, cts));
     }
 
-    let (mut ets_src, crs) = gen_entity_types(&schema.entity_types);
-    crate_refs.extend(crs);
-    out_buffer.append(&mut ets_src);
+    crate_refs.extend(gen_entity_types_into(&mut out_buffer, &schema.entity_types));
 
     // Create enum + impl for the entity container element
     // This enum acts as a proxy for the list of Collections in the service document
     if let Some(ent_cont) = &schema.entity_container {
-        out_buffer.append(&mut gen_comment_separator_for("ENTITY SETS ENUM"));
-        out_buffer.append(&mut ent_cont.to_enum_with_impl());
+        gen_comment_separator_for_into(&mut out_buffer, "ENTITY SETS ENUM");
+        ent_cont.to_enum_with_impl_into(&mut out_buffer);
     }
 
     // End module definition

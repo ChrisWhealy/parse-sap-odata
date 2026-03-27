@@ -82,6 +82,14 @@ pub fn gen_comment_separator_for(something: &str) -> Vec<u8> {
     [LINE_FEED, SEPARATOR, COMMENT_LINE, something.as_bytes(), SEPARATOR].concat()
 }
 
+pub fn gen_comment_separator_for_into(out: &mut Vec<u8>, something: &str) {
+    out.extend_from_slice(LINE_FEED);
+    out.extend_from_slice(SEPARATOR);
+    out.extend_from_slice(COMMENT_LINE);
+    out.extend_from_slice(something.as_bytes());
+    out.extend_from_slice(SEPARATOR);
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start a module declaration
 pub fn gen_extern_crate(crate_name: &str) -> Vec<u8> {

@@ -8,6 +8,10 @@ use crate::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn gen_metadata_associations_into(out: &mut Vec<u8>, odata_srv_name: &str, schema: &Schema) {
+    out.append(&mut gen_metadata_associations(odata_srv_name, schema));
+}
+
 /// Generate association structs
 pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     // In a very small number of cases, it is possible for an OData service to contain zero associations
@@ -19,15 +23,18 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
     let enum_name = &*format!("{}{ASSOCIATIONS}", to_upper_camel_case(odata_srv_name));
 
     // Start Association enum block
-    let mut association_enum: Vec<u8> = [
-        LINE_FEED,
-        &*gen_comment_separator_for(ASSOCIATIONS),
-        &*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES),
-        LINE_FEED,
-        &*gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
-        &*gen_enum_start(enum_name),
-    ]
-    .concat();
+    let mut association_enum: Vec<u8> = Vec::new();
+
+    association_enum.extend_from_slice(LINE_FEED);
+    association_enum.extend_from_slice(&*gen_comment_separator_for(ASSOCIATIONS));
+    association_enum.extend_from_slice(&*gen_use_path(PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES));
+    association_enum.extend_from_slice(LINE_FEED);
+    association_enum.extend_from_slice(&*gen_derive_str(&[
+        DeriveTraits::COPY,
+        DeriveTraits::CLONE,
+        DeriveTraits::DEBUG,
+    ]));
+    association_enum.extend_from_slice(&*gen_enum_start(enum_name));
 
     // Start block containing Association impl functions related to enum iterator
     let mut association_impl_iter_fn = gen_enum_fn_iter_start(&enum_name);
@@ -66,7 +73,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
 
     // End Association enum block and function blocks
     association_enum.extend_from_slice(END_BLOCK);
-    association_impl_iter_fn.append(&mut gen_end_iter_fn());
+    association_impl_iter_fn.extend_from_slice(&*gen_end_iter_fn());
     association_impl_variant_name_fn.extend_from_slice(CLOSE_CURLY);
     association_impl_variant_name_fn.extend_from_slice(END_BLOCK);
 
@@ -86,6 +93,10 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Vec<u
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn gen_metadata_association_sets_into(out: &mut Vec<u8>, odata_srv_name: &str, schema: &Schema) {
+    out.extend_from_slice(&*gen_metadata_association_sets(odata_srv_name, schema));
+}
+
 /// Generate association structs
 pub fn gen_metadata_association_sets(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     // In a very small number of cases, it is possible for an OData service to contain zero association sets

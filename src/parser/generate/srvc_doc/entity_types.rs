@@ -11,8 +11,14 @@ use crate::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate entity type structs
-pub fn gen_entity_types(ets: &Vec<EntityType>) -> (Vec<u8>, Vec<String>) {
+/// Generate entity type structs, writing output into `out` and returning crate references
+pub fn gen_entity_types_into(out: &mut Vec<u8>, ets: &[EntityType]) -> Vec<String> {
+    let (mut src, crs) = gen_entity_types(ets);
+    out.append(&mut src);
+    crs
+}
+
+pub fn gen_entity_types(ets: &[EntityType]) -> (Vec<u8>, Vec<String>) {
     ets.into_iter().enumerate().fold(
         // Accumulator's initial value is a comment separator
         (gen_comment_separator_for(ENTITY_TYPES), vec![]),

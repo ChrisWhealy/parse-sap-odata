@@ -13,8 +13,14 @@ use crate::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate complex type structs
-pub fn gen_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<String>) {
+/// Generate complex type structs, writing output into `out` and returning crate references
+pub fn gen_complex_types_into(out: &mut Vec<u8>, cts: &[ComplexType]) -> Vec<String> {
+    let (mut src, crs) = gen_complex_types(cts);
+    out.append(&mut src);
+    crs
+}
+
+pub fn gen_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>) {
     let mut ignored_cts: usize = 0;
 
     cts.into_iter().enumerate().fold(

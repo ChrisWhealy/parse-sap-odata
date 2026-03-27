@@ -11,7 +11,13 @@ use crate::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate metadata complex type structs
+/// Generate metadata complex type structs, writing output into `out` and returning skipped type names
+pub fn gen_metadata_complex_types_into(out: &mut Vec<u8>, cts: &Vec<ComplexType>) -> Vec<String> {
+    let (mut src, skipped_cts) = gen_metadata_complex_types(cts);
+    out.append(&mut src);
+    skipped_cts
+}
+
 pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<String>) {
     let mut skipped_cts: Vec<String> = vec![];
     let mut ignored_cts: usize = 0;

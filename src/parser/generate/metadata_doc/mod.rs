@@ -31,18 +31,16 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     // Do we need to generate any complex types?
     let skipped_cts = if let Some(cts) = &schema.complex_types {
         gen_use_path_into(&mut out_buffer, PATH_TO_EDMX_COMPLEX_TYPE);
-        let (mut cmplx_type_metadata, skipped_cts) = gen_metadata_complex_types(cts);
-        out_buffer.append(&mut cmplx_type_metadata);
-        skipped_cts
+        gen_metadata_complex_types_into(&mut out_buffer, cts)
     } else {
         Vec::new()
     };
 
-    out_buffer.append(&mut gen_metadata_entity_types(&schema, &skipped_cts));
-    out_buffer.append(&mut gen_metadata_associations(odata_srv_name, &schema));
-    out_buffer.append(&mut gen_metadata_association_sets(odata_srv_name, &schema));
+    gen_metadata_entity_types_into(&mut out_buffer, &schema, &skipped_cts);
+    gen_metadata_associations_into(&mut out_buffer, odata_srv_name, &schema);
+    gen_metadata_association_sets_into(&mut out_buffer, odata_srv_name, &schema);
+
     // Close module definition
     out_buffer.extend_from_slice(END_BLOCK);
-
     out_buffer
 }

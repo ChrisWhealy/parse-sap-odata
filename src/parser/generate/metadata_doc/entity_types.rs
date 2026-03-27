@@ -8,7 +8,11 @@ use crate::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate metadata entity type structs
+/// Generate metadata entity type structs, writing output into `out`
+pub fn gen_metadata_entity_types_into(out: &mut Vec<u8>, schema: &Schema, skipped_cts: &[String]) {
+    out.append(&mut gen_metadata_entity_types(schema, skipped_cts));
+}
+
 pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec<u8> {
     let mut used_subtypes: BTreeSet<&[u8]> = BTreeSet::new();
     let ets: &Vec<EntityType> = &schema.entity_types;
@@ -93,7 +97,13 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     let keys = &entity.key.property_refs;
 
     // Add a get_key function
-    out_buffer.extend_from_slice(&gen_fn_signature(KEY, true, false, None, Some(&gen_vector_of_type(PROPERTYREF))));
+    out_buffer.extend_from_slice(&gen_fn_signature(
+        KEY,
+        true,
+        false,
+        None,
+        Some(&gen_vector_of_type(PROPERTYREF)),
+    ));
     out_buffer.extend_from_slice(OPEN_CURLY);
     out_buffer.extend_from_slice(LINE_FEED);
     out_buffer.extend_from_slice(VEC_BANG);
@@ -132,7 +142,10 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
                         gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, COMPLEX_TYPE, ct);
                     } else {
                         println!("{err_msg}");
-                        println!("Found complex types {}", cts.iter().map(|ct| ct.name.as_str()).collect::<Vec<_>>().join(","));
+                        println!(
+                            "Found complex types {}",
+                            cts.iter().map(|ct| ct.name.as_str()).collect::<Vec<_>>().join(",")
+                        );
                     }
                 } else {
                     println!("{err_msg}");
