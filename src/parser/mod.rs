@@ -14,10 +14,10 @@ pub trait AsRustSrc {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Format `buf` with rustfmt and write the result to `mod_name` in `$OUT_DIR`
-fn emit_module(mod_name: &str, buf: &Vec<u8>) {
+fn emit_module(mod_name: &str, buf: &[u8]) {
     match run_rustfmt(buf, mod_name) {
         Ok(formatted_bytes) => {
-            if let Err(err) = write_buffer_to_file(mod_name, formatted_bytes) {
+            if let Err(err) = write_buffer_to_file(mod_name, &formatted_bytes) {
                 println!("Error: writing module '{}' failed: {}", mod_name, err);
             }
         },

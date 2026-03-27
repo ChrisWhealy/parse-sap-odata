@@ -13,7 +13,7 @@ fn fetch_xml_as_string(filename: &str) -> Result<String> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Write buffer to $OUT_DIR
-pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) -> Result<()> {
+pub fn write_buffer_to_file(filename: &str, buf: &[u8]) -> Result<()> {
     let out_dir = env::var("OUT_DIR")?;
     let mut output_file = OpenOptions::new()
         .create(true)
@@ -21,7 +21,7 @@ pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) -> Result<()> {
         .truncate(true)
         .open(Path::new(&out_dir).join(filename))?;
 
-    output_file.write_all(&buf)?;
+    output_file.write_all(buf)?;
     Ok(())
 }
 

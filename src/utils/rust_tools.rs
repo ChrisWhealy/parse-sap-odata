@@ -14,7 +14,7 @@ use which::which;
 ///
 /// If `rustfmt` finds any errors, the source code is still written to `OUT_DIR`, but with `failed_` prefixed to the
 /// filename
-pub fn run_rustfmt(buffer: &Vec<u8>, file_name: &str) -> Result<Vec<u8>, anyhow::Error> {
+pub fn run_rustfmt(buffer: &[u8], file_name: &str) -> Result<Vec<u8>, anyhow::Error> {
     let rustfmt_path = which("rustfmt").with_context(|| "Cannot find `rustfmt` in the path.  Is it installed?")?;
 
     let mut fmt_proc = Command::new(rustfmt_path)
@@ -26,7 +26,7 @@ pub fn run_rustfmt(buffer: &Vec<u8>, file_name: &str) -> Result<Vec<u8>, anyhow:
 
     {
         let mut stdin = fmt_proc.stdin.take().unwrap();
-        stdin.write(buffer.into_iter().as_slice())?;
+        stdin.write_all(buffer)?;
     }
 
     let rustfmt_output = fmt_proc.wait_with_output()?;
