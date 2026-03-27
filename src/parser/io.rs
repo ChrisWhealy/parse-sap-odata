@@ -12,16 +12,16 @@ fn fetch_xml_as_string(filename: &str) -> Result<String, ParseError> {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Write buffer to $OUT_DIR
-pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) {
-    let out_dir = env::var_os("OUT_DIR").unwrap();
+pub fn write_buffer_to_file(filename: &str, buf: Vec<u8>) -> Result<(), ParseError> {
+    let out_dir = env::var("OUT_DIR").map_err(|e| ParseError { msg: e.to_string() })?;
     let mut output_file = OpenOptions::new()
         .create(true)
         .write(true)
         .truncate(true)
-        .open(Path::new(&out_dir).join(filename))
-        .unwrap();
+        .open(Path::new(&out_dir).join(filename))?;
 
-    output_file.write_all(&buf).unwrap();
+    output_file.write_all(&buf)?;
+    Ok(())
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
