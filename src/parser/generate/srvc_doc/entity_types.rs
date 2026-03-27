@@ -28,7 +28,7 @@ pub fn gen_entity_types(ets: &[EntityType]) -> (Vec<u8>, Vec<String>) {
             }
 
             let (mut et_src, mut crs) = gen_entity_type(entity);
-            if crs.len() > 0 {
+            if !crs.is_empty() {
                 acc_crs.append(&mut crs)
             }
             acc_src.append(&mut et_src);
