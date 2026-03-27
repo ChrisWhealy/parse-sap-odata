@@ -12,13 +12,13 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata complex type structs, writing output into `out` and returning skipped type names
-pub fn gen_metadata_complex_types_into(out: &mut Vec<u8>, cts: &Vec<ComplexType>) -> Vec<String> {
+pub fn gen_metadata_complex_types_into(out: &mut Vec<u8>, cts: &[ComplexType]) -> Vec<String> {
     let (mut src, skipped_cts) = gen_metadata_complex_types(cts);
     out.append(&mut src);
     skipped_cts
 }
 
-pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<String>) {
+pub fn gen_metadata_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>) {
     let mut skipped_cts: Vec<String> = vec![];
     let mut ignored_cts: usize = 0;
 
@@ -57,7 +57,9 @@ pub fn gen_metadata_complex_types(cts: &Vec<ComplexType>) -> (Vec<u8>, Vec<Strin
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// ComplexType -> Rust metadata declaration
 fn gen_metadata_complex_type(ct_name: &str, ct_props: &[&Property]) -> Vec<u8> {
-    let mut out_buffer: Vec<u8> = [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(ct_name)].concat();
+    let mut out_buffer: Vec<u8> = Vec::new();
+    out_buffer.extend_from_slice(RUSTC_ALLOW_DEAD_CODE);
+    out_buffer.extend_from_slice(&*gen_start_struct(ct_name));
 
     for ct_prop in ct_props {
         gen_struct_field_into(&mut out_buffer, &odata_name_to_rust_safe_name(&ct_prop.odata_name), PROPERTY);

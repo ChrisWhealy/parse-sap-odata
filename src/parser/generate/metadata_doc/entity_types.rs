@@ -51,7 +51,10 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Vec<
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
     let key_type = gen_vector_of_type(PROPERTYREF);
 
-    let mut out_buffer: Vec<u8> = [RUSTC_ALLOW_DEAD_CODE, &*gen_start_struct(&struct_name)].concat();
+    let mut out_buffer: Vec<u8> = Vec::new();
+    out_buffer.extend_from_slice(RUSTC_ALLOW_DEAD_CODE);
+    out_buffer.extend_from_slice(&*gen_start_struct(&struct_name));
+
     gen_struct_field_into(&mut out_buffer, FIELD_NAME_KEY, &key_type);
 
     let mut props: Vec<_> = entity.properties.iter().collect();
@@ -124,7 +127,9 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     // One getter function per property
     for prop in props {
         let safe_name = odata_name_to_rust_safe_name(&prop.odata_name);
-        let fn_name = [PREFIX_SNAKE_GET.as_bytes(), safe_name.as_bytes()].concat();
+        let mut fn_name: Vec<u8> = Vec::new();
+        fn_name.extend_from_slice(PREFIX_SNAKE_GET.as_ref());
+        fn_name.extend_from_slice(safe_name.as_ref());
 
         let mut prop = prop.clone();
         prop.deserializer_fn = gen_custom_deserializer_info(&prop);
