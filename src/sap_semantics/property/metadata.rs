@@ -75,8 +75,8 @@ impl SemanticType for SAPSemanticsProperty {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl OptionalSemanticType for Option<SAPSemanticsProperty> {
-    fn opt_sem_type<T: SemanticType>(&self, opt_self: &Option<T>) -> Vec<u8> {
-        if let Some(anno_type) = opt_self {
+    fn opt_sem_type(&self) -> Vec<u8> {
+        if let Some(anno_type) = self {
             [SOME, OPEN_PAREN, MY_NAME, COLON2, anno_type.member_name(), CLOSE_PAREN].concat()
         } else {
             NONE.to_vec()

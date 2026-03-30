@@ -32,7 +32,7 @@ pub trait AnnotationType {
 }
 
 pub trait OptionalAnnotationType {
-    fn opt_anno_type<T: AnnotationType>(&self, opt_self: &Option<T>) -> Vec<u8>;
+    fn opt_anno_type(&self) -> Vec<u8>;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

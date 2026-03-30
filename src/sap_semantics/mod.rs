@@ -8,5 +8,5 @@ pub trait SemanticType {
 }
 
 pub trait OptionalSemanticType {
-    fn opt_sem_type<T: SemanticType>(&self, opt_self: &Option<T>) -> Vec<u8>;
+    fn opt_sem_type(&self) -> Vec<u8>;
 }

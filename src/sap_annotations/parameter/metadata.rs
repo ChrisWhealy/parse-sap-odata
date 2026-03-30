@@ -22,8 +22,8 @@ impl AnnotationType for SAPParameterProperty {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl OptionalAnnotationType for Option<SAPParameterProperty> {
-    fn opt_anno_type<T: AnnotationType>(&self, opt_self: &Option<T>) -> Vec<u8> {
-        if let Some(anno_type) = opt_self {
+    fn opt_anno_type(&self) -> Vec<u8> {
+        if let Some(anno_type) = self {
             gen_some_value(&*generate_fq_name(MY_NAME, anno_type.member_name()))
         } else {
             NONE.to_vec()
