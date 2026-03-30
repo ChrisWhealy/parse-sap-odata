@@ -134,61 +134,58 @@ impl SAPAnnotationsProperty {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_into(out: &mut Vec<u8>, prop_md: SAPAnnotationsPropertyFieldNames, val: Vec<u8>) {
-    out.extend_from_slice(SAPAnnotationsPropertyFieldNames::value(prop_md));
-    out.extend_from_slice(COLON);
-    out.extend_from_slice(&val);
-    out.extend_from_slice(COMMA);
-    out.extend_from_slice(LINE_FEED);
+fn line_into(f: &mut Formatter<'_>, prop_md: SAPAnnotationsPropertyFieldNames, val: &[u8]) -> std::fmt::Result {
+    for s in [SAPAnnotationsPropertyFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
+        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
+    }
+    Ok(())
 }
 
 impl std::fmt::Display for SAPAnnotationsProperty {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut out_buffer: Vec<u8> = Vec::new();
-        out_buffer.extend_from_slice(MY_NAME);
-        out_buffer.extend_from_slice(OPEN_CURLY);
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Label, gen_opt_string(&self.label));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Heading, gen_opt_string(&self.heading));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::QuickInfo, gen_opt_string(&self.quick_info));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsUnicode, gen_bool_string(self.is_unicode));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Semantics, self.semantics.opt_sem_type(&self.semantics));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsCreatable, gen_bool_string(self.is_creatable));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsUpdatable, gen_bool_string(self.is_updatable));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsSortable, gen_bool_string(self.is_sortable));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsFilterable, gen_bool_string(self.is_filterable));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsAddressable, gen_bool_string(self.is_addressable));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsRequiredInFilter, gen_bool_string(self.is_required_in_filter));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::FilterRestriction, self.filter_restriction.opt_anno_type(&self.filter_restriction));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::FilterFor, gen_opt_string(&self.filter_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Text, gen_opt_string(&self.text));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::TextFor, gen_opt_string(&self.text_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Unit, gen_opt_string(&self.unit));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Precision, gen_opt_string(&self.precision));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsVisible, gen_bool_string(self.is_visible));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::FieldControl, self.field_control.opt_anno_type(&self.field_control));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::ValidationRegexp, gen_opt_string(&self.validation_regexp));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::DisplayFormat, self.display_format.opt_anno_type(&self.display_format));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::ValueList, gen_opt_string(&self.value_list));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::LowerBoundary, gen_opt_string(&self.lower_boundary));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::UpperBoundary, gen_opt_string(&self.upper_boundary));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::AggregationRole, self.aggregation_role.opt_anno_type(&self.aggregation_role));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::SuperOrdinate, gen_opt_string(&self.super_ordinate));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::AttributeFor, gen_opt_string(&self.attribute_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyNodeFor, gen_opt_string(&self.hierarchy_node_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyNodeExternalKeyFor, gen_opt_string(&self.hierarchy_node_external_key_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyLevelFor, gen_opt_string(&self.hierarchy_level_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyParentNodeFor, gen_opt_string(&self.hierarchy_parent_node_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyParentNavigationFor, gen_opt_string(&self.hierarchy_parent_navigation_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyDrillStateFor, gen_opt_string(&self.hierarchy_drill_state_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyNodeDescendantCountFor, gen_opt_string(&self.hierarchy_node_descendant_count_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchyPreorderRankFor, gen_opt_string(&self.hierarchy_preorder_rank_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HierarchySiblingRankFor, gen_opt_string(&self.hierarchy_sibling_rank_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::Parameter, self.parameter.opt_anno_type(&self.parameter));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::IsAnnotation, gen_bool_string(self.is_annotation));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::UpdatablePath, gen_opt_string(&self.updatable_path));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::PreserveFlagFor, gen_opt_string(&self.preserve_flag_for));
-        line_into(&mut out_buffer, SAPAnnotationsPropertyFieldNames::HasVariableScale, gen_bool_string(self.has_variable_scale));
-        out_buffer.extend_from_slice(CLOSE_CURLY);
-        write!(f, "{}", String::from_utf8(out_buffer).unwrap())
+        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
+        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Label, &gen_opt_string(&self.label))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Heading, &gen_opt_string(&self.heading))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::QuickInfo, &gen_opt_string(&self.quick_info))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsUnicode, &gen_bool_string(self.is_unicode))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Semantics, &self.semantics.opt_sem_type(&self.semantics))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsCreatable, &gen_bool_string(self.is_creatable))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsUpdatable, &gen_bool_string(self.is_updatable))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsSortable, &gen_bool_string(self.is_sortable))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsFilterable, &gen_bool_string(self.is_filterable))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsAddressable, &gen_bool_string(self.is_addressable))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsRequiredInFilter, &gen_bool_string(self.is_required_in_filter))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::FilterRestriction, &self.filter_restriction.opt_anno_type(&self.filter_restriction))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::FilterFor, &gen_opt_string(&self.filter_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Text, &gen_opt_string(&self.text))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::TextFor, &gen_opt_string(&self.text_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Unit, &gen_opt_string(&self.unit))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Precision, &gen_opt_string(&self.precision))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsVisible, &gen_bool_string(self.is_visible))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::FieldControl, &self.field_control.opt_anno_type(&self.field_control))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::ValidationRegexp, &gen_opt_string(&self.validation_regexp))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::DisplayFormat, &self.display_format.opt_anno_type(&self.display_format))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::ValueList, &gen_opt_string(&self.value_list))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::LowerBoundary, &gen_opt_string(&self.lower_boundary))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::UpperBoundary, &gen_opt_string(&self.upper_boundary))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::AggregationRole, &self.aggregation_role.opt_anno_type(&self.aggregation_role))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::SuperOrdinate, &gen_opt_string(&self.super_ordinate))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::AttributeFor, &gen_opt_string(&self.attribute_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyNodeFor, &gen_opt_string(&self.hierarchy_node_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyNodeExternalKeyFor, &gen_opt_string(&self.hierarchy_node_external_key_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyLevelFor, &gen_opt_string(&self.hierarchy_level_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyParentNodeFor, &gen_opt_string(&self.hierarchy_parent_node_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyParentNavigationFor, &gen_opt_string(&self.hierarchy_parent_navigation_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyDrillStateFor, &gen_opt_string(&self.hierarchy_drill_state_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyNodeDescendantCountFor, &gen_opt_string(&self.hierarchy_node_descendant_count_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchyPreorderRankFor, &gen_opt_string(&self.hierarchy_preorder_rank_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HierarchySiblingRankFor, &gen_opt_string(&self.hierarchy_sibling_rank_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::Parameter, &self.parameter.opt_anno_type(&self.parameter))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::IsAnnotation, &gen_bool_string(self.is_annotation))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::UpdatablePath, &gen_opt_string(&self.updatable_path))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::PreserveFlagFor, &gen_opt_string(&self.preserve_flag_for))?;
+        line_into(f, SAPAnnotationsPropertyFieldNames::HasVariableScale, &gen_bool_string(self.has_variable_scale))?;
+        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
     }
 }

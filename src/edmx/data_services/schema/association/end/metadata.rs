@@ -29,8 +29,11 @@ impl EndFieldNames {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_end(prop_md: EndFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [EndFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_end(f: &mut Formatter<'_>, prop_md: EndFieldNames, val: &[u8]) -> std::fmt::Result {
+    for s in [EndFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
+        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
+    }
+    Ok(())
 }
 
 impl std::fmt::Display for End {
@@ -54,17 +57,12 @@ impl std::fmt::Display for End {
             None
         };
 
-        let out_buffer: Vec<u8> = [
-            MY_NAME,
-            OPEN_CURLY,
-            &*line_from_end(EndFieldNames::Role, gen_owned_string(&self.role)),
-            &*line_from_end(EndFieldNames::EntitySet, gen_opt_string(&entity_set)),
-            &*line_from_end(EndFieldNames::EndType, gen_opt_string(&end_type)),
-            &*line_from_end(EndFieldNames::Multiplicity, gen_opt_string(&self.multiplicity)),
-            CLOSE_CURLY,
-        ]
-        .concat();
-
-        write!(f, "{}", String::from_utf8(out_buffer).unwrap())
+        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
+        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        line_from_end(f, EndFieldNames::Role, &gen_owned_string(&self.role))?;
+        line_from_end(f, EndFieldNames::EntitySet, &gen_opt_string(&entity_set))?;
+        line_from_end(f, EndFieldNames::EndType, &gen_opt_string(&end_type))?;
+        line_from_end(f, EndFieldNames::Multiplicity, &gen_opt_string(&self.multiplicity))?;
+        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
     }
 }

@@ -26,8 +26,11 @@ impl DependentFieldNames {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_dependent(prop_md: DependentFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [DependentFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+fn line_from_dependent(f: &mut Formatter<'_>, prop_md: DependentFieldNames, val: &[u8]) -> std::fmt::Result {
+    for s in [DependentFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
+        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
+    }
+    Ok(())
 }
 
 impl std::fmt::Display for Dependent {
@@ -36,21 +39,13 @@ impl std::fmt::Display for Dependent {
             .property_refs
             .iter()
             .map(|pr| format!("{},", pr))
-            .collect::<String>()
-            .into_bytes();
+            .collect::<String>();
+        let prop_refs_val = [VEC_BANG, prop_refs_str.as_bytes(), CLOSE_SQR].concat();
 
-        let out_buffer: Vec<u8> = [
-            MY_NAME,
-            OPEN_CURLY,
-            &*line_from_dependent(DependentFieldNames::Role, gen_owned_string(&self.role)),
-            &*line_from_dependent(
-                DependentFieldNames::PropertyRefs,
-                [VEC_BANG, &*prop_refs_str, CLOSE_SQR].concat(),
-            ),
-            CLOSE_CURLY,
-        ]
-        .concat();
-
-        write!(f, "{}", String::from_utf8(out_buffer).unwrap())
+        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
+        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        line_from_dependent(f, DependentFieldNames::Role, &gen_owned_string(&self.role))?;
+        line_from_dependent(f, DependentFieldNames::PropertyRefs, &prop_refs_val)?;
+        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
     }
 }

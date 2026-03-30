@@ -30,24 +30,21 @@ impl SAPAnnotationsAssociationSetFieldNames {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_into(out: &mut Vec<u8>, prop_md: SAPAnnotationsAssociationSetFieldNames, val: Vec<u8>) {
-    out.extend_from_slice(SAPAnnotationsAssociationSetFieldNames::value(prop_md));
-    out.extend_from_slice(COLON);
-    out.extend_from_slice(&val);
-    out.extend_from_slice(COMMA);
-    out.extend_from_slice(LINE_FEED);
+fn line_into(f: &mut Formatter<'_>, prop_md: SAPAnnotationsAssociationSetFieldNames, val: &[u8]) -> std::fmt::Result {
+    for s in [SAPAnnotationsAssociationSetFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
+        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
+    }
+    Ok(())
 }
 
 impl std::fmt::Display for SAPAnnotationsAssociationSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut out_buffer: Vec<u8> = Vec::new();
-        out_buffer.extend_from_slice(MY_NAME);
-        out_buffer.extend_from_slice(OPEN_CURLY);
-        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::ContentVersion, gen_owned_string(&self.content_version));
-        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::IsCreatable, gen_bool_string(self.is_creatable));
-        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::IsUpdatable, gen_bool_string(self.is_updatable));
-        line_into(&mut out_buffer, SAPAnnotationsAssociationSetFieldNames::IsDeletable, gen_bool_string(self.is_deletable));
-        out_buffer.extend_from_slice(CLOSE_CURLY);
-        write!(f, "{}", String::from_utf8(out_buffer).unwrap())
+        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
+        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        line_into(f, SAPAnnotationsAssociationSetFieldNames::ContentVersion, &gen_owned_string(&self.content_version))?;
+        line_into(f, SAPAnnotationsAssociationSetFieldNames::IsCreatable, &gen_bool_string(self.is_creatable))?;
+        line_into(f, SAPAnnotationsAssociationSetFieldNames::IsUpdatable, &gen_bool_string(self.is_updatable))?;
+        line_into(f, SAPAnnotationsAssociationSetFieldNames::IsDeletable, &gen_bool_string(self.is_deletable))?;
+        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
     }
 }

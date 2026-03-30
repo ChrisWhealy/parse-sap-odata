@@ -54,38 +54,35 @@ impl AssociationFieldNames {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_into_association(out: &mut Vec<u8>, prop_md: AssociationFieldNames, val: Vec<u8>) {
-    out.extend_from_slice(AssociationFieldNames::value(prop_md));
-    out.extend_from_slice(COLON);
-    out.extend_from_slice(&val);
-    out.extend_from_slice(COMMA);
-    out.extend_from_slice(LINE_FEED);
+fn line_into_association(f: &mut Formatter<'_>, prop_md: AssociationFieldNames, val: &[u8]) -> std::fmt::Result {
+    for s in [AssociationFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
+        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
+    }
+    Ok(())
 }
 
 impl std::fmt::Display for Association {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let ends = [
-            OPEN_SQR,
-            format!("{}", self.ends[0]).as_bytes(),
-            COMMA,
-            format!("{}", self.ends[1]).as_bytes(),
-            CLOSE_SQR,
-        ]
-        .concat();
-        let ref_con = if let Some(ref_con) = &self.referential_constraint {
-            [SOME, OPEN_PAREN, format!("{}", ref_con).as_bytes(), CLOSE_PAREN].concat()
+        let ends_str = format!("{}{}{}{}{}",
+            std::str::from_utf8(OPEN_SQR).unwrap(),
+            self.ends[0],
+            std::str::from_utf8(COMMA).unwrap(),
+            self.ends[1],
+            std::str::from_utf8(CLOSE_SQR).unwrap());
+        let ref_con_str;
+        let ref_con = if let Some(rc) = &self.referential_constraint {
+            ref_con_str = format!("{}{rc}{}", std::str::from_utf8(OPEN_PAREN).unwrap(), std::str::from_utf8(CLOSE_PAREN).unwrap());
+            [SOME, ref_con_str.as_bytes()].concat()
         } else {
             NONE.to_vec()
         };
 
-        let mut out_buffer: Vec<u8> = Vec::new();
-        out_buffer.extend_from_slice(MY_NAME);
-        out_buffer.extend_from_slice(OPEN_CURLY);
-        line_into_association(&mut out_buffer, AssociationFieldNames::Name, gen_owned_string(&self.name));
-        line_into_association(&mut out_buffer, AssociationFieldNames::SapContentVersion, gen_owned_string(&self.sap_content_version));
-        line_into_association(&mut out_buffer, AssociationFieldNames::Ends, ends);
-        line_into_association(&mut out_buffer, AssociationFieldNames::ReferentialConstraint, ref_con);
-        out_buffer.extend_from_slice(END_BLOCK);
-        write!(f, "{}", String::from_utf8(out_buffer).unwrap())
+        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
+        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        line_into_association(f, AssociationFieldNames::Name, &gen_owned_string(&self.name))?;
+        line_into_association(f, AssociationFieldNames::SapContentVersion, &gen_owned_string(&self.sap_content_version))?;
+        line_into_association(f, AssociationFieldNames::Ends, ends_str.as_bytes())?;
+        line_into_association(f, AssociationFieldNames::ReferentialConstraint, &ref_con)?;
+        write!(f, "{}", std::str::from_utf8(END_BLOCK).unwrap())
     }
 }
