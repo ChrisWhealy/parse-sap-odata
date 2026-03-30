@@ -16,33 +16,42 @@ impl EntityContainer {
         let mut enum_fn_iterator = gen_enum_fn_iter_start(&cont_name_camel);
         let mut enum_fn_variant_name = gen_enum_impl_fn_variant_name();
 
+        let mut entities_enum: Vec<u8> = Vec::new();
+        entities_enum.extend_from_slice(&*gen_derive_str(&[
+            DeriveTraits::COPY,
+            DeriveTraits::CLONE,
+            DeriveTraits::DEBUG,
+        ]));
+        entities_enum.extend_from_slice(RUSTC_ALLOW_DEAD_CODE);
+        entities_enum.extend_from_slice(&*gen_enum_start(&cont_name_camel));
+
         let mut entities_enum = self.entity_sets.iter().fold(
-            [
-                &*gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]),
-                RUSTC_ALLOW_DEAD_CODE,
-                &*gen_enum_start(&cont_name_camel),
-            ]
-            .concat(),
+            entities_enum,
             |mut acc, ent_set| {
                 let ent_set_name_camel = to_upper_camel_case(&ent_set.name);
                 gen_enum_variant_into(&mut acc, &ent_set_name_camel);
-                gen_enum_match_arm_into(&mut enum_fn_variant_name, &cont_name_camel, &ent_set_name_camel, &ent_set.name);
+                gen_enum_match_arm_into(
+                    &mut enum_fn_variant_name,
+                    &cont_name_camel,
+                    &ent_set_name_camel,
+                    &ent_set.name,
+                );
                 gen_fq_enum_variant_into(&mut enum_fn_iterator, &cont_name_camel, &ent_set_name_camel);
                 acc
             },
         );
 
         entities_enum.extend_from_slice(END_BLOCK);
-        enum_fn_iterator.append(&mut gen_end_iter_fn());
+        enum_fn_iterator.extend_from_slice(&gen_end_iter_fn());
         enum_fn_variant_name.extend_from_slice(CLOSE_CURLY);
         enum_fn_variant_name.extend_from_slice(END_BLOCK);
 
-        out.append(&mut entities_enum);
+        out.extend_from_slice(&entities_enum);
         out.extend_from_slice(RUSTC_ALLOW_DEAD_CODE);
-        out.append(&mut gen_impl_start_for(&cont_name_camel));
-        out.append(&mut enum_fn_iterator);
-        out.append(&mut enum_fn_variant_name);
-        out.append(&mut gen_enum_fn_variant_names(&cont_name_camel));
+        out.extend_from_slice(&gen_impl_start_for(&cont_name_camel));
+        out.extend_from_slice(&enum_fn_iterator);
+        out.extend_from_slice(&enum_fn_variant_name);
+        out.extend_from_slice(&gen_enum_fn_variant_names(&cont_name_camel));
         out.extend_from_slice(END_BLOCK);
     }
 

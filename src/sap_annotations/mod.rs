@@ -1,3 +1,4 @@
+use crate::parser::generate::syntax_fragments::{COLON2, DOUBLE_QUOTE};
 use crate::utils::{de_str_to_bool, default_false, default_true};
 
 pub mod aggregation_role;
@@ -13,6 +14,17 @@ pub mod navigation_property;
 pub mod parameter;
 pub mod property;
 pub mod schema;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pub fn generate_fq_name(my_name: &'static [u8], member_name: &'static [u8]) -> Vec<u8> {
+    let mut fq_name: Vec<u8> = Vec::new();
+    fq_name.extend_from_slice(DOUBLE_QUOTE);
+    fq_name.extend_from_slice(my_name);
+    fq_name.extend_from_slice(COLON2);
+    fq_name.extend_from_slice(member_name);
+    fq_name.extend_from_slice(DOUBLE_QUOTE);
+    fq_name
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AnnotationType {

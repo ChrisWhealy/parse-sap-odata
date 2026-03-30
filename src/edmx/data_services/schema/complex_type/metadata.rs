@@ -1,10 +1,9 @@
-use std::fmt::Formatter;
-
 use super::ComplexType;
 use crate::parser::generate::gen_owned_string;
 use crate::parser::generate::syntax_fragments::{
     CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, LINE_FEED, OPEN_CURLY, VEC_BANG,
 };
+use std::{fmt::Formatter, io::Write};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub enum ComplexTypeFieldNames {
@@ -24,33 +23,38 @@ impl ComplexTypeFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from(prop_md: ComplexTypeFieldNames, val: Vec<u8>) -> Vec<u8> {
-    [ComplexTypeFieldNames::value(prop_md), COLON, &val, COMMA, LINE_FEED].concat()
+    let mut line: Vec<u8> = Vec::new();
+
+    line.extend_from_slice(ComplexTypeFieldNames::value(prop_md));
+    line.extend_from_slice(COLON);
+    line.extend_from_slice(&*val);
+    line.extend_from_slice(COMMA);
+    line.extend_from_slice(LINE_FEED);
+    line
 }
 
 // Output a ComplexType instance as its own source code
 impl std::fmt::Display for ComplexType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut out_buffer: Vec<u8> = [
-            // Start ComplexType declaration
-            COMPLEX_TYPE,
-            OPEN_CURLY,
-            &*line_from(ComplexTypeFieldNames::Name, gen_owned_string(&self.name)),
-            // Start vector of properties
-            ComplexTypeFieldNames::value(ComplexTypeFieldNames::Properties),
-            COLON,
-            VEC_BANG,
-            LINE_FEED,
-        ]
-        .concat();
+        // Start ComplexType declaration
+        let mut out_buffer: Vec<u8> = Vec::new();
+        out_buffer.extend_from_slice(COMPLEX_TYPE);
+        out_buffer.extend_from_slice(OPEN_CURLY);
+        out_buffer.extend_from_slice(&line_from(ComplexTypeFieldNames::Name, gen_owned_string(&self.name)));
+        out_buffer.extend_from_slice(ComplexTypeFieldNames::value(ComplexTypeFieldNames::Properties));
+        out_buffer.extend_from_slice(COLON);
+        out_buffer.extend_from_slice(VEC_BANG);
+        out_buffer.extend_from_slice(LINE_FEED);
 
         for prop in &self.properties {
-            out_buffer.append(&mut prop.to_string().into_bytes());
+            write!(out_buffer, "{prop}").unwrap();
             out_buffer.extend_from_slice(COMMA);
             out_buffer.extend_from_slice(LINE_FEED);
         }
 
         // End vector of properties and ComplexType declaration
-        out_buffer.append(&mut [CLOSE_SQR, END_BLOCK].concat());
+        out_buffer.extend_from_slice(CLOSE_SQR);
+        out_buffer.extend_from_slice(END_BLOCK);
 
         write!(f, "{}", String::from_utf8(out_buffer).unwrap())
     }
