@@ -91,21 +91,24 @@ impl Property {
     }
 
     pub fn get_property_type(&self) -> PropertyType {
-        let type_name_parts = self.edm_type.split('.').collect::<Vec<&str>>();
-
         // The type name should contain exactly two parts
-        if type_name_parts.len() == 2 {
-            if type_name_parts[0].eq("Edm") {
-                let crate_ref = match type_name_parts[1] {
-                    "DateTime" | "DateTimeOffset" => CRATE_CHRONO.to_string(),
-                    "Decimal" => CRATE_RUST_DECIMAL.to_string(),
-                    "Guid" => CRATE_GUID.to_string(),
-                    _ => "".to_string(),
-                };
+        if let Some((part1, part2)) = self.edm_type.split_once('.') {
+            if !part1.is_empty() && !part2.is_empty() {
+                if part1.eq("Edm") {
+                    let crate_ref = match part2 {
+                        "DateTime" | "DateTimeOffset" => CRATE_CHRONO,
+                        "Decimal" => CRATE_RUST_DECIMAL,
+                        "Guid" => CRATE_GUID,
+                        _ => "",
+                    };
 
-                PropertyType::Edm(type_name_parts[1].to_owned(), crate_ref)
+                    PropertyType::Edm(part2.to_owned(), crate_ref.to_owned())
+                } else {
+                    PropertyType::Complex(part2.to_owned())
+                }
             } else {
-                PropertyType::Complex(type_name_parts[1].to_owned())
+                // TODO This is likely an error condition. Need to decide what to do here...
+                PropertyType::Unqualified
             }
         } else {
             // TODO This is likely an error condition. Need to decide what to do here...
@@ -137,7 +140,11 @@ impl std::fmt::Display for Property {
         line_into(f, PropertyFieldNames::Precision, &gen_opt_u16_string(self.precision))?;
         line_into(f, PropertyFieldNames::Scale, &gen_opt_u16_string(self.scale))?;
         line_into(f, PropertyFieldNames::ConcurrencyMode, &gen_opt_string(&self.concurrency_mode))?;
-        line_into(f, PropertyFieldNames::FcKeepInContent, &gen_bool_string(self.fc_keep_in_content))?;
+        line_into(
+            f,
+            PropertyFieldNames::FcKeepInContent,
+            &gen_bool_string(self.fc_keep_in_content),
+        )?;
         line_into(f, PropertyFieldNames::FcTargetPath, &gen_opt_string(&self.fc_target_path))?;
         line_into(f, PropertyFieldNames::SAPAnnotations, sap_annotations_str.as_bytes())?;
         line_into(f, PropertyFieldNames::DeserializerFn, &gen_owned_string(&self.deserializer_fn))?;

@@ -131,11 +131,12 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
         fn_name.extend_from_slice(PREFIX_SNAKE_GET.as_ref());
         fn_name.extend_from_slice(safe_name.as_ref());
 
-        let mut prop = prop.clone();
-        prop.deserializer_fn = gen_custom_deserializer_info(&prop);
-
         match prop.get_property_type() {
-            PropertyType::Edm(_, _) => gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, PROPERTY, &prop),
+            PropertyType::Edm(_, _) => {
+                let mut prop = prop.clone();
+                prop.deserializer_fn = gen_custom_deserializer_info(&prop);
+                gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, PROPERTY, &prop)
+            }
 
             PropertyType::Complex(cmplx_type) => {
                 let err_msg = format!(
