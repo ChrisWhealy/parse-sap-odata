@@ -7,7 +7,7 @@ use crate::{
     utils::to_upper_camel_case,
 };
 
-static MY_NAME: &[u8] = "End".as_bytes();
+static MY_NAME: &str = "End";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 enum EndFieldNames {
@@ -18,22 +18,19 @@ enum EndFieldNames {
 }
 
 impl EndFieldNames {
-    pub fn value(prop_name: EndFieldNames) -> &'static [u8] {
+    pub fn value(prop_name: EndFieldNames) -> &'static str {
         match prop_name {
-            EndFieldNames::Role => b"role",
-            EndFieldNames::EntitySet => b"entity_set",
-            EndFieldNames::EndType => b"end_type",
-            EndFieldNames::Multiplicity => b"multiplicity",
+            EndFieldNames::Role => "role",
+            EndFieldNames::EntitySet => "entity_set",
+            EndFieldNames::EndType => "end_type",
+            EndFieldNames::Multiplicity => "multiplicity",
         }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_end(f: &mut Formatter<'_>, prop_md: EndFieldNames, val: &[u8]) -> std::fmt::Result {
-    for s in [EndFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
-        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
-    }
-    Ok(())
+fn line_from_end(f: &mut Formatter<'_>, prop_md: EndFieldNames, val: &str) -> std::fmt::Result {
+    write!(f, "{}{}{}{}{}", EndFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
 }
 
 impl std::fmt::Display for End {
@@ -57,12 +54,12 @@ impl std::fmt::Display for End {
             None
         };
 
-        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
-        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        write!(f, "{MY_NAME}")?;
+        write!(f, "{OPEN_CURLY}")?;
         line_from_end(f, EndFieldNames::Role, &gen_owned_string(&self.role))?;
         line_from_end(f, EndFieldNames::EntitySet, &gen_opt_string(&entity_set))?;
         line_from_end(f, EndFieldNames::EndType, &gen_opt_string(&end_type))?;
         line_from_end(f, EndFieldNames::Multiplicity, &gen_opt_string(&self.multiplicity))?;
-        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
+        write!(f, "{CLOSE_CURLY}")
     }
 }

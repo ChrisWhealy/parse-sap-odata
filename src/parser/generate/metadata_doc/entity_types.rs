@@ -9,20 +9,20 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs, writing output into `out`
-pub fn gen_metadata_entity_types_into(out: &mut Vec<u8>, schema: &Schema, skipped_cts: &[String]) {
-    out.append(&mut gen_metadata_entity_types(schema, skipped_cts));
+pub fn gen_metadata_entity_types_into(out: &mut String, schema: &Schema, skipped_cts: &[String]) {
+    out.push_str(&gen_metadata_entity_types(schema, skipped_cts));
 }
 
-pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec<u8> {
-    let mut used_subtypes: BTreeSet<&[u8]> = BTreeSet::new();
+pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> String {
+    let mut used_subtypes: BTreeSet<&str> = BTreeSet::new();
     let ets: &Vec<EntityType> = &schema.entity_types;
 
-    let mut out_buffer: Vec<u8> = ets.into_iter().enumerate().fold(
+    let mut out_buffer: String = ets.into_iter().enumerate().fold(
         // Accumulator's initial value is an EntityType comment separator
         gen_comment_separator_for(ENTITY_TYPES),
         |mut acc, (idx, entity)| {
             if idx > 0 {
-                acc.extend_from_slice(SEPARATOR);
+                acc.push_str(SEPARATOR);
             }
 
             // Accumulate a set of subtypes used within the SAP Annotations field of each property
@@ -30,8 +30,8 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec
                 used_subtypes.extend(prop.sap_annotations.used_subtypes());
             }
 
-            acc.append(&mut gen_metadata_entity_type(entity, &skipped_cts));
-            acc.append(&mut gen_metadata_entity_type_impl(entity, &schema.complex_types));
+            acc.push_str(&gen_metadata_entity_type(entity, &skipped_cts));
+            acc.push_str(&gen_metadata_entity_type_impl(entity, &schema.complex_types));
 
             acc
         },
@@ -39,7 +39,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec
 
     // Add usage declaration(s) for all subtypes across all the SAPAnnotationsProperty instances
     for subtype in used_subtypes {
-        out_buffer.append(&mut gen_use_path(subtype));
+        out_buffer.push_str(&gen_use_path(subtype));
     }
 
     out_buffer
@@ -47,13 +47,13 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Vec
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM EntityType -> Rust metadata instance
-fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Vec<u8> {
+fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> String {
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
     let key_type = gen_vector_of_type(PROPERTYREF);
 
-    let mut out_buffer: Vec<u8> = Vec::new();
-    out_buffer.extend_from_slice(RUSTC_ALLOW_DEAD_CODE);
-    out_buffer.extend_from_slice(&*gen_start_struct(&struct_name));
+    let mut out_buffer = String::new();
+    out_buffer.push_str(RUSTC_ALLOW_DEAD_CODE);
+    out_buffer.push_str(&gen_start_struct(&struct_name));
 
     gen_struct_field_into(&mut out_buffer, FIELD_NAME_KEY, &key_type);
 
@@ -76,8 +76,7 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Vec<
                     gen_struct_field_into(&mut out_buffer, &prop_name, PROPERTY);
                 } else {
                     // This really is a complex type
-                    let metadata_type_name =
-                        [to_upper_camel_case(&cmplx_type).as_bytes(), METADATA.as_bytes()].concat();
+                    let metadata_type_name = format!("{}{}", to_upper_camel_case(&cmplx_type), METADATA);
 
                     gen_struct_field_into(&mut out_buffer, &prop_name, &metadata_type_name);
                 }
@@ -88,38 +87,37 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Vec<
         }
     }
 
-    out_buffer.extend_from_slice(END_BLOCK);
+    out_buffer.push_str(END_BLOCK);
     out_buffer
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generates the metadata getter functions for each property in the impl of an EntityType
-fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<ComplexType>>) -> Vec<u8> {
+fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<ComplexType>>) -> String {
     let struct_name = format!("{}{METADATA}", to_upper_camel_case(&entity.name));
-    let mut out_buffer: Vec<u8> = gen_impl_start_for(&struct_name);
+    let mut out_buffer: String = gen_impl_start_for(&struct_name);
     let keys = &entity.key.property_refs;
 
     // Add a get_key function
-    out_buffer.extend_from_slice(&gen_fn_signature(
+    out_buffer.push_str(&gen_fn_signature(
         KEY,
         true,
         false,
         None,
         Some(&gen_vector_of_type(PROPERTYREF)),
     ));
-    out_buffer.extend_from_slice(OPEN_CURLY);
-    out_buffer.extend_from_slice(LINE_FEED);
-    out_buffer.extend_from_slice(VEC_BANG);
-    out_buffer.extend_from_slice(
-        keys.into_iter()
+    out_buffer.push_str(OPEN_CURLY);
+    out_buffer.push_str(LINE_FEED);
+    out_buffer.push_str(VEC_BANG);
+    out_buffer.push_str(
+        &keys.into_iter()
             .map(|pr| format!("{pr}"))
             .collect::<Vec<_>>()
-            .join(",")
-            .as_bytes(),
+            .join(","),
     );
-    out_buffer.extend_from_slice(CLOSE_SQR);
-    out_buffer.extend_from_slice(CLOSE_CURLY);
-    out_buffer.extend_from_slice(LINE_FEED);
+    out_buffer.push_str(CLOSE_SQR);
+    out_buffer.push_str(CLOSE_CURLY);
+    out_buffer.push_str(LINE_FEED);
 
     let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
@@ -127,9 +125,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
     // One getter function per property
     for prop in props {
         let safe_name = odata_name_to_rust_safe_name(&prop.odata_name);
-        let mut fn_name: Vec<u8> = Vec::new();
-        fn_name.extend_from_slice(PREFIX_SNAKE_GET.as_ref());
-        fn_name.extend_from_slice(safe_name.as_ref());
+        let fn_name = format!("{PREFIX_SNAKE_GET}{safe_name}");
 
         match prop.get_property_type() {
             PropertyType::Edm(_, _) => {
@@ -162,6 +158,6 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
         }
     }
 
-    out_buffer.extend_from_slice(END_BLOCK);
+    out_buffer.push_str(END_BLOCK);
     out_buffer
 }

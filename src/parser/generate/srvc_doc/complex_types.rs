@@ -14,13 +14,13 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate complex type structs, writing output into `out` and returning crate references
-pub fn gen_complex_types_into(out: &mut Vec<u8>, cts: &[ComplexType]) -> Vec<String> {
-    let (mut src, crs) = gen_complex_types(cts);
-    out.append(&mut src);
+pub fn gen_complex_types_into(out: &mut String, cts: &[ComplexType]) -> Vec<String> {
+    let (src, crs) = gen_complex_types(cts);
+    out.push_str(&src);
     crs
 }
 
-pub fn gen_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>) {
+pub fn gen_complex_types(cts: &[ComplexType]) -> (String, Vec<String>) {
     let mut ignored_cts: usize = 0;
 
     cts.into_iter().enumerate().fold(
@@ -28,12 +28,12 @@ pub fn gen_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>) {
         (gen_comment_separator_for(COMPLEX_TYPES), vec![]),
         |(mut acc_src, mut acc_crate_refs), (idx, ct)| {
             if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                acc_src.extend_from_slice(SEPARATOR);
+                acc_src.push_str(SEPARATOR);
             }
 
-            if let (Some(mut ct_src), mut crs) = gen_complex_type_src(ct) {
+            if let (Some(ct_src), mut crs) = gen_complex_type_src(ct) {
                 acc_crate_refs.append(&mut crs);
-                acc_src.append(&mut ct_src);
+                acc_src.push_str(&ct_src);
             } else {
                 ignored_cts += 1;
             }
@@ -45,7 +45,7 @@ pub fn gen_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>) {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM Complex Type Instance -> Rust declaration
-fn gen_complex_type_src(ct: &ComplexType) -> (Option<Vec<u8>>, Vec<String>) {
+fn gen_complex_type_src(ct: &ComplexType) -> (Option<String>, Vec<String>) {
     let ct_name = to_upper_camel_case(&ct.name);
 
     // If the complex type contains only one field and that field's name suffix is a basic Rust type, then this complex
@@ -58,22 +58,22 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<Vec<u8>>, Vec<String>) {
         let mut props: Vec<_> = ct.properties.iter().collect();
         props.sort();
 
-        let mut out_buffer: Vec<u8> = props.into_iter().fold(
+        let mut out_buffer: String = props.into_iter().fold(
             // The accumulator's initial value is the derive and serde attributes, plus the struct declaration
             gen_deserializable_struct(&ct_name),
             |mut acc, prop| {
-                let (mut src, cr) = prop.to_rust();
+                let (src, cr) = prop.to_rust();
                 if !cr.is_empty() {
                     crate_refs.push(cr);
                 }
 
-                acc.append(&mut src);
+                acc.push_str(&src);
                 acc
             },
         );
 
-        out_buffer.extend_from_slice(END_BLOCK);
-        out_buffer.append(&mut gen_impl_from_str_for(&ct_name));
+        out_buffer.push_str(END_BLOCK);
+        out_buffer.push_str(&gen_impl_from_str_for(&ct_name));
         (Some(out_buffer), crate_refs)
     } else {
         // This is just a simple type with a complex

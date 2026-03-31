@@ -18,9 +18,9 @@ use entity_types::*;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate a module containing the metadata structs and their respective instances
-pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
+pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> String {
     let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}");
-    let mut out_buffer = Vec::new();
+    let mut out_buffer = String::new();
 
     // Start module definition
     gen_extern_crate_into(&mut out_buffer, CRATE_PARSE_SAP_ATOM_FEED);
@@ -41,6 +41,6 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     gen_metadata_association_sets_into(&mut out_buffer, odata_srv_name, &schema);
 
     // Close module definition
-    out_buffer.extend_from_slice(END_BLOCK);
+    out_buffer.push_str(END_BLOCK);
     out_buffer
 }

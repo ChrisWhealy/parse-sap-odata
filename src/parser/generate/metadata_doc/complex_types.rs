@@ -12,22 +12,22 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata complex type structs, writing output into `out` and returning skipped type names
-pub fn gen_metadata_complex_types_into(out: &mut Vec<u8>, cts: &[ComplexType]) -> Vec<String> {
-    let (mut src, skipped_cts) = gen_metadata_complex_types(cts);
-    out.append(&mut src);
+pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) -> Vec<String> {
+    let (src, skipped_cts) = gen_metadata_complex_types(cts);
+    out.push_str(&src);
     skipped_cts
 }
 
-pub fn gen_metadata_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>) {
+pub fn gen_metadata_complex_types(cts: &[ComplexType]) -> (String, Vec<String>) {
     let mut skipped_cts: Vec<String> = vec![];
     let mut ignored_cts: usize = 0;
 
-    let out_buffer: Vec<u8> =
+    let out_buffer: String =
         cts.into_iter()
             .enumerate()
             .fold(gen_comment_separator_for("COMPLEX TYPES"), |mut acc, (idx, ct)| {
                 if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                    acc.extend_from_slice(SEPARATOR);
+                    acc.push_str(SEPARATOR);
                 }
 
                 // If the complex type contains only one field and that field's name suffix is a basic Rust type, then
@@ -41,7 +41,7 @@ pub fn gen_metadata_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>)
                     let mut ct_props: Vec<_> = ct.properties.iter().collect();
                     ct_props.sort();
 
-                    acc.append(&mut gen_metadata_complex_type(&ct_name, &ct_props));
+                    acc.push_str(&gen_metadata_complex_type(&ct_name, &ct_props));
                 } else {
                     // This is just a simple type pretending to have a complex
                     skipped_cts.push(ct.name.clone());
@@ -56,15 +56,15 @@ pub fn gen_metadata_complex_types(cts: &[ComplexType]) -> (Vec<u8>, Vec<String>)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// ComplexType -> Rust metadata declaration
-fn gen_metadata_complex_type(ct_name: &str, ct_props: &[&Property]) -> Vec<u8> {
-    let mut out_buffer: Vec<u8> = Vec::new();
-    out_buffer.extend_from_slice(RUSTC_ALLOW_DEAD_CODE);
-    out_buffer.extend_from_slice(&*gen_start_struct(ct_name));
+fn gen_metadata_complex_type(ct_name: &str, ct_props: &[&Property]) -> String {
+    let mut out_buffer = String::new();
+    out_buffer.push_str(RUSTC_ALLOW_DEAD_CODE);
+    out_buffer.push_str(&gen_start_struct(ct_name));
 
     for ct_prop in ct_props {
         gen_struct_field_into(&mut out_buffer, &odata_name_to_rust_safe_name(&ct_prop.odata_name), PROPERTY);
     }
 
-    out_buffer.extend_from_slice(END_BLOCK);
+    out_buffer.push_str(END_BLOCK);
     out_buffer
 }

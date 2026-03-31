@@ -31,7 +31,7 @@ where
     D: Deserializer<'de>,
 {
     let s = String::deserialize(deserializer)?;
-    Ok(s.split(" ").map(str::to_owned).collect())
+    Ok(s.split_whitespace().map(str::to_owned).collect())
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

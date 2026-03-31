@@ -8,25 +8,25 @@ use crate::{
     sap_annotations::{generate_fq_name, AnnotationType, OptionalAnnotationType},
 };
 
-static MY_NAME: &[u8] = "SAPParameterProperty".as_bytes();
+static MY_NAME: &str = "SAPParameterProperty";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl AnnotationType for SAPParameterProperty {
-    fn member_name(&self) -> &'static [u8] {
+    fn member_name(&self) -> &'static str {
         match self {
-            SAPParameterProperty::Mandatory => b"Mandatory",
-            SAPParameterProperty::Optional => b"Optional",
+            SAPParameterProperty::Mandatory => "Mandatory",
+            SAPParameterProperty::Optional => "Optional",
         }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl OptionalAnnotationType for Option<SAPParameterProperty> {
-    fn opt_anno_type(&self) -> Vec<u8> {
+    fn opt_anno_type(&self) -> String {
         if let Some(anno_type) = self {
-            gen_some_value(&*generate_fq_name(MY_NAME, anno_type.member_name()))
+            gen_some_value(&generate_fq_name(MY_NAME, anno_type.member_name()))
         } else {
-            NONE.to_vec()
+            NONE.to_string()
         }
     }
 }

@@ -4,9 +4,9 @@ pub mod property;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait SemanticType {
-    fn member_name(&self) -> &'static [u8];
+    fn member_name(&self) -> &'static str;
 }
 
 pub trait OptionalSemanticType {
-    fn opt_sem_type(&self) -> Vec<u8>;
+    fn opt_sem_type(&self) -> String;
 }

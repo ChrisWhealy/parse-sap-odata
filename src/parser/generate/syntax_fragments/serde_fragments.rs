@@ -25,11 +25,11 @@ pub fn gen_decimal_deserializer_ref(is_nullable: bool, scale: Option<u16>) -> St
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_deserialize_with(fn_name: &str) -> Vec<u8> {
+pub fn gen_deserialize_with(fn_name: &str) -> String {
     [
-        "#[serde(deserialize_with = ".as_bytes(),
+        "#[serde(deserialize_with = ",
         DOUBLE_QUOTE,
-        fn_name.as_bytes(),
+        fn_name,
         DOUBLE_QUOTE,
         CLOSE_PAREN,
         CLOSE_SQR,
@@ -38,11 +38,11 @@ pub fn gen_deserialize_with(fn_name: &str) -> Vec<u8> {
     .concat()
 }
 
-pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
+pub fn gen_serde_rename(odata_name: &str) -> String {
     [
-        "#[serde(rename = ".as_bytes(),
+        "#[serde(rename = ",
         DOUBLE_QUOTE,
-        odata_name.as_bytes(),
+        odata_name,
         DOUBLE_QUOTE,
         CLOSE_PAREN,
         CLOSE_SQR,
@@ -52,18 +52,18 @@ pub fn gen_serde_rename(odata_name: &str) -> Vec<u8> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_deserializable_struct(struct_name: &str) -> Vec<u8> {
+pub fn gen_deserializable_struct(struct_name: &str) -> String {
     [
-        &*gen_derive_str(&[
+        &gen_derive_str(&[
             DeriveTraits::CLONE,
             DeriveTraits::DEBUG,
             DeriveTraits::DEFAULT,
             DeriveTraits::SERIALIZE,
             DeriveTraits::DESERIALIZE,
         ]),
-        "#[serde(rename_all = \"PascalCase\")]".as_bytes(),
+        "#[serde(rename_all = \"PascalCase\")]",
         LINE_FEED,
-        &*gen_start_struct(struct_name),
+        &gen_start_struct(struct_name),
     ]
     .concat()
 }

@@ -8,7 +8,7 @@ use crate::{
     parser::generate::gen_owned_string,
 };
 
-static MY_NAME: &[u8] = "Dependent".as_bytes();
+static MY_NAME: &str = "Dependent";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 enum DependentFieldNames {
@@ -17,20 +17,17 @@ enum DependentFieldNames {
 }
 
 impl DependentFieldNames {
-    fn value(prop_name: DependentFieldNames) -> &'static [u8] {
+    fn value(prop_name: DependentFieldNames) -> &'static str {
         match prop_name {
-            DependentFieldNames::Role => b"role",
-            DependentFieldNames::PropertyRefs => b"property_refs",
+            DependentFieldNames::Role => "role",
+            DependentFieldNames::PropertyRefs => "property_refs",
         }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_dependent(f: &mut Formatter<'_>, prop_md: DependentFieldNames, val: &[u8]) -> std::fmt::Result {
-    for s in [DependentFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
-        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
-    }
-    Ok(())
+fn line_from_dependent(f: &mut Formatter<'_>, prop_md: DependentFieldNames, val: &str) -> std::fmt::Result {
+    write!(f, "{}{}{}{}{}", DependentFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
 }
 
 impl std::fmt::Display for Dependent {
@@ -40,12 +37,12 @@ impl std::fmt::Display for Dependent {
             .iter()
             .map(|pr| format!("{},", pr))
             .collect::<String>();
-        let prop_refs_val = [VEC_BANG, prop_refs_str.as_bytes(), CLOSE_SQR].concat();
+        let prop_refs_val = [VEC_BANG, &prop_refs_str, CLOSE_SQR].concat();
 
-        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
-        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        write!(f, "{MY_NAME}")?;
+        write!(f, "{OPEN_CURLY}")?;
         line_from_dependent(f, DependentFieldNames::Role, &gen_owned_string(&self.role))?;
         line_from_dependent(f, DependentFieldNames::PropertyRefs, &prop_refs_val)?;
-        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
+        write!(f, "{CLOSE_CURLY}")
     }
 }

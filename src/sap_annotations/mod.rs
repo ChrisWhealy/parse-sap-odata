@@ -16,23 +16,17 @@ pub mod property;
 pub mod schema;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn generate_fq_name(my_name: &'static [u8], member_name: &'static [u8]) -> Vec<u8> {
-    let mut fq_name: Vec<u8> = Vec::new();
-    fq_name.extend_from_slice(DOUBLE_QUOTE);
-    fq_name.extend_from_slice(my_name);
-    fq_name.extend_from_slice(COLON2);
-    fq_name.extend_from_slice(member_name);
-    fq_name.extend_from_slice(DOUBLE_QUOTE);
-    fq_name
+pub fn generate_fq_name(my_name: &str, member_name: &str) -> String {
+    [DOUBLE_QUOTE, my_name, COLON2, member_name, DOUBLE_QUOTE].concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AnnotationType {
-    fn member_name(&self) -> &'static [u8];
+    fn member_name(&self) -> &'static str;
 }
 
 pub trait OptionalAnnotationType {
-    fn opt_anno_type(&self) -> Vec<u8>;
+    fn opt_anno_type(&self) -> String;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

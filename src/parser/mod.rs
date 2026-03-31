@@ -9,7 +9,7 @@ use io::*;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub trait AsRustSrc {
     type CrateRef;
-    fn to_rust(&self) -> (Vec<u8>, Self::CrateRef);
+    fn to_rust(&self) -> (String, Self::CrateRef);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,10 +43,10 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
             );
 
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                emit_module(&format!("{}.rs", odata_srv_name), &gen_srv_doc_module(odata_srv_name, &schema));
+                emit_module(&format!("{}.rs", odata_srv_name), gen_srv_doc_module(odata_srv_name, &schema).as_bytes());
                 emit_module(
                     &format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs"),
-                    &gen_metadata_module(odata_srv_name, &schema),
+                    gen_metadata_module(odata_srv_name, &schema).as_bytes(),
                 );
             } else {
                 println!(

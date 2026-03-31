@@ -5,14 +5,14 @@ use crate::{parser::generate::*, utils::to_upper_camel_case};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl Schema {
-    pub fn to_entity_types_enum(&self) -> Vec<u8> {
+    pub fn to_entity_types_enum(&self) -> String {
         let upper_camel_entity_types = format!("{}EntityTypes", to_upper_camel_case(&self.namespace));
 
         // Output the start of an enum that collates all the entity type names
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
         let mut output_enum = gen_derive_str(&[DeriveTraits::DEBUG]);
-        output_enum.append(&mut gen_enum_start(&upper_camel_entity_types));
+        output_enum.push_str(&gen_enum_start(&upper_camel_entity_types));
 
         // Output the start of the "variant_name" function within the enum implementation
         let mut fn_variant_name = gen_enum_impl_fn_variant_name();
@@ -31,14 +31,14 @@ impl Schema {
             );
         }
 
-        output_enum.extend_from_slice(END_BLOCK);
-        fn_variant_name.extend_from_slice(END_BLOCK);
-        fn_variant_name.extend_from_slice(END_BLOCK);
+        output_enum.push_str(END_BLOCK);
+        fn_variant_name.push_str(END_BLOCK);
+        fn_variant_name.push_str(END_BLOCK);
 
         [
-            &*output_enum,
-            &*gen_impl_start_for(&upper_camel_entity_types),
-            &*fn_variant_name,
+            &output_enum,
+            &gen_impl_start_for(&upper_camel_entity_types),
+            &fn_variant_name,
             END_BLOCK,
         ]
         .concat()

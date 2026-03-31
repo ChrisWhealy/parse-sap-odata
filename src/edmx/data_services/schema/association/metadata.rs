@@ -5,7 +5,7 @@ use crate::parser::generate::syntax_fragments::{
 };
 use crate::{edmx::data_services::schema::association::Association, parser::generate::gen_owned_string};
 
-static MY_NAME: &[u8] = "Association".as_bytes();
+static MY_NAME: &str = "Association";
 static UNDERSCORE: &str = "_";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,46 +43,38 @@ enum AssociationFieldNames {
 }
 
 impl AssociationFieldNames {
-    pub fn value(prop_name: AssociationFieldNames) -> &'static [u8] {
+    pub fn value(prop_name: AssociationFieldNames) -> &'static str {
         match prop_name {
-            AssociationFieldNames::Name => b"name",
-            AssociationFieldNames::SapContentVersion => b"sap_content_version",
-            AssociationFieldNames::Ends => b"ends",
-            AssociationFieldNames::ReferentialConstraint => b"referential_constraint",
+            AssociationFieldNames::Name => "name",
+            AssociationFieldNames::SapContentVersion => "sap_content_version",
+            AssociationFieldNames::Ends => "ends",
+            AssociationFieldNames::ReferentialConstraint => "referential_constraint",
         }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_into_association(f: &mut Formatter<'_>, prop_md: AssociationFieldNames, val: &[u8]) -> std::fmt::Result {
-    for s in [AssociationFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
-        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
-    }
-    Ok(())
+fn line_into_association(f: &mut Formatter<'_>, prop_md: AssociationFieldNames, val: &str) -> std::fmt::Result {
+    write!(f, "{}{}{}{}{}", AssociationFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
 }
 
 impl std::fmt::Display for Association {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let ends_str = format!("{}{}{}{}{}",
-            std::str::from_utf8(OPEN_SQR).unwrap(),
-            self.ends[0],
-            std::str::from_utf8(COMMA).unwrap(),
-            self.ends[1],
-            std::str::from_utf8(CLOSE_SQR).unwrap());
+        let ends_str = format!("{}{}{}{}{}", OPEN_SQR, self.ends[0], COMMA, self.ends[1], CLOSE_SQR);
         let ref_con_str;
         let ref_con = if let Some(rc) = &self.referential_constraint {
-            ref_con_str = format!("{}{rc}{}", std::str::from_utf8(OPEN_PAREN).unwrap(), std::str::from_utf8(CLOSE_PAREN).unwrap());
-            [SOME, ref_con_str.as_bytes()].concat()
+            ref_con_str = format!("{}{rc}{}", OPEN_PAREN, CLOSE_PAREN);
+            [SOME, &ref_con_str].concat()
         } else {
-            NONE.to_vec()
+            NONE.to_string()
         };
 
-        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
-        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        write!(f, "{MY_NAME}")?;
+        write!(f, "{OPEN_CURLY}")?;
         line_into_association(f, AssociationFieldNames::Name, &gen_owned_string(&self.name))?;
         line_into_association(f, AssociationFieldNames::SapContentVersion, &gen_owned_string(&self.sap_content_version))?;
-        line_into_association(f, AssociationFieldNames::Ends, ends_str.as_bytes())?;
+        line_into_association(f, AssociationFieldNames::Ends, &ends_str)?;
         line_into_association(f, AssociationFieldNames::ReferentialConstraint, &ref_con)?;
-        write!(f, "{}", std::str::from_utf8(END_BLOCK).unwrap())
+        write!(f, "{END_BLOCK}")
     }
 }

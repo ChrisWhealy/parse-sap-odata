@@ -8,26 +8,26 @@ use crate::{
     sap_annotations::{generate_fq_name, AnnotationType, OptionalAnnotationType},
 };
 
-static MY_NAME: &[u8] = "SAPDisplayFormatProperty".as_bytes();
+static MY_NAME: &str = "SAPDisplayFormatProperty";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl AnnotationType for SAPDisplayFormatProperty {
-    fn member_name(&self) -> &'static [u8] {
+    fn member_name(&self) -> &'static str {
         match self {
-            SAPDisplayFormatProperty::Date => b"Date",
-            SAPDisplayFormatProperty::NonNegative => b"NonNegative",
-            SAPDisplayFormatProperty::UpperCase => b"UpperCase",
+            SAPDisplayFormatProperty::Date => "Date",
+            SAPDisplayFormatProperty::NonNegative => "NonNegative",
+            SAPDisplayFormatProperty::UpperCase => "UpperCase",
         }
     }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl OptionalAnnotationType for Option<SAPDisplayFormatProperty> {
-    fn opt_anno_type(&self) -> Vec<u8> {
+    fn opt_anno_type(&self) -> String {
         if let Some(anno_type) = self {
-            gen_some_value(&*generate_fq_name(MY_NAME, anno_type.member_name()))
+            gen_some_value(&generate_fq_name(MY_NAME, anno_type.member_name()))
         } else {
-            NONE.to_vec()
+            NONE.to_string()
         }
     }
 }

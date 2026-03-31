@@ -8,7 +8,7 @@ use crate::{
     sap_semantics::OptionalSemanticType,
 };
 
-static MY_NAME: &[u8] = "SAPAnnotationsProperty".as_bytes();
+static MY_NAME: &str = "SAPAnnotationsProperty";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 enum SAPAnnotationsPropertyFieldNames {
@@ -57,49 +57,49 @@ enum SAPAnnotationsPropertyFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl SAPAnnotationsPropertyFieldNames {
-    pub fn value(prop_name: SAPAnnotationsPropertyFieldNames) -> &'static [u8] {
+    pub fn value(prop_name: SAPAnnotationsPropertyFieldNames) -> &'static str {
         match prop_name {
-            SAPAnnotationsPropertyFieldNames::Label => b"label",
-            SAPAnnotationsPropertyFieldNames::Heading => b"heading",
-            SAPAnnotationsPropertyFieldNames::QuickInfo => b"quick_info",
-            SAPAnnotationsPropertyFieldNames::IsUnicode => b"is_unicode",
-            SAPAnnotationsPropertyFieldNames::Semantics => b"semantics",
-            SAPAnnotationsPropertyFieldNames::IsCreatable => b"is_creatable",
-            SAPAnnotationsPropertyFieldNames::IsUpdatable => b"is_updatable",
-            SAPAnnotationsPropertyFieldNames::IsSortable => b"is_sortable",
-            SAPAnnotationsPropertyFieldNames::IsFilterable => b"is_filterable",
-            SAPAnnotationsPropertyFieldNames::IsAddressable => b"is_addressable",
-            SAPAnnotationsPropertyFieldNames::IsRequiredInFilter => b"is_required_in_filter",
-            SAPAnnotationsPropertyFieldNames::FilterRestriction => b"filter_restriction",
-            SAPAnnotationsPropertyFieldNames::FilterFor => b"filter_for",
-            SAPAnnotationsPropertyFieldNames::Text => b"text",
-            SAPAnnotationsPropertyFieldNames::TextFor => b"text_for",
-            SAPAnnotationsPropertyFieldNames::Unit => b"unit",
-            SAPAnnotationsPropertyFieldNames::Precision => b"precision",
-            SAPAnnotationsPropertyFieldNames::IsVisible => b"is_visible",
-            SAPAnnotationsPropertyFieldNames::FieldControl => b"field_control",
-            SAPAnnotationsPropertyFieldNames::ValidationRegexp => b"validation_regexp",
-            SAPAnnotationsPropertyFieldNames::DisplayFormat => b"display_format",
-            SAPAnnotationsPropertyFieldNames::ValueList => b"value_list",
-            SAPAnnotationsPropertyFieldNames::LowerBoundary => b"lower_boundary",
-            SAPAnnotationsPropertyFieldNames::UpperBoundary => b"upper_boundary",
-            SAPAnnotationsPropertyFieldNames::AggregationRole => b"aggregation_role",
-            SAPAnnotationsPropertyFieldNames::SuperOrdinate => b"super_ordinate",
-            SAPAnnotationsPropertyFieldNames::AttributeFor => b"attribute_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyNodeFor => b"hierarchy_node_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyNodeExternalKeyFor => b"hierarchy_node_external_key_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyLevelFor => b"hierarchy_level_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyParentNodeFor => b"hierarchy_parent_node_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyParentNavigationFor => b"hierarchy_parent_navigation_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyDrillStateFor => b"hierarchy_drill_state_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyNodeDescendantCountFor => b"hierarchy_node_descendant_count_for",
-            SAPAnnotationsPropertyFieldNames::HierarchyPreorderRankFor => b"hierarchy_preorder_rank_for",
-            SAPAnnotationsPropertyFieldNames::HierarchySiblingRankFor => b"hierarchy_sibling_rank_for",
-            SAPAnnotationsPropertyFieldNames::Parameter => b"parameter",
-            SAPAnnotationsPropertyFieldNames::IsAnnotation => b"is_annotation",
-            SAPAnnotationsPropertyFieldNames::UpdatablePath => b"updatable_path",
-            SAPAnnotationsPropertyFieldNames::PreserveFlagFor => b"preserve_flag_for",
-            SAPAnnotationsPropertyFieldNames::HasVariableScale => b"has_variable_scale",
+            SAPAnnotationsPropertyFieldNames::Label => "label",
+            SAPAnnotationsPropertyFieldNames::Heading => "heading",
+            SAPAnnotationsPropertyFieldNames::QuickInfo => "quick_info",
+            SAPAnnotationsPropertyFieldNames::IsUnicode => "is_unicode",
+            SAPAnnotationsPropertyFieldNames::Semantics => "semantics",
+            SAPAnnotationsPropertyFieldNames::IsCreatable => "is_creatable",
+            SAPAnnotationsPropertyFieldNames::IsUpdatable => "is_updatable",
+            SAPAnnotationsPropertyFieldNames::IsSortable => "is_sortable",
+            SAPAnnotationsPropertyFieldNames::IsFilterable => "is_filterable",
+            SAPAnnotationsPropertyFieldNames::IsAddressable => "is_addressable",
+            SAPAnnotationsPropertyFieldNames::IsRequiredInFilter => "is_required_in_filter",
+            SAPAnnotationsPropertyFieldNames::FilterRestriction => "filter_restriction",
+            SAPAnnotationsPropertyFieldNames::FilterFor => "filter_for",
+            SAPAnnotationsPropertyFieldNames::Text => "text",
+            SAPAnnotationsPropertyFieldNames::TextFor => "text_for",
+            SAPAnnotationsPropertyFieldNames::Unit => "unit",
+            SAPAnnotationsPropertyFieldNames::Precision => "precision",
+            SAPAnnotationsPropertyFieldNames::IsVisible => "is_visible",
+            SAPAnnotationsPropertyFieldNames::FieldControl => "field_control",
+            SAPAnnotationsPropertyFieldNames::ValidationRegexp => "validation_regexp",
+            SAPAnnotationsPropertyFieldNames::DisplayFormat => "display_format",
+            SAPAnnotationsPropertyFieldNames::ValueList => "value_list",
+            SAPAnnotationsPropertyFieldNames::LowerBoundary => "lower_boundary",
+            SAPAnnotationsPropertyFieldNames::UpperBoundary => "upper_boundary",
+            SAPAnnotationsPropertyFieldNames::AggregationRole => "aggregation_role",
+            SAPAnnotationsPropertyFieldNames::SuperOrdinate => "super_ordinate",
+            SAPAnnotationsPropertyFieldNames::AttributeFor => "attribute_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyNodeFor => "hierarchy_node_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyNodeExternalKeyFor => "hierarchy_node_external_key_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyLevelFor => "hierarchy_level_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyParentNodeFor => "hierarchy_parent_node_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyParentNavigationFor => "hierarchy_parent_navigation_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyDrillStateFor => "hierarchy_drill_state_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyNodeDescendantCountFor => "hierarchy_node_descendant_count_for",
+            SAPAnnotationsPropertyFieldNames::HierarchyPreorderRankFor => "hierarchy_preorder_rank_for",
+            SAPAnnotationsPropertyFieldNames::HierarchySiblingRankFor => "hierarchy_sibling_rank_for",
+            SAPAnnotationsPropertyFieldNames::Parameter => "parameter",
+            SAPAnnotationsPropertyFieldNames::IsAnnotation => "is_annotation",
+            SAPAnnotationsPropertyFieldNames::UpdatablePath => "updatable_path",
+            SAPAnnotationsPropertyFieldNames::PreserveFlagFor => "preserve_flag_for",
+            SAPAnnotationsPropertyFieldNames::HasVariableScale => "has_variable_scale",
         }
     }
 }
@@ -107,8 +107,8 @@ impl SAPAnnotationsPropertyFieldNames {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl SAPAnnotationsProperty {
     // Check for any used subtypes
-    pub fn used_subtypes(&self) -> Vec<&[u8]> {
-        let mut subtypes: Vec<&[u8]> = vec![];
+    pub fn used_subtypes(&self) -> Vec<&str> {
+        let mut subtypes: Vec<&str> = vec![];
 
         if self.semantics.is_some() {
             subtypes.push(PATH_TO_SAP_SEMANTICS_PROPERTY)
@@ -134,17 +134,14 @@ impl SAPAnnotationsProperty {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_into(f: &mut Formatter<'_>, prop_md: SAPAnnotationsPropertyFieldNames, val: &[u8]) -> std::fmt::Result {
-    for s in [SAPAnnotationsPropertyFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED] {
-        write!(f, "{}", std::str::from_utf8(s).unwrap())?;
-    }
-    Ok(())
+fn line_into(f: &mut Formatter<'_>, prop_md: SAPAnnotationsPropertyFieldNames, val: &str) -> std::fmt::Result {
+    write!(f, "{}{}{}{}{}", SAPAnnotationsPropertyFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
 }
 
 impl std::fmt::Display for SAPAnnotationsProperty {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", std::str::from_utf8(MY_NAME).unwrap())?;
-        write!(f, "{}", std::str::from_utf8(OPEN_CURLY).unwrap())?;
+        write!(f, "{MY_NAME}")?;
+        write!(f, "{OPEN_CURLY}")?;
         line_into(f, SAPAnnotationsPropertyFieldNames::Label, &gen_opt_string(&self.label))?;
         line_into(f, SAPAnnotationsPropertyFieldNames::Heading, &gen_opt_string(&self.heading))?;
         line_into(f, SAPAnnotationsPropertyFieldNames::QuickInfo, &gen_opt_string(&self.quick_info))?;
@@ -186,6 +183,6 @@ impl std::fmt::Display for SAPAnnotationsProperty {
         line_into(f, SAPAnnotationsPropertyFieldNames::UpdatablePath, &gen_opt_string(&self.updatable_path))?;
         line_into(f, SAPAnnotationsPropertyFieldNames::PreserveFlagFor, &gen_opt_string(&self.preserve_flag_for))?;
         line_into(f, SAPAnnotationsPropertyFieldNames::HasVariableScale, &gen_bool_string(self.has_variable_scale))?;
-        write!(f, "{}", std::str::from_utf8(CLOSE_CURLY).unwrap())
+        write!(f, "{CLOSE_CURLY}")
     }
 }

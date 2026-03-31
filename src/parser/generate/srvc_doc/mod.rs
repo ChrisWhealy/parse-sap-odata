@@ -17,9 +17,9 @@ use crate::{
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
-pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
+pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> String {
     let mut crate_refs: BTreeSet<String> = BTreeSet::new();
-    let mut out_buffer = Vec::new();
+    let mut out_buffer = String::new();
 
     // External crate dependencies on serde and quick_xml are always required
     gen_extern_crate_into(&mut out_buffer, CRATE_QUICK_XML);
@@ -41,7 +41,7 @@ pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> Vec<u8> {
     }
 
     // End module definition
-    out_buffer.extend_from_slice(END_BLOCK);
+    out_buffer.push_str(END_BLOCK);
 
     // Add any external crate references
     for cr in crate_refs {
