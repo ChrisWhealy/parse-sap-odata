@@ -21,7 +21,7 @@ static PATH_TO_COMPLEX_TYPE: &str = "./test_data/complex_type_pallet.xml";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl FromStr for ComplexType {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)
@@ -78,7 +78,7 @@ struct CtPallet {
 }
 
 impl FromStr for CtPallet {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)

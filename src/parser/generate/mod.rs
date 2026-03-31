@@ -67,7 +67,7 @@ pub fn gen_pub_getter_fn_of_type_into<T: std::fmt::Display>(
 pub fn gen_impl_from_str_for(struct_name: &str) -> String {
     static FN_START: &str = "impl std::str::FromStr for ";
     static FN_END: &str = " {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
     fn from_str(s: &str) -> Result<Self, Self::Err> { quick_xml::de::from_str(s) }
 }";
 

@@ -44,7 +44,7 @@ pub struct Edmx {
 }
 
 impl std::str::FromStr for Edmx {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)

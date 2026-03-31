@@ -12,7 +12,7 @@ static TRUE_STR: &str = "true";
 static FALSE_STR: &str = "false";
 
 impl FromStr for EntityType {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)

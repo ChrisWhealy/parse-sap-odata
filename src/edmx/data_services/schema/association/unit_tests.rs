@@ -9,7 +9,7 @@ use super::{metadata::normalise_assoc_name, Association};
 use crate::test_utils::*;
 
 impl FromStr for Association {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)

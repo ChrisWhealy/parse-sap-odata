@@ -8,7 +8,7 @@ use std::{
 use crate::{edmx::data_services::schema::association::end::End, test_utils::*};
 
 impl FromStr for End {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)

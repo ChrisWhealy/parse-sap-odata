@@ -9,7 +9,7 @@ use super::{AssociationSet, EntityContainer};
 use crate::test_utils::*;
 
 impl FromStr for EntityContainer {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)
@@ -17,7 +17,7 @@ impl FromStr for EntityContainer {
 }
 
 impl FromStr for AssociationSet {
-    type Err = quick_xml::DeError;
+    type Err = quick_xml::de::DeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         quick_xml::de::from_str(s)
