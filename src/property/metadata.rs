@@ -3,8 +3,8 @@ use std::fmt::Formatter;
 use crate::{
     parser::{
         generate::{
-            gen_bool_string, gen_custom_deserializer_info, gen_opt_string, gen_opt_u16_string, gen_option_of_type,
-            gen_owned_string, gen_struct_field_into, gen_vector_of_type,
+            gen_bool_string, gen_custom_deserializer_info, gen_opt_string_src, gen_opt_u16_string_src,
+            gen_owned_string_src, gen_struct_field_into, gen_vector_of_type_src,
             syntax_fragments::serde_fragments::{gen_deserialize_with, gen_serde_rename},
             syntax_fragments::*,
         },
@@ -84,7 +84,7 @@ impl PropertyFieldNames {
 impl Property {
     fn maybe_optional(&self, rust_type: &str) -> String {
         if self.nullable {
-            gen_option_of_type(rust_type)
+            format!("Option<{rust_type}>")
         } else {
             rust_type.to_string()
         }
@@ -119,7 +119,7 @@ impl Property {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_into(f: &mut Formatter<'_>, prop_md: PropertyFieldNames, val: &str) -> std::fmt::Result {
-    write!(f, "{}{}{}{}{}", PropertyFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
+    write!(f, "{}{COLON}{val}{COMMA}{LINE_FEED}", PropertyFieldNames::value(prop_md))
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,21 +130,29 @@ impl std::fmt::Display for Property {
         let sap_annotations_str = format!("{}", self.sap_annotations);
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_into(f, PropertyFieldNames::ODataName, &gen_owned_string(&self.odata_name))?;
-        line_into(f, PropertyFieldNames::EdmType, &gen_owned_string(&self.edm_type))?;
+        line_into(f, PropertyFieldNames::ODataName, &gen_owned_string_src(&self.odata_name))?;
+        line_into(f, PropertyFieldNames::EdmType, &gen_owned_string_src(&self.edm_type))?;
         line_into(f, PropertyFieldNames::Nullable, &gen_bool_string(self.nullable))?;
-        line_into(f, PropertyFieldNames::MaxLength, &gen_opt_u16_string(self.max_length))?;
-        line_into(f, PropertyFieldNames::Precision, &gen_opt_u16_string(self.precision))?;
-        line_into(f, PropertyFieldNames::Scale, &gen_opt_u16_string(self.scale))?;
-        line_into(f, PropertyFieldNames::ConcurrencyMode, &gen_opt_string(&self.concurrency_mode))?;
+        line_into(f, PropertyFieldNames::MaxLength, &gen_opt_u16_string_src(self.max_length))?;
+        line_into(f, PropertyFieldNames::Precision, &gen_opt_u16_string_src(self.precision))?;
+        line_into(f, PropertyFieldNames::Scale, &gen_opt_u16_string_src(self.scale))?;
+        line_into(
+            f,
+            PropertyFieldNames::ConcurrencyMode,
+            &gen_opt_string_src(&self.concurrency_mode),
+        )?;
         line_into(
             f,
             PropertyFieldNames::FcKeepInContent,
             &gen_bool_string(self.fc_keep_in_content),
         )?;
-        line_into(f, PropertyFieldNames::FcTargetPath, &gen_opt_string(&self.fc_target_path))?;
+        line_into(f, PropertyFieldNames::FcTargetPath, &gen_opt_string_src(&self.fc_target_path))?;
         line_into(f, PropertyFieldNames::SAPAnnotations, &sap_annotations_str)?;
-        line_into(f, PropertyFieldNames::DeserializerFn, &gen_owned_string(&self.deserializer_fn))?;
+        line_into(
+            f,
+            PropertyFieldNames::DeserializerFn,
+            &gen_owned_string_src(&self.deserializer_fn),
+        )?;
         write!(f, "{CLOSE_CURLY}")
     }
 }
@@ -177,7 +185,7 @@ impl AsRustSrc for Property {
 
                 // Generate source code for Rust type
                 let src = match edm_type.as_str() {
-                    "Binary" => self.maybe_optional(&gen_vector_of_type(U8)),
+                    "Binary" => self.maybe_optional(&gen_vector_of_type_src(U8)),
                     "Boolean" => self.maybe_optional(BOOLEAN),
                     "Byte" => U8.to_string(),
                     "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),

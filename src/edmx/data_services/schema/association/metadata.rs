@@ -3,7 +3,7 @@ use std::{collections::VecDeque, fmt::Formatter};
 use crate::parser::generate::syntax_fragments::{
     CLOSE_PAREN, CLOSE_SQR, COLON, COMMA, END_BLOCK, LINE_FEED, NONE, OPEN_CURLY, OPEN_PAREN, OPEN_SQR, SOME,
 };
-use crate::{edmx::data_services::schema::association::Association, parser::generate::gen_owned_string};
+use crate::{edmx::data_services::schema::association::Association, parser::generate::gen_owned_string_src};
 
 static MY_NAME: &str = "Association";
 static UNDERSCORE: &str = "_";
@@ -71,8 +71,8 @@ impl std::fmt::Display for Association {
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_into_association(f, AssociationFieldNames::Name, &gen_owned_string(&self.name))?;
-        line_into_association(f, AssociationFieldNames::SapContentVersion, &gen_owned_string(&self.sap_content_version))?;
+        line_into_association(f, AssociationFieldNames::Name, &gen_owned_string_src(&self.name))?;
+        line_into_association(f, AssociationFieldNames::SapContentVersion, &gen_owned_string_src(&self.sap_content_version))?;
         line_into_association(f, AssociationFieldNames::Ends, &ends_str)?;
         line_into_association(f, AssociationFieldNames::ReferentialConstraint, &ref_con)?;
         write!(f, "{END_BLOCK}")

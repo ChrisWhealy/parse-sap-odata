@@ -3,7 +3,7 @@ use std::fmt::Formatter;
 
 use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY};
 use crate::{
-    parser::generate::{gen_opt_string, gen_owned_string},
+    parser::generate::{gen_opt_string_src, gen_owned_string_src},
     utils::to_upper_camel_case,
 };
 
@@ -56,10 +56,10 @@ impl std::fmt::Display for End {
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from_end(f, EndFieldNames::Role, &gen_owned_string(&self.role))?;
-        line_from_end(f, EndFieldNames::EntitySet, &gen_opt_string(&entity_set))?;
-        line_from_end(f, EndFieldNames::EndType, &gen_opt_string(&end_type))?;
-        line_from_end(f, EndFieldNames::Multiplicity, &gen_opt_string(&self.multiplicity))?;
+        line_from_end(f, EndFieldNames::Role, &gen_owned_string_src(&self.role))?;
+        line_from_end(f, EndFieldNames::EntitySet, &gen_opt_string_src(&entity_set))?;
+        line_from_end(f, EndFieldNames::EndType, &gen_opt_string_src(&end_type))?;
+        line_from_end(f, EndFieldNames::Multiplicity, &gen_opt_string_src(&self.multiplicity))?;
         write!(f, "{CLOSE_CURLY}")
     }
 }

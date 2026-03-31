@@ -17,45 +17,44 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Str
     let mut used_subtypes: BTreeSet<&str> = BTreeSet::new();
     let ets: &Vec<EntityType> = &schema.entity_types;
 
-    let mut out_buffer: String = ets.into_iter().enumerate().fold(
-        // Accumulator's initial value is an EntityType comment separator
-        gen_comment_separator_for(ENTITY_TYPES),
-        |mut acc, (idx, entity)| {
-            if idx > 0 {
-                acc.push_str(SEPARATOR);
-            }
+    let mut out = String::new();
+    gen_comment_separator_for(&mut out, ENTITY_TYPES);
 
-            // Accumulate a set of subtypes used within the SAP Annotations field of each property
-            for prop in &entity.properties {
-                used_subtypes.extend(prop.sap_annotations.used_subtypes());
-            }
+    for (idx, entity) in ets.into_iter().enumerate() {
+        if idx > 0 {
+            out.push_str(SEPARATOR);
+        }
 
-            acc.push_str(&gen_metadata_entity_type(entity, &skipped_cts));
-            acc.push_str(&gen_metadata_entity_type_impl(entity, &schema.complex_types));
+        // Accumulate a set of subtypes used within the SAP Annotations field of each property
+        for prop in &entity.properties {
+            used_subtypes.extend(prop.sap_annotations.used_subtypes());
+        }
 
-            acc
-        },
-    );
+        gen_metadata_entity_type(&mut out, entity, &skipped_cts);
+        gen_metadata_entity_type_impl(&mut out, entity, &schema.complex_types);
+    }
 
     // Add usage declaration(s) for all subtypes across all the SAPAnnotationsProperty instances
     for subtype in used_subtypes {
-        out_buffer.push_str(&gen_use_path(subtype));
+        gen_use_path(&mut out, subtype);
     }
 
-    out_buffer
+    out
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM EntityType -> Rust metadata instance
-fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> String {
+fn gen_metadata_entity_type(out: &mut String, entity: &EntityType, skipped_cts: &[String]) {
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
-    let key_type = gen_vector_of_type(PROPERTYREF);
 
-    let mut out_buffer = String::new();
-    out_buffer.push_str(RUSTC_ALLOW_DEAD_CODE);
-    out_buffer.push_str(&gen_start_struct(&struct_name));
-
-    gen_struct_field_into(&mut out_buffer, FIELD_NAME_KEY, &key_type);
+    out.push_str(RUSTC_ALLOW_DEAD_CODE);
+    gen_start_struct(out, &struct_name);
+    out.push_str(PUBLIC);
+    out.push_str(FIELD_NAME_KEY);
+    out.push_str(COLON);
+    gen_vector_of_type(out, PROPERTYREF);
+    out.push_str(COMMA);
+    out.push_str(LINE_FEED);
 
     let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
@@ -66,19 +65,19 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Stri
 
         match prop.get_property_type() {
             PropertyType::Edm(_, _) => {
-                gen_struct_field_into(&mut out_buffer, &prop_name, PROPERTY);
+                gen_struct_field_into(out, &prop_name, PROPERTY);
             },
 
             PropertyType::Complex(cmplx_type) => {
                 // Is the current property really a complex type or just a wrapper around a basic Rust type?
                 if skipped_cts.contains(&cmplx_type) {
                     // A basic Rust type's metadata is a Property instance
-                    gen_struct_field_into(&mut out_buffer, &prop_name, PROPERTY);
+                    gen_struct_field_into(out, &prop_name, PROPERTY);
                 } else {
                     // This really is a complex type
                     let metadata_type_name = format!("{}{}", to_upper_camel_case(&cmplx_type), METADATA);
 
-                    gen_struct_field_into(&mut out_buffer, &prop_name, &metadata_type_name);
+                    gen_struct_field_into(out, &prop_name, &metadata_type_name);
                 }
             },
 
@@ -87,37 +86,30 @@ fn gen_metadata_entity_type(entity: &EntityType, skipped_cts: &[String]) -> Stri
         }
     }
 
-    out_buffer.push_str(END_BLOCK);
-    out_buffer
+    out.push_str(END_BLOCK);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generates the metadata getter functions for each property in the impl of an EntityType
-fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<ComplexType>>) -> String {
+fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts: &Option<Vec<ComplexType>>) {
     let struct_name = format!("{}{METADATA}", to_upper_camel_case(&entity.name));
-    let mut out_buffer: String = gen_impl_start_for(&struct_name);
+    gen_impl_start_for(out, &struct_name);
     let keys = &entity.key.property_refs;
 
-    // Add a get_key function
-    out_buffer.push_str(&gen_fn_signature(
-        KEY,
-        true,
-        false,
-        None,
-        Some(&gen_vector_of_type(PROPERTYREF)),
-    ));
-    out_buffer.push_str(OPEN_CURLY);
-    out_buffer.push_str(LINE_FEED);
-    out_buffer.push_str(VEC_BANG);
-    out_buffer.push_str(
+    // Add the key function
+    gen_fn_signature(out, KEY, true, false, None, Some("Vec<PropertyRef>"));
+    out.push_str(OPEN_CURLY);
+    out.push_str(LINE_FEED);
+    out.push_str(VEC_BANG);
+    out.push_str(
         &keys.into_iter()
             .map(|pr| format!("{pr}"))
             .collect::<Vec<_>>()
-            .join(","),
+            .join(",")
     );
-    out_buffer.push_str(CLOSE_SQR);
-    out_buffer.push_str(CLOSE_CURLY);
-    out_buffer.push_str(LINE_FEED);
+    out.push_str(CLOSE_SQR);
+    out.push_str(CLOSE_CURLY);
+    out.push_str(LINE_FEED);
 
     let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
@@ -131,8 +123,8 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
             PropertyType::Edm(_, _) => {
                 let mut prop = prop.clone();
                 prop.deserializer_fn = gen_custom_deserializer_info(&prop);
-                gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, PROPERTY, &prop)
-            }
+                gen_pub_getter_fn_of_type_into(out, &fn_name, PROPERTY, &prop)
+            },
 
             PropertyType::Complex(cmplx_type) => {
                 let err_msg = format!(
@@ -141,7 +133,7 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
 
                 if let Some(cts) = opt_cts {
                     if let Some(ct) = cts.iter().find(|ct| ct.name.eq(&cmplx_type)) {
-                        gen_pub_getter_fn_of_type_into(&mut out_buffer, &fn_name, COMPLEX_TYPE, ct);
+                        gen_pub_getter_fn_of_type_into(out, &fn_name, COMPLEX_TYPE, ct);
                     } else {
                         println!("{err_msg}");
                         println!(
@@ -158,6 +150,5 @@ fn gen_metadata_entity_type_impl(entity: &EntityType, opt_cts: &Option<Vec<Compl
         }
     }
 
-    out_buffer.push_str(END_BLOCK);
-    out_buffer
+    out.push_str(END_BLOCK);
 }

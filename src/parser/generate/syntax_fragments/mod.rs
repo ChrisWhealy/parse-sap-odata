@@ -117,8 +117,11 @@ pub static DERIVE_START: &str = "#[derive(";
 pub static RUSTC_ALLOW_DEAD_CODE: &str = "#[allow(dead_code)]\n";
 
 /// Paths to used types
-pub fn gen_use_path(path: &str) -> String {
-    [USE, path, SEMI_COLON, LINE_FEED].concat()
+pub fn gen_use_path(out: &mut String, path: &str) {
+    out.push_str(USE);
+    out.push_str(path);
+    out.push_str(SEMI_COLON);
+    out.push_str(LINE_FEED);
 }
 
 pub fn gen_use_path_into(out: &mut String, path: &str) {

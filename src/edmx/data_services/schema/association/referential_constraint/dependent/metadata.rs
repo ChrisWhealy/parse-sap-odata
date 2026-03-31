@@ -1,11 +1,9 @@
 use std::fmt::Formatter;
 
-use crate::parser::generate::syntax_fragments::{
-    CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, VEC_BANG,
-};
-use crate::{
-    edmx::data_services::schema::association::referential_constraint::dependent::Dependent,
-    parser::generate::gen_owned_string,
+use crate::edmx::data_services::schema::association::referential_constraint::dependent::Dependent;
+use crate::parser::generate::{
+    gen_owned_string_src,
+    syntax_fragments::{CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, VEC_BANG},
 };
 
 static MY_NAME: &str = "Dependent";
@@ -27,21 +25,25 @@ impl DependentFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_dependent(f: &mut Formatter<'_>, prop_md: DependentFieldNames, val: &str) -> std::fmt::Result {
-    write!(f, "{}{}{}{}{}", DependentFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
+    write!(
+        f,
+        "{}{}{}{}{}",
+        DependentFieldNames::value(prop_md),
+        COLON,
+        val,
+        COMMA,
+        LINE_FEED
+    )
 }
 
 impl std::fmt::Display for Dependent {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let prop_refs_str = self
-            .property_refs
-            .iter()
-            .map(|pr| format!("{},", pr))
-            .collect::<String>();
+        let prop_refs_str = self.property_refs.iter().map(|pr| format!("{},", pr)).collect::<String>();
         let prop_refs_val = [VEC_BANG, &prop_refs_str, CLOSE_SQR].concat();
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from_dependent(f, DependentFieldNames::Role, &gen_owned_string(&self.role))?;
+        line_from_dependent(f, DependentFieldNames::Role, &gen_owned_string_src(&self.role))?;
         line_from_dependent(f, DependentFieldNames::PropertyRefs, &prop_refs_val)?;
         write!(f, "{CLOSE_CURLY}")
     }

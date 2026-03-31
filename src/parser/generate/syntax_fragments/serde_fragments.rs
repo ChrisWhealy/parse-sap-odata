@@ -35,7 +35,7 @@ pub fn gen_deserialize_with(fn_name: &str) -> String {
         CLOSE_SQR,
         LINE_FEED,
     ]
-    .concat()
+        .concat()
 }
 
 pub fn gen_serde_rename(odata_name: &str) -> String {
@@ -48,22 +48,24 @@ pub fn gen_serde_rename(odata_name: &str) -> String {
         CLOSE_SQR,
         LINE_FEED,
     ]
-    .concat()
+        .concat()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_deserializable_struct(struct_name: &str) -> String {
-    [
+    let mut out = String::new();
+
+    out.push_str(
         &gen_derive_str(&[
             DeriveTraits::CLONE,
             DeriveTraits::DEBUG,
             DeriveTraits::DEFAULT,
             DeriveTraits::SERIALIZE,
             DeriveTraits::DESERIALIZE,
-        ]),
-        "#[serde(rename_all = \"PascalCase\")]",
-        LINE_FEED,
-        &gen_start_struct(struct_name),
-    ]
-    .concat()
+        ]));
+    out.push_str("#[serde(rename_all = \"PascalCase\")]");
+    out.push_str(LINE_FEED);
+    gen_start_struct(&mut out, struct_name);
+
+    out
 }

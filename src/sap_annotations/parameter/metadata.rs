@@ -1,10 +1,7 @@
 use super::SAPParameterProperty;
 
 use crate::{
-    parser::generate::{
-        gen_some_value,
-        syntax_fragments::NONE,
-    },
+    parser::generate::{gen_some_value, syntax_fragments::NONE},
     sap_annotations::{generate_fq_name, AnnotationType, OptionalAnnotationType},
 };
 
@@ -23,10 +20,13 @@ impl AnnotationType for SAPParameterProperty {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl OptionalAnnotationType for Option<SAPParameterProperty> {
     fn opt_anno_type(&self) -> String {
+        let mut out = String::new();
+
         if let Some(anno_type) = self {
-            gen_some_value(&generate_fq_name(MY_NAME, anno_type.member_name()))
+            gen_some_value(&mut out, &generate_fq_name(MY_NAME, anno_type.member_name()))
         } else {
-            NONE.to_string()
+            out.push_str(NONE)
         }
+        out
     }
 }

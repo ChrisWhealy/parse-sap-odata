@@ -22,25 +22,26 @@ pub fn gen_complex_types_into(out: &mut String, cts: &[ComplexType]) -> Vec<Stri
 
 pub fn gen_complex_types(cts: &[ComplexType]) -> (String, Vec<String>) {
     let mut ignored_cts: usize = 0;
+    let mut acc_src = String::new();
+    let mut acc_crate_refs: Vec<String> = Vec::new();
 
-    cts.into_iter().enumerate().fold(
-        // Accumulator's initial value is a comment separator
-        (gen_comment_separator_for(COMPLEX_TYPES), vec![]),
-        |(mut acc_src, mut acc_crate_refs), (idx, ct)| {
-            if idx > 0 && idx + ignored_cts + 1 < cts.len() {
-                acc_src.push_str(SEPARATOR);
-            }
+    // Start the source code with a comment separator line
+    gen_comment_separator_for(&mut acc_src, COMPLEX_TYPES);
 
-            if let (Some(ct_src), mut crs) = gen_complex_type_src(ct) {
-                acc_crate_refs.append(&mut crs);
-                acc_src.push_str(&ct_src);
-            } else {
-                ignored_cts += 1;
-            }
+    for (idx, ct) in cts.into_iter().enumerate() {
+        if idx > 0 && idx + ignored_cts + 1 < cts.len() {
+            acc_src.push_str(SEPARATOR);
+        }
 
-            (acc_src, acc_crate_refs)
-        },
-    )
+        if let (Some(ct_src), mut crs) = gen_complex_type_src(ct) {
+            acc_crate_refs.append(&mut crs);
+            acc_src.push_str(&ct_src);
+        } else {
+            ignored_cts += 1;
+        }
+    }
+
+    (acc_src, acc_crate_refs)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,7 +59,7 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<String>, Vec<String>) {
         let mut props: Vec<_> = ct.properties.iter().collect();
         props.sort();
 
-        let mut out_buffer: String = props.into_iter().fold(
+        let mut out: String = props.into_iter().fold(
             // The accumulator's initial value is the derive and serde attributes, plus the struct declaration
             gen_deserializable_struct(&ct_name),
             |mut acc, prop| {
@@ -72,9 +73,9 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<String>, Vec<String>) {
             },
         );
 
-        out_buffer.push_str(END_BLOCK);
-        out_buffer.push_str(&gen_impl_from_str_for(&ct_name));
-        (Some(out_buffer), crate_refs)
+        out.push_str(END_BLOCK);
+        gen_impl_from_str_for(&mut out, &ct_name);
+        (Some(out), crate_refs)
     } else {
         // This is just a simple type with a complex
         (None, vec![])

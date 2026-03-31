@@ -1,5 +1,5 @@
 use super::ComplexType;
-use crate::parser::generate::gen_owned_string;
+use crate::parser::generate::gen_owned_string_src;
 use crate::parser::generate::syntax_fragments::{
     CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, LINE_FEED, OPEN_CURLY, VEC_BANG,
 };
@@ -32,7 +32,7 @@ impl std::fmt::Display for ComplexType {
         // Start ComplexType declaration
         write!(f, "{COMPLEX_TYPE}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from(f, ComplexTypeFieldNames::Name, &gen_owned_string(&self.name))?;
+        line_from(f, ComplexTypeFieldNames::Name, &gen_owned_string_src(&self.name))?;
         write!(f, "{}", ComplexTypeFieldNames::value(ComplexTypeFieldNames::Properties))?;
         write!(f, "{COLON}")?;
         write!(f, "{VEC_BANG}")?;

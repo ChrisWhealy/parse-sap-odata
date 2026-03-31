@@ -19,22 +19,25 @@ pub fn gen_entity_types_into(out: &mut String, ets: &[EntityType]) -> Vec<String
 }
 
 pub fn gen_entity_types(ets: &[EntityType]) -> (String, Vec<String>) {
-    ets.into_iter().enumerate().fold(
-        // Accumulator's initial value is a comment separator
-        (gen_comment_separator_for(ENTITY_TYPES), vec![]),
-        |(mut acc_src, mut acc_crs), (idx, entity)| {
-            if idx > 0 {
-                acc_src.push_str(SEPARATOR);
-            }
+    let mut acc_src = String::new();
+    let mut acc_crs: Vec<String> = Vec::new();
 
-            let (et_src, mut crs) = gen_entity_type(entity);
-            if !crs.is_empty() {
-                acc_crs.append(&mut crs)
-            }
-            acc_src.push_str(&et_src);
-            (acc_src, acc_crs)
-        },
-    )
+    // Start source code with a comment separator
+    gen_comment_separator_for(&mut acc_src, ENTITY_TYPES);
+
+    for (idx, entity) in ets.into_iter().enumerate() {
+        if idx > 0 {
+            acc_src.push_str(SEPARATOR);
+        }
+
+        let (et_src, mut crs) = gen_entity_type(entity);
+        if !crs.is_empty() {
+            acc_crs.append(&mut crs)
+        }
+        acc_src.push_str(&et_src);
+    }
+
+    (acc_src, acc_crs)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,23 +48,22 @@ fn gen_entity_type(entity: &EntityType) -> (String, Vec<String>) {
     let mut props: Vec<_> = entity.properties.iter().collect();
     props.sort();
 
-    let mut out_buffer: String = props.into_iter().fold(
-        // Accumulator's initial value is the derive and serde attributes plus the struct declaration
-        gen_deserializable_struct(&struct_name),
-        |mut acc, prop| {
-            let (prop_src, cr) = prop.to_rust();
-            if !cr.is_empty() {
-                crate_refs.push(cr)
-            }
+    // Accumulator's initial value is the derive and serde attributes plus the struct declaration
+    let mut out = String::new();
+    out.push_str(&gen_deserializable_struct(&struct_name));
 
-            acc.push_str(&prop_src);
-            acc
-        },
-    );
+    for prop in props.into_iter() {
+        let (prop_src, cr) = prop.to_rust();
+        if !cr.is_empty() {
+            crate_refs.push(cr)
+        }
+
+        out.push_str(&prop_src);
+    }
 
     // End the struct declaration then generate from_str implementation
-    out_buffer.push_str(END_BLOCK);
-    out_buffer.push_str(&gen_impl_from_str_for(&struct_name));
+    out.push_str(END_BLOCK);
+    gen_impl_from_str_for(&mut out, &struct_name);
 
-    (out_buffer, crate_refs)
+    (out, crate_refs)
 }

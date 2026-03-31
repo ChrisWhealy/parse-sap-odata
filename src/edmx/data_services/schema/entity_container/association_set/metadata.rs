@@ -1,7 +1,7 @@
 use super::AssociationSet;
 use std::fmt::Formatter;
 
-use crate::parser::generate::gen_owned_string;
+use crate::parser::generate::gen_owned_string_src;
 use crate::parser::generate::syntax_fragments::{
     CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, OPEN_SQR,
 };
@@ -39,8 +39,8 @@ impl std::fmt::Display for AssociationSet {
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from_end(f, AssociationSetFieldNames::Name, &gen_owned_string(&self.name))?;
-        line_from_end(f, AssociationSetFieldNames::Association, &gen_owned_string(&self.association))?;
+        line_from_end(f, AssociationSetFieldNames::Name, &gen_owned_string_src(&self.name))?;
+        line_from_end(f, AssociationSetFieldNames::Association, &gen_owned_string_src(&self.association))?;
         line_from_end(f, AssociationSetFieldNames::Ends, &ends_str)?;
         line_from_end(f, AssociationSetFieldNames::SapAnnotations, &sap_annotations_str)?;
         write!(f, "{CLOSE_CURLY}")

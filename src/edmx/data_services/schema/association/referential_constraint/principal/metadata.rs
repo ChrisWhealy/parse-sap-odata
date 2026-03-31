@@ -5,7 +5,7 @@ use crate::parser::generate::syntax_fragments::{
 };
 use crate::{
     edmx::data_services::schema::association::referential_constraint::principal::Principal,
-    parser::generate::gen_owned_string,
+    parser::generate::gen_owned_string_src,
 };
 
 static MY_NAME: &str = "Principal";
@@ -41,7 +41,7 @@ impl std::fmt::Display for Principal {
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from_dependent(f, PrincipalFieldNames::Role, &gen_owned_string(&self.role))?;
+        line_from_dependent(f, PrincipalFieldNames::Role, &gen_owned_string_src(&self.role))?;
         line_from_dependent(f, PrincipalFieldNames::PropertyRefs, &prop_refs_val)?;
         write!(f, "{CLOSE_CURLY}")
     }
