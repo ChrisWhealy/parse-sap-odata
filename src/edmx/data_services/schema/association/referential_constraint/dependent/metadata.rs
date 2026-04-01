@@ -38,13 +38,19 @@ fn line_from_dependent(f: &mut Formatter<'_>, prop_md: DependentFieldNames, val:
 
 impl std::fmt::Display for Dependent {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let prop_refs_str = self.property_refs.iter().map(|pr| format!("{},", pr)).collect::<String>();
-        let prop_refs_val = [VEC_BANG, &prop_refs_str, CLOSE_SQR].concat();
+        let mut prop_refs_str = String::new();
+        prop_refs_str.push_str(VEC_BANG);
+
+        for pr in self.property_refs.iter() {
+            prop_refs_str.push_str(&pr.to_string());
+        }
+
+        prop_refs_str.push_str(CLOSE_SQR);
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
         line_from_dependent(f, DependentFieldNames::Role, &gen_owned_string_src(&self.role))?;
-        line_from_dependent(f, DependentFieldNames::PropertyRefs, &prop_refs_val)?;
+        line_from_dependent(f, DependentFieldNames::PropertyRefs, &prop_refs_str)?;
         write!(f, "{CLOSE_CURLY}")
     }
 }

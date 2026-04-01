@@ -17,6 +17,8 @@ pub static OPEN_SQR: &str = "[";
 pub static CLOSE_SQR: &str = "]";
 pub static OPEN_CURLY: &str = "{";
 pub static CLOSE_CURLY: &str = "}";
+pub static UNDERSCORE: &str = "_";
+pub static ONE: &str = "1";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Comment separators
@@ -66,6 +68,8 @@ pub static STRING: &str = "String";
 pub static VECTOR: &str = "Vec";
 pub static SELF_REF: &str = "&self";
 pub static STATIC_STR_REF: &str = "&'static str";
+pub static ATOM: &str = "atom";
+pub static JSON: &str = "JSON";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Macro calls

@@ -1,5 +1,7 @@
-use crate::parser::generate::syntax_fragments::{COLON2, DOUBLE_QUOTE};
-use crate::utils::{de_str_to_bool, default_false, default_true};
+use crate::{
+    parser::generate::syntax_fragments::{ATOM, COLON2, DOUBLE_QUOTE, JSON, ONE},
+    utils::{de_str_to_bool, default_false, default_true},
+};
 
 pub mod aggregation_role;
 pub mod association_set;
@@ -17,7 +19,14 @@ pub mod schema;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn generate_fq_name(my_name: &str, member_name: &str) -> String {
-    [DOUBLE_QUOTE, my_name, COLON2, member_name, DOUBLE_QUOTE].concat()
+    let mut out = String::new();
+
+    out.push_str(DOUBLE_QUOTE);
+    out.push_str(my_name);
+    out.push_str(COLON2);
+    out.push_str(member_name);
+    out.push_str(DOUBLE_QUOTE);
+    out
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,11 +37,6 @@ pub trait AnnotationType {
 pub trait OptionalAnnotationType {
     fn opt_anno_type(&self) -> String;
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-static ATOM: &str = "atom";
-static ONE: &str = "1";
-static JSON: &str = "json";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn default_sap_content_version() -> String {

@@ -76,10 +76,19 @@ impl SemanticType for SAPSemanticsProperty {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl OptionalSemanticType for Option<SAPSemanticsProperty> {
     fn opt_sem_type(&self) -> String {
+        let mut out = String::new();
+
         if let Some(anno_type) = self {
-            [SOME, OPEN_PAREN, MY_NAME, COLON2, anno_type.member_name(), CLOSE_PAREN].concat()
+            out.push_str(SOME);
+            out.push_str(OPEN_PAREN);
+            out.push_str(MY_NAME);
+            out.push_str(COLON2);
+            out.push_str(anno_type.member_name());
+            out.push_str(CLOSE_PAREN);
         } else {
-            NONE.to_string()
+            out.push_str(NONE);
         }
+
+        out
     }
 }
