@@ -9,6 +9,8 @@ use syntax_fragments::{
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Utility functions that insert some fragment of source code into a mutable string
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_struct_field_into(out: &mut String, field_name: &str, rust_type: &str) {
     out.push_str(PUBLIC);
     out.push_str(field_name);
@@ -50,33 +52,17 @@ pub fn gen_enum_match_arm_into(out: &mut String, enum_name: &str, variant_name: 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// `from_str` implementation for each entity set struct
-pub fn gen_impl_from_str_for(out: &mut String, struct_name: &str) {
-    static FN_START: &str = "impl std::str::FromStr for ";
-    static FN_END: &str = " {
-    type Err = quick_xml::de::DeError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> { quick_xml::de::from_str(s) }
-}";
-
-    out.push_str(LINE_FEED);
-    out.push_str(FN_START);
+pub fn gen_impl_from_str_for_into(out: &mut String, struct_name: &str) {
+    out.push_str("\nimpl std::str::FromStr for ");
     out.push_str(struct_name);
-    out.push_str(FN_END);
-    out.push_str(LINE_FEED);
+    out.push_str(" {\ntype Err = quick_xml::de::DeError;\nfn from_str(s: &str) -> Result<Self, Self::Err> { quick_xml::de::from_str(s) }\n}\n");
 }
 
-pub fn gen_comment_separator_for(out: &mut String, something: &str) {
+pub fn gen_comment_separator_for_into(out: &mut String, comment_text: &str) {
     out.push_str(LINE_FEED);
     out.push_str(SEPARATOR);
     out.push_str(COMMENT_LINE);
-    out.push_str(something);
-    out.push_str(SEPARATOR);
-}
-
-pub fn gen_comment_separator_for_into(out: &mut String, something: &str) {
-    out.push_str(LINE_FEED);
-    out.push_str(SEPARATOR);
-    out.push_str(COMMENT_LINE);
-    out.push_str(something);
+    out.push_str(comment_text);
     out.push_str(SEPARATOR);
 }
 
@@ -100,14 +86,14 @@ pub fn gen_module_start_into(out: &mut String, mod_name: &str) {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start and end of a struct declaration
-pub fn gen_start_struct(out: &mut String, struct_name: &str) {
+pub fn gen_start_struct_into(out: &mut String, struct_name: &str) {
     out.push_str("pub struct ");
     out.push_str(struct_name);
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
 }
 
-pub fn gen_end_iter_fn(out: &mut String) {
+pub fn gen_end_iter_fn_into(out: &mut String) {
     out.push_str(CLOSE_SQR);
     out.push_str(".iter().copied()");
     out.push_str(LINE_FEED);
@@ -116,7 +102,7 @@ pub fn gen_end_iter_fn(out: &mut String) {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start of an implementation
-pub fn gen_impl_start_for(out: &mut String, some_name: &str) {
+pub fn gen_impl_start_for_into(out: &mut String, some_name: &str) {
     out.push_str(IMPL);
     out.push_str(some_name);
     out.push_str(SPACE);
@@ -125,8 +111,8 @@ pub fn gen_impl_start_for(out: &mut String, some_name: &str) {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Generate function signature
-pub fn gen_fn_signature(
+/// Generate a function signature
+pub fn gen_fn_signature_into(
     out: &mut String,
     fn_name: &str,
     is_pub: bool,
@@ -162,8 +148,8 @@ pub fn gen_fn_signature(
 // Output the start of the "variant_name" function within an enum implementation
 //   pub const fn variant_name(&self) -> &'static str {↩︎
 //       match *self {↩︎
-pub fn gen_enum_impl_fn_variant_name(out: &mut String) {
-    gen_fn_signature(out, FN_NAME_VARIANT_NAME, true, true, Some(&[SELF_REF]), Some(STATIC_STR_REF));
+pub fn gen_enum_impl_fn_variant_name_into(out: &mut String) {
+    gen_fn_signature_into(out, FN_NAME_VARIANT_NAME, true, true, Some(&[SELF_REF]), Some(STATIC_STR_REF));
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
     out.push_str(MATCH_SELF);
@@ -179,7 +165,7 @@ pub fn gen_pub_getter_fn_of_type_into<T: std::fmt::Display>(
     return_type: &str,
     some_type: T,
 ) {
-    gen_fn_signature(out, fn_name, true, false, None, Some(return_type));
+    gen_fn_signature_into(out, fn_name, true, false, None, Some(return_type));
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
     out.push_str(&format!("{some_type}"));
@@ -190,7 +176,7 @@ pub fn gen_pub_getter_fn_of_type_into<T: std::fmt::Display>(
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start of an enum declaration
-pub fn gen_enum_start(out: &mut String, enum_name: &str) {
+pub fn gen_enum_start_into(out: &mut String, enum_name: &str) {
     out.push_str(PUBLIC);
     out.push_str(ENUM);
     out.push_str(enum_name);
@@ -198,28 +184,14 @@ pub fn gen_enum_start(out: &mut String, enum_name: &str) {
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
 }
-pub fn gen_enum_start_src(enum_name: &str) -> String {
-    let mut out = String::new();
-    gen_enum_start(&mut out, enum_name);
-    out
-}
 
-static VARIANT_NAMES_FN_START: &str = "
-pub fn variant_names() -> Vec<&'static str> {
-";
-static VARIANT_NAMES_FN_END: &str = "::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {
-  acc.push(&mut es.variant_name());
-  acc
-})
-}
-";
-pub fn gen_enum_fn_variant_names(out: &mut String, enum_name: &str) {
-    out.push_str(VARIANT_NAMES_FN_START);
+pub fn gen_enum_fn_variant_names_into(out: &mut String, enum_name: &str) {
+    out.push_str("\npub fn variant_names() -> Vec<&'static str> {\n");
     out.push_str(enum_name);
-    out.push_str(VARIANT_NAMES_FN_END);
+    out.push_str("::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {\n  acc.push(&mut es.variant_name());\n  acc\n})\n}\n");
 }
 
-pub fn gen_enum_fn_iter_start(out: &mut String, type_name: &str) {
+pub fn gen_enum_fn_iter_start_into(out: &mut String, type_name: &str) {
     out.push_str("pub fn iterator() -> impl Iterator<Item = ");
     out.push_str(type_name);
     out.push_str(CLOSE_ANGLE);
@@ -229,18 +201,15 @@ pub fn gen_enum_fn_iter_start(out: &mut String, type_name: &str) {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn gen_of_type(out: &mut String, t: &str) {
+pub fn gen_vector_of_type_into(out: &mut String, t: &str) {
+    out.push_str(VECTOR);
     out.push_str(OPEN_ANGLE);
     out.push_str(t);
     out.push_str(CLOSE_ANGLE);
 }
-pub fn gen_vector_of_type(out: &mut String, t: &str) {
-    out.push_str(VECTOR);
-    gen_of_type(out, t);
-}
 pub fn gen_vector_of_type_src(t: &str) -> String {
     let mut out = String::new();
-    gen_vector_of_type(&mut out, t);
+    gen_vector_of_type_into(&mut out, t);
     out
 }
 
@@ -262,7 +231,7 @@ pub fn gen_bool_string(b: bool) -> &'static str {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-pub fn gen_some_value(out: &mut String, val: &str) {
+pub fn gen_some_value_into(out: &mut String, val: &str) {
     out.push_str(SOME);
     out.push_str(OPEN_PAREN);
     out.push_str(val);

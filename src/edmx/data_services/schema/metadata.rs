@@ -13,11 +13,11 @@ impl Schema {
         // #[derive(Debug)]↩︎
         // pub enum <schema_namespace>EntityTypes {↩︎
         let mut output_enum = gen_derive_str(&[DeriveTraits::DEBUG]);
-        gen_enum_start(&mut output_enum, &upper_camel_entity_types);
+        gen_enum_start_into(&mut output_enum, &upper_camel_entity_types);
 
         // Output the start of the "variant_name" function within the enum implementation
         let mut fn_variant_name = String::new();
-        gen_enum_impl_fn_variant_name(&mut fn_variant_name);
+        gen_enum_impl_fn_variant_name_into(&mut fn_variant_name);
 
         // Create entity type enum
         for ent_type in self.entity_types.iter() {
@@ -38,7 +38,7 @@ impl Schema {
         fn_variant_name.push_str(END_BLOCK);
 
         out.push_str(&output_enum);
-        gen_impl_start_for(&mut out, &upper_camel_entity_types);
+        gen_impl_start_for_into(&mut out, &upper_camel_entity_types);
         out.push_str(&fn_variant_name);
         out.push_str(END_BLOCK);
 

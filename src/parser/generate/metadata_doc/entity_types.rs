@@ -18,7 +18,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Str
     let ets: &Vec<EntityType> = &schema.entity_types;
 
     let mut out = String::new();
-    gen_comment_separator_for(&mut out, ENTITY_TYPES);
+    gen_comment_separator_for_into(&mut out, ENTITY_TYPES);
 
     for (idx, entity) in ets.into_iter().enumerate() {
         if idx > 0 {
@@ -48,11 +48,11 @@ fn gen_metadata_entity_type(out: &mut String, entity: &EntityType, skipped_cts: 
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
 
     out.push_str(RUSTC_ALLOW_DEAD_CODE);
-    gen_start_struct(out, &struct_name);
+    gen_start_struct_into(out, &struct_name);
     out.push_str(PUBLIC);
     out.push_str(FIELD_NAME_KEY);
     out.push_str(COLON);
-    gen_vector_of_type(out, PROPERTYREF);
+    gen_vector_of_type_into(out, PROPERTYREF);
     out.push_str(COMMA);
     out.push_str(LINE_FEED);
 
@@ -93,11 +93,11 @@ fn gen_metadata_entity_type(out: &mut String, entity: &EntityType, skipped_cts: 
 /// Generates the metadata getter functions for each property in the impl of an EntityType
 fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts: &Option<Vec<ComplexType>>) {
     let struct_name = format!("{}{METADATA}", to_upper_camel_case(&entity.name));
-    gen_impl_start_for(out, &struct_name);
+    gen_impl_start_for_into(out, &struct_name);
     let keys = &entity.key.property_refs;
 
     // Add the key function
-    gen_fn_signature(out, KEY, true, false, None, Some("Vec<PropertyRef>"));
+    gen_fn_signature_into(out, KEY, true, false, None, Some("Vec<PropertyRef>"));
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
     out.push_str(VEC_BANG);

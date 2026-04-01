@@ -4,7 +4,7 @@ use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
     parser::{
         generate::{
-            gen_comment_separator_for, gen_impl_from_str_for,
+            gen_comment_separator_for_into, gen_impl_from_str_for_into,
             syntax_fragments::{serde_fragments::*, COMPLEX_TYPES, END_BLOCK, SEPARATOR},
         },
         AsRustSrc,
@@ -26,7 +26,7 @@ pub fn gen_complex_types(cts: &[ComplexType]) -> (String, Vec<String>) {
     let mut acc_crate_refs: Vec<String> = Vec::new();
 
     // Start the source code with a comment separator line
-    gen_comment_separator_for(&mut acc_src, COMPLEX_TYPES);
+    gen_comment_separator_for_into(&mut acc_src, COMPLEX_TYPES);
 
     for (idx, ct) in cts.into_iter().enumerate() {
         if idx > 0 && idx + ignored_cts + 1 < cts.len() {
@@ -74,7 +74,7 @@ fn gen_complex_type_src(ct: &ComplexType) -> (Option<String>, Vec<String>) {
         );
 
         out.push_str(END_BLOCK);
-        gen_impl_from_str_for(&mut out, &ct_name);
+        gen_impl_from_str_for_into(&mut out, &ct_name);
         (Some(out), crate_refs)
     } else {
         // This is just a simple type with a complex

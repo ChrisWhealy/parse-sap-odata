@@ -3,7 +3,7 @@ use check_keyword::CheckKeyword;
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
     parser::generate::{
-        gen_comment_separator_for, gen_start_struct, gen_struct_field_into,
+        gen_comment_separator_for_into, gen_start_struct_into, gen_struct_field_into,
         syntax_fragments::{END_BLOCK, METADATA, PROPERTY, RUSTC_ALLOW_DEAD_CODE, SEPARATOR},
     },
     utils::{odata_name_to_rust_safe_name, to_upper_camel_case},
@@ -15,7 +15,7 @@ pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) ->
     let mut skipped_cts: Vec<String> = vec![];
     let mut ignored_cts: usize = 0;
 
-    gen_comment_separator_for(out, "COMPLEX TYPES");
+    gen_comment_separator_for_into(out, "COMPLEX TYPES");
 
     for (idx, ct) in cts.into_iter().enumerate() {
         if idx > 0 && idx + ignored_cts + 1 < cts.len() {
@@ -34,7 +34,7 @@ pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) ->
             ct_props.sort();
 
             out.push_str(RUSTC_ALLOW_DEAD_CODE);
-            gen_start_struct(out, &ct_name);
+            gen_start_struct_into(out, &ct_name);
 
             for ct_prop in ct_props {
                 gen_struct_field_into(out, &odata_name_to_rust_safe_name(&ct_prop.odata_name), PROPERTY);

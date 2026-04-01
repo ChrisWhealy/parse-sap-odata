@@ -1,4 +1,4 @@
-use crate::parser::generate::gen_start_struct;
+use crate::parser::generate::gen_start_struct_into;
 
 use super::{
     derive_traits::{gen_derive_str, DeriveTraits},
@@ -65,7 +65,7 @@ pub fn gen_deserializable_struct(struct_name: &str) -> String {
         ]));
     out.push_str("#[serde(rename_all = \"PascalCase\")]");
     out.push_str(LINE_FEED);
-    gen_start_struct(&mut out, struct_name);
+    gen_start_struct_into(&mut out, struct_name);
 
     out
 }

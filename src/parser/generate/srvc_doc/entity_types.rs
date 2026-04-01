@@ -2,7 +2,7 @@ use crate::{
     edmx::data_services::schema::entity_type::EntityType,
     parser::{
         generate::{
-            gen_comment_separator_for, gen_impl_from_str_for,
+            gen_comment_separator_for_into, gen_impl_from_str_for_into,
             syntax_fragments::{serde_fragments::*, END_BLOCK, ENTITY_TYPES, SEPARATOR},
         },
         AsRustSrc,
@@ -23,7 +23,7 @@ pub fn gen_entity_types(ets: &[EntityType]) -> (String, Vec<String>) {
     let mut acc_crs: Vec<String> = Vec::new();
 
     // Start source code with a comment separator
-    gen_comment_separator_for(&mut acc_src, ENTITY_TYPES);
+    gen_comment_separator_for_into(&mut acc_src, ENTITY_TYPES);
 
     for (idx, entity) in ets.into_iter().enumerate() {
         if idx > 0 {
@@ -63,7 +63,7 @@ fn gen_entity_type(entity: &EntityType) -> (String, Vec<String>) {
 
     // End the struct declaration then generate from_str implementation
     out.push_str(END_BLOCK);
-    gen_impl_from_str_for(&mut out, &struct_name);
+    gen_impl_from_str_for_into(&mut out, &struct_name);
 
     (out, crate_refs)
 }
