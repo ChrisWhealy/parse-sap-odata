@@ -1,6 +1,12 @@
-use crate::parser::generate::syntax_fragments::{derive_traits::*, *};
 use crate::{
-    edmx::data_services::schema::entity_container::EntityContainer, parser::generate::*, utils::to_upper_camel_case,
+    edmx::data_services::schema::entity_container::EntityContainer,
+    parser::generate::{
+        gen_end_iter_fn_into, gen_enum_fn_iter_start_into, gen_enum_fn_variant_names_into,
+        gen_enum_impl_fn_variant_name_into, gen_enum_match_arm_into, gen_enum_start_into, gen_enum_variant_into,
+        gen_fq_enum_variant_into, gen_impl_start_for_into,
+        syntax_fragments::{derive_traits::*, *},
+    },
+    utils::to_upper_camel_case,
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11,11 +17,6 @@ impl EntityContainer {
     /// * `pub const fn variant_name(&self) -> &'static str { /* SNIP */ }`
     /// * `pub fn variant_names() -> Vec<&'static str> { /* SNIP */ }`
     pub fn to_enum_with_impl_into(&self, out: &mut String) {
-        out.push_str(&self.to_enum_with_impl());
-    }
-
-    pub fn to_enum_with_impl(&self) -> String {
-        let mut out = String::new();
         let cont_name_camel = to_upper_camel_case(&self.name);
 
         // Output the start of the "iterator" function within the enum implementation
@@ -60,12 +61,10 @@ impl EntityContainer {
         // #[allow(dead_code)]↩︎
         // impl <entity_container_name> {↩︎
         out.push_str(RUSTC_ALLOW_DEAD_CODE);
-        gen_impl_start_for_into(&mut out, &cont_name_camel);
+        gen_impl_start_for_into(out, &cont_name_camel);
         out.push_str(&enum_fn_iterator);
         out.push_str(&enum_fn_variant_name);
-        gen_enum_fn_variant_names_into(&mut out, &cont_name_camel);
+        gen_enum_fn_variant_names_into(out, &cont_name_camel);
         out.push_str(END_BLOCK);
-
-        out
     }
 }
