@@ -1,3 +1,4 @@
+use std::collections::BTreeSet;
 use check_keyword::CheckKeyword;
 
 use crate::{
@@ -11,8 +12,8 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata complex type structs, writing output into `out` and returning skipped type names
-pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) -> Vec<String> {
-    let mut skipped_cts: Vec<String> = vec![];
+pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) -> BTreeSet<String> {
+    let mut skipped_cts: BTreeSet<String> = BTreeSet::new();
     let mut ignored_cts: usize = 0;
 
     gen_comment_separator_for_into(out, "COMPLEX TYPES");
@@ -43,7 +44,7 @@ pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) ->
             out.push_str(END_BLOCK);
         } else {
             // This is just a simple type pretending to have a complex
-            skipped_cts.push(ct.name.clone());
+            skipped_cts.insert(ct.name.clone());
             ignored_cts += 1;
         }
     }

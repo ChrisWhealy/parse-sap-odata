@@ -9,11 +9,11 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs, writing output into `out`
-pub fn gen_metadata_entity_types_into(out: &mut String, schema: &Schema, skipped_cts: &[String]) {
+pub fn gen_metadata_entity_types_into(out: &mut String, schema: &Schema, skipped_cts: &BTreeSet<String>) {
     out.push_str(&gen_metadata_entity_types(schema, skipped_cts));
 }
 
-pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> String {
+pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &BTreeSet<String>) -> String {
     let mut used_subtypes: BTreeSet<&str> = BTreeSet::new();
     let ets: &Vec<EntityType> = &schema.entity_types;
 
@@ -44,7 +44,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &[String]) -> Str
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// EDM EntityType -> Rust metadata instance
-fn gen_metadata_entity_type(out: &mut String, entity: &EntityType, skipped_cts: &[String]) {
+fn gen_metadata_entity_type(out: &mut String, entity: &EntityType, skipped_cts: &BTreeSet<String>) {
     let struct_name = format!("{}{}", to_upper_camel_case(&entity.name), METADATA);
 
     out.push_str(RUSTC_ALLOW_DEAD_CODE);

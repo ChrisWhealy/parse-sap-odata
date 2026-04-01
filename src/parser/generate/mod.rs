@@ -168,7 +168,7 @@ pub fn gen_pub_getter_fn_of_type_into<T: std::fmt::Display>(
     gen_fn_signature_into(out, fn_name, true, false, None, Some(return_type));
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
-    out.push_str(&format!("{some_type}"));
+    out.push_str(&some_type.to_string());
     out.push_str(END_BLOCK);
     out.push_str(LINE_FEED);
 }

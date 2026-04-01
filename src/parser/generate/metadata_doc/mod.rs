@@ -2,6 +2,7 @@ mod associations;
 mod complex_types;
 mod entity_types;
 
+use std::collections::BTreeSet;
 use crate::{
     edmx::data_services::schema::Schema,
     parser::generate::{
@@ -33,7 +34,7 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> String {
         gen_use_path_into(&mut out, PATH_TO_EDMX_COMPLEX_TYPE);
         gen_metadata_complex_types_into(&mut out, cts)
     } else {
-        Vec::new()
+        BTreeSet::new()
     };
 
     gen_metadata_entity_types_into(&mut out, &schema, &skipped_cts);

@@ -101,10 +101,7 @@ pub static FIELD_NAME_KEY: &str = "key";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Function names used in enum implementations
 pub static FN_NAME_VARIANT_NAME: &str = "variant_name";
-pub static FN_NAME_VARIANT_NAMES: &str = "variant_names";
-pub static FN_VARIANT_NAME_START: &str = "pub const fn variant_name(&self) -> &'static str {
-    match *self {
-";
+pub static FN_VARIANT_NAME_START: &str = "pub const fn variant_name(&self) -> &'static str {\nmatch *self {\n";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // External crate dependencies
