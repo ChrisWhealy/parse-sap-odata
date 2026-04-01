@@ -1,9 +1,11 @@
 use super::End;
 use std::fmt::Formatter;
 
-use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY};
 use crate::{
-    parser::generate::{gen_opt_string_src, gen_owned_string_src},
+    parser::generate::{
+        gen_opt_string_src, gen_owned_string_src,
+        syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY},
+    },
     utils::to_upper_camel_case,
 };
 

@@ -5,8 +5,10 @@ use crate::{
         generate::{
             gen_bool_string, gen_custom_deserializer_info, gen_opt_string_src, gen_opt_u16_string_src,
             gen_owned_string_src, gen_struct_field_into, gen_vector_of_type_src,
-            syntax_fragments::serde_fragments::{gen_deserialize_with, gen_serde_rename},
-            syntax_fragments::*,
+            syntax_fragments::{
+                serde_fragments::{gen_deserialize_with, gen_serde_rename},
+                *,
+            },
         },
         AsRustSrc,
     },

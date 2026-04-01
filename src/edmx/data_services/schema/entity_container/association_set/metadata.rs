@@ -1,9 +1,9 @@
 use super::AssociationSet;
 use std::fmt::Formatter;
 
-use crate::parser::generate::gen_owned_string_src;
-use crate::parser::generate::syntax_fragments::{
-    CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, OPEN_SQR,
+use crate::parser::generate::{
+    gen_owned_string_src,
+    syntax_fragments::{CLOSE_CURLY, CLOSE_SQR, COLON, COMMA, LINE_FEED, OPEN_CURLY, OPEN_SQR},
 };
 
 static MY_NAME: &str = "AssociationSet";
@@ -29,7 +29,15 @@ impl AssociationSetFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(f: &mut Formatter<'_>, prop_md: AssociationSetFieldNames, val: &str) -> std::fmt::Result {
-    write!(f, "{}{}{}{}{}", AssociationSetFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
+    write!(
+        f,
+        "{}{}{}{}{}",
+        AssociationSetFieldNames::value(prop_md),
+        COLON,
+        val,
+        COMMA,
+        LINE_FEED
+    )
 }
 
 impl std::fmt::Display for AssociationSet {
@@ -37,7 +45,11 @@ impl std::fmt::Display for AssociationSet {
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
         line_from_end(f, AssociationSetFieldNames::Name, &gen_owned_string_src(&self.name))?;
-        line_from_end(f, AssociationSetFieldNames::Association, &gen_owned_string_src(&self.association))?;
+        line_from_end(
+            f,
+            AssociationSetFieldNames::Association,
+            &gen_owned_string_src(&self.association),
+        )?;
         line_from_end(
             f,
             AssociationSetFieldNames::Ends,

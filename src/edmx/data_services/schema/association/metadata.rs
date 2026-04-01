@@ -1,10 +1,15 @@
 use std::{collections::VecDeque, fmt::Formatter};
 
-use crate::parser::generate::syntax_fragments::{
-    CLOSE_PAREN, CLOSE_SQR, COLON, COMMA, END_BLOCK, LINE_FEED, NONE, OPEN_CURLY, OPEN_PAREN, OPEN_SQR, SOME,
-    UNDERSCORE,
+use crate::{
+    edmx::data_services::schema::association::Association,
+    parser::generate::{
+        gen_owned_string_src,
+        syntax_fragments::{
+            CLOSE_PAREN, CLOSE_SQR, COLON, COMMA, END_BLOCK, LINE_FEED, NONE, OPEN_CURLY, OPEN_PAREN, OPEN_SQR, SOME,
+            UNDERSCORE,
+        },
+    },
 };
-use crate::{edmx::data_services::schema::association::Association, parser::generate::gen_owned_string_src};
 
 static MY_NAME: &str = "Association";
 

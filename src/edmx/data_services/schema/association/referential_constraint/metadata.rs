@@ -1,7 +1,9 @@
 use std::fmt::Formatter;
 
-use crate::edmx::data_services::schema::association::referential_constraint::ReferentialConstraint;
-use crate::parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY};
+use crate::{
+    edmx::data_services::schema::association::referential_constraint::ReferentialConstraint,
+    parser::generate::syntax_fragments::{CLOSE_CURLY, COLON, COMMA, LINE_FEED, OPEN_CURLY},
+};
 
 static MY_NAME: &str = "ReferentialConstraint";
 
@@ -22,7 +24,15 @@ impl ReferentialConstraintFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_ref_con(f: &mut Formatter<'_>, prop_md: ReferentialConstraintFieldNames, val: &str) -> std::fmt::Result {
-    write!(f, "{}{}{}{}{}", ReferentialConstraintFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
+    write!(
+        f,
+        "{}{}{}{}{}",
+        ReferentialConstraintFieldNames::value(prop_md),
+        COLON,
+        val,
+        COMMA,
+        LINE_FEED
+    )
 }
 
 impl std::fmt::Display for ReferentialConstraint {

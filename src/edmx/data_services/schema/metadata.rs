@@ -1,7 +1,16 @@
 use super::Schema;
 
-use crate::parser::generate::syntax_fragments::{derive_traits::*, *};
-use crate::{parser::generate::*, utils::to_upper_camel_case};
+use crate::{
+    parser::generate::{
+        gen_enum_impl_fn_variant_name_into, gen_enum_match_arm_into, gen_enum_start_into, gen_enum_variant_into,
+        gen_impl_start_for_into,
+        syntax_fragments::{
+            derive_traits::{gen_derive_str, DeriveTraits},
+            END_BLOCK,
+        },
+    },
+    utils::to_upper_camel_case,
+};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 impl Schema {

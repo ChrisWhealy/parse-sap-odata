@@ -1,7 +1,8 @@
 use super::ComplexType;
-use crate::parser::generate::gen_owned_string_src;
-use crate::parser::generate::syntax_fragments::{
-    CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, LINE_FEED, OPEN_CURLY, VEC_BANG,
+
+use crate::parser::generate::{
+    gen_owned_string_src,
+    syntax_fragments::{CLOSE_SQR, COLON, COMMA, COMPLEX_TYPE, END_BLOCK, LINE_FEED, OPEN_CURLY, VEC_BANG},
 };
 use std::fmt::Formatter;
 
@@ -23,7 +24,15 @@ impl ComplexTypeFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from(f: &mut Formatter<'_>, prop_md: ComplexTypeFieldNames, val: &str) -> std::fmt::Result {
-    write!(f, "{}{}{}{}{}", ComplexTypeFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
+    write!(
+        f,
+        "{}{}{}{}{}",
+        ComplexTypeFieldNames::value(prop_md),
+        COLON,
+        val,
+        COMMA,
+        LINE_FEED
+    )
 }
 
 // Output a ComplexType instance as its own source code
