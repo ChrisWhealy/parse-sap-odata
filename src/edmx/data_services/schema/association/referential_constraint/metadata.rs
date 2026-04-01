@@ -27,13 +27,10 @@ fn line_from_ref_con(f: &mut Formatter<'_>, prop_md: ReferentialConstraintFieldN
 
 impl std::fmt::Display for ReferentialConstraint {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let principal_val = format!("{}", &self.principal);
-        let dependent_val = format!("{}", &self.dependent);
-
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from_ref_con(f, ReferentialConstraintFieldNames::Principal, &principal_val)?;
-        line_from_ref_con(f, ReferentialConstraintFieldNames::Dependent, &dependent_val)?;
+        line_from_ref_con(f, ReferentialConstraintFieldNames::Principal, &self.principal.to_string())?;
+        line_from_ref_con(f, ReferentialConstraintFieldNames::Dependent, &self.dependent.to_string())?;
         write!(f, "{CLOSE_CURLY}")
     }
 }

@@ -42,10 +42,8 @@ impl std::fmt::Display for End {
         };
 
         let end_type = if let Some(et) = &self.end_type {
-            let et_parts = et.split(".").collect::<Vec<&str>>();
-
-            Some(if et_parts.len() == 2 {
-                to_upper_camel_case(et_parts[1])
+            Some(if let Some((_, part2)) = et.split_once('.') {
+                to_upper_camel_case(part2)
             } else {
                 // This branch should never be used because SAP should always generate a fully qualified name...
                 et.to_owned()

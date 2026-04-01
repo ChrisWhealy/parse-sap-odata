@@ -29,7 +29,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
 
     association_enum.push_str(LINE_FEED);
     gen_comment_separator_for_into(&mut association_enum, ASSOCIATIONS);
-    gen_use_path(&mut association_enum, PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES);
+    gen_use_path_into(&mut association_enum, PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES);
     association_enum.push_str(LINE_FEED);
     association_enum.push_str(&gen_derive_str(&[
         DeriveTraits::COPY,
@@ -117,8 +117,8 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
     let mut association_set_enum = String::new();
     association_set_enum.push_str(LINE_FEED);
     gen_comment_separator_for_into(&mut association_set_enum, ASSOCIATION_SETS);
-    gen_use_path(&mut association_set_enum, PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS);
-    gen_use_path(&mut association_set_enum, PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET);
+    gen_use_path_into(&mut association_set_enum, PATH_TO_EDMX_SCHEMA_ASSOCIATION_SETS);
+    gen_use_path_into(&mut association_set_enum, PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET);
     association_set_enum.push_str(LINE_FEED);
     association_set_enum.push_str(&gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]));
     gen_enum_start_into(&mut association_set_enum, enum_name);

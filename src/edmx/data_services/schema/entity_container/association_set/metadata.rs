@@ -34,15 +34,16 @@ fn line_from_end(f: &mut Formatter<'_>, prop_md: AssociationSetFieldNames, val: 
 
 impl std::fmt::Display for AssociationSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let ends_str = format!("{}{}{}{}{}", OPEN_SQR, self.ends[0], COMMA, self.ends[1], CLOSE_SQR);
-        let sap_annotations_str = self.sap_annotations.to_string();
-
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
         line_from_end(f, AssociationSetFieldNames::Name, &gen_owned_string_src(&self.name))?;
         line_from_end(f, AssociationSetFieldNames::Association, &gen_owned_string_src(&self.association))?;
-        line_from_end(f, AssociationSetFieldNames::Ends, &ends_str)?;
-        line_from_end(f, AssociationSetFieldNames::SapAnnotations, &sap_annotations_str)?;
+        line_from_end(
+            f,
+            AssociationSetFieldNames::Ends,
+            &format!("{OPEN_SQR}{}{COMMA}{}{CLOSE_SQR}", self.ends[0], self.ends[1]),
+        )?;
+        line_from_end(f, AssociationSetFieldNames::SapAnnotations, &self.sap_annotations.to_string())?;
         write!(f, "{CLOSE_CURLY}")
     }
 }

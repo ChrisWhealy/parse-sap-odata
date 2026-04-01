@@ -74,16 +74,10 @@ fn line_into_association(f: &mut Formatter<'_>, prop_md: AssociationFieldNames, 
 
 impl std::fmt::Display for Association {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let ends_str = format!("{}{}{}{}{}", OPEN_SQR, self.ends[0], COMMA, self.ends[1], CLOSE_SQR);
-        let mut ref_con_str= String::new();
-
-        let _ = if let Some(rc) = &self.referential_constraint {
-            ref_con_str.push_str(SOME);
-            ref_con_str.push_str(OPEN_PAREN);
-            ref_con_str.push_str(&rc.to_string());
-            ref_con_str.push_str(CLOSE_PAREN);
+        let ref_con_str = if let Some(rc) = &self.referential_constraint {
+            format!("{SOME}{OPEN_PAREN}{rc}{CLOSE_PAREN}")
         } else {
-            ref_con_str.push_str(NONE);
+            NONE.to_string()
         };
 
         write!(f, "{MY_NAME}")?;
@@ -94,7 +88,11 @@ impl std::fmt::Display for Association {
             AssociationFieldNames::SapContentVersion,
             &gen_owned_string_src(&self.sap_content_version),
         )?;
-        line_into_association(f, AssociationFieldNames::Ends, &ends_str)?;
+        line_into_association(
+            f,
+            AssociationFieldNames::Ends,
+            &format!("{OPEN_SQR}{}{COMMA}{}{CLOSE_SQR}", self.ends[0], self.ends[1]),
+        )?;
         line_into_association(f, AssociationFieldNames::ReferentialConstraint, &ref_con_str)?;
         write!(f, "{END_BLOCK}")
     }

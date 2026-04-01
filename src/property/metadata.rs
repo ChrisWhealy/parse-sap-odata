@@ -127,7 +127,6 @@ fn line_into(f: &mut Formatter<'_>, prop_md: PropertyFieldNames, val: &str) -> s
 /// Generate the source code that declares an instance of this Property
 impl std::fmt::Display for Property {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let sap_annotations_str = format!("{}", self.sap_annotations);
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
         line_into(f, PropertyFieldNames::ODataName, &gen_owned_string_src(&self.odata_name))?;
@@ -147,7 +146,7 @@ impl std::fmt::Display for Property {
             &gen_bool_string(self.fc_keep_in_content),
         )?;
         line_into(f, PropertyFieldNames::FcTargetPath, &gen_opt_string_src(&self.fc_target_path))?;
-        line_into(f, PropertyFieldNames::SAPAnnotations, &sap_annotations_str)?;
+        line_into(f, PropertyFieldNames::SAPAnnotations, &self.sap_annotations.to_string())?;
         line_into(
             f,
             PropertyFieldNames::DeserializerFn,
@@ -166,7 +165,7 @@ impl AsRustSrc for Property {
     fn to_rust(&self) -> (String, Self::CrateRef) {
         let mut out_buffer = String::new();
 
-        let (resolved_prop_type, crate_ref) = match Self::get_property_type(&self) {
+        let (resolved_prop_type, crate_ref) = match self.get_property_type() {
             PropertyType::Edm(edm_type, crate_ref) => {
                 // It is assumed that the OData field name always starts with a capital letter
                 //

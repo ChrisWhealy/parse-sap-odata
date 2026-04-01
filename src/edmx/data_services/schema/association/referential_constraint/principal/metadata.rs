@@ -26,7 +26,7 @@ impl PrincipalFieldNames {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn line_from_dependent(f: &mut Formatter<'_>, prop_md: PrincipalFieldNames, val: &str) -> std::fmt::Result {
+fn line_from_principal(f: &mut Formatter<'_>, prop_md: PrincipalFieldNames, val: &str) -> std::fmt::Result {
     write!(
         f,
         "{}{}{}{}{}",
@@ -52,8 +52,8 @@ impl std::fmt::Display for Principal {
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
-        line_from_dependent(f, PrincipalFieldNames::Role, &gen_owned_string_src(&self.role))?;
-        line_from_dependent(f, PrincipalFieldNames::PropertyRefs, &prop_refs_val)?;
+        line_from_principal(f, PrincipalFieldNames::Role, &gen_owned_string_src(&self.role))?;
+        line_from_principal(f, PrincipalFieldNames::PropertyRefs, &prop_refs_val)?;
         write!(f, "{CLOSE_CURLY}")
     }
 }

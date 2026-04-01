@@ -36,7 +36,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &BTreeSet<String>
 
     // Add usage declaration(s) for all subtypes across all the SAPAnnotationsProperty instances
     for subtype in used_subtypes {
-        gen_use_path(&mut out, subtype);
+        gen_use_path_into(&mut out, subtype);
     }
 
     out
