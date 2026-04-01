@@ -173,7 +173,6 @@ pub fn gen_pub_getter_fn_of_type_into<T: std::fmt::Display>(
     out.push_str(LINE_FEED);
 }
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Start of an enum declaration
 pub fn gen_enum_start_into(out: &mut String, enum_name: &str) {
@@ -185,10 +184,15 @@ pub fn gen_enum_start_into(out: &mut String, enum_name: &str) {
     out.push_str(LINE_FEED);
 }
 
-pub fn gen_enum_fn_variant_names_into(out: &mut String, enum_name: &str) {
-    out.push_str("\npub fn variant_names() -> Vec<&'static str> {\n");
-    out.push_str(enum_name);
-    out.push_str("::iterator().fold(Vec::new(), |mut acc: Vec<&'static str>, es| {\n  acc.push(&mut es.variant_name());\n  acc\n})\n}\n");
+pub fn gen_enum_fn_variant_names_into(out: &mut String, enum_variant_names: &str) {
+    // Generate VARIANT_NAMES const
+    out.push_str("\npub const VARIANT_NAMES: &[& str] = &[\n");
+    out.push_str(enum_variant_names);
+    out.push_str("];\n");
+
+    out.push_str("pub fn variant_names() -> &'static [&'static str] {\n");
+    out.push_str("Self::VARIANT_NAMES\n");
+    out.push_str("}\n");
 }
 
 pub fn gen_enum_fn_iter_start_into(out: &mut String, type_name: &str) {

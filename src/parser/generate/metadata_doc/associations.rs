@@ -31,11 +31,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
     gen_comment_separator_for_into(&mut association_enum, ASSOCIATIONS);
     gen_use_path_into(&mut association_enum, PATH_TO_EDMX_SCHEMA_ASSOCIATION_TYPES);
     association_enum.push_str(LINE_FEED);
-    association_enum.push_str(&gen_derive_str(&[
-        DeriveTraits::COPY,
-        DeriveTraits::CLONE,
-        DeriveTraits::DEBUG
-    ]));
+    association_enum.push_str(&gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]));
     gen_enum_start_into(&mut association_enum, enum_name);
 
     // Start block containing Association impl functions related to enum iterator
@@ -50,6 +46,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
     let mut association_impl_getter_fns = String::new();
 
     // Sort references, not owned Association values
+    let mut enum_variant_names = String::new();
     let mut assocs: Vec<_> = schema.associations.iter().collect();
     assocs.sort();
 
@@ -65,6 +62,11 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
             &enum_variant_name,
             &assoc.name,
         );
+
+        enum_variant_names.push_str(DOUBLE_QUOTE);
+        enum_variant_names.push_str(&enum_variant_name);
+        enum_variant_names.push_str(DOUBLE_QUOTE);
+        enum_variant_names.push_str(COMMA);
 
         if idx > 0 {
             association_impl_getter_fns.push_str(SEPARATOR);
@@ -88,7 +90,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
     gen_impl_start_for_into(&mut out, enum_name);
     out.push_str(&association_impl_iter_fn);
     out.push_str(&association_impl_variant_name_fn);
-    gen_enum_fn_variant_names_into(&mut out, enum_name);
+    gen_enum_fn_variant_names_into(&mut out, &enum_variant_names);
     out.push_str(LINE_FEED);
     out.push_str(&association_impl_getter_fns);
     out.push_str(END_BLOCK);
@@ -102,16 +104,16 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
     // E.G. If the service contains only one entity set
     let mut assoc_sets: Vec<_> = if let Some(ent_cont) = &schema.entity_container {
         if ent_cont.association_sets.is_empty() {
-            return
+            return;
         }
 
         ent_cont.association_sets.iter().collect()
     } else {
-        return
+        return;
     };
     assoc_sets.sort();
 
-    let enum_name = &*format!("{}{ASSOCIATION_SETS}", to_upper_camel_case(odata_srv_name));
+    let mut enum_name = format!("{}{ASSOCIATION_SETS}", to_upper_camel_case(odata_srv_name));
 
     // Start Association enum block
     let mut association_set_enum = String::new();
@@ -121,11 +123,11 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
     gen_use_path_into(&mut association_set_enum, PATH_TO_SAP_ANNOTATIONS_ASSOCIATION_SET);
     association_set_enum.push_str(LINE_FEED);
     association_set_enum.push_str(&gen_derive_str(&[DeriveTraits::COPY, DeriveTraits::CLONE, DeriveTraits::DEBUG]));
-    gen_enum_start_into(&mut association_set_enum, enum_name);
+    gen_enum_start_into(&mut association_set_enum, &enum_name);
 
     // Start block containing AssociationSets impl functions related to enum iterator
     let mut association_sets_impl_iter_fn = String::new();
-    gen_enum_fn_iter_start_into(&mut association_sets_impl_iter_fn, enum_name);
+    gen_enum_fn_iter_start_into(&mut association_sets_impl_iter_fn, &enum_name);
 
     // Output the start of the "variant_name" function within the enum implementation
     let mut association_sets_impl_variant_name_fn = String::new();
@@ -139,10 +141,10 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
         let enum_variant = to_upper_camel_case(&stripped_name);
 
         gen_enum_variant_into(&mut association_set_enum, &enum_variant);
-        gen_fq_enum_variant_into(&mut association_sets_impl_iter_fn, enum_name, &enum_variant);
+        gen_fq_enum_variant_into(&mut association_sets_impl_iter_fn, &enum_name, &enum_variant);
         gen_enum_match_arm_into(
             &mut association_sets_impl_variant_name_fn,
-            enum_name,
+            &enum_name,
             &enum_variant,
             &assoc_set.name,
         );
@@ -168,10 +170,15 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
     // Output the start of an enum implementation
     // impl <schema_name>AssociationSets {↩︎
     out.push_str(&association_set_enum);
-    gen_impl_start_for_into(out, enum_name);
+    gen_impl_start_for_into(out, &enum_name);
     out.push_str(&association_sets_impl_iter_fn);
     out.push_str(&association_sets_impl_variant_name_fn);
-    gen_enum_fn_variant_names_into(out, enum_name);
+
+    // Add double quotes around enum name
+    enum_name.insert_str(0, DOUBLE_QUOTE);
+    enum_name.push_str(DOUBLE_QUOTE);
+    gen_enum_fn_variant_names_into(out, &enum_name);
+
     out.push_str(LINE_FEED);
     out.push_str(&association_sets_impl_getter_fns);
     out.push_str(END_BLOCK);

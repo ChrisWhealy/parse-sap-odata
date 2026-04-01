@@ -17,7 +17,7 @@ impl EntityContainer {
     /// * `pub const fn variant_name(&self) -> &'static str { /* SNIP */ }`
     /// * `pub fn variant_names() -> Vec<&'static str> { /* SNIP */ }`
     pub fn to_enum_with_impl_into(&self, out: &mut String) {
-        let cont_name_camel = to_upper_camel_case(&self.name);
+        let mut cont_name_camel = to_upper_camel_case(&self.name);
 
         // Output the start of the "iterator" function within the enum implementation
         //   pub fn iterator() -> impl Iterator<Item = GwsampleBasicEntities> {↩︎
@@ -64,7 +64,12 @@ impl EntityContainer {
         gen_impl_start_for_into(out, &cont_name_camel);
         out.push_str(&enum_fn_iterator);
         out.push_str(&enum_fn_variant_name);
+
+        // Add double quotes around container name
+        cont_name_camel.insert_str(0, DOUBLE_QUOTE);
+        cont_name_camel.push_str(DOUBLE_QUOTE);
         gen_enum_fn_variant_names_into(out, &cont_name_camel);
+
         out.push_str(END_BLOCK);
     }
 }
