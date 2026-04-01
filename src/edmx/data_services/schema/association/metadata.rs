@@ -68,13 +68,8 @@ impl AssociationFieldNames {
 fn line_into_association(f: &mut Formatter<'_>, prop_md: AssociationFieldNames, val: &str) -> std::fmt::Result {
     write!(
         f,
-        "{}{}{}{}{}",
-        AssociationFieldNames::value(prop_md),
-        COLON,
-        val,
-        COMMA,
-        LINE_FEED
-    )
+        "{}{COLON}{val}{COMMA}{LINE_FEED}",
+        AssociationFieldNames::value(prop_md))
 }
 
 impl std::fmt::Display for Association {

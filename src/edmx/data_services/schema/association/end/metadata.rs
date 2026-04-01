@@ -32,7 +32,7 @@ impl EndFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(f: &mut Formatter<'_>, prop_md: EndFieldNames, val: &str) -> std::fmt::Result {
-    write!(f, "{}{}{}{}{}", EndFieldNames::value(prop_md), COLON, val, COMMA, LINE_FEED)
+    write!(f, "{}{COLON}{val}{COMMA}{LINE_FEED}", EndFieldNames::value(prop_md))
 }
 
 impl std::fmt::Display for End {

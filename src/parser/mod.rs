@@ -18,10 +18,10 @@ fn emit_module(mod_name: &str, buf: &[u8]) {
     match run_rustfmt(buf, mod_name) {
         Ok(formatted_bytes) => {
             if let Err(err) = write_buffer_to_file(mod_name, &formatted_bytes) {
-                println!("Error: writing module '{}' failed: {}", mod_name, err);
+                println!("Error: writing module '{mod_name}' failed: {err}");
             }
         },
-        Err(err) => println!("Error: rustfmt for module '{}' ended with {}", mod_name, err),
+        Err(err) => println!("Error: rustfmt for module '{mod_name}' ended with {err}"),
     }
 }
 
@@ -34,22 +34,22 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         //
         // The Atom `<feed>` document returned from the entity sets of certain SAP OData services has been known to
         // contain `<entry>` elements whose `m:etag` attribute contains such an incorrectly quoted value
-        Err(err) => println!("Error: {}", err),
+        Err(err) => println!("Error: {err}"),
         Ok(edmx) => {
             // Write cargo build script directive as soon as the input path is known to be valid
             println!("cargo:rerun-if-changed={DEFAULT_INPUT_DIR}/{odata_srv_name}.xml");
 
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                emit_module(&format!("{}.rs", odata_srv_name), gen_srv_doc_module(odata_srv_name, schema).as_bytes());
+                emit_module(
+                    &format!("{odata_srv_name}.rs"),
+                    gen_srv_doc_module(odata_srv_name, schema).as_bytes(),
+                );
                 emit_module(
                     &format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs"),
                     gen_metadata_module(odata_srv_name, schema).as_bytes(),
                 );
             } else {
-                println!(
-                    "Error: OData schema for namespace '{}' cannot be found or this is not OData V2 XML",
-                    namespace
-                );
+                println!("Error: OData schema for namespace '{namespace}' cannot be found or this is not OData V2 XML");
             }
         },
     }

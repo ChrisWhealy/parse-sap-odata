@@ -24,37 +24,23 @@ impl ComplexTypeFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from(f: &mut Formatter<'_>, prop_md: ComplexTypeFieldNames, val: &str) -> std::fmt::Result {
-    write!(
-        f,
-        "{}{}{}{}{}",
-        ComplexTypeFieldNames::value(prop_md),
-        COLON,
-        val,
-        COMMA,
-        LINE_FEED
-    )
+    write!(f, "{}{COLON}{val}{COMMA}{LINE_FEED}", ComplexTypeFieldNames::value(prop_md))
 }
 
 // Output a ComplexType instance as its own source code
 impl std::fmt::Display for ComplexType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         // Start ComplexType declaration
-        write!(f, "{COMPLEX_TYPE}")?;
-        write!(f, "{OPEN_CURLY}")?;
+        write!(f, "{COMPLEX_TYPE}{OPEN_CURLY}")?;
         line_from(f, ComplexTypeFieldNames::Name, &gen_owned_string_src(&self.name))?;
         write!(f, "{}", ComplexTypeFieldNames::value(ComplexTypeFieldNames::Properties))?;
-        write!(f, "{COLON}")?;
-        write!(f, "{VEC_BANG}")?;
-        write!(f, "{LINE_FEED}")?;
+        write!(f, "{COLON}{VEC_BANG}{LINE_FEED}")?;
 
         for prop in &self.properties {
-            write!(f, "{prop}")?;
-            write!(f, "{COMMA}")?;
-            write!(f, "{LINE_FEED}")?;
+            write!(f, "{prop}{COMMA}{LINE_FEED}")?;
         }
 
         // End vector of properties and ComplexType declaration
-        write!(f, "{CLOSE_SQR}")?;
-        write!(f, "{END_BLOCK}")
+        write!(f, "{CLOSE_SQR}{END_BLOCK}")
     }
 }

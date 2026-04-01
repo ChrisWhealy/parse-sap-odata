@@ -26,19 +26,14 @@ impl ReferentialConstraintFieldNames {
 fn line_from_ref_con(f: &mut Formatter<'_>, prop_md: ReferentialConstraintFieldNames, val: &str) -> std::fmt::Result {
     write!(
         f,
-        "{}{}{}{}{}",
-        ReferentialConstraintFieldNames::value(prop_md),
-        COLON,
-        val,
-        COMMA,
-        LINE_FEED
+        "{}{COLON}{val}{COMMA}{LINE_FEED}",
+        ReferentialConstraintFieldNames::value(prop_md)
     )
 }
 
 impl std::fmt::Display for ReferentialConstraint {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{MY_NAME}")?;
-        write!(f, "{OPEN_CURLY}")?;
+        write!(f, "{MY_NAME}{OPEN_CURLY}")?;
         line_from_ref_con(f, ReferentialConstraintFieldNames::Principal, &self.principal.to_string())?;
         line_from_ref_con(f, ReferentialConstraintFieldNames::Dependent, &self.dependent.to_string())?;
         write!(f, "{CLOSE_CURLY}")

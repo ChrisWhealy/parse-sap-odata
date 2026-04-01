@@ -29,21 +29,12 @@ impl AssociationSetFieldNames {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_from_end(f: &mut Formatter<'_>, prop_md: AssociationSetFieldNames, val: &str) -> std::fmt::Result {
-    write!(
-        f,
-        "{}{}{}{}{}",
-        AssociationSetFieldNames::value(prop_md),
-        COLON,
-        val,
-        COMMA,
-        LINE_FEED
-    )
+    write!(f, "{}{COLON}{val}{COMMA}{LINE_FEED}", AssociationSetFieldNames::value(prop_md))
 }
 
 impl std::fmt::Display for AssociationSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{MY_NAME}")?;
-        write!(f, "{OPEN_CURLY}")?;
+        write!(f, "{MY_NAME}{OPEN_CURLY}")?;
         line_from_end(f, AssociationSetFieldNames::Name, &gen_owned_string_src(&self.name))?;
         line_from_end(
             f,
