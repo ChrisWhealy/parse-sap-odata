@@ -37,16 +37,13 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
         Err(err) => println!("Error: {}", err),
         Ok(edmx) => {
             // Write cargo build script directive as soon as the input path is known to be valid
-            println!(
-                "cargo:rerun-if-changed={}",
-                format!("{}/{}.xml", DEFAULT_INPUT_DIR, odata_srv_name)
-            );
+            println!("cargo:rerun-if-changed={DEFAULT_INPUT_DIR}/{odata_srv_name}.xml");
 
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
-                emit_module(&format!("{}.rs", odata_srv_name), gen_srv_doc_module(odata_srv_name, &schema).as_bytes());
+                emit_module(&format!("{}.rs", odata_srv_name), gen_srv_doc_module(odata_srv_name, schema).as_bytes());
                 emit_module(
                     &format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs"),
-                    gen_metadata_module(odata_srv_name, &schema).as_bytes(),
+                    gen_metadata_module(odata_srv_name, schema).as_bytes(),
                 );
             } else {
                 println!(

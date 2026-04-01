@@ -28,7 +28,7 @@ pub fn gen_complex_types(cts: &[ComplexType]) -> (String, Vec<String>) {
     // Start the source code with a comment separator line
     gen_comment_separator_for_into(&mut acc_src, COMPLEX_TYPES);
 
-    for (idx, ct) in cts.into_iter().enumerate() {
+    for (idx, ct) in cts.iter().enumerate() {
         if idx > 0 && idx + ignored_cts + 1 < cts.len() {
             acc_src.push_str(SEPARATOR);
         }

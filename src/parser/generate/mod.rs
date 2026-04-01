@@ -270,7 +270,7 @@ pub fn gen_opt_string_src(s_arg: &Option<String>) -> String {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Returns possible forward reference to a custom deserializer function in the parse-sap-atom-feed crate
 pub fn gen_custom_deserializer_info(prop: &Property) -> String {
-    if let PropertyType::Edm(edm_type, _) = Property::get_property_type(&prop) {
+    if let PropertyType::Edm(edm_type, _) = Property::get_property_type(prop) {
         if edm_type.eq(EDMX_DATE_TIME) || edm_type.eq(EDMX_DATE_TIME_OFFSET) {
             gen_datetime_deserializer_fn(prop.nullable)
         } else if edm_type.eq(EDMX_DECIMAL) {

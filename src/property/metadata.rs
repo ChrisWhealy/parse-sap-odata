@@ -133,7 +133,7 @@ impl std::fmt::Display for Property {
         write!(f, "{OPEN_CURLY}")?;
         line_into(f, PropertyFieldNames::ODataName, &gen_owned_string_src(&self.odata_name))?;
         line_into(f, PropertyFieldNames::EdmType, &gen_owned_string_src(&self.edm_type))?;
-        line_into(f, PropertyFieldNames::Nullable, &gen_bool_string(self.nullable))?;
+        line_into(f, PropertyFieldNames::Nullable, gen_bool_string(self.nullable))?;
         line_into(f, PropertyFieldNames::MaxLength, &gen_opt_u16_string_src(self.max_length))?;
         line_into(f, PropertyFieldNames::Precision, &gen_opt_u16_string_src(self.precision))?;
         line_into(f, PropertyFieldNames::Scale, &gen_opt_u16_string_src(self.scale))?;
@@ -145,7 +145,7 @@ impl std::fmt::Display for Property {
         line_into(
             f,
             PropertyFieldNames::FcKeepInContent,
-            &gen_bool_string(self.fc_keep_in_content),
+            gen_bool_string(self.fc_keep_in_content),
         )?;
         line_into(f, PropertyFieldNames::FcTargetPath, &gen_opt_string_src(&self.fc_target_path))?;
         line_into(f, PropertyFieldNames::SAPAnnotations, &self.sap_annotations.to_string())?;

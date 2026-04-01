@@ -20,7 +20,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &BTreeSet<String>
     let mut out = String::new();
     gen_comment_separator_for_into(&mut out, ENTITY_TYPES);
 
-    for (idx, entity) in ets.into_iter().enumerate() {
+    for (idx, entity) in ets.iter().enumerate() {
         if idx > 0 {
             out.push_str(SEPARATOR);
         }
@@ -30,7 +30,7 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &BTreeSet<String>
             used_subtypes.extend(prop.sap_annotations.used_subtypes());
         }
 
-        gen_metadata_entity_type(&mut out, entity, &skipped_cts);
+        gen_metadata_entity_type(&mut out, entity, skipped_cts);
         gen_metadata_entity_type_impl(&mut out, entity, &schema.complex_types);
     }
 
@@ -102,7 +102,7 @@ fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts:
     out.push_str(LINE_FEED);
     out.push_str(VEC_BANG);
     out.push_str(
-        &keys.into_iter()
+        &keys.iter()
             .map(|pr| format!("{pr}"))
             .collect::<Vec<_>>()
             .join(",")

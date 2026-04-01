@@ -160,38 +160,38 @@ impl std::fmt::Display for SAPAnnotationsProperty {
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsUnicode,
-            &gen_bool_string(self.is_unicode),
+            gen_bool_string(self.is_unicode),
         )?;
         line_into(f, SAPAnnotationsPropertyFieldNames::Semantics, &self.semantics.opt_sem_type())?;
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsCreatable,
-            &gen_bool_string(self.is_creatable),
+            gen_bool_string(self.is_creatable),
         )?;
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsUpdatable,
-            &gen_bool_string(self.is_updatable),
+            gen_bool_string(self.is_updatable),
         )?;
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsSortable,
-            &gen_bool_string(self.is_sortable),
+            gen_bool_string(self.is_sortable),
         )?;
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsFilterable,
-            &gen_bool_string(self.is_filterable),
+            gen_bool_string(self.is_filterable),
         )?;
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsAddressable,
-            &gen_bool_string(self.is_addressable),
+            gen_bool_string(self.is_addressable),
         )?;
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsRequiredInFilter,
-            &gen_bool_string(self.is_required_in_filter),
+            gen_bool_string(self.is_required_in_filter),
         )?;
         line_into(
             f,
@@ -218,7 +218,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsVisible,
-            &gen_bool_string(self.is_visible),
+            gen_bool_string(self.is_visible),
         )?;
         line_into(
             f,
@@ -314,7 +314,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::IsAnnotation,
-            &gen_bool_string(self.is_annotation),
+            gen_bool_string(self.is_annotation),
         )?;
         line_into(
             f,
@@ -329,7 +329,7 @@ impl std::fmt::Display for SAPAnnotationsProperty {
         line_into(
             f,
             SAPAnnotationsPropertyFieldNames::HasVariableScale,
-            &gen_bool_string(self.has_variable_scale),
+            gen_bool_string(self.has_variable_scale),
         )?;
         write!(f, "{CLOSE_CURLY}")
     }

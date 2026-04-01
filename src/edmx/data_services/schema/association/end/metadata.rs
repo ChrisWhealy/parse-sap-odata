@@ -37,22 +37,14 @@ fn line_from_end(f: &mut Formatter<'_>, prop_md: EndFieldNames, val: &str) -> st
 
 impl std::fmt::Display for End {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let entity_set = if let Some(es) = &self.entity_set {
-            Some(to_upper_camel_case(es)) // Convert to struct name
-        } else {
-            None
-        };
+        let entity_set = self.entity_set.as_ref().map(|es| to_upper_camel_case(es));
 
-        let end_type = if let Some(et) = &self.end_type {
-            Some(if let Some((_, part2)) = et.split_once('.') {
+        let end_type = self.end_type.as_ref().map(|et| if let Some((_, part2)) = et.split_once('.') {
                 to_upper_camel_case(part2)
             } else {
                 // This branch should never be used because SAP should always generate a fully qualified name...
                 et.to_owned()
-            })
-        } else {
-            None
-        };
+            });
 
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;

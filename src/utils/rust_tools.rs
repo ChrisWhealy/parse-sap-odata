@@ -45,7 +45,7 @@ pub fn run_rustfmt(buffer: &[u8], file_name: &str) -> Result<Vec<u8>, anyhow::Er
             .write(true)
             .truncate(true)
             .open(&gen_failed_path)?
-            .write_all(&buffer);
+            .write_all(buffer);
 
         let rustfmt_err_out = std::str::from_utf8(&rustfmt_output.stderr)?;
 

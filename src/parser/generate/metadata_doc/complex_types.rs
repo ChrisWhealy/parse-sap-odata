@@ -18,7 +18,7 @@ pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) ->
 
     gen_comment_separator_for_into(out, "COMPLEX TYPES");
 
-    for (idx, ct) in cts.into_iter().enumerate() {
+    for (idx, ct) in cts.iter().enumerate() {
         if idx > 0 && idx + ignored_cts + 1 < cts.len() {
             out.push_str(SEPARATOR);
         }

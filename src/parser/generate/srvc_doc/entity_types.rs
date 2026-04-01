@@ -25,7 +25,7 @@ pub fn gen_entity_types(ets: &[EntityType]) -> (String, Vec<String>) {
     // Start source code with a comment separator
     gen_comment_separator_for_into(&mut acc_src, ENTITY_TYPES);
 
-    for (idx, entity) in ets.into_iter().enumerate() {
+    for (idx, entity) in ets.iter().enumerate() {
         if idx > 0 {
             acc_src.push_str(SEPARATOR);
         }

@@ -1,15 +1,15 @@
-static ISO_LANGUAGE_ENGLISH: &'static str = "en";
+static ISO_LANGUAGE_ENGLISH: &str = "en";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // XML Namespaces
-static XML_NAMESPACE_MS_DATA_SERVICES: &'static str = "http://schemas.microsoft.com/ado/2007/08/dataservices";
-static XML_NAMESPACE_MS_DATA_SERVICES_METADATA: &'static str =
+static XML_NAMESPACE_MS_DATA_SERVICES: &str = "http://schemas.microsoft.com/ado/2007/08/dataservices";
+static XML_NAMESPACE_MS_DATA_SERVICES_METADATA: &str =
     "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata";
-static XML_NAMESPACE_MS_EDM: &'static str = "http://schemas.microsoft.com/ado/2008/09/edm";
-static XML_NAMESPACE_MS_EDMX: &'static str = "http://schemas.microsoft.com/ado/2007/06/edmx";
-static XML_NAMESPACE_OASIS_ODATA_EDMX: &'static str = "http://docs.oasis-open.org/odata/ns/edmx";
-static XML_NAMESPACE_SAP_DATA: &'static str = "http://www.sap.com/Protocols/SAPData";
-static XML_NAMESPACE_W3_ATOM: &'static str = "http://www.w3.org/2005/Atom";
+static XML_NAMESPACE_MS_EDM: &str = "http://schemas.microsoft.com/ado/2008/09/edm";
+static XML_NAMESPACE_MS_EDMX: &str = "http://schemas.microsoft.com/ado/2007/06/edmx";
+static XML_NAMESPACE_OASIS_ODATA_EDMX: &str = "http://docs.oasis-open.org/odata/ns/edmx";
+static XML_NAMESPACE_SAP_DATA: &str = "http://www.sap.com/Protocols/SAPData";
+static XML_NAMESPACE_W3_ATOM: &str = "http://www.w3.org/2005/Atom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Serde default deserialization functions

@@ -54,17 +54,17 @@ impl std::fmt::Display for SAPAnnotationsAssociationSet {
         line_into(
             f,
             SAPAnnotationsAssociationSetFieldNames::IsCreatable,
-            &gen_bool_string(self.is_creatable),
+            gen_bool_string(self.is_creatable),
         )?;
         line_into(
             f,
             SAPAnnotationsAssociationSetFieldNames::IsUpdatable,
-            &gen_bool_string(self.is_updatable),
+            gen_bool_string(self.is_updatable),
         )?;
         line_into(
             f,
             SAPAnnotationsAssociationSetFieldNames::IsDeletable,
-            &gen_bool_string(self.is_deletable),
+            gen_bool_string(self.is_deletable),
         )?;
         write!(f, "{CLOSE_CURLY}")
     }

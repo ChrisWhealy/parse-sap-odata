@@ -88,7 +88,7 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
     gen_impl_start_for_into(&mut out, enum_name);
     out.push_str(&association_impl_iter_fn);
     out.push_str(&association_impl_variant_name_fn);
-    gen_enum_fn_variant_names_into(&mut out, &enum_name);
+    gen_enum_fn_variant_names_into(&mut out, enum_name);
     out.push_str(LINE_FEED);
     out.push_str(&association_impl_getter_fns);
     out.push_str(END_BLOCK);
@@ -125,7 +125,7 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
 
     // Start block containing AssociationSets impl functions related to enum iterator
     let mut association_sets_impl_iter_fn = String::new();
-    gen_enum_fn_iter_start_into(&mut association_sets_impl_iter_fn, &enum_name);
+    gen_enum_fn_iter_start_into(&mut association_sets_impl_iter_fn, enum_name);
 
     // Output the start of the "variant_name" function within the enum implementation
     let mut association_sets_impl_variant_name_fn = String::new();
@@ -142,7 +142,7 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
         gen_fq_enum_variant_into(&mut association_sets_impl_iter_fn, enum_name, &enum_variant);
         gen_enum_match_arm_into(
             &mut association_sets_impl_variant_name_fn,
-            &enum_name,
+            enum_name,
             &enum_variant,
             &assoc_set.name,
         );
@@ -171,7 +171,7 @@ pub fn gen_metadata_association_sets_into(out: &mut String, odata_srv_name: &str
     gen_impl_start_for_into(out, enum_name);
     out.push_str(&association_sets_impl_iter_fn);
     out.push_str(&association_sets_impl_variant_name_fn);
-    gen_enum_fn_variant_names_into(out, &enum_name);
+    gen_enum_fn_variant_names_into(out, enum_name);
     out.push_str(LINE_FEED);
     out.push_str(&association_sets_impl_getter_fns);
     out.push_str(END_BLOCK);

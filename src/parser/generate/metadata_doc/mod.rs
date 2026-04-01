@@ -37,9 +37,9 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> String {
         BTreeSet::new()
     };
 
-    gen_metadata_entity_types_into(&mut out, &schema, &skipped_cts);
-    gen_metadata_associations_into(&mut out, odata_srv_name, &schema);
-    gen_metadata_association_sets_into(&mut out, odata_srv_name, &schema);
+    gen_metadata_entity_types_into(&mut out, schema, &skipped_cts);
+    gen_metadata_associations_into(&mut out, odata_srv_name, schema);
+    gen_metadata_association_sets_into(&mut out, odata_srv_name, schema);
 
     // Close module definition
     out.push_str(END_BLOCK);
