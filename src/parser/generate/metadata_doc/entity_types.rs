@@ -10,15 +10,10 @@ use crate::{
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate metadata entity type structs, writing output into `out`
 pub fn gen_metadata_entity_types_into(out: &mut String, schema: &Schema, skipped_cts: &BTreeSet<String>) {
-    out.push_str(&gen_metadata_entity_types(schema, skipped_cts));
-}
-
-pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &BTreeSet<String>) -> String {
     let mut used_subtypes: BTreeSet<&str> = BTreeSet::new();
     let ets: &Vec<EntityType> = &schema.entity_types;
 
-    let mut out = String::new();
-    gen_comment_separator_for_into(&mut out, ENTITY_TYPES);
+    gen_comment_separator_for_into(out, ENTITY_TYPES);
 
     for (idx, entity) in ets.iter().enumerate() {
         if idx > 0 {
@@ -30,16 +25,14 @@ pub fn gen_metadata_entity_types(schema: &Schema, skipped_cts: &BTreeSet<String>
             used_subtypes.extend(prop.sap_annotations.used_subtypes());
         }
 
-        gen_metadata_entity_type(&mut out, entity, skipped_cts);
-        gen_metadata_entity_type_impl(&mut out, entity, &schema.complex_types);
+        gen_metadata_entity_type(out, entity, skipped_cts);
+        gen_metadata_entity_type_impl(out, entity, &schema.complex_types);
     }
 
     // Add usage declaration(s) for all subtypes across all the SAPAnnotationsProperty instances
     for subtype in used_subtypes {
-        gen_use_path_into(&mut out, subtype);
+        gen_use_path_into(out, subtype);
     }
-
-    out
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

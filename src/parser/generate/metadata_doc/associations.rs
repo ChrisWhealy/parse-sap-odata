@@ -9,17 +9,10 @@ use crate::{
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 pub fn gen_metadata_associations_into(out: &mut String, odata_srv_name: &str, schema: &Schema) {
-    out.push_str(&gen_metadata_associations(odata_srv_name, schema));
-}
-
-/// Generate association structs
-pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> String {
-    let mut out = String::new();
-
     // In a very small number of cases, it is possible for an OData service to contain zero associations
     // E.G. If the service contains only one entity set
     if schema.associations.is_empty() {
-        return out;
+        return
     }
 
     let enum_name = &*format!("{}{ASSOCIATIONS}", to_upper_camel_case(odata_srv_name));
@@ -87,14 +80,13 @@ pub fn gen_metadata_associations(odata_srv_name: &str, schema: &Schema) -> Strin
 
     // Output the start of an enum implementation
     // impl Associations {
-    gen_impl_start_for_into(&mut out, enum_name);
+    gen_impl_start_for_into(out, enum_name);
     out.push_str(&association_impl_iter_fn);
     out.push_str(&association_impl_variant_name_fn);
-    gen_enum_fn_variant_names_into(&mut out, &enum_variant_names);
+    gen_enum_fn_variant_names_into(out, &enum_variant_names);
     out.push_str(LINE_FEED);
     out.push_str(&association_impl_getter_fns);
     out.push_str(END_BLOCK);
-    out
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -13,31 +13,24 @@ use crate::{
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// Generate entity type structs, writing output into `out` and returning crate references
 pub fn gen_entity_types_into(out: &mut String, ets: &[EntityType]) -> Vec<String> {
-    let (src, crs) = gen_entity_types(ets);
-    out.push_str(&src);
-    crs
-}
-
-pub fn gen_entity_types(ets: &[EntityType]) -> (String, Vec<String>) {
-    let mut acc_src = String::new();
-    let mut acc_crs: Vec<String> = Vec::new();
+    let mut crate_refs: Vec<String> = Vec::new();
 
     // Start source code with a comment separator
-    gen_comment_separator_for_into(&mut acc_src, ENTITY_TYPES);
+    gen_comment_separator_for_into(out, ENTITY_TYPES);
 
     for (idx, entity) in ets.iter().enumerate() {
         if idx > 0 {
-            acc_src.push_str(SEPARATOR);
+            out.push_str(SEPARATOR);
         }
 
         let (et_src, mut crs) = gen_entity_type(entity);
         if !crs.is_empty() {
-            acc_crs.append(&mut crs)
+            crate_refs.append(&mut crs)
         }
-        acc_src.push_str(&et_src);
+        out.push_str(&et_src);
     }
 
-    (acc_src, acc_crs)
+    crate_refs
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
