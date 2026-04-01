@@ -40,15 +40,17 @@ impl DeriveTraits {
 }
 
 pub fn gen_derive_str(traits: &[DeriveTraits]) -> String {
-    let mut out = traits.iter().enumerate().fold(
-        DERIVE_START.to_string(),
-        |mut acc, (idx, d)| {
-        acc.push_str(d.value());
+    let mut out = String::new();
+    out.push_str(DERIVE_START);
+
+    for (idx, d) in traits.iter().enumerate() {
+        out.push_str(d.value());
+
         if idx < traits.len() - 1 {
-            acc.push_str(COMMA);
+            out.push_str(COMMA);
         }
-        acc
-    });
+    }
+
     out.push_str(CLOSE_PAREN);
     out.push_str(CLOSE_SQR);
     out.push_str(LINE_FEED);
