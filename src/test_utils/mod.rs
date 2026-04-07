@@ -16,7 +16,7 @@ where
     if received_val.eq(expected_val) {
         Ok(())
     } else {
-        Err(format!("Expected '{}'.  Got '{}' instead", expected_val, received_val))
+        Err(format!("Expected '{}', got '{}' instead", expected_val, received_val))
     }
 }
 

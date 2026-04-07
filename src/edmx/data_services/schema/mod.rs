@@ -50,5 +50,5 @@ pub struct Schema {
     pub annotation_list: Option<Vec<Annotations>>,
     // Appears in the original XML as the tagname "atom:link"
     #[serde(rename = "link")]
-    pub atom_links: Vec<AtomLink>,
+    pub atom_links: Option<Vec<AtomLink>>,
 }

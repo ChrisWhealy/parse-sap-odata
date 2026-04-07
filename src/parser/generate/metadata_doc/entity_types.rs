@@ -94,12 +94,7 @@ fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts:
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
     out.push_str(VEC_BANG);
-    out.push_str(
-        &keys.iter()
-            .map(|pr| format!("{pr}"))
-            .collect::<Vec<_>>()
-            .join(",")
-    );
+    out.push_str(&keys.iter().map(|pr| format!("{pr}")).collect::<Vec<_>>().join(","));
     out.push_str(CLOSE_SQR);
     out.push_str(CLOSE_CURLY);
     out.push_str(LINE_FEED);
@@ -110,7 +105,7 @@ fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts:
     // One getter function per property
     for prop in props {
         let safe_name = odata_name_to_rust_safe_name(&prop.odata_name);
-        let fn_name = format!("{PREFIX_SNAKE_GET}{safe_name}");
+        let fn_name = format!("{PREFIX_SNAKE_GET}{}", safe_name.strip_prefix("r#").unwrap_or(&safe_name));
 
         match prop.get_property_type() {
             PropertyType::Edm(_, _) => {

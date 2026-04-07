@@ -1,0 +1,11 @@
+<EntityType Name="Groups">
+  <Key>
+    <PropertyRef Name="groupId"/>
+  </Key>
+  <Property Name="groupId" Type="Edm.String" MaxLength="36" Nullable="false"/>
+  <Property Name="type" Type="Edm.String" MaxLength="16"/>
+  <Property Name="projectId" Type="Edm.String" MaxLength="36"/>
+  <Property Name="name" Type="Edm.String"/>
+  <Property Name="description" Type="Edm.String" MaxLength="1000"/>
+  <NavigationProperty Name="toGroupMemberships" Relationship="service.ProjectServiceV2.GroupMemberships_toGroup" FromRole="Groups" ToRole="GroupMemberships"/>
+</EntityType>
