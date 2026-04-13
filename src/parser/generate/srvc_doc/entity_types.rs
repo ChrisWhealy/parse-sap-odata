@@ -3,10 +3,11 @@ use crate::{
     parser::{
         generate::{
             gen_comment_separator_for_into, gen_impl_from_str_for_into,
-            syntax_fragments::{serde_fragments::*, END_BLOCK, ENTITY_TYPES, SEPARATOR},
+            syntax_fragments::{serde_fragments::*, COMMA, DOUBLE_QUOTE, END_BLOCK, ENTITY_TYPES, LINE_FEED, SEPARATOR},
         },
         AsRustSrc,
     },
+    property::Property,
     utils::to_upper_camel_case,
 };
 
@@ -54,9 +55,27 @@ fn gen_entity_type(entity: &EntityType) -> (String, Vec<String>) {
         out.push_str(&prop_src);
     }
 
-    // End the struct declaration then generate from_str implementation
+    // End the struct declaration then generate from_str and ODataEntity implementations
     out.push_str(END_BLOCK);
     gen_impl_from_str_for_into(&mut out, &struct_name);
+    gen_impl_odata_entity_for_into(&mut out, &struct_name, &entity.properties);
 
     (out, crate_refs)
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Generates `impl parse_sap_odata::ODataEntity for SomeType` using property declaration order
+fn gen_impl_odata_entity_for_into(out: &mut String, struct_name: &str, properties: &[Property]) {
+    out.push_str("\nimpl parse_sap_odata::entity::ODataEntity for ");
+    out.push_str(struct_name);
+    out.push_str(" {\nfn field_names() -> &'static [&'static str] {\n&[\n");
+    for prop in properties {
+        out.push_str(DOUBLE_QUOTE);
+        out.push_str(&prop.odata_name);
+        out.push_str(DOUBLE_QUOTE);
+        out.push_str(COMMA);
+        out.push_str(LINE_FEED);
+    }
+    out.push_str("]\n}");  // close fn field_names
+    out.push_str(END_BLOCK);  // close impl ODataEntity  (END_BLOCK = "}\n\n")
 }
