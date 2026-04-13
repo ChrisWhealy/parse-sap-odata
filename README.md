@@ -58,6 +58,7 @@ Where the `EdmPrimitive` enum holds each of the declared EDM datatypes, plus an 
 
 | Version | Task    | Description                                                                                                                                       |
 |--------:|---------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+|   1.6.2 | Fix     | Move field_names() function to ODataEntity trait.                   |
 |   1.6.1 | Feature | Each EntityType metadata `impl` contains a `field_names()` function that returns a list of the OData EntityType property names.                   |
 |   1.6.0 | Feature | The struct member `Property.edm_type` is no longer of type `String`, but of type `EdmType`.<br>Unit tests generating code are validated by `syn`. |
 |   1.5.2 | Fix     | Bump Rust edition                                                                                                                                 |
