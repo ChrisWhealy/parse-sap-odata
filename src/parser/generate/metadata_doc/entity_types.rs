@@ -87,7 +87,22 @@ fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts:
     gen_impl_start_for_into(out, &struct_name);
     let keys = &entity.key.property_refs;
 
-    // Add the key function
+    // Emit the source code for the FIELDS constant
+    out.push_str("pub const FIELDS: &[&str] = &[\n");
+    for prop in entity.properties.iter() {
+        out.push_str(DOUBLE_QUOTE);
+        out.push_str(&prop.odata_name);
+        out.push_str(DOUBLE_QUOTE);
+        out.push_str(COMMA);
+    }
+    out.push_str(CLOSE_SQR);
+    out.push_str(SEMI_COLON);
+    out.push_str(LINE_FEED);
+
+    // Emit the source code for the `field_names()` function
+    out.push_str("pub fn field_names() -> &'static [&'static str] { Self::FIELDS }\n\n");
+
+    // Emit the source code for the key function
     gen_fn_signature_into(out, KEY, true, false, None, Some("Vec<PropertyRef>"));
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);

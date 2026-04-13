@@ -21,9 +21,6 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> String {
     let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}");
     let mut out = String::new();
 
-    // In Rust 2018+ edition, extern crate declarations are not required for
-    // crates listed in Cargo.toml.  Emitting them causes duplicate-definition
-    // errors when multiple generated modules are included in the same file.
     gen_module_start_into(&mut out, &mod_name);
     gen_use_path_into(&mut out, PATH_TO_SAP_ODATA_PROPERTIES);
     gen_use_path_into(&mut out, PATH_TO_SAP_ODATA_EDM_TYPE);
