@@ -1,5 +1,7 @@
 use std::fmt::Formatter;
 
+use crate::property::edm_primitive::EdmPrimitive;
+use crate::property::edm_type::EdmType;
 use crate::{
     parser::{
         generate::{
@@ -13,40 +15,10 @@ use crate::{
         AsRustSrc,
     },
     property::Property,
-    utils::{odata_name_to_rust_safe_name, to_pascal_case, to_upper_camel_case},
+    utils::{odata_name_to_rust_safe_name, to_pascal_case},
 };
 
 static MY_NAME: &str = "Property";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// Property type flags
-///
-/// A `<Property>` within an `<EntityType>` can be one of three types:
-/// * **`PropertyType::Edm(String, String)`**
-///
-///    An entity data model type such as `String`, `DateTime` or `Decimal` followed by a possible external crate reference
-/// * **`PropertyType::Complex(String)`**
-///
-///   A Complex Type defined within the Schema's namespace containing multiple fields
-/// * **`PropertyType::Unqualified`**
-///
-///    The type name is missing its namespace qualifier.  Need to decide if this is an error condition
-#[derive(Clone, Debug, PartialEq)]
-pub enum PropertyType {
-    Edm(String, String),
-    Complex(String),
-    Unqualified,
-}
-
-impl std::fmt::Display for PropertyType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            PropertyType::Edm(t, cr) => write!(f, "Edm({t}, {cr})"),
-            PropertyType::Complex(ct) => write!(f, "Complex({ct})"),
-            PropertyType::Unqualified => write!(f, "Unqualified"),
-        }
-    }
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 enum PropertyFieldNames {
@@ -91,37 +63,27 @@ impl Property {
             rust_type.to_string()
         }
     }
-
-    pub fn get_property_type(&self) -> PropertyType {
-        // The type name should contain exactly two parts
-        if let Some((part1, part2)) = self.edm_type.split_once('.') {
-            if !part1.is_empty() && !part2.is_empty() {
-                if part1.eq("Edm") {
-                    let crate_ref = match part2 {
-                        "DateTime" | "DateTimeOffset" => CRATE_CHRONO,
-                        "Decimal" => CRATE_RUST_DECIMAL,
-                        "Guid" => CRATE_GUID,
-                        _ => "",
-                    };
-
-                    PropertyType::Edm(part2.to_owned(), crate_ref.to_owned())
-                } else {
-                    PropertyType::Complex(part2.to_owned())
-                }
-            } else {
-                // TODO This is likely an error condition. Need to decide what to do here...
-                PropertyType::Unqualified
-            }
-        } else {
-            // TODO This is likely an error condition. Need to decide what to do here...
-            PropertyType::Unqualified
-        }
-    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn line_into(f: &mut Formatter<'_>, prop_md: PropertyFieldNames, val: &str) -> std::fmt::Result {
     write!(f, "{}{COLON}{val}{COMMA}{LINE_FEED}", PropertyFieldNames::value(prop_md))
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Renders an `EdmType` value as a Rust source code expression for use in generated metadata modules
+fn edm_type_to_rust_src(edm_type: &EdmType) -> String {
+    match edm_type {
+        EdmType::Primitive(prim) => {
+            let prim_src = match prim {
+                EdmPrimitive::Unknown(s) => format!("EdmPrimitive::Unknown({})", gen_owned_string_src(s)),
+                _ => format!("EdmPrimitive::{prim:?}"),
+            };
+            format!("EdmType::Primitive({prim_src})")
+        },
+        EdmType::Complex(s) => format!("EdmType::Complex({})", gen_owned_string_src(s)),
+        EdmType::Unknown(s) => format!("EdmType::Unknown({})", gen_owned_string_src(s)),
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,7 +94,7 @@ impl std::fmt::Display for Property {
         write!(f, "{MY_NAME}")?;
         write!(f, "{OPEN_CURLY}")?;
         line_into(f, PropertyFieldNames::ODataName, &gen_owned_string_src(&self.odata_name))?;
-        line_into(f, PropertyFieldNames::EdmType, &gen_owned_string_src(&self.edm_type))?;
+        line_into(f, PropertyFieldNames::EdmType, &edm_type_to_rust_src(&self.edm_type))?;
         line_into(f, PropertyFieldNames::Nullable, gen_bool_string(self.nullable))?;
         line_into(f, PropertyFieldNames::MaxLength, &gen_opt_u16_string_src(self.max_length))?;
         line_into(f, PropertyFieldNames::Precision, &gen_opt_u16_string_src(self.precision))?;
@@ -142,11 +104,7 @@ impl std::fmt::Display for Property {
             PropertyFieldNames::ConcurrencyMode,
             &gen_opt_string_src(&self.concurrency_mode),
         )?;
-        line_into(
-            f,
-            PropertyFieldNames::FcKeepInContent,
-            gen_bool_string(self.fc_keep_in_content),
-        )?;
+        line_into(f, PropertyFieldNames::FcKeepInContent, gen_bool_string(self.fc_keep_in_content))?;
         line_into(f, PropertyFieldNames::FcTargetPath, &gen_opt_string_src(&self.fc_target_path))?;
         line_into(f, PropertyFieldNames::SAPAnnotations, &self.sap_annotations.to_string())?;
         line_into(
@@ -167,8 +125,8 @@ impl AsRustSrc for Property {
     fn to_rust(&self) -> (String, Self::CrateRef) {
         let mut out_buffer = String::new();
 
-        let (resolved_prop_type, crate_ref) = match self.get_property_type() {
-            PropertyType::Edm(edm_type, crate_ref) => {
+        let (resolved_prop_type, crate_ref) = match self.edm_type.clone() {
+            EdmType::Primitive(prim) => {
                 // It is assumed that the OData field name always starts with a capital letter
                 //
                 // WARNING: Field names coming out of SAP do not always use strict PascalCase formatting.
@@ -185,35 +143,35 @@ impl AsRustSrc for Property {
                 }
 
                 // Generate source code for Rust type
-                let src = match edm_type.as_str() {
-                    "Binary" => self.maybe_optional(&gen_vector_of_type_src(U8)),
-                    "Boolean" => self.maybe_optional(BOOLEAN),
-                    "Byte" => U8.to_string(),
-                    "DateTime" | "DateTimeOffset" => self.maybe_optional(NAIVE_DATE_TIME),
-                    "Decimal" => self.maybe_optional(RUST_DECIMAL),
-                    "Double" => F64.to_string(),
-                    "Guid" => UUID.to_string(),
-                    "Int16" => self.maybe_optional(I16),
-                    "Int32" => self.maybe_optional(I32),
-                    "Int64" => self.maybe_optional(I64),
+                let src = match prim {
+                    EdmPrimitive::Binary => self.maybe_optional(&gen_vector_of_type_src(U8)),
+                    EdmPrimitive::Boolean => self.maybe_optional(BOOLEAN),
+                    EdmPrimitive::Byte => U8.to_string(),
+                    EdmPrimitive::DateTime | EdmPrimitive::DateTimeOffset => self.maybe_optional(NAIVE_DATE_TIME),
+                    EdmPrimitive::Decimal => self.maybe_optional(RUST_DECIMAL),
+                    EdmPrimitive::Double => F64.to_string(),
+                    EdmPrimitive::Guid => UUID.to_string(),
+                    EdmPrimitive::Int16 => self.maybe_optional(I16),
+                    EdmPrimitive::Int32 => self.maybe_optional(I32),
+                    EdmPrimitive::Int64 => self.maybe_optional(I64),
                     // EDM allows for null which is intentionally excluded by Rust
-                    "Null" => UNIT.to_string(),
-                    "SByte" => self.maybe_optional(I8),
-                    "Single" => F32.to_string(),
-                    "Time" => self.maybe_optional(STD_TIME_SYSTEMTIME),
+                    EdmPrimitive::Null => UNIT.to_string(),
+                    EdmPrimitive::SByte => self.maybe_optional(I8),
+                    EdmPrimitive::Single => F32.to_string(),
+                    EdmPrimitive::Time => self.maybe_optional(STD_TIME_SYSTEMTIME),
 
-                    // Use String as the catch-all case
+                    // Catch-all for both Unknown and String
                     _ => self.maybe_optional(STRING),
                 };
 
-                (src, crate_ref)
+                (src, prim.get_crate_ref())
             },
 
-            PropertyType::Complex(cmplx_type) => (to_upper_camel_case(&cmplx_type), "".to_string()),
+            // EdmType::Complex always holds a ready-to-use Rust type name (UpperCamelCase, no namespace prefix)
+            EdmType::Complex(cmplx_type) => (cmplx_type, ""),
 
-            // TODO Need to decide what to do with an unqualified property type
-            // Simply writing it out in the hope that the source code compiles is probably not a good idea...
-            PropertyType::Unqualified => (self.edm_type.clone(), "".to_string()),
+            // Truly unrecognised type: emit as-is and hope for the best
+            EdmType::Unknown(unknown_type) => (unknown_type, ""),
         };
 
         gen_struct_field_into(
@@ -222,6 +180,6 @@ impl AsRustSrc for Property {
             &resolved_prop_type,
         );
 
-        (out_buffer, crate_ref)
+        (out_buffer, crate_ref.to_owned())
     }
 }

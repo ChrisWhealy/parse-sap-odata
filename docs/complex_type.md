@@ -71,3 +71,34 @@ This particular type turns out not to be complex at all because it contains a si
 Since this is directly equivalent to a standard Rust `String`, it would be redundant to wrap a single Rust `String` inside a `struct`.
 
 Therefore, such "simple" complex types are collapsed down to the equivalent Rust type.
+
+## Metadata for Complex Type `struct`s
+
+For each metadata `<ComplexType>` containing more than one `<Property>`, a corresponding metadata `struct` is created.
+
+E.G. In the demo service `GWSAMPLE_BASIC`, the metadata XML for the complex type `CT_Address` is:
+
+```xml
+<ComplexType Name="CT_Address">
+  <Property Name="City"        Type="Edm.String" MaxLength="40" sap:label="City"        sap:semantics="city"/>
+  <Property Name="PostalCode"  Type="Edm.String" MaxLength="10" sap:label="Postal Code" sap:semantics="zip"/>
+  <Property Name="Street"      Type="Edm.String" MaxLength="60" sap:label="Street"      sap:semantics="street"/>
+  <Property Name="Country"     Type="Edm.String" MaxLength="3"  sap:label="Country"     sap:semantics="country"/>
+  <Property Name="Building"    Type="Edm.String" MaxLength="10" sap:label="Building"/>
+  <Property Name="AddressType" Type="Edm.String" MaxLength="2"  sap:label="Address Type"/>
+</ComplexType>
+```
+
+This upper snake-case name used in the XML is translated to a Rust `struct` name with the suffix `Metadata`:
+ 
+```rust   
+pub struct CtAddressMetadata {
+    pub address_type: Property,
+    pub building: Property,
+    pub city: Property,
+    pub country: Property,
+    pub postal_code: Property,
+    pub street: Property,
+}
+```
+

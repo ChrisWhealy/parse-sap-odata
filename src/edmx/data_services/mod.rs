@@ -3,6 +3,8 @@ pub mod schema;
 use schema::Schema;
 use serde::{Deserialize, Serialize};
 
+use crate::utils::to_module_name;
+
 #[derive(Debug, Serialize, Deserialize)]
 pub enum DataServiceVersion {
     #[serde(rename = "2.0")]
@@ -25,7 +27,8 @@ pub struct DataServices {
 
 impl DataServices {
     pub fn fetch_schema(&self, namespace: &str) -> Option<&Schema> {
-        self.schemas.iter().find(|schema| schema.namespace == namespace)
+        let key = to_module_name(namespace);
+        self.schemas.iter().find(|schema| schema.namespace == key)
     }
 
     pub fn default_schema(&self) -> Option<&Schema> {

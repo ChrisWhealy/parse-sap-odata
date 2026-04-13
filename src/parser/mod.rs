@@ -2,7 +2,7 @@ pub mod generate;
 
 mod io;
 
-use crate::utils::rust_tools::run_rustfmt;
+use crate::utils::{rust_tools::run_rustfmt, to_module_name};
 use generate::{metadata_doc::*, srvc_doc::*, syntax_fragments::SUFFIX_SNAKE_METADATA};
 use io::*;
 
@@ -40,13 +40,17 @@ pub fn gen_src(odata_srv_name: &str, namespace: &str) {
             println!("cargo:rerun-if-changed={DEFAULT_INPUT_DIR}/{odata_srv_name}.xml");
 
             if let Some(schema) = edmx.data_services.fetch_schema(namespace) {
+                // The module name must be valid Rust snake_case regardless of what the caller
+                // supplied as odata_srv_name (e.g. "service_ProjectServiceV2" → "service_project_service_v2").
+                // The original odata_srv_name is intentionally kept for the input-file lookup above.
+                let mod_name = to_module_name(odata_srv_name);
                 emit_module(
-                    &format!("{odata_srv_name}.rs"),
-                    gen_srv_doc_module(odata_srv_name, schema).as_bytes(),
+                    &format!("{mod_name}.rs"),
+                    gen_srv_doc_module(&mod_name, schema).as_bytes(),
                 );
                 emit_module(
-                    &format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}.rs"),
-                    gen_metadata_module(odata_srv_name, schema).as_bytes(),
+                    &format!("{mod_name}{SUFFIX_SNAKE_METADATA}.rs"),
+                    gen_metadata_module(&mod_name, schema).as_bytes(),
                 );
             } else {
                 println!("Error: OData schema for namespace '{namespace}' cannot be found or this is not OData V2 XML");

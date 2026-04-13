@@ -1,6 +1,6 @@
 [package]
 name = "parse-sap-odata"
-version = "1.5.2"
+version = "1.6.0"
 authors = ["Chris Whealy <chris@whealy.com>"]
 edition = "2024"
 description = "Generate a pair of Rust modules from SAP V2 OData metadata"
@@ -15,15 +15,16 @@ parser = []
 [dev-dependencies]
 chrono = "0.4"
 rust_decimal = { version ="1", features = ["serde-with-str"]}
-parse-sap-atom-feed = "1.2"
+parse-sap-atom-feed = "1.3"
 #parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
+syn = { version = "2", features = ["full"] }
 
 [dependencies]
 anyhow = "1.0"
 check_keyword = "0.4"
 convert_case = "0.11"
 
-parse-sap-atom-feed = "1.2"
+parse-sap-atom-feed = "1.3"
 #parse-sap-atom-feed = { path = "../parse-sap-atom-feed" }
 
 quick-xml = { version = "0.39", features = ["serialize"] }

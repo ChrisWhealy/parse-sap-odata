@@ -2,7 +2,7 @@ pub mod metadata_doc;
 pub mod srvc_doc;
 pub mod syntax_fragments;
 
-use crate::property::{metadata::PropertyType, Property};
+use crate::property::{edm_primitive::EdmPrimitive, edm_type::EdmType, Property};
 use syntax_fragments::{
     serde_fragments::{gen_datetime_deserializer_fn, gen_decimal_deserializer_ref},
     *,
@@ -28,7 +28,7 @@ pub fn gen_enum_variant_into(out: &mut String, variant_name: &str) {
 
 fn gen_fq_enum_variant_name_into(out: &mut String, enum_name: &str, variant_name: &str) {
     out.push_str(enum_name);
-    out.push_str(COLON2);
+    out.push_str(DOUBLE_COLON);
     out.push_str(variant_name);
 }
 
@@ -152,7 +152,7 @@ pub fn gen_enum_impl_fn_variant_name_into(out: &mut String) {
     gen_fn_signature_into(out, FN_NAME_VARIANT_NAME, true, true, Some(&[SELF_REF]), Some(STATIC_STR_REF));
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
-    out.push_str(MATCH_SELF);
+    out.push_str(MATCH_DEREF_SELF);
     out.push_str(OPEN_CURLY);
     out.push_str(LINE_FEED);
 }
@@ -274,13 +274,11 @@ pub fn gen_opt_string_src(s_arg: &Option<String>) -> String {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Returns possible forward reference to a custom deserializer function in the parse-sap-atom-feed crate
 pub fn gen_custom_deserializer_info(prop: &Property) -> String {
-    if let PropertyType::Edm(edm_type, _) = Property::get_property_type(prop) {
-        if edm_type.eq(EDMX_DATE_TIME) || edm_type.eq(EDMX_DATE_TIME_OFFSET) {
-            gen_datetime_deserializer_fn(prop.nullable)
-        } else if edm_type.eq(EDMX_DECIMAL) {
-            gen_decimal_deserializer_ref(prop.nullable, prop.scale)
-        } else {
-            String::new()
+    if let EdmType::Primitive(prim) = &prop.edm_type {
+        match prim {
+            EdmPrimitive::DateTime | EdmPrimitive::DateTimeOffset => gen_datetime_deserializer_fn(prop.nullable),
+            EdmPrimitive::Decimal => gen_decimal_deserializer_ref(prop.nullable, prop.scale),
+            _ => String::new(),
         }
     } else {
         String::new()

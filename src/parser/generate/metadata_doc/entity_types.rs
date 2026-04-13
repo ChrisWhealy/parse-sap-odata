@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use crate::{
     edmx::data_services::schema::{complex_type::ComplexType, entity_type::EntityType, Schema},
     parser::generate::{syntax_fragments::*, *},
-    property::metadata::PropertyType,
+    property::edm_type::EdmType,
     utils::{odata_name_to_rust_safe_name, to_upper_camel_case},
 };
 
@@ -56,26 +56,24 @@ fn gen_metadata_entity_type(out: &mut String, entity: &EntityType, skipped_cts: 
     for prop in props {
         let prop_name = odata_name_to_rust_safe_name(&prop.odata_name);
 
-        match prop.get_property_type() {
-            PropertyType::Edm(_, _) => {
+        match &prop.edm_type {
+            EdmType::Primitive(_) => {
                 gen_struct_field_into(out, &prop_name, PROPERTY);
             },
 
-            PropertyType::Complex(cmplx_type) => {
-                // Is the current property really a complex type or just a wrapper around a basic Rust type?
-                if skipped_cts.contains(&cmplx_type) {
+            EdmType::Complex(cmplx_type) => {
+                // cmplx_type is already UpperCamelCase with no namespace prefix (e.g. "CtAddress")
+                if skipped_cts.contains(cmplx_type.as_str()) {
                     // A basic Rust type's metadata is a Property instance
                     gen_struct_field_into(out, &prop_name, PROPERTY);
                 } else {
                     // This really is a complex type
-                    let metadata_type_name = format!("{}{}", to_upper_camel_case(&cmplx_type), METADATA);
-
-                    gen_struct_field_into(out, &prop_name, &metadata_type_name);
+                    gen_struct_field_into(out, &prop_name, &format!("{cmplx_type}{METADATA}"));
                 }
             },
 
-            // We should never end up here if the metadata XML is correct...
-            PropertyType::Unqualified => {},
+            // Truly unrecognised type — no metadata struct generated
+            EdmType::Unknown(_) => {},
         }
     }
 
@@ -107,20 +105,21 @@ fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts:
         let safe_name = odata_name_to_rust_safe_name(&prop.odata_name);
         let fn_name = format!("{PREFIX_SNAKE_GET}{}", safe_name.strip_prefix("r#").unwrap_or(&safe_name));
 
-        match prop.get_property_type() {
-            PropertyType::Edm(_, _) => {
+        match &prop.edm_type {
+            EdmType::Primitive(_) => {
                 let mut prop = prop.clone();
                 prop.deserializer_fn = gen_custom_deserializer_info(&prop);
                 gen_pub_getter_fn_of_type_into(out, &fn_name, PROPERTY, &prop)
             },
 
-            PropertyType::Complex(cmplx_type) => {
+            EdmType::Complex(cmplx_type) => {
+                // cmplx_type is already UpperCamelCase; match against ct.name via to_upper_camel_case
                 let err_msg = format!(
                     "Error: ComplexType property {cmplx_type} found for which there is no corresponding type declaration"
                 );
 
                 if let Some(cts) = opt_cts {
-                    if let Some(ct) = cts.iter().find(|ct| ct.name.eq(&cmplx_type)) {
+                    if let Some(ct) = cts.iter().find(|ct| to_upper_camel_case(&ct.name).eq(cmplx_type)) {
                         gen_pub_getter_fn_of_type_into(out, &fn_name, COMPLEX_TYPE, ct);
                     } else {
                         println!("{err_msg}");
@@ -134,7 +133,8 @@ fn gen_metadata_entity_type_impl(out: &mut String, entity: &EntityType, opt_cts:
                 }
             },
 
-            PropertyType::Unqualified => {},
+            // Truly unrecognised type — no getter generated
+            EdmType::Unknown(_) => {},
         }
     }
 

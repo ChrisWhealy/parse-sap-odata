@@ -23,15 +23,13 @@ pub static ONE: &str = "1";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Comment separators
 pub static COMMENT_LINE: &str = "// ";
-pub static SEPARATOR: &str = "
-// -----------------------------------------------------------------------------
-";
+pub static SEPARATOR: &str = "\n// -----------------------------------------------------------------------------\n";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Syntactical separators
 pub static THIN_ARROW: &str = "->";
-pub static COLON2: &str = "::";
 pub static FAT_ARROW: &str = "=>";
+pub static DOUBLE_COLON: &str = "::";
 pub static END_BLOCK: &str = "}\n\n";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,7 +55,7 @@ pub static PUBLIC: &str = "pub ";
 pub static CONST: &str = "const ";
 pub static USE: &str = "use ";
 pub static KEY: &str = "key";
-pub static MATCH_SELF: &str = "match *self ";
+pub static MATCH_DEREF_SELF: &str = "match *self ";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Primitive values and basic types
@@ -150,6 +148,9 @@ pub static PATH_TO_SAP_ANNOTATIONS_PROPERTY: &str =
     "parse_sap_odata::sap_annotations::property::SAPAnnotationsProperty";
 pub static PATH_TO_SAP_ODATA_PROPERTIES: &str =
     "parse_sap_odata::property::{Property, property_ref::PropertyRef}";
+pub static PATH_TO_SAP_ODATA_EDM_TYPE: &str = "parse_sap_odata::property::edm_type::EdmType";
+pub static PATH_TO_SAP_ODATA_EDM_PRIMITIVE: &str =
+    "parse_sap_odata::property::edm_primitive::EdmPrimitive";
 pub static PATH_TO_SAP_SEMANTICS_PROPERTY: &str =
     "parse_sap_odata::sap_semantics::property::SAPSemanticsProperty";
 pub static PATH_TO_SERDE_SERIALIZE_DESERIALIZE: &str = "serde::{Deserialize, Serialize}";

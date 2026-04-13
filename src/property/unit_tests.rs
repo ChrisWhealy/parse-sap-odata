@@ -1,16 +1,160 @@
 use crate::{
     parser::{
-        generate::syntax_fragments::{CRATE_CHRONO, CRATE_RUST_DECIMAL},
+        generate::syntax_fragments::{CRATE_CHRONO, CRATE_GUID, CRATE_RUST_DECIMAL},
         AsRustSrc,
     },
-    property::Property,
-    sap_annotations::property::SAPAnnotationsProperty,
+    property::{edm_primitive::EdmPrimitive, edm_type::EdmType, Property},
     test_utils::*,
 };
 
 use rust_decimal::{serde::str, Decimal};
 use serde::Deserialize;
 use std::str::FromStr;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+impl FromStr for Property {
+    type Err = quick_xml::de::DeError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        quick_xml::de::from_str(s)
+    }
+}
+
+fn property_xml(name: &str, edm_type: &str) -> String {
+    format!(r#"<Property Name="{name}" Type="{edm_type}"/>"#)
+}
+
+fn property_xml_non_nullable(name: &str, edm_type: &str) -> String {
+    format!(r#"<Property Name="{name}" Type="{edm_type}" Nullable="false"/>"#)
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[test]
+fn should_parse_edm_binary_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("SomeBinary", "Edm.Binary")).unwrap();
+    handle_test_comparison(&prop.odata_name, &"SomeBinary".to_string())?;
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Binary))
+}
+
+#[test]
+fn should_parse_edm_boolean_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("IsActive", "Edm.Boolean")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Boolean))
+}
+
+#[test]
+fn should_parse_edm_byte_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("TaxCode", "Edm.Byte")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Byte))
+}
+
+#[test]
+fn should_parse_edm_datetime_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("CreatedAt", "Edm.DateTime")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::DateTime))
+}
+
+#[test]
+fn should_parse_edm_datetimeoffset_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("ChangedAt", "Edm.DateTimeOffset")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::DateTimeOffset))
+}
+
+#[test]
+fn should_parse_edm_decimal_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Price", "Edm.Decimal")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Decimal))
+}
+
+#[test]
+fn should_parse_edm_double_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Ratio", "Edm.Double")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Double))
+}
+
+#[test]
+fn should_parse_edm_guid_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("EntityId", "Edm.Guid")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Guid))
+}
+
+#[test]
+fn should_parse_edm_int16_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("SmallCount", "Edm.Int16")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Int16))
+}
+
+#[test]
+fn should_parse_edm_int32_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Count", "Edm.Int32")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Int32))
+}
+
+#[test]
+fn should_parse_edm_int64_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("LargeCount", "Edm.Int64")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Int64))
+}
+
+#[test]
+fn should_parse_edm_null_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Nothing", "Edm.Null")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Null))
+}
+
+#[test]
+fn should_parse_edm_sbyte_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("SignedByte", "Edm.SByte")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::SByte))
+}
+
+#[test]
+fn should_parse_edm_single_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("FloatVal", "Edm.Single")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Single))
+}
+
+#[test]
+fn should_parse_edm_string_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Name", "Edm.String")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::String))
+}
+
+#[test]
+fn should_parse_edm_time_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Duration", "Edm.Time")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Primitive(EdmPrimitive::Time))
+}
+
+#[test]
+fn should_parse_unknown_edm_primitive_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Weird", "Edm.NonsenseType")).unwrap();
+    handle_test_comparison(
+        &prop.edm_type,
+        &EdmType::Primitive(EdmPrimitive::Unknown("NonsenseType".to_owned())),
+    )
+}
+
+#[test]
+fn should_parse_bare_complex_type_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Location", "CT_Address")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Complex("CtAddress".to_owned()))
+}
+
+#[test]
+fn should_parse_namespace_qualified_complex_type_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Address", "GWSAMPLE_BASIC.CT_Address")).unwrap();
+    handle_test_comparison(&prop.edm_type, &EdmType::Complex("CtAddress".to_owned()))
+}
+
+#[test]
+fn should_parse_unknown_type_property() -> Result<(), String> {
+    let prop = Property::from_str(&property_xml("Opaque", "SomeNamespace.UnknownType")).unwrap();
+    handle_test_comparison(
+        &prop.edm_type,
+        &EdmType::Unknown("SomeNamespace.UnknownType".to_owned()),
+    )
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[derive(Deserialize, PartialEq, Debug)]
@@ -122,241 +266,234 @@ fn should_not_convert_safe_property_name() -> Result<(), String> {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fn gen_property_of_type(prop_name: &str, prop_type: &str, is_nullable: bool) -> Property {
-    let dummy_annotations = SAPAnnotationsProperty {
-        label: Some("Dummy label".to_string()),
-        heading: Some("Dummy heading".to_string()),
-        quick_info: Some("Nothing to see here, move along".to_string()),
-        is_unicode: false,
-        semantics: None,
-        is_creatable: false,
-        is_updatable: true,
-        is_sortable: false,
-        is_filterable: true,
-        is_addressable: false,
-        is_required_in_filter: false,
-        filter_restriction: None,
-        filter_for: None,
-        text: None,
-        text_for: None,
-        unit: None,
-        precision: None,
-        is_visible: false,
-        field_control: None,
-        validation_regexp: None,
-        display_format: None,
-        value_list: None,
-        lower_boundary: None,
-        upper_boundary: None,
-        aggregation_role: None,
-        super_ordinate: None,
-        attribute_for: None,
-        hierarchy_node_for: None,
-        hierarchy_node_external_key_for: None,
-        hierarchy_level_for: None,
-        hierarchy_parent_node_for: None,
-        hierarchy_parent_navigation_for: None,
-        hierarchy_drill_state_for: None,
-        hierarchy_node_descendant_count_for: None,
-        hierarchy_preorder_rank_for: None,
-        hierarchy_sibling_rank_for: None,
-        parameter: None,
-        is_annotation: false,
-        updatable_path: None,
-        preserve_flag_for: None,
-        has_variable_scale: false,
-    };
-
-    Property {
-        odata_name: prop_name.to_string(),
-        edm_type: prop_type.to_string(),
-        nullable: is_nullable,
-        max_length: None,
-        precision: None,
-        scale: None,
-        concurrency_mode: None,
-        fc_keep_in_content: true,
-        fc_target_path: None,
-        sap_annotations: dummy_annotations,
-        deserializer_fn: "".to_string(),
-        // deserializer_module: "".to_string(),
-    }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #[test]
 fn should_convert_edm_string() -> Result<(), String> {
-    let prop = gen_property_of_type("BusinessPartnerID", "Edm.String", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(
-        &src_lines[0].to_string(),
-        &r#"#[serde(rename = "BusinessPartnerID")]"#.to_string(),
-    )?;
-    handle_test_comparison(&src_lines[1].to_string(), &"pub business_partner_id:String,".to_string())
+    let prop = Property::from_str(&property_xml_non_nullable("BusinessPartnerID", "Edm.String")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"business_partner_id".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"String".to_string())?;
+    handle_test_bool(has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_binary() -> Result<(), String> {
-    let prop = gen_property_of_type("SomeBinaryStuff", "Edm.Binary", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub some_binary_stuff:Vec<u8>,".to_string())
+    let prop = Property::from_str(&property_xml_non_nullable("SomeBinaryStuff", "Edm.Binary")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"some_binary_stuff".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"Vec".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_boolean() -> Result<(), String> {
-    let prop = gen_property_of_type("IsOverMisunderestimatable", "Edm.Boolean", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub is_over_misunderestimatable:bool,".to_string())
+    let prop = Property::from_str(&property_xml_non_nullable("IsOverMisunderestimatable", "Edm.Boolean")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(
+        &field.ident.as_ref().unwrap().to_string(),
+        &"is_over_misunderestimatable".to_string(),
+    )?;
+    handle_test_comparison(&outer_type_name(&field)?, &"bool".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_byte() -> Result<(), String> {
-    let prop = gen_property_of_type("ASingleByte", "Edm.Byte", true);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub a_single_byte:u8,".to_string())
+    // Byte is never wrapped in Option regardless of nullability
+    let prop = Property::from_str(&property_xml("ASingleByte", "Edm.Byte")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"a_single_byte".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"u8".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_datetime() -> Result<(), String> {
-    let prop = gen_property_of_type("OnceUponAWednesday", "Edm.DateTime", true);
-    let (src, cr) = prop.to_rust();
-    let src_lines = to_rust_src(src);
+    // nullable=true (default) → Option<chrono::NaiveDateTime>
+    let prop = Property::from_str(&property_xml("OnceUponAWednesday", "Edm.DateTime")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
     handle_test_comparison(
-        &src_lines[0].to_string(),
-        &r#"#[serde(deserialize_with = "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time_opt")]"#.to_string(),
+        &field.ident.as_ref().unwrap().to_string(),
+        &"once_upon_a_wednesday".to_string(),
     )?;
-    handle_test_comparison(
-        &src_lines[1].to_string(),
-        &"pub once_upon_a_wednesday:Option<chrono::NaiveDateTime>,".to_string(),
-    )?;
-    handle_test_comparison(&cr, &CRATE_CHRONO.to_string())
+    handle_test_comparison(&outer_type_name(&field)?, &"Option".to_string())?;
+    handle_test_bool(has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &CRATE_CHRONO.to_string())
 }
 
 #[test]
 fn should_convert_edm_datetime_offset() -> Result<(), String> {
-    let prop = gen_property_of_type("OnceUponAWednesday", "Edm.DateTimeOffset", true);
-    let (src, cr) = prop.to_rust();
-    let src_lines = to_rust_src(src);
+    // nullable=true (default) → Option<chrono::NaiveDateTime>
+    let prop = Property::from_str(&property_xml("OnceUponAWednesday", "Edm.DateTimeOffset")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
     handle_test_comparison(
-        &src_lines[0].to_string(),
-        &r#"#[serde(deserialize_with = "parse_sap_atom_feed::deserializers::edm_datetime::to_naive_date_time_opt")]"#.to_string(),
+        &field.ident.as_ref().unwrap().to_string(),
+        &"once_upon_a_wednesday".to_string(),
     )?;
-    handle_test_comparison(
-        &src_lines[1].to_string(),
-        &"pub once_upon_a_wednesday:Option<chrono::NaiveDateTime>,".to_string(),
-    )?;
-    handle_test_comparison(&cr, &CRATE_CHRONO.to_string())
+    handle_test_comparison(&outer_type_name(&field)?, &"Option".to_string())?;
+    handle_test_bool(has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &CRATE_CHRONO.to_string())
 }
 
 #[test]
 fn should_convert_edm_decimal() -> Result<(), String> {
-    let prop = gen_property_of_type("SomeDecimalNumber", "Edm.Decimal", false);
-    let (src, cr) = prop.to_rust();
-    let src_lines = to_rust_src(src);
+    // nullable=false → rust_decimal::Decimal (not Option)
+    let prop = Property::from_str(&property_xml_non_nullable("SomeDecimalNumber", "Edm.Decimal")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
     handle_test_comparison(
-        &src_lines[0].to_string(),
-        &r#"#[serde(deserialize_with = "parse_sap_atom_feed::deserializers::edm_decimal::to_rust_decimal_0dp")]"#.to_string(),
+        &field.ident.as_ref().unwrap().to_string(),
+        &"some_decimal_number".to_string(),
     )?;
-    handle_test_comparison(
-        &src_lines[1].to_string(),
-        &"pub some_decimal_number:rust_decimal::Decimal,".to_string(),
-    )?;
-    handle_test_comparison(&cr, &CRATE_RUST_DECIMAL.to_string())
+    handle_test_comparison(&outer_type_name(&field)?, &"Decimal".to_string())?;
+    handle_test_bool(has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &CRATE_RUST_DECIMAL.to_string())
 }
 
 #[test]
 fn should_convert_edm_double() -> Result<(), String> {
-    let prop = gen_property_of_type("DoubleTrouble", "Edm.Double", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub double_trouble:f64,".to_string())
+    // Double is never wrapped in Option regardless of nullability
+    let prop = Property::from_str(&property_xml_non_nullable("DoubleTrouble", "Edm.Double")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"double_trouble".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"f64".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_guid() -> Result<(), String> {
-    let prop = gen_property_of_type("GooeyGuid", "Edm.Guid", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub gooey_guid:uuid::Uuid,".to_string())
+    // Guid is never wrapped in Option regardless of nullability
+    let prop = Property::from_str(&property_xml_non_nullable("GooeyGuid", "Edm.Guid")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"gooey_guid".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"Uuid".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &CRATE_GUID.to_string())
 }
 
 #[test]
 fn should_convert_edm_int16() -> Result<(), String> {
-    let prop = gen_property_of_type("MaybeAnInt16", "Edm.Int16", true);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub maybe_an_int_16:Option<i16>,".to_string())
+    // nullable=true (default) → Option<i16>
+    let prop = Property::from_str(&property_xml("MaybeAnInt16", "Edm.Int16")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"maybe_an_int_16".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"Option".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_int32() -> Result<(), String> {
-    let prop = gen_property_of_type("MaybeAnInt32", "Edm.Int32", true);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub maybe_an_int_32:Option<i32>,".to_string())
+    // nullable=true (default) → Option<i32>
+    let prop = Property::from_str(&property_xml("MaybeAnInt32", "Edm.Int32")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"maybe_an_int_32".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"Option".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_int64() -> Result<(), String> {
-    let prop = gen_property_of_type("MaybeAnInt64", "Edm.Int64", true);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub maybe_an_int_64:Option<i64>,".to_string())
+    // nullable=true (default) → Option<i64>
+    let prop = Property::from_str(&property_xml("MaybeAnInt64", "Edm.Int64")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"maybe_an_int_64".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"Option".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_null() -> Result<(), String> {
-    let prop = gen_property_of_type("NothingToSeeHere", "Edm.Null", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub nothing_to_see_here:(),".to_string())
+    // Null always maps to unit type ()
+    let prop = Property::from_str(&property_xml_non_nullable("NothingToSeeHere", "Edm.Null")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(
+        &field.ident.as_ref().unwrap().to_string(),
+        &"nothing_to_see_here".to_string(),
+    )?;
+    handle_test_comparison(&outer_type_name(&field)?, &"()".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_sbyte() -> Result<(), String> {
-    let prop = gen_property_of_type("SingleByte", "Edm.SByte", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub single_byte:i8,".to_string())
+    let prop = Property::from_str(&property_xml_non_nullable("SingleByte", "Edm.SByte")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"single_byte".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"i8".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_float_single() -> Result<(), String> {
-    let prop = gen_property_of_type("SinglePrecisionFloat", "Edm.Single", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub single_precision_float:f32,".to_string())
+    // Single is never wrapped in Option regardless of nullability
+    let prop = Property::from_str(&property_xml_non_nullable("SinglePrecisionFloat", "Edm.Single")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(
+        &field.ident.as_ref().unwrap().to_string(),
+        &"single_precision_float".to_string(),
+    )?;
+    handle_test_comparison(&outer_type_name(&field)?, &"f32".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_edm_time() -> Result<(), String> {
-    let prop = gen_property_of_type("WhatsTheTimeEccles", "Edm.Time", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
+    let prop = Property::from_str(&property_xml_non_nullable("WhatsTheTimeEccles", "Edm.Time")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
     handle_test_comparison(
-        &src_lines[0].to_string(),
-        &"pub whats_the_time_eccles:std::time::SystemTime,".to_string(),
-    )
+        &field.ident.as_ref().unwrap().to_string(),
+        &"whats_the_time_eccles".to_string(),
+    )?;
+    handle_test_comparison(&outer_type_name(&field)?, &"SystemTime".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_nonsense_type() -> Result<(), String> {
-    // Unknown EDM type
-    let prop = gen_property_of_type("WhatIsIt", "Edm.NonsenseTypeValue", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub what_is_it:String,".to_string())
+    // Unknown EDM primitive falls through to String
+    let prop = Property::from_str(&property_xml_non_nullable("WhatIsIt", "Edm.ImATeapot")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"what_is_it".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"String".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }
 
 #[test]
 fn should_convert_unknown_type() -> Result<(), String> {
-    // Unknown type
-    let prop = gen_property_of_type("ThatsWeird", "NotSeenThisBefore", false);
-    let (src, _) = prop.to_rust();
-    let src_lines = to_rust_src(src);
-    handle_test_comparison(&src_lines[0].to_string(), &"pub thats_weird:NotSeenThisBefore,".to_string())
+    // Completely unrecognised type: emitted as-is as the field type name
+    let prop = Property::from_str(&property_xml_non_nullable("ThatsWeird", "NotSeenThisBefore")).unwrap();
+    let (src, crate_ref) = prop.to_rust();
+    let field = parse_field(&src)?;
+    handle_test_comparison(&field.ident.as_ref().unwrap().to_string(), &"thats_weird".to_string())?;
+    handle_test_comparison(&outer_type_name(&field)?, &"NotSeenThisBefore".to_string())?;
+    handle_test_bool(!has_serde_attr(&field))?;
+    handle_test_comparison(&crate_ref, &"".to_string())
 }

@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use std::{env, fs::OpenOptions, io::Write, path::Path, str::FromStr};
 
 use crate::edmx::Edmx;
@@ -8,7 +8,8 @@ pub static DEFAULT_INPUT_DIR: &str = "./odata";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fn fetch_xml_as_string(filename: &str) -> Result<String> {
     let xml_input_pathname = format!("{}/{}.xml", DEFAULT_INPUT_DIR, filename);
-    Ok(std::fs::read_to_string(&xml_input_pathname)?)
+    std::fs::read_to_string(&xml_input_pathname)
+        .with_context(|| format!("Cannot read OData metadata file '{xml_input_pathname}'"))
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

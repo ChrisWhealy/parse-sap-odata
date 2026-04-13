@@ -1,5 +1,5 @@
 use parse_sap_atom_feed::atom::link::AtomLink;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use association::Association;
 use complex_type::ComplexType;
@@ -9,8 +9,23 @@ use entity_type::EntityType;
 use crate::{
     oasis::annotations::Annotations,
     sap_annotations::schema::SAPAnnotationsSchema,
+    utils::to_module_name,
     xml::{default_xml_language, default_xml_namespace},
 };
+
+/// Deserialize the `Namespace` attribute and convert it to a valid Rust module name so that the
+/// stored value is always safe to use as a Rust identifier regardless of the casing in the XML.
+///
+/// Examples:
+/// - `"GWSAMPLE_BASIC"`           → `"gwsample_basic"`
+/// - `"service.ProjectServiceV2"` → `"service_project_service_v2"`
+fn de_namespace<'de, D>(deserializer: D) -> Result<String, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let raw = String::deserialize(deserializer)?;
+    Ok(to_module_name(&raw))
+}
 
 pub mod association;
 pub mod complex_type;
@@ -32,7 +47,7 @@ pub mod metadata;
 pub struct Schema {
     #[serde(rename = "@xmlns", default = "default_xml_namespace")]
     pub xml_namespace: String,
-    #[serde(rename = "@Namespace", default)]
+    #[serde(rename = "@Namespace", default, deserialize_with = "de_namespace")]
     pub namespace: String,
     #[serde(rename = "@xml:lang", default = "default_xml_language")]
     pub xml_lang: String,

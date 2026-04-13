@@ -6,12 +6,10 @@ use std::collections::BTreeSet;
 use crate::{
     edmx::data_services::schema::Schema,
     parser::generate::{
-        gen_extern_crate_into, gen_module_start_into,
+        gen_module_start_into,
         syntax_fragments::{gen_use_path_into, *},
     },
 };
-
-use super::CRATE_PARSE_SAP_ATOM_FEED;
 
 use associations::*;
 use complex_types::*;
@@ -23,10 +21,13 @@ pub fn gen_metadata_module(odata_srv_name: &str, schema: &Schema) -> String {
     let mod_name = format!("{odata_srv_name}{SUFFIX_SNAKE_METADATA}");
     let mut out = String::new();
 
-    // Start module definition
-    gen_extern_crate_into(&mut out, CRATE_PARSE_SAP_ATOM_FEED);
+    // In Rust 2018+ edition, extern crate declarations are not required for
+    // crates listed in Cargo.toml.  Emitting them causes duplicate-definition
+    // errors when multiple generated modules are included in the same file.
     gen_module_start_into(&mut out, &mod_name);
     gen_use_path_into(&mut out, PATH_TO_SAP_ODATA_PROPERTIES);
+    gen_use_path_into(&mut out, PATH_TO_SAP_ODATA_EDM_TYPE);
+    gen_use_path_into(&mut out, PATH_TO_SAP_ODATA_EDM_PRIMITIVE);
     gen_use_path_into(&mut out, PATH_TO_SAP_ANNOTATIONS_PROPERTY);
 
     // Do we need to generate any complex types?

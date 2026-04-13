@@ -10,7 +10,7 @@ use crate::property::Property;
 ///
 /// # Child Nodes
 /// `1:n Property`
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct ComplexType {
     #[serde(rename = "@Name")]

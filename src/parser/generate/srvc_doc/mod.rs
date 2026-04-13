@@ -4,34 +4,31 @@ mod entity_types;
 use complex_types::gen_complex_types_into;
 use entity_types::gen_entity_types_into;
 
-use std::collections::BTreeSet;
-
 use crate::{
     edmx::data_services::schema::Schema,
     parser::generate::{
-        gen_comment_separator_for_into, gen_extern_crate_into, gen_module_start_into,
+        gen_comment_separator_for_into, gen_module_start_into,
         syntax_fragments::{
-            gen_use_path_into, CRATE_QUICK_XML, CRATE_SERDE, END_BLOCK, PATH_TO_SERDE_SERIALIZE_DESERIALIZE,
+            gen_use_path_into, END_BLOCK, PATH_TO_SERDE_SERIALIZE_DESERIALIZE,
         },
     },
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
 pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> String {
-    let mut crate_refs: BTreeSet<String> = BTreeSet::new();
     let mut out_buffer = String::new();
 
-    // External crate dependencies on serde and quick_xml are always required
-    gen_extern_crate_into(&mut out_buffer, CRATE_QUICK_XML);
-    gen_extern_crate_into(&mut out_buffer, CRATE_SERDE);
+    // In Rust 2018+ edition, extern crate declarations are not required for
+    // crates listed in Cargo.toml.  Emitting them causes duplicate-definition
+    // errors when multiple generated modules are included in the same file.
     gen_module_start_into(&mut out_buffer, odata_srv_name);
     gen_use_path_into(&mut out_buffer, PATH_TO_SERDE_SERIALIZE_DESERIALIZE);
 
     if let Some(cts) = &schema.complex_types {
-        crate_refs.extend(gen_complex_types_into(&mut out_buffer, cts));
+        gen_complex_types_into(&mut out_buffer, cts);
     }
 
-    crate_refs.extend(gen_entity_types_into(&mut out_buffer, &schema.entity_types));
+    gen_entity_types_into(&mut out_buffer, &schema.entity_types);
 
     // Create enum + impl for the entity container element
     // This enum acts as a proxy for the list of Collections in the service document
@@ -42,11 +39,6 @@ pub fn gen_srv_doc_module(odata_srv_name: &str, schema: &Schema) -> String {
 
     // End module definition
     out_buffer.push_str(END_BLOCK);
-
-    // Add any external crate references
-    for cr in crate_refs {
-        gen_extern_crate_into(&mut out_buffer, &cr);
-    }
 
     out_buffer
 }

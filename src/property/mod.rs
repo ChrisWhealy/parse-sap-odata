@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    property::edm_type::EdmType,
     sap_annotations::property::SAPAnnotationsProperty,
     utils::{de_str_to_bool, default_false, default_true},
 };
@@ -8,6 +9,8 @@ use crate::{
 #[cfg(feature = "parser")]
 pub mod metadata;
 
+pub mod edm_primitive;
+pub mod edm_type;
 pub mod property_ref;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17,8 +20,8 @@ pub mod property_ref;
 pub struct Property {
     #[serde(rename = "@Name")]
     pub odata_name: String,
-    #[serde(rename = "@Type")]
-    pub edm_type: String,
+    #[serde(rename = "@Type", deserialize_with = "crate::property::edm_type::EdmType::deserialize")]
+    pub edm_type: EdmType,
     #[serde(rename = "@Nullable", default = "default_true")]
     pub nullable: bool,
     #[serde(rename = "@MaxLength")]

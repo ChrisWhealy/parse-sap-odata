@@ -44,7 +44,7 @@ pub fn gen_metadata_complex_types_into(out: &mut String, cts: &[ComplexType]) ->
             out.push_str(END_BLOCK);
         } else {
             // This is just a simple type pretending to have a complex
-            skipped_cts.insert(ct.name.clone());
+            skipped_cts.insert(ct_name.clone());
             ignored_cts += 1;
         }
     }

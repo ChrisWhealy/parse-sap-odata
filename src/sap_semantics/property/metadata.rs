@@ -1,5 +1,5 @@
 use crate::{
-    parser::generate::syntax_fragments::{CLOSE_PAREN, COLON2, NONE, OPEN_PAREN, SOME},
+    parser::generate::syntax_fragments::{CLOSE_PAREN, DOUBLE_COLON, NONE, OPEN_PAREN, SOME},
     sap_semantics::{property::SAPSemanticsProperty, OptionalSemanticType, SemanticType},
 };
 
@@ -82,7 +82,7 @@ impl OptionalSemanticType for Option<SAPSemanticsProperty> {
             out.push_str(SOME);
             out.push_str(OPEN_PAREN);
             out.push_str(MY_NAME);
-            out.push_str(COLON2);
+            out.push_str(DOUBLE_COLON);
             out.push_str(anno_type.member_name());
             out.push_str(CLOSE_PAREN);
         } else {

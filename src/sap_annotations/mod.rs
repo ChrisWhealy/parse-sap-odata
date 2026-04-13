@@ -1,5 +1,5 @@
 use crate::{
-    parser::generate::syntax_fragments::{ATOM, COLON2, DOUBLE_QUOTE, JSON, ONE},
+    parser::generate::syntax_fragments::{ATOM, DOUBLE_COLON, DOUBLE_QUOTE, JSON, ONE},
     utils::{de_str_to_bool, default_false, default_true},
 };
 
@@ -23,7 +23,7 @@ pub fn generate_fq_name(my_name: &str, member_name: &str) -> String {
 
     out.push_str(DOUBLE_QUOTE);
     out.push_str(my_name);
-    out.push_str(COLON2);
+    out.push_str(DOUBLE_COLON);
     out.push_str(member_name);
     out.push_str(DOUBLE_QUOTE);
     out

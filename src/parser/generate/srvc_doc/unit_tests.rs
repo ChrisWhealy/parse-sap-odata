@@ -2,8 +2,9 @@ use std::collections::BTreeSet;
 
 use crate::{
     edmx::data_services::schema::complex_type::ComplexType,
-    parser::generate::srvc_doc::complex_types::gen_complex_types, property::metadata::PropertyType,
-    test_utils::{handle_test_comparison, handle_test_bool},
+    parser::generate::srvc_doc::complex_types::gen_complex_types,
+    property::{edm_primitive::EdmPrimitive, edm_type::EdmType},
+    test_utils::*,
 };
 
 use chrono;
@@ -44,16 +45,10 @@ fn should_deserialize_ct_pallet_metadata() -> Result<(), String> {
             let depth = result.properties[0].clone();
             handle_test_comparison(&depth.precision.unwrap(), &12)?;
             handle_test_comparison(&depth.scale.unwrap(), &2)?;
-            handle_test_comparison(
-                &depth.get_property_type(),
-                &PropertyType::Edm("Decimal".to_string(), "rust_decimal".to_string()),
-            )?;
+            handle_test_comparison(&depth.edm_type, &EdmType::Primitive(EdmPrimitive::Decimal))?;
 
             let loaded_at = result.properties[5].clone();
-            handle_test_comparison(
-                &loaded_at.get_property_type(),
-                &PropertyType::Edm("DateTime".to_string(), "chrono".to_string()),
-            )
+            handle_test_comparison(&loaded_at.edm_type, &EdmType::Primitive(EdmPrimitive::DateTime))
         },
         Err(err) => Err(format!("XML test data was not in UTF8 format: {err}")),
     }
@@ -128,6 +123,54 @@ fn should_generate_extern_crate_refs() -> Result<(), String> {
             handle_test_comparison(&crs.len(), &2)?;
             handle_test_bool(crs.iter().find(|cr| cr.as_str().eq("rust_decimal")).is_some())?;
             handle_test_bool(crs.iter().find(|cr| cr.as_str().eq("chrono")).is_some())
+        },
+        Err(err) => Err(format!("XML test data was not in UTF8 format: {err}")),
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#[test]
+fn should_generate_valid_ct_pallet_struct() -> Result<(), String> {
+    let mut xml_buffer: Vec<u8> = Vec::new();
+    let test_data = File::open(Path::new(PATH_TO_COMPLEX_TYPE_METADATA)).unwrap();
+    let _file_size = BufReader::new(test_data).read_to_end(&mut xml_buffer);
+
+    match String::from_utf8(xml_buffer) {
+        Ok(xml) => {
+            let ct = ComplexType::from_str(&xml).unwrap();
+            let (src, _) = gen_complex_types(&[ct]);
+
+            // The generated source must parse as valid Rust
+            let module = parse_module(&src)?;
+            let ct_struct = find_struct(&module, "CtPallet")?;
+
+            // Struct must carry #[derive(...)] and #[serde(rename_all = "PascalCase")]
+            handle_test_bool(ct_struct.attrs.iter().any(|a| a.path().is_ident("derive")))?;
+            handle_test_bool(ct_struct.attrs.iter().any(|a| a.path().is_ident("serde")))?;
+
+            // Properties are sorted alphabetically before emission
+            let names = struct_field_names(ct_struct);
+            handle_test_comparison(&names.len(), &6)?;
+            handle_test_comparison(&names[0], &"depth".to_string())?;
+            handle_test_comparison(&names[1], &"height".to_string())?;
+            handle_test_comparison(&names[2], &"loaded_at".to_string())?;
+            handle_test_comparison(&names[3], &"max_weight".to_string())?;
+            handle_test_comparison(&names[4], &"shipping_id".to_string())?;
+            handle_test_comparison(&names[5], &"width".to_string())?;
+
+            // No property in the XML carries Nullable="false", so all fields must be Option<T>.
+            // Each field also carries a serde attribute: decimal/datetime fields get a custom
+            // deserializer, and ShippingID gets a rename (non-standard casing).
+            let syn::Fields::Named(ref named) = ct_struct.fields else {
+                return Err("Expected named fields on CtPallet struct".to_string());
+            };
+
+            for field in &named.named {
+                handle_test_comparison(&outer_type_name(field)?, &"Option".to_string())?;
+                handle_test_bool(has_serde_attr(field))?;
+            }
+
+            Ok(())
         },
         Err(err) => Err(format!("XML test data was not in UTF8 format: {err}")),
     }
